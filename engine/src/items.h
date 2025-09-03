@@ -1,4 +1,4 @@
-﻿/**
+/**
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -249,6 +249,7 @@ class ItemType
 		uint32_t wieldInfo = 0;
 		uint32_t minReqLevel = 0;
 		uint32_t minReqMagicLevel = 0;
+		uint32_t minReqReset = 0;
 		uint32_t charges = 0;
 		uint32_t classification = 0;
 		uint32_t tier = 0;

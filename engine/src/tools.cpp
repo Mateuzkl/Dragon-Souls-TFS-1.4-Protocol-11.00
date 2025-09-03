@@ -1345,6 +1345,9 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_NOTENOUGHFISHLEVEL:
 			return "You do not have enough fishing level";
 
+		case RETURNVALUE_NOTENOUGHRESET:
+			return "You do not have enough resets";
+
 		default: // RETURNVALUE_NOTPOSSIBLE, etc
 			return "Sorry, not possible.";
 	}

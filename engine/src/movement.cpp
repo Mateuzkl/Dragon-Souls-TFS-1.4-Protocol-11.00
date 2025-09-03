@@ -686,6 +686,11 @@ ReturnValue MoveEvent::EquipItem(MoveEvent* moveEvent, Player* player, Item* ite
 			return RETURNVALUE_NOTENOUGHMAGICLEVEL;
 		}
 
+		const ItemType& it = Item::items[item->getID()];
+		if (player->getReset() < it.minReqReset) {
+			return RETURNVALUE_NOTENOUGHRESET;
+		}
+
 		if (moveEvent->isPremium() && !player->isPremium()) {
 			return RETURNVALUE_YOUNEEDPREMIUMACCOUNT;
 		}

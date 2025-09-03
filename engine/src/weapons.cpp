@@ -257,6 +257,10 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		wieldInfo |= WIELDINFO_MAGLV;
 	}
 
+	if (getReqReset() > 0) {
+		wieldInfo |= WIELDINFO_RESET;
+	}
+
 	if (!vocationString.empty()) {
 		wieldInfo |= WIELDINFO_VOCREQ;
 	}
@@ -271,6 +275,7 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		it.vocationString = vocationString;
 		it.minReqLevel = getReqLevel();
 		it.minReqMagicLevel = getReqMagLv();
+		it.minReqReset = getReqReset();
 	}
 
 	configureWeapon(Item::items[id]);

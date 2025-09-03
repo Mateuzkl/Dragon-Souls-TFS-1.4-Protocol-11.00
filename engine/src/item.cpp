@@ -2153,6 +2153,16 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 			s << " magic level " << it.minReqMagicLevel << " or higher";
 		}
 
+		if (it.wieldInfo & WIELDINFO_RESET) {
+			if (it.wieldInfo & (WIELDINFO_LEVEL | WIELDINFO_MAGLV)) {
+				s << " and";
+			} else {
+				s << " of";
+			}
+
+			s << " " << it.minReqReset << " reset" << (it.minReqReset != 1 ? "s" : "") << " or higher";
+		}
+
 		s << '.';
 	}
 
