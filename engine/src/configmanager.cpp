@@ -283,6 +283,7 @@ bool ConfigManager::load()
 	integer[RESET_LEVEL] = getGlobalNumber(L, "resetLevel", 100); // reset system
 	integer[RESET_STATBONUS] = getGlobalNumber(L, "resetStatBonus", 5); // reset system
 	integer[RESET_DMGBONUS] = getGlobalNumber(L, "resetDmgBonus", 10); // reset system
+	integer[RESET_DMGBONUS_NEW] = getGlobalNumber(L, "resetDmgBonus", 5); // reset system
 	
 
 	floating[RATE_MONSTER_HEALTH] = getGlobalFloat(L, "rateMonsterHealth", 1.0);

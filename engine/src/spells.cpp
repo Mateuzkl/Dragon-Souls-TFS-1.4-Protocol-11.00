@@ -654,10 +654,12 @@ bool Spell::playerSpellCheck(Player* player) const
 	}
 
 	if (player->getReset() < reset) {
-		player->sendCancelMessage(RETURNVALUE_NOTENOUGHLEVEL);
-		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
-		return false;
-	}
+			std::ostringstream ss;
+			ss << "You need " << reset << " resets to cast this spell. You currently have " << player->getReset() << " resets.";
+			player->sendTextMessage(MESSAGE_STATUS_SMALL, ss.str());
+			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+			return false;
+		}
 
 	if (player->getMana() < getManaCost(player) && !player->hasFlag(PlayerFlag_HasInfiniteMana)) {
 		player->sendCancelMessage(RETURNVALUE_NOTENOUGHMANA);

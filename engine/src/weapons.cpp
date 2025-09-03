@@ -341,7 +341,14 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target, uint8_t shoo
 		}
 
 		if (player->getReset() < getReqReset()) {
-			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
+			if (!isWieldedUnproperly()) {
+				std::ostringstream ss;
+				ss << "You need " << getReqReset() << " resets to use this weapon. You currently have " << player->getReset() << " resets.";
+				player->sendTextMessage(MESSAGE_STATUS_SMALL, ss.str());
+				g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+				return 0;
+			}
+			damageModifier = damageModifier / 2;
 		}
 		return damageModifier;
 	}

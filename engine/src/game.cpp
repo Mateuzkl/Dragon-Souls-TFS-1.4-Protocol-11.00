@@ -6049,6 +6049,22 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		damage.primary.value = std::abs(damage.primary.value);
 		damage.secondary.value = std::abs(damage.secondary.value);
 
+		// Reset damage bonus system
+		double bonusReset = 0.0;
+		if(attackerPlayer != nullptr){
+			bonusReset = attackerPlayer->getReset() * g_config.getNumber(ConfigManager::RESET_DMGBONUS_NEW);
+			bonusReset /= 10;
+			bonusReset /= 100;
+			bonusReset += 1;
+		}
+		else
+			bonusReset = 1.0;
+
+		std::cout << bonusReset << std::endl;
+
+		damage.primary.value = std::abs(damage.primary.value) * bonusReset;
+		damage.secondary.value = std::abs(damage.secondary.value * bonusReset);
+
 		TextMessage message;
 		message.position = targetPos;
 

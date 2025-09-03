@@ -176,6 +176,7 @@ class ConfigManager
 			RESET_LEVEL, // reset system
 			RESET_STATBONUS, // reset system
 			RESET_DMGBONUS, // reset system
+			RESET_DMGBONUS_NEW, // reset system
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
