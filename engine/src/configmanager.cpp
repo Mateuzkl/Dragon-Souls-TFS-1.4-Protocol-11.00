@@ -280,6 +280,9 @@ bool ConfigManager::load()
 	integer[SPOOF_INTERVAL] = getGlobalNumber(L, "spoofInterval", 60 * 1000);
 	integer[SPOOF_CHANGE_CHANCE] = getGlobalNumber(L, "spoofChangeChance", 100);
 	integer[SPOOF_INCREMENT_CHANCE] = getGlobalNumber(L, "spoofIncrementChange", 5);
+	integer[RESET_LEVEL] = getGlobalNumber(L, "resetLevel", 100); // reset system
+	integer[RESET_STATBONUS] = getGlobalNumber(L, "resetStatBonus", 5); // reset system
+	integer[RESET_DMGBONUS] = getGlobalNumber(L, "resetDmgBonus", 10); // reset system
 	
 
 	floating[RATE_MONSTER_HEALTH] = getGlobalFloat(L, "rateMonsterHealth", 1.0);

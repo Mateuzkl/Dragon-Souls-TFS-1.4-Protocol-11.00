@@ -30,6 +30,12 @@ blackSkullDuration = 3
 orangeSkullDuration = 3
 blessRune = false
 
+-- Reset System
+rebornLevel = 500000 -- min level to reborn
+rebornStats = 5 -- % more hp and mp on every reset ()
+rebornDmg = 10 -- % attack bonus per reborn. 10 = 1%, 100 = 10%, 1000 = 100%. accumulative, keep it low!!!!     
+
+
 -- PvP Protection Level
 -- NOTE: Players with level 50 or below are protected from unjustified PvP
 pvpProtectionLevel = 50

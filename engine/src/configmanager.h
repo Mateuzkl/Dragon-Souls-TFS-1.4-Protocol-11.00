@@ -173,6 +173,9 @@ class ConfigManager
 			SPOOF_INTERVAL,
 			SPOOF_CHANGE_CHANCE,
 			SPOOF_INCREMENT_CHANCE,
+			RESET_LEVEL, // reset system
+			RESET_STATBONUS, // reset system
+			RESET_DMGBONUS, // reset system
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};

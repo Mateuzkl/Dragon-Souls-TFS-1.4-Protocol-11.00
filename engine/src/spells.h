@@ -161,6 +161,12 @@ class Spell : public BaseSpell
 		void setSoulCost(uint32_t s) {
 			soul = s;
 		}
+		uint32_t getReqReset() const {
+			return reset;
+		}
+		void setRequiredReset(uint32_t r) {
+			reset = r;
+		}
 		uint32_t getLevel() const {
 			return level;
 		}
@@ -324,6 +330,7 @@ class Spell : public BaseSpell
 		uint32_t mana = 0;
 		uint32_t manaPercent = 0;
 		uint32_t soul = 0;
+		uint32_t reset = 0;
 
 		bool needWeapon = false;
 		bool blockingSolid = false;

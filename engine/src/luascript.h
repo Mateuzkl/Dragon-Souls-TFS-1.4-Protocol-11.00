@@ -936,6 +936,9 @@ class LuaScriptInterface
 		static int luaPlayerAddExperience(lua_State* L);
 		static int luaPlayerRemoveExperience(lua_State* L);
 		static int luaPlayerGetLevel(lua_State* L);
+		static int luaPlayerGetReset(lua_State* L); // reset system
+		static int luaPlayerDoReset(lua_State* L); // reset system
+		static int luaPlayerSetReset(lua_State* L); // reset system
 
 		static int luaPlayerGetMagicLevel(lua_State* L);
 		static int luaPlayerGetBaseMagicLevel(lua_State* L);
@@ -1278,6 +1281,7 @@ class LuaScriptInterface
 		static int luaHouseGetTown(lua_State* L);
 		static int luaHouseGetExitPosition(lua_State* L);
 		static int luaHouseGetRent(lua_State* L);
+		static int luaHouseGetRequiredReset(lua_State* L); // Reset system
 
 		static int luaHouseGetOwnerGuid(lua_State* L);
 		static int luaHouseSetOwnerGuid(lua_State* L);

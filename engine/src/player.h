@@ -179,6 +179,8 @@ class Player final : public Creature, public Cylinder
 		bool hasMount(const Mount* mount) const;
 		void dismount();
 
+		void doReset(); // reset system
+
 		void sendFYIBox(const std::string& message) {
 			if (client) {
 				client->sendFYIBox(message);
@@ -478,6 +480,12 @@ class Player final : public Creature, public Cylinder
 		}
 		uint32_t getLevel() const {
 			return level;
+		}
+		uint32_t getReset() const { // reset system
+			return reset;
+		}
+		void setReset(uint32_t newReset) { // reset system
+			reset = newReset;
 		}
 		uint8_t getLevelPercent() const {
 			return levelPercent;
@@ -1891,6 +1899,7 @@ class Player final : public Creature, public Cylinder
 		uint32_t conditionImmunities = 0;
 		uint32_t conditionSuppressions = 0;
 		uint32_t level = 1;
+		uint32_t reset = 0; // reset system
 		uint32_t magLevel = 0;
 		uint32_t actionTaskEvent = 0;
 		uint32_t actionTaskEventPush = 0;

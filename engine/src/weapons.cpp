@@ -186,6 +186,10 @@ bool Weapon::configureEvent(const pugi::xml_node& node)
 		soul = pugi::cast<uint32_t>(attr.value());
 	}
 
+	if ((attr = node.attribute("reset"))) {
+		reset = pugi::cast<uint32_t>(attr.value());
+	}
+
 	if ((attr = node.attribute("prem"))) {
 		premium = attr.as_bool();
 	}
@@ -328,6 +332,10 @@ int32_t Weapon::playerWeaponCheck(Player* player, Creature* target, uint8_t shoo
 		}
 
 		if (player->getMagicLevel() < getReqMagLv()) {
+			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
+		}
+
+		if (player->getReset() < getReqReset()) {
 			damageModifier = (isWieldedUnproperly() ? damageModifier / 2 : 0);
 		}
 		return damageModifier;

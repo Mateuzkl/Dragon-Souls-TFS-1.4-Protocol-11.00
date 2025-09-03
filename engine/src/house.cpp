@@ -116,6 +116,11 @@ void House::updateDoorDescription() const
 		}
 	}
 
+	// Reset system - show required resets
+	if (requiredReset > 0) {
+		ss << " It requires " << requiredReset << " resets.";
+	}
+
 	for (const auto& it : doorList) {
 		it->setSpecialDescription(ss.str());
 	}
@@ -693,6 +698,7 @@ bool Houses::loadHousesXML(const std::string& filename)
 		house->setEntryPos(entryPos);
 
 		house->setRent(pugi::cast<uint32_t>(houseNode.attribute("rent").value()));
+		house->setRequiredReset(pugi::cast<uint32_t>(houseNode.attribute("reqreset").value()));
 		house->setTownId(pugi::cast<uint32_t>(houseNode.attribute("townid").value()));
 
 		house->setOwner(0, false);
