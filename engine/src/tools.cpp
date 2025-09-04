@@ -527,6 +527,7 @@ MagicEffectNames magicEffectNames = {
 	{"confettivertical",	CONST_ME_CONFETTI_VERTICAL},
 	{"criticaldagame",		CONST_ME_CRITICAL_DAMAGE},
 	{"dice",				CONST_ME_CRAPS},
+	{"dodge",				CONST_ME_DODGE},
 	{"dragonhead",			CONST_ME_DRAGONHEAD},
 	{"explosionarea",		CONST_ME_EXPLOSIONAREA},
 	{"explosion",			CONST_ME_EXPLOSIONHIT},
@@ -934,6 +935,7 @@ std::string getWeaponName(WeaponType_t weaponType)
 		case WEAPON_SWORD: return "sword";
 		case WEAPON_CLUB: return "club";
 		case WEAPON_AXE: return "axe";
+		case WEAPON_FIST: return "fist";
 		case WEAPON_DISTANCE: return "distance";
 		case WEAPON_WAND: return "wand";
 		case WEAPON_AMMO: return "ammunition";

@@ -458,6 +458,7 @@ class ItemAttributes
 
 		std::map<CombatType_t, Reflect> reflect;
 		std::map<CombatType_t, uint16_t> increasePercent;
+		uint16_t dodge = 0;
 
 		const Reflect& getReflect(CombatType_t combatType) {
 			auto it = reflect.find(combatType);
@@ -1125,6 +1126,11 @@ class Item : virtual public Thing
 			getAttributes()->increasePercent[combatType] = value;
 		}
 		uint16_t getIncreasePercent(CombatType_t combatType, bool total = true) const;
+
+		void setDodge(uint16_t value) {
+			getAttributes()->dodge = value;
+		}
+		uint16_t getDodge() const;
 
 		bool hasProperty(ITEMPROPERTY prop) const;
 		bool isBlocking() const {

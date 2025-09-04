@@ -198,6 +198,7 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_YELLTICKS:
 		case CONDITION_PACIFIED:
 		case CONDITION_MANASHIELD:
+		case CONDITION_STUN:
 			return new ConditionGeneric(id, type, ticks, buff, subId);
 
 		default:
@@ -328,6 +329,10 @@ uint32_t ConditionGeneric::getIcons() const
 	switch (conditionType) {
 		case CONDITION_MANASHIELD:
 			icons |= ICON_MANASHIELD;
+			break;
+
+		case CONDITION_STUN:
+			icons |= ICON_DAZZLED;
 			break;
 
 		case CONDITION_INFIGHT:

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -147,7 +147,7 @@ bool IOMapSerialize::loadItem(PropStream& propStream, Cylinder* parent)
 	}
 
 	const ItemType& iType = Item::items[id];
-	if (iType.moveable || !tile || iType.isCarpet()) {
+	if (iType.moveable || iType.forceSerialize || !tile || iType.isCarpet()) {
 		//create a new item
 		Item* item = Item::CreateItem(id);
 		if (item) {
@@ -266,7 +266,7 @@ void IOMapSerialize::saveTile(PropWriteStream& stream, const Tile* tile)
 		const ItemType& it = Item::items[item->getID()];
 
 		// Note that these are NEGATED, ie. these are the items that will be saved.
-		if (!(it.moveable || it.isCarpet() || item->getDoor() || (item->getContainer() && !item->getContainer()->empty()) || it.canWriteText || item->getBed())) {
+		if (!(it.moveable || it.forceSerialize || it.isCarpet() || item->getDoor() || (item->getContainer() && !item->getContainer()->empty()) || it.canWriteText || item->getBed())) {
 			continue;
 		}
 

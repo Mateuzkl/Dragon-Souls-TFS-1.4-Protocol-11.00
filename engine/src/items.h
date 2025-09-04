@@ -122,11 +122,15 @@ struct Abilities {
 	int16_t absorbPercent[COMBAT_COUNT] = { 0 };
 
 	//relfect abilities modifires
+	std::array<Reflect, COMBAT_COUNT> reflect;
 	int16_t reflectPercent[COMBAT_COUNT] = { 0 };
 	int16_t reflectChance[COMBAT_COUNT] = { 0 };
 
 	//boost abilities modifiers
 	int16_t increasePercent[COMBAT_COUNT] = { 0 };
+
+	//dodge abilities modifier
+	int16_t dodge = 0;
 
 	//elemental damage
 	uint16_t elementDamage = 0;
@@ -257,6 +261,7 @@ class ItemType
 		uint32_t charges = 0;
 		uint32_t classification = 0;
 		uint32_t tier = 0;
+		uint64_t worth = 0;
 		int32_t maxHitChance = -1;
 		int32_t decayTo = -1;
 		int32_t attack = 0;
@@ -326,6 +331,7 @@ class ItemType
 		bool lookThrough = false;
 		bool stopTime = false;
 		bool showCount = true;
+		bool forceSerialize = false;
 };
 
 class Items

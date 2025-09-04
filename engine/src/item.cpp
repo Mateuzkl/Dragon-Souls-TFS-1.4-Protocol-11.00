@@ -2713,6 +2713,11 @@ bool Item::canDecay() const
 
 uint32_t Item::getWorth() const
 {
+	const ItemType& it = Item::items[id];
+	if (it.worth != 0) {
+		return it.worth * count;
+	}
+
 	switch (id) {
 		case ITEM_GOLD_COIN:
 			return count;
@@ -2761,11 +2766,26 @@ uint16_t Item::getIncreasePercent(CombatType_t combatType, bool total /* = true 
 	if (attributes) {
 		increasePercent += attributes->getIncreasePercent(combatType);
 	}
-	if (total) {
+	if (total && it.abilities) {
 		increasePercent += it.abilities->increasePercent[combatTypeToIndex(combatType)];
 	}
 
 	return increasePercent;
+}
+
+uint16_t Item::getDodge() const
+{
+	const ItemType& it = Item::items[id];
+
+	uint16_t dodge = 0;
+	if (attributes) {
+		dodge += attributes->dodge;
+	}
+	if (it.abilities) {
+		dodge += it.abilities->dodge;
+	}
+
+	return dodge;
 }
 
 std::string ItemAttributes::emptyString;

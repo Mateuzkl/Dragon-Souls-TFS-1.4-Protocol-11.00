@@ -809,6 +809,10 @@ void Monster::doAttacking(uint32_t interval)
 	bool resetTicks = interval != 0;
 	attackTicks += interval;
 
+	if (hasCondition(CONDITION_STUN)) {
+		updateLook = false;
+	}
+
 	const Position& myPos = getPosition();
 	const Position& targetPos = attackedCreature->getPosition();
 
@@ -874,6 +878,11 @@ bool Monster::canUseAttack(const Position& pos, const Creature* target) const
 		}
 		return false;
 	}
+
+	if (hasCondition(CONDITION_STUN)) {
+		return false;
+	}
+
 	return true;
 }
 
@@ -881,6 +890,10 @@ bool Monster::canUseSpell(const Position& pos, const Position& targetPos,
 						  const spellBlock_t& sb, uint32_t interval, bool& inRange, bool& resetTicks)
 {
 	inRange = true;
+
+	if (hasCondition(CONDITION_STUN)) {
+		return false;
+	}
 
 	if (sb.isMelee && isFleeing()) {
 		return false;
@@ -1170,6 +1183,10 @@ bool Monster::getNextStep(Direction& direction, uint32_t& flags)
 	if (isIdle || getHealth() <= 0) {
 		//we dont have anyone watching might aswell stop walking
 		eventWalk = 0;
+		return false;
+	}
+
+	if (hasCondition(CONDITION_STUN)) {
 		return false;
 	}
 

@@ -814,80 +814,89 @@ void Creature::drainMana(Creature* attacker, int32_t manaLoss)
 }
 
 BlockType_t Creature::blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
-							   bool checkDefense /* = false */, bool checkArmor /* = false */, bool /* field  = false */)
+                               bool checkDefense /* = false */, bool checkArmor /* = false */, bool /* field = false */)
 {
-	BlockType_t blockType = BLOCK_NONE;
+    BlockType_t blockType = BLOCK_NONE;
 
-	if (isImmune(combatType)) {
-		damage = 0;
-		blockType = BLOCK_IMMUNITY;
-	} else if (checkDefense || checkArmor) {
-		bool hasDefense = false;
+    if (isImmune(combatType)) {
+        damage = 0;
+        blockType = BLOCK_IMMUNITY;
+    } else if (checkDefense || checkArmor) {
+        bool hasDefense = false;
 
-		if (blockCount > 0) {
-			--blockCount;
-			hasDefense = true;
-		}
+        if (blockCount > 0) {
+            --blockCount;
+            hasDefense = true;
+        }
 
-		if (checkDefense && hasDefense && canUseDefense) {
-			int32_t defense = getDefense();
-			damage -= uniform_random(defense / 2, defense);
-			if (damage <= 0) {
-				damage = 0;
-				blockType = BLOCK_DEFENSE;
-				checkArmor = false;
-			}
-		}
+        if (checkDefense && hasDefense && canUseDefense) {
+            int32_t defense = getDefense();
+            damage -= uniform_random(defense / 2, defense);
+            if (damage <= 0) {
+                damage = 0;
+                blockType = BLOCK_DEFENSE;
+                checkArmor = false;
+            }
+        }
 
-		if (checkArmor) {
-			int32_t armor = getArmor();
-			if (armor > 3) {
-				damage -= uniform_random(armor / 2, armor - (armor % 2 + 1));
-			} else if (armor > 0) {
-				--damage;
-			}
+        if (checkArmor) {
+            int32_t armor = getArmor();
+            if (armor > 3) {
+                damage -= uniform_random(armor / 2, armor - (armor % 2 + 1));
+            } else if (armor > 0) {
+                --damage;
+            }
 
-			if (damage <= 0) {
-				damage = 0;
-				blockType = BLOCK_ARMOR;
-			}
-		}
+            if (damage <= 0) {
+                damage = 0;
+                blockType = BLOCK_ARMOR;
+            }
+        }
 
-		if (hasDefense && blockType != BLOCK_NONE) {
-			onBlockHit();
-		}
-		
-		if (Player* attackerPlayer = attacker->getPlayer()) {
-			for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
-				if (!attackerPlayer->isItemAbilityEnabled(static_cast<slots_t>(slot))) {
-					continue;
-				}
-				
-				Item* item = attackerPlayer->getInventoryItem(static_cast<slots_t>(slot));
-				if (!item) {
-					continue;
-				}
-				
-				const uint16_t increasePercent = item->getIncreasePercent(combatType);
-				if (increasePercent != 0) {
-					damage += std::round(damage * (increasePercent / 100.));
-				}
-			}
-		}
-		
-		if (damage <= 0) {
-			damage = 0;
-			blockType = BLOCK_ARMOR;
-		}
-	}
+        if (hasDefense && blockType != BLOCK_NONE) {
+            onBlockHit();
+        }
+    }
 
-	if (attacker) {
-		attacker->onAttackedCreature(this);
-		attacker->onAttackedCreatureBlockHit(blockType);
-	}
+    if (attacker) {
+        if (Player* attackerPlayer = attacker->getPlayer()) {
+            for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+                if (!attackerPlayer->isItemAbilityEnabled(static_cast<slots_t>(slot))) {
+                    continue;
+                }
 
-	onAttacked();
-	return blockType;
+                Item* item = attackerPlayer->getInventoryItem(static_cast<slots_t>(slot));
+                if (!item) {
+                    continue;
+                }
+
+                const uint16_t increasePercent = item->getIncreasePercent(combatType);
+                if (increasePercent != 0) {
+                    damage += std::round(damage * (increasePercent / 100.));
+                }
+            }
+        }
+
+        if (damage <= 0) {
+            damage = 0;
+            blockType = BLOCK_ARMOR;
+        }
+
+        if (combatType != COMBAT_HEALING) {
+            attacker->onAttackedCreature(this);
+            attacker->onAttackedCreatureBlockHit(blockType);
+            if (attacker->getMaster() && attacker->getMaster()->getPlayer()) {
+                Player* masterPlayer = attacker->getMaster()->getPlayer();
+                masterPlayer->onAttackedCreature(this);
+            }
+        }
+    }
+
+    if (combatType != COMBAT_HEALING) {
+        onAttacked();
+    }
+
+    return blockType;
 }
 
 bool Creature::setAttackedCreature(Creature* creature)

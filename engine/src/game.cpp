@@ -882,10 +882,14 @@ void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Po
 
 ReturnValue Game::internalMoveCreature(Creature* creature, Direction direction, uint32_t flags /*= 0*/)
 {
+	Player* player = creature->getPlayer();
+	if (player && player->hasCondition(CONDITION_STUN)) {
+		return RETURNVALUE_YOUAREEXHAUSTED;
+	}
+
 	creature->setLastPosition(creature->getPosition());
 	const Position& currentPos = creature->getPosition();
 	Position destPos = getNextPosition(direction, currentPos);
-	Player* player = creature->getPlayer();
 
 	bool diagonalMovement = (direction & DIRECTION_DIAGONAL_MASK) != 0;
 	if (player && !diagonalMovement) {
@@ -5222,6 +5226,11 @@ void Game::playerSay(uint32_t playerId, uint16_t channelId, SpeakClasses type,
 		return;
 	}
 
+	if (player->hasCondition(CONDITION_STUN)) {
+		player->sendTextMessage(MESSAGE_STATUS_SMALL, "You are stunned and cannot speak.");
+		return;
+	}
+
 
 	if (!text.empty() && text.front() == '/' && player->isAccessPlayer()) {
 		return;
@@ -6059,8 +6068,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 		}
 		else
 			bonusReset = 1.0;
-
-		std::cout << bonusReset << std::endl;
 
 		damage.primary.value = std::abs(damage.primary.value) * bonusReset;
 		damage.secondary.value = std::abs(damage.secondary.value * bonusReset);

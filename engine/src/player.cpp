@@ -2235,6 +2235,26 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 	}
 
 	if (damage > 0) {
+		// Check for dodge from equipped items
+		int32_t totalDodgeChance = 0;
+		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+			if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
+				continue;
+			}
+
+			Item* item = inventory[slot];
+			if (!item) {
+				continue;
+			}
+
+			totalDodgeChance += item->getDodge();
+		}
+
+		if (totalDodgeChance > 0 && uniform_random(1, 100) <= totalDodgeChance) {
+			damage = 0;
+			g_game.addMagicEffect(getPosition(), CONST_ME_DODGE);
+			return BLOCK_DEFENSE;
+		}
 		Reflect reflect;
 		size_t combatIndex = combatTypeToIndex(combatType);
 		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
@@ -3748,6 +3768,10 @@ void Player::doAttacking(uint32_t)
 		return;
 	}
 
+	if (hasCondition(CONDITION_STUN)) {
+		return;
+	}
+
 	if ((OTSYS_TIME() - lastAttack) >= getAttackSpeed()) {
 		bool result = false;
 
@@ -3913,6 +3937,10 @@ void Player::onAddCombatCondition(ConditionType_t type)
 
 		case CONDITION_BLEEDING:
 			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You are bleeding.");
+			break;
+
+		case CONDITION_STUN:
+			sendTextMessage(MESSAGE_STATUS_DEFAULT, "You have been stunned.");
 			break;
 
 		default:
@@ -6035,15 +6063,47 @@ bool Player::applyBonusDamageBoost(CombatDamage& damage, Creature* opponent)
 		return false;
 	}
 
+	bool hasBoost = false;
+
+	// Apply prey damage boost
 	for (uint8_t preySlotId = 0; preySlotId < PREY_SLOTCOUNT; preySlotId++) {
 		PreyData& currentPrey = preyData[preySlotId];
 		if (currentPrey.state == STATE_ACTIVE && currentPrey.bonusType == BONUS_DAMAGE_BOOST && currentPrey.preyMonster == opponent->getName()) {
 			damage.primary.value += (damage.primary.value * currentPrey.bonusValue / 100.);
 			damage.secondary.value += (damage.secondary.value * currentPrey.bonusValue / 100.);
-			return true;
+			hasBoost = true;
 		}
 	}
-	return false;
+
+	// Apply increasePercent from equipped items
+	for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+		if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
+			continue;
+		}
+		
+		Item* item = getInventoryItem(static_cast<slots_t>(slot));
+		if (!item) {
+			continue;
+		}
+		
+		// Apply increasePercent for primary damage type
+		const uint16_t primaryIncreasePercent = item->getIncreasePercent(damage.primary.type);
+		if (primaryIncreasePercent != 0) {
+			damage.primary.value += std::round(damage.primary.value * (primaryIncreasePercent / 100.));
+			hasBoost = true;
+		}
+		
+		// Apply increasePercent for secondary damage type
+		if (damage.secondary.type != COMBAT_NONE) {
+			const uint16_t secondaryIncreasePercent = item->getIncreasePercent(damage.secondary.type);
+			if (secondaryIncreasePercent != 0) {
+				damage.secondary.value += std::round(damage.secondary.value * (secondaryIncreasePercent / 100.));
+				hasBoost = true;
+			}
+		}
+	}
+
+	return hasBoost;
 }
 
 bool Player::applyBonusDamageReduction(CombatDamage& damage, Creature* opponent)

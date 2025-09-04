@@ -1,4 +1,4 @@
-/**
+﻿/**
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -683,10 +683,12 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			} else if (tmpStrValue == "ammunition") {
 				it.weaponType = WEAPON_AMMO;
 			} else if (tmpStrValue == "quiver") {
-				it.weaponType = WEAPON_QUIVER;
-			} else {
-				std::cout << "[Warning - Items::parseItemNode] Unknown weaponType: " << valueAttribute.as_string() << std::endl;
-			}
+			it.weaponType = WEAPON_QUIVER;
+		} else if (tmpStrValue == "fist") {
+			it.weaponType = WEAPON_FIST;
+		} else {
+			std::cout << "[Warning - Items::parseItemNode] Unknown weaponType: " << valueAttribute.as_string() << std::endl;
+		}
 		} else if (tmpStrValue == "slottype") {
 			tmpStrValue = asLowerCaseString(valueAttribute.as_string());
 			if (tmpStrValue == "head") {
@@ -1011,6 +1013,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "increasepercenthealing") {
 			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "dodge") {
+			it.getAbilities().dodge = pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "suppressdrunk") {
 			if (valueAttribute.as_bool()) {
 				it.getAbilities().conditionSuppressions |= CONDITION_DRUNK;
@@ -1186,6 +1190,10 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.blockSolid = valueAttribute.as_bool();
 		} else if (tmpStrValue == "allowdistread") {
 			it.allowDistRead = booleanString(valueAttribute.as_string());
+		} else if (tmpStrValue == "forceserialize" || tmpStrValue == "forcesave") {
+			it.forceSerialize = valueAttribute.as_bool();
+		} else if (tmpStrValue == "worth") {
+			it.worth = pugi::cast<uint64_t>(valueAttribute.value());
 		} else {
 			std::cout << "[Warning - Items::parseItemNode] Unknown key value: " << keyAttribute.as_string() << std::endl;
 		}

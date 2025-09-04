@@ -57,6 +57,17 @@ enum slots_t : uint8_t {
 	CONST_SLOT_LAST = CONST_SLOT_STORE_INBOX,
 };
 
+inline slots_t& operator++(slots_t& slot) {
+	slot = static_cast<slots_t>(static_cast<uint8_t>(slot) + 1);
+	return slot;
+}
+
+inline slots_t operator++(slots_t& slot, int) {
+	slots_t temp = slot;
+	++slot;
+	return temp;
+}
+
 struct FindPathParams {
 	bool fullPathSearch = true;
 	bool clearSight = true;

@@ -938,6 +938,10 @@ bool InstantSpell::configureEvent(const pugi::xml_node& node)
 
 bool InstantSpell::playerCastInstant(Player* player, std::string& param)
 {
+	if (player->hasCondition(CONDITION_STUN)) {
+		return false;
+	}
+
 	if (!playerSpellCheck(player)) {
 		return false;
 	}
@@ -1256,6 +1260,10 @@ bool RuneSpell::canUseRune(const Player* player, bool ignoreLevel /* =false*/) {
 
 bool RuneSpell::executeUse(Player* player, Item* item, const Position&, Thing* target, const Position& toPosition, bool isHotkey)
 {
+	if (player->hasCondition(CONDITION_STUN)) {
+		return false;
+	}
+
 	if (!playerRuneSpellCheck(player, toPosition)) {
 		return false;
 	}

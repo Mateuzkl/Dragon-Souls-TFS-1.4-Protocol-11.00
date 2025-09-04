@@ -73,6 +73,30 @@ CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 					);
 				}
 			}
+			
+			// Apply increasePercent from equipped items
+			if (damage.primary.value < 0) { // Only for damage (negative values)
+				for (slots_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
+					Item* item = player->getInventoryItem(slot);
+					if (!item) {
+						continue;
+					}
+					
+					// Apply primary damage increase
+					uint16_t primaryIncreasePercent = item->getIncreasePercent(damage.primary.type);
+					if (primaryIncreasePercent > 0) {
+						damage.primary.value -= std::round(std::abs(damage.primary.value) * (primaryIncreasePercent / 100.0));
+					}
+					
+					// Apply secondary damage increase
+					if (damage.secondary.value < 0) {
+						uint16_t secondaryIncreasePercent = item->getIncreasePercent(damage.secondary.type);
+						if (secondaryIncreasePercent > 0) {
+							damage.secondary.value -= std::round(std::abs(damage.secondary.value) * (secondaryIncreasePercent / 100.0));
+						}
+					}
+				}
+			}
 		}
 	}
 	return damage;
