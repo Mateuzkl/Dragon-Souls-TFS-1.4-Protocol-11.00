@@ -661,6 +661,42 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			break;
 		}
 
+		case ATTR_REFLECT: {
+			uint16_t size;
+			if (!propStream.read<uint16_t>(size)) {
+				return ATTR_READ_ERROR;
+			}
+
+			for (uint16_t i = 0; i < size; ++i) {
+				CombatType_t combatType;
+				Reflect reflect;
+
+				if (!propStream.read<CombatType_t>(combatType) || !propStream.read<uint16_t>(reflect.percent) || !propStream.read<uint16_t>(reflect.chance)) {
+					return ATTR_READ_ERROR;
+				}
+
+				getAttributes()->reflect[combatType] = reflect;
+			}
+		}
+
+		case ATTR_BOOST: {
+			uint16_t size;
+			if (!propStream.read<uint16_t>(size)) {
+				return ATTR_READ_ERROR;
+			}
+
+			for (uint16_t i = 0; i < size; ++i) {
+				CombatType_t combatType;
+				uint16_t percent;
+
+				if (!propStream.read<CombatType_t>(combatType) || !propStream.read<uint16_t>(percent)) {
+					return ATTR_READ_ERROR;
+				}
+
+				getAttributes()->increasePercent[combatType] = percent;
+			}
+		}
+
 		//these should be handled through derived classes
 		//If these are called then something has changed in the items.xml since the map was saved
 		//just read the values
@@ -1135,6 +1171,31 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 			entry.second.serialize(propWriteStream);
 		}
 	}
+
+	if (attributes) {
+		const auto& reflects = attributes->reflect;
+		if (!reflects.empty()) {
+			propWriteStream.write<uint8_t>(ATTR_REFLECT);
+			propWriteStream.write<uint16_t>(reflects.size());
+
+			for (const auto& reflect : reflects) {
+				propWriteStream.write<CombatType_t>(reflect.first);
+				propWriteStream.write<uint16_t>(reflect.second.percent);
+				propWriteStream.write<uint16_t>(reflect.second.chance);
+			}
+		}
+
+		const auto& boosts = attributes->increasePercent;
+		if (!boosts.empty()) {
+			propWriteStream.write<uint8_t>(ATTR_BOOST);
+			propWriteStream.write<uint16_t>(boosts.size());
+
+			for (const auto& boost : boosts) {
+				propWriteStream.write<CombatType_t>(boost.first);
+				propWriteStream.write<uint16_t>(boost.second);
+			}
+		}
+	}
 }
 
 bool Item::hasProperty(ITEMPROPERTY prop) const
@@ -1355,7 +1416,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 						s << ", ";
 					}
 
-					s << "protection all " << std::showpos << show << std::noshowpos << '%';
+					s << "Abs.All " << std::noshowpos << show << '%';
 				}
 
 				show = it.abilities->fieldAbsorbPercent[0];
@@ -1401,7 +1462,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 						s << ", ";
 					}
 
-					s << "protection all fields " << std::showpos << show << std::noshowpos << '%';
+					s << "Abs.All fields " << std::noshowpos << show << '%';
 				}
 
 				if (it.abilities->speed) {
@@ -1684,7 +1745,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 						s << ", ";
 					}
 
-					s << "protection all " << std::showpos << show << std::noshowpos << '%';
+					s << "Abs.All " << std::noshowpos << show << '%';
 				}
 
 				show = it.abilities->fieldAbsorbPercent[0];
@@ -1730,7 +1791,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 						s << ", ";
 					}
 
-					s << "protection all fields " << std::showpos << show << std::noshowpos << '%';
+					s << "Abs.All fields " << std::noshowpos << show << '%';
 				}
 
 				if (it.abilities->speed) {
@@ -1919,7 +1980,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 					s << ", ";
 				}
 
-				s << "protection all " << std::showpos << show << std::noshowpos << '%';
+				s << "Abs.All " << std::noshowpos << show << '%';
 			}
 
 			show = it.abilities->fieldAbsorbPercent[0];
@@ -1965,7 +2026,301 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 					s << ", ";
 				}
 
-				s << "protection all fields " << std::showpos << show << std::noshowpos << '%';
+				s << "Abs.All fields " << std::noshowpos << show << '%';
+			}
+
+			int16_t modifier = item ? item->getReflect(COMBAT_NONE).percent : it.abilities->reflectPercent[0];
+			show = modifier;
+			if (show != 0) {
+				for (size_t i = 1; i < COMBAT_COUNT; ++i) {
+					if (it.abilities->fieldAbsorbPercent[i] != show) {
+						show = 0;
+						break;
+					}
+				}
+			}
+
+			if (show == 0) {
+				bool tmp = true;
+
+				for (size_t i = 0; i < COMBAT_COUNT; ++i) {
+					modifier = item ? item->getReflect(indexToCombatType(i)).percent : it.abilities->reflectPercent[i];
+					if (modifier == 0) {
+						continue;
+					}
+
+					if (tmp) {
+						tmp = false;
+
+						if (begin) {
+							begin = false;
+							s << " (";
+						} else {
+							s << ", ";
+						}
+
+						s << "reflect ";
+					} else {
+						s << ", ";
+					}
+
+					s << getCombatName(indexToCombatType(i)) << ' ' << modifier << std::noshowpos << '%';
+				}
+			} else {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+
+				s << "reflect all " << show << std::noshowpos << '%';
+			}
+
+			modifier = item ? item->getReflect(COMBAT_NONE).chance : it.abilities->reflectChance[0];
+			show = modifier;
+			if (show != 0) {
+				for (size_t i = 1; i < COMBAT_COUNT; ++i) {
+					int16_t temp = item ? item->getReflect(indexToCombatType(i)).percent : it.abilities->reflectPercent[i];
+					if (temp != show) {
+						show = 0;
+						break;
+					}
+				}
+			}
+
+			if (show == 0) {
+				bool tmp = true;
+
+				for (size_t i = 0; i < COMBAT_COUNT; ++i) {
+					modifier = item ? item->getReflect(indexToCombatType(i)).chance : it.abilities->reflectChance[i];
+					if (modifier == 0) {
+						continue;
+					}
+
+					if (tmp) {
+						tmp = false;
+
+						if (begin) {
+							begin = false;
+							s << " (";
+						} else {
+							s << ", ";
+						}
+
+						s << "reflect ";
+					} else {
+						s << ", ";
+					}
+
+					s << getCombatName(indexToCombatType(i)) << " chance " << modifier << std::noshowpos << '%';
+				}
+			} else {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+
+				s << "reflect chance all " << show << std::noshowpos << '%';
+			}
+
+			modifier = item ? item->getIncreasePercent(COMBAT_NONE) : it.abilities->increasePercent[0];
+			show = modifier;
+			if (show != 0) {
+				for (size_t i = 1; i < COMBAT_COUNT; ++i) {
+					int16_t temp = item ? item->getReflect(indexToCombatType(i)).chance : it.abilities->reflectChance[i];
+					if (temp != show) {
+						show = 0;
+						break;
+					}
+				}
+			}
+
+			if (show == 0) {
+				// Check if all magic elements have the same boost value
+				int16_t magicBoost = 0;
+				bool allMagicSame = true;
+				bool hasMagicBoost = false;
+				int magicElementsCount = 0;
+				
+				// Check magic elements: energy, fire, earth, ice, holy, death
+				for (size_t i = 1; i < COMBAT_COUNT; ++i) { // Skip physical (index 0)
+					modifier = item ? item->getIncreasePercent(indexToCombatType(i)) : it.abilities->increasePercent[i];
+					if (modifier != 0) {
+						magicElementsCount++;
+						if (!hasMagicBoost) {
+							magicBoost = modifier;
+							hasMagicBoost = true;
+						} else if (modifier != magicBoost) {
+							allMagicSame = false;
+							break;
+						}
+					}
+				}
+				
+				// Check if physical also has boost
+				int16_t physicalBoost = item ? item->getIncreasePercent(COMBAT_PHYSICALDAMAGE) : it.abilities->increasePercent[0];
+				
+				// If all magic elements have same boost and there are multiple elements, show as "Inc.Magic"
+				if (hasMagicBoost && allMagicSame && magicElementsCount > 1) {
+					if (begin) {
+						begin = false;
+						s << " (";
+					} else {
+						s << ", ";
+					}
+					
+					if (physicalBoost != 0 && physicalBoost != magicBoost) {
+						s << "Inc.Phys " << std::noshowpos << physicalBoost << "%, Inc.Magic " << std::noshowpos << magicBoost << '%';
+					} else if (physicalBoost != 0) {
+						s << "Inc.Magic " << std::noshowpos << magicBoost << '%';
+					} else {
+						s << "Inc.Magic " << std::noshowpos << magicBoost << '%';
+					}
+				} else {
+					// Show individual elements only if not all magic same or only one element
+					bool tmp = true;
+					for (size_t i = 0; i < COMBAT_COUNT; ++i) {
+						modifier = item ? item->getIncreasePercent(indexToCombatType(i)) : it.abilities->increasePercent[i];
+						if (modifier == 0) {
+							continue;
+						}
+						
+						// Skip magic elements if they are consolidated into Inc.Magic
+						CombatType_t combatType = indexToCombatType(i);
+						if (hasMagicBoost && allMagicSame && magicElementsCount > 1 && combatType != COMBAT_PHYSICALDAMAGE) {
+							continue; // Skip individual magic elements when consolidated
+						}
+
+						if (tmp) {
+							tmp = false;
+
+							if (begin) {
+								begin = false;
+								s << " (";
+							} else {
+								s << ", ";
+							}
+						} else {
+							s << ", ";
+						}
+
+						// Use Inc. format for each element
+						if (combatType == COMBAT_PHYSICALDAMAGE) {
+							s << "Inc.Phys " << std::noshowpos << modifier << '%';
+						} else {
+							s << "Inc." << getCombatName(combatType) << " " << std::noshowpos << modifier << '%';
+						}
+					}
+				}
+			} else {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+
+				s << "Inc.Magic " << std::noshowpos << show << '%';
+			}
+
+			modifier = item ? item->getReflect(COMBAT_NONE).percent : it.abilities->reflectPercent[0];
+			show = modifier;
+			if (show != 0) {
+				for (size_t i = 1; i < COMBAT_COUNT; ++i) {
+					if (it.abilities->fieldAbsorbPercent[i] != show) {
+						show = 0;
+						break;
+					}
+				}
+			}
+
+			if (show == 0) {
+				bool tmp = true;
+
+				for (size_t i = 0; i < COMBAT_COUNT; ++i) {
+					modifier = item ? item->getReflect(indexToCombatType(i)).percent : it.abilities->reflectPercent[i];
+					if (modifier == 0) {
+						continue;
+					}
+
+					if (tmp) {
+						tmp = false;
+
+						if (begin) {
+							begin = false;
+							s << " (";
+						} else {
+							s << ", ";
+						}
+
+						s << "reflect ";
+					} else {
+						s << ", ";
+					}
+
+					s << getCombatName(indexToCombatType(i)) << ' ' << std::showpos << modifier << std::noshowpos << '%';
+				}
+			} else {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+
+				s << "reflect all " << std::showpos << show << std::noshowpos << '%';
+			}
+
+			modifier = item ? item->getReflect(COMBAT_NONE).chance : it.abilities->reflectChance[0];
+			show = modifier;
+			if (show != 0) {
+				for (size_t i = 1; i < COMBAT_COUNT; ++i) {
+					int16_t temp = item ? item->getReflect(indexToCombatType(i)).percent : it.abilities->reflectPercent[i];
+					if (temp != show) {
+						show = 0;
+						break;
+					}
+				}
+			}
+
+			if (show == 0) {
+				bool tmp = true;
+
+				for (size_t i = 0; i < COMBAT_COUNT; ++i) {
+					modifier = item ? item->getReflect(indexToCombatType(i)).percent : it.abilities->reflectPercent[i];
+					if (modifier == 0) {
+						continue;
+					}
+
+					if (tmp) {
+						tmp = false;
+
+						if (begin) {
+							begin = false;
+							s << " (";
+						} else {
+							s << ", ";
+						}
+
+						s << "reflect ";
+					} else {
+						s << ", ";
+					}
+
+					s << getCombatName(indexToCombatType(i)) << " chance " << std::showpos << modifier << std::noshowpos << '%';
+				}
+			} else {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+
+				s << "reflect chance all " << std::showpos << show << std::noshowpos << '%';
 			}
 
 			if (it.abilities->speed) {
@@ -2379,10 +2734,45 @@ LightInfo Item::getLightInfo() const
 	return {it.lightLevel, it.lightColor};
 }
 
+Reflect Item::getReflect(CombatType_t combatType, bool total /* = true */) const
+{
+	const ItemType& it = Item::items[id];
+
+	Reflect reflect;
+	if (attributes) {
+		reflect += attributes->getReflect(combatType);
+	}
+
+	if (total && it.abilities) {
+		Reflect tempReflect;
+		tempReflect.percent = it.abilities->reflectPercent[combatTypeToIndex(combatType)];
+		tempReflect.chance = it.abilities->reflectChance[combatTypeToIndex(combatType)];
+		reflect += tempReflect;
+	}
+
+	return reflect;
+}
+
+uint16_t Item::getIncreasePercent(CombatType_t combatType, bool total /* = true */) const
+{
+	const ItemType& it = Item::items[id];
+
+	uint16_t increasePercent = 0;
+	if (attributes) {
+		increasePercent += attributes->getIncreasePercent(combatType);
+	}
+	if (total) {
+		increasePercent += it.abilities->increasePercent[combatTypeToIndex(combatType)];
+	}
+
+	return increasePercent;
+}
+
 std::string ItemAttributes::emptyString;
 int64_t ItemAttributes::emptyInt;
 double ItemAttributes::emptyDouble;
 bool ItemAttributes::emptyBool;
+Reflect ItemAttributes::emptyReflect;
 
 const std::string& ItemAttributes::getStrAttr(itemAttrTypes type) const
 {

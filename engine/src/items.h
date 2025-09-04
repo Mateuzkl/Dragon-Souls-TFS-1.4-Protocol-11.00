@@ -123,6 +123,10 @@ struct Abilities {
 
 	//relfect abilities modifires
 	int16_t reflectPercent[COMBAT_COUNT] = { 0 };
+	int16_t reflectChance[COMBAT_COUNT] = { 0 };
+
+	//boost abilities modifiers
+	int16_t increasePercent[COMBAT_COUNT] = { 0 };
 
 	//elemental damage
 	uint16_t elementDamage = 0;

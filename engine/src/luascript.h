@@ -363,6 +363,8 @@ class LuaScriptInterface
 		static Creature* getCreature(lua_State* L, int32_t arg);
 		static Player* getPlayer(lua_State* L, int32_t arg);
 
+		static Reflect getReflect(lua_State* L, int32_t arg);
+
 		template<typename T>
 		static T getField(lua_State* L, int32_t arg, const std::string& key)
 		{
@@ -409,6 +411,8 @@ class LuaScriptInterface
 		static void pushOutfit(lua_State* L, const Outfit_t& outfit);
 		static void pushPlayerSell(lua_State* L, const PlayerSell& sells);
 		static void pushSkills(lua_State* L, std::unordered_map<uint8_t, uint16_t> skills);
+
+		static void pushReflect(lua_State* L, const Reflect& reflect);
 
 		//
 		static void setField(lua_State* L, const char* index, lua_Number value)
@@ -785,6 +789,12 @@ class LuaScriptInterface
 		static int luaItemGetDescription(lua_State* L);
 
 		static int luaItemHasProperty(lua_State* L);
+
+		static int luaItemSetReflect(lua_State* L);
+		static int luaItemGetReflect(lua_State* L);
+
+		static int luaItemSetIncreasePercent(lua_State* L);
+		static int luaItemGetIncreasePercent(lua_State* L);
 
 		// Container
 		static int luaContainerCreate(lua_State* L);

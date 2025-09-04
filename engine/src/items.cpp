@@ -1,4 +1,4 @@
-﻿/**
+/**
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -879,6 +879,138 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "absorbpercenthealing") {
 			it.getAbilities().absorbPercent[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentall" || tmpStrValue == "reflectpercentallelements") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			for (auto& i : abilities.reflectPercent) {
+				i += value;
+			}
+		} else if (tmpStrValue == "reflectpercentelements") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
+		} else if (tmpStrValue == "reflectpercentmagic") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += value;
+			abilities.reflectPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += value;
+		} else if (tmpStrValue == "reflectpercentenergy") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentfire") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentpoison" || tmpStrValue == "reflectpercentearth") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentice") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentholy") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentdeath") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentlifedrain") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_LIFEDRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentmanadrain") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_MANADRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentdrown") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_DROWNDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercentphysical") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectpercenthealing") {
+			it.getAbilities().reflectPercent[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchanceall" || tmpStrValue == "reflectchanceallelements") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			for (auto& i : abilities.reflectChance) {
+				i += value;
+			}
+		} else if (tmpStrValue == "reflectchanceelements") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			abilities.reflectChance[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
+		} else if (tmpStrValue == "reflectchancemagic") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			abilities.reflectChance[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += value;
+			abilities.reflectChance[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += value;
+		} else if (tmpStrValue == "reflectchanceenergy") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancefire") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_FIREDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancepoison" || tmpStrValue == "reflectchanceearth") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchanceice") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_ICEDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchanceholy") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancedeath") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancelifedrain") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_LIFEDRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancemanadrain") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_MANADRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancedrown") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_DROWNDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancephysical") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "reflectchancehealing") {
+			it.getAbilities().reflectChance[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentall" || tmpStrValue == "increasepercentallelements") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			for (auto& i : abilities.increasePercent) {
+				i += value;
+			}
+		} else if (tmpStrValue == "increasepercentelements") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			abilities.increasePercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
+		} else if (tmpStrValue == "increasepercentmagic") {
+			int16_t value = pugi::cast<int16_t>(valueAttribute.value());
+			Abilities& abilities = it.getAbilities();
+			abilities.increasePercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += value;
+			abilities.increasePercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += value;
+		} else if (tmpStrValue == "increasepercentenergy") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_ENERGYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentfire") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_FIREDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentpoison" || tmpStrValue == "increasepercentearth") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_EARTHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentice") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_ICEDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentholy") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_HOLYDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentdeath") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_DEATHDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentlifedrain") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_LIFEDRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentmanadrain") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_MANADRAIN)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentdrown") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_DROWNDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercentphysical") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += pugi::cast<int16_t>(valueAttribute.value());
+		} else if (tmpStrValue == "increasepercenthealing") {
+			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_HEALING)] += pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "suppressdrunk") {
 			if (valueAttribute.as_bool()) {
 				it.getAbilities().conditionSuppressions |= CONDITION_DRUNK;

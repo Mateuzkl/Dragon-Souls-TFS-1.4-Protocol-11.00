@@ -2235,6 +2235,8 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 	}
 
 	if (damage > 0) {
+		Reflect reflect;
+		size_t combatIndex = combatTypeToIndex(combatType);
 		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
 			if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
 				continue;
@@ -2257,10 +2259,12 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 				}
 			}
 			
+			reflect += item->getReflect(combatType);
+			
 			if (it.abilities) {
 
 				if (field) {
-					const int16_t& fieldAbsorbPercent = it.abilities->fieldAbsorbPercent[combatTypeToIndex(combatType)];
+					const int16_t& fieldAbsorbPercent = it.abilities->fieldAbsorbPercent[combatIndex];
 					if (fieldAbsorbPercent != 0) {
 						damage -= std::round(damage * (fieldAbsorbPercent / 100.));
 
@@ -2271,7 +2275,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 					}
 				}
 				if (attacker) {
-					const int16_t& reflectPercent = it.abilities->reflectPercent[combatTypeToIndex(combatType)];
+					const int16_t& reflectPercent = it.abilities->reflectPercent[combatIndex];
 					if (reflectPercent != 0) {
 						CombatParams params;
 						params.combatType = combatType;
@@ -2292,13 +2296,21 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 				uint32_t info = item->getImbuement(i);
 				if (info >> 8) {
 					Imbuement* ib = g_imbuements.getImbuement(info & 0xFF);
-					const int16_t& absorbPercent2 = ib->absorbPercent[combatTypeToIndex(combatType)];
+					const int16_t& absorbPercent2 = ib->absorbPercent[combatIndex];
 
 					if (absorbPercent2 != 0) {
 						damage -= std::ceil(damage * (absorbPercent2 / 100.));
 					}
 				}
 			}
+		}
+
+		if (attacker && reflect.chance > 0 && reflect.percent != 0 && uniform_random(1, 100) <= reflect.chance) {
+			CombatDamage reflectDamage;
+			reflectDamage.primary.type = combatType;
+			reflectDamage.primary.value = -std::round(damage * (reflect.percent / 100.));
+			reflectDamage.origin = ORIGIN_REFLECT;
+			g_game.combatChangeHealth(this, attacker, reflectDamage);
 		}
 
 		if (damage <= 0) {
