@@ -1,34 +1,11 @@
 local event = Event()
-
 event.onLook = function(self, thing, position, distance, description)
 	local description = "You see "
 
 	if thing:isItem() then
-		if thing.actionid == 5640 then
-			description = description .. "a honeyflower patch."
-		elseif thing.actionid == 5641 then
-			description = description .. "a banana palm."
-		elseif thing.itemid >= ITEM_HEALTH_CASK_START and thing.itemid <= ITEM_HEALTH_CASK_END
-		or thing.itemid >= ITEM_MANA_CASK_START and thing.itemid <= ITEM_MANA_CASK_END
-		or thing.itemid >= ITEM_SPIRIT_CASK_START and thing.itemid <= ITEM_SPIRIT_CASK_END
-		or thing.itemid >= ITEM_KEG_START and thing.itemid <= ITEM_KEG_END then
-			description = description .. thing:getDescription(distance)
-			local charges = thing:getAttribute(ITEM_ATTRIBUTE_DATE)
-			if charges then
-				description = string.format("%s\nIt has %d refillings left.", description, charges)
-			end
-		else
-			description = description .. thing:getDescription(distance)
-		end
-		
+		description = description .. thing:getDescription(distance)
 	else
 		description = description .. thing:getDescription(distance)
-		if thing:isMonster() then
-			local master = thing:getMaster()
-			if master and table.contains({'thundergiant','grovebeast','emberwing','skullfrost'}, thing:getName():lower()) then
-				description = description .. ' (Master: ' .. master:getName() .. '). It will disappear in ' .. getTimeinWords((thing:getRemoveTime()/1000))
-			end
-		end
 	end
 
 	if self:getGroup():getAccess() then
@@ -59,6 +36,18 @@ event.onLook = function(self, thing, position, distance, description)
 			if decayId ~= -1 then
 				description = string.format("%s\nDecays to: %d", description, decayId)
 			end
+
+			-- Show remaining decay time for GMs/Gods
+			if thing:getDuration() > 0 then
+				local remainingTime = thing:getRemainingDuration()
+				local remainingSeconds = remainingTime / 1000
+				if remainingSeconds > 0 then
+					description = string.format("%s\nDuration left: %d seconds (%.1f minutes)", description, remainingSeconds, remainingSeconds / 60)
+				else
+					description = string.format("%s\nDuration left: 0 seconds (expired)", description)
+				end
+			end
+			
 		elseif thing:isCreature() then
 			local str = "%s\nHealth: %d / %d"
 			if thing:isPlayer() and thing:getMaxMana() > 0 then
@@ -82,5 +71,4 @@ event.onLook = function(self, thing, position, distance, description)
 	end
 	return description
 end
-
 event:register()

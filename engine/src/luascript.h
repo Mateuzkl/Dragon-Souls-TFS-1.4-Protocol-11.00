@@ -788,6 +788,9 @@ class LuaScriptInterface
 
 		static int luaItemGetDescription(lua_State* L);
 
+		static int luaItemGetDuration(lua_State* L);
+		static int luaItemGetRemainingDuration(lua_State* L);
+
 		static int luaItemHasProperty(lua_State* L);
 
 		static int luaItemSetReflect(lua_State* L);
