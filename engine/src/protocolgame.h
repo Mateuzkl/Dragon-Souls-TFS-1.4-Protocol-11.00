@@ -329,6 +329,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void sendRestingAreaIcon(bool activate=false, bool activeResting=false);
 		void sendIcons(uint16_t icons);
 		void sendFYIBox(const std::string& message);
+		void sendAnimatedText(const std::string& message, const Position& pos, TextColor_t color);
 
 		void sendImbuementWindow(Item* item);
 		void sendInventoryImbuements(const std::map<slots_t, Item*> items);

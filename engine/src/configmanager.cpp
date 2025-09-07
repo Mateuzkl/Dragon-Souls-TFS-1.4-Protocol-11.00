@@ -172,7 +172,6 @@ bool ConfigManager::load()
 		integer[VERSION_MAX] = getGlobalNumber(L, "clientVersionMax", CLIENT_VERSION_MAX);
 		integer[FREE_DEPOT_LIMIT] = getGlobalNumber(L, "freeDepotLimit", 2000);
 		integer[PREMIUM_DEPOT_LIMIT] = getGlobalNumber(L, "premiumDepotLimit", 8000);
-		integer[DEPOT_BOXES] = getGlobalNumber(L, "depotBoxes", 17);
 		integer[AUTOLOOT_MODE] = getGlobalNumber(L, "autolootmode", 0); //Autoloot
 		integer[VIP_AUTOLOOT_LIMIT] = getGlobalNumber(L, "vip_autoloot", 25);
 		integer[FREE_AUTOLOOT_LIMIT] = getGlobalNumber(L, "free_autoloot", 15);
@@ -286,6 +285,14 @@ bool ConfigManager::load()
 	integer[RESET_DMGBONUS_NEW] = getGlobalNumber(L, "resetDmgBonus", 5); // reset system
 	
 
+	integer[MAX_CRITICAL_CHANCE] = getGlobalNumber(L, "maxCriticalChance", 50);
+	integer[CRITICAL_SKILL_DIVISOR] = getGlobalNumber(L, "criticalSkillDivisor", 5);
+	integer[CRITICAL_HEAL_PERCENT] = getGlobalNumber(L, "criticalHealPercent", 10);
+	integer[CRITICAL_BASE_HIT_KNIGHT] = getGlobalNumber(L, "criticalBaseHitKnight", 15);
+	integer[CRITICAL_BASE_HIT_PALADIN] = getGlobalNumber(L, "criticalBaseHitPaladin", 10);
+	integer[CRITICAL_BASE_HIT_MAGE] = getGlobalNumber(L, "criticalBaseHitMage", 5);
+	integer[CRITICAL_BASE_HIT_DRUID] = getGlobalNumber(L, "criticalBaseHitDruid", 5);
+
 	floating[RATE_MONSTER_HEALTH] = getGlobalFloat(L, "rateMonsterHealth", 1.0);
 	floating[RATE_MONSTER_ATTACK] = getGlobalFloat(L, "rateMonsterAttack", 1.0);
 	floating[RATE_MONSTER_DEFENSE] = getGlobalFloat(L, "rateMonsterDefense", 1.0);
@@ -296,6 +303,19 @@ bool ConfigManager::load()
 	floating[RATE_SOUL_REGEN] = getGlobalFloat(L, "rateSoulRegen", 1.0);
 	floating[RATE_SOUL_REGEN_SPEED] = getGlobalFloat(L, "rateSoulRegenSpeed", 1.0);
 	floating[RATE_ATTACK_SPEED] = getGlobalFloat(L, "rateAttackSpeed", 1.0);
+	
+
+	floating[CRITICAL_MULTIPLIER_KNIGHT] = getGlobalFloat(L, "criticalMultiplierKnight", 2.0);
+	floating[CRITICAL_MULTIPLIER_PALADIN] = getGlobalFloat(L, "criticalMultiplierPaladin", 1.8);
+	floating[CRITICAL_MULTIPLIER_MAGE] = getGlobalFloat(L, "criticalMultiplierMage", 1.5);
+	floating[CRITICAL_MULTIPLIER_DRUID] = getGlobalFloat(L, "criticalMultiplierDruid", 1.5);
+
+
+	floating[CRITICAL_HEAL_PERCENT_KNIGHT] = getGlobalFloat(L, "criticalHealPercentKnight", 5.0);
+	floating[CRITICAL_HEAL_PERCENT_PALADIN] = getGlobalFloat(L, "criticalHealPercentPaladin", 4.0);
+	floating[CRITICAL_HEAL_PERCENT_MAGE] = getGlobalFloat(L, "criticalHealPercentMage", 3.0);
+	floating[CRITICAL_HEAL_PERCENT_DRUID] = getGlobalFloat(L, "criticalHealPercentDruid", 3.0);
+	floating[CRITICAL_HEAL_PERCENT_GOD] = getGlobalFloat(L, "criticalHealPercentGod", 1.0);
 
 	doubling[RATE_MONSTER_SPEED] = getGlobalDouble(L, "rateMonsterSpeed", 1.95);
 

@@ -99,6 +99,24 @@ end
 -- Main event: onMoveItem
 local event = Event()
 event.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
+    -- Corpse IDs display functionality
+    local allowedCorpseIds = {
+        [20367] = true, -- Corpse Type A
+        [2881] = true,  -- Corpse Type B
+        [2916] = true,  -- Corpse Type C
+        [3065] = true,  -- Default Corpse
+        [5995] = true   -- Added for testing
+    }
+    
+    if fromCylinder and fromCylinder:isItem() then
+        local fromCylinderId = fromCylinder:getId()
+        if allowedCorpseIds[fromCylinderId] then
+            if toCylinder ~= fromCylinder then
+                self:say(string.format("x%d %s", count, item:getName()), TALKTYPE_MONSTER_SAY, false, nil, fromCylinder:getPosition())
+            end
+        end
+    end
+    
     -- Validate the item
     if not item or not item:isItem() then
         self:sendCancelMessage(RETURNVALUE_NOTPOSSIBLE)

@@ -590,6 +590,8 @@ class LuaScriptInterface
 
 		static int luaGameReload(lua_State* L);
 
+		static int luaGameSendAnimatedText(lua_State* L);
+
 		static int luaGameGetItemByClientId(lua_State* L);
 		static int luaGameGetOfflinePlayer(lua_State* L);
 

@@ -970,6 +970,11 @@ class Player final : public Creature, public Cylinder
 				client->sendCreatureShield(creature);
 			}
 		}
+		void sendAnimatedText(const std::string& message, const Position& pos, TextColor_t color) {
+            if (client) {
+                client->sendAnimatedText(message, pos, color);
+            }
+        }
 		void sendCreatureType(const Creature* creature, uint8_t creatureType) {
 			if (client) {
 				client->sendCreatureType(creature, creatureType);

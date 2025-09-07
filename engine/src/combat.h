@@ -26,12 +26,23 @@
 #include "baseevents.h"
 #include "monster.h"
 #include <cstdint>
+#include <vector>
+#include <string>
+#include <map>
 
 class Condition;
 class Creature;
 class Item;
 
 struct Position;
+
+struct CriticalConfig {
+	double multiplier;
+	double healPercent;
+	std::vector<std::string> phrases;
+};
+
+extern std::map<Vocation_t, CriticalConfig> criticalConfigs;
 
 //for luascript callback
 class ValueCallback final : public CallBack
@@ -269,6 +280,7 @@ class Combat
 		static void doAreaCombat(Creature* caster, const Position& position, const AreaCombat* area, CombatDamage& damage, const CombatParams& params);
 
 		static void checkCriticalHit(Player* caster, CombatDamage& damage);
+		static bool checkCriticalHeal(Player* caster, int32_t& healValue);
 		static void checkLeech(Player* caster, CombatDamage& damage, uint8_t affecteds = 1);
 
 		bool setCallback(CallBackParam_t key);

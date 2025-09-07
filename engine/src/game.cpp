@@ -5986,9 +5986,14 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 		}
 
+		int32_t healValue = damage.primary.value;
+		
 		int32_t realHealthChange = target->getHealth();
-		target->gainHealth(attacker, damage.primary.value);
+		target->gainHealth(attacker, healValue);
 		realHealthChange = target->getHealth() - realHealthChange;
+		if (realHealthChange > 0 && !target->isInGhostMode()) {
+			addAnimatedText(fmt::format("+{:d}", realHealthChange), target->getPosition(), TEXTCOLOR_DARKGREEN);
+		}
 
 		if (realHealthChange > 0 && !target->isInGhostMode()) {
 			std::stringstream ss;
@@ -6233,14 +6238,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			}
 		}
 
-		if (damage.critical) {
-			if(attackerPlayer && attackerPlayer->doCritical(realDamage)) {
-				std::ostringstream critmessage;
-				critmessage << "NEW CRITICAL HIT!!";
-				attackerPlayer->sendTextMessage(MESSAGE_EVENT_ADVANCE, critmessage.str());
-			}
-		}
-
 		if (spectators.empty()) {
 			map.getSpectators(spectators, targetPos, true, true);
 		}
@@ -6413,6 +6410,9 @@ bool Game::combatChangeMana(Creature* attacker, Creature* target, CombatDamage& 
 		int32_t realManaChange = target->getMana();
 		target->changeMana(manaChange);
 		realManaChange = target->getMana() - realManaChange;
+		if (realManaChange > 0 && !target->isInGhostMode()) {
+			addAnimatedText(fmt::format("+{:d}", realManaChange), target->getPosition(), TEXTCOLOR_LIGHTBLUE);
+		}
 
 		if (realManaChange > 0 && !target->isInGhostMode()) {
 			std::string damageString = std::to_string(realManaChange) + " mana.";
@@ -6578,6 +6578,23 @@ void Game::addCreatureHealth(const SpectatorHashSet& spectators, const Creature*
 			tmpPlayer->sendCreatureHealth(target);
 		}
 	}
+}
+
+void Game::addAnimatedText(const std::string& message, const Position& pos, TextColor_t color)
+{
+    SpectatorVec spectators;
+    map.getSpectators(spectators, pos, true, true);
+    addAnimatedText(spectators, message, pos, color);
+}
+
+
+void Game::addAnimatedText(const SpectatorVec& spectators, const std::string& message, const Position& pos, TextColor_t color)
+{
+    for (Creature* spectator : spectators) {
+        if (Player* tmpPlayer = spectator->getPlayer()) {
+            tmpPlayer->sendAnimatedText(message, pos, color);
+        }
+    }
 }
 
 void Game::addMagicEffect(const Position& pos, uint16_t effect)

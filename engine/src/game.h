@@ -554,6 +554,8 @@ class Game
 
 		//animation help functions
 		void addCreatureHealth(const Creature* target);
+		void addAnimatedText(const std::string& message, const Position& pos, TextColor_t color);
+		static void addAnimatedText(const SpectatorVec& spectators, const std::string& message, const Position& pos, TextColor_t color);
 		static void addCreatureHealth(const SpectatorHashSet& spectators, const Creature* target);
 		void addMagicEffect(const Position& pos, uint16_t effect);
 		static void addMagicEffect(const SpectatorHashSet& spectators, const Position& pos, uint16_t effect);

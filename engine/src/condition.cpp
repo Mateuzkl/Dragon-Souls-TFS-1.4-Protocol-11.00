@@ -766,6 +766,17 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 			creature->changeHealth(healthGain*multiplierHealth);
 			realHealthGain = creature->getHealth() - realHealthGain;
 
+			if (realHealthGain > 0 && !creature->isInGhostMode()) {
+				bool isCritical = false;
+			if (Player* player = creature->getPlayer()) {
+				isCritical = Combat::checkCriticalHeal(player, realHealthGain);
+			}
+			g_game.addAnimatedText(fmt::format("+{:d}", realHealthGain), creature->getPosition(), TEXTCOLOR_DARKGREEN);
+			if (isCritical) {
+				g_game.addAnimatedText("Critical!", creature->getPosition(), TEXTCOLOR_WHITE_EXP);
+			}
+			}
+
 			if (isBuff && realHealthGain > 0) {
 				if (player) {
 					std::string healString = std::to_string(realHealthGain) + (realHealthGain != 1 ? " hitpoints." : " hitpoint.");
@@ -792,7 +803,13 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 
 		if (internalManaTicks >= manaTicks && multiplierMana > 0) {
 			internalManaTicks = 0;
+			int32_t realManaGain = creature->getMana();
 			creature->changeMana(manaGain * multiplierMana);
+			realManaGain = creature->getMana() - realManaGain;
+			
+			if (realManaGain > 0 && !creature->isInGhostMode()) {
+				g_game.addAnimatedText(fmt::format("+{:d}", realManaGain), creature->getPosition(), TEXTCOLOR_LIGHTBLUE);
+			}
 		}
 	}
 

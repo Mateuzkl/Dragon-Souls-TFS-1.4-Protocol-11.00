@@ -19,6 +19,7 @@
 
 #include "otpch.h"
 #include <cstdint>
+#include <sstream>
 
 #include "combat.h"
 
@@ -31,6 +32,15 @@ extern Game g_game;
 extern Weapons* g_weapons;
 extern ConfigManager g_config;
 extern Events* g_events;
+
+
+std::map<Vocation_t, CriticalConfig> criticalConfigs = {
+        {static_cast<Vocation_t>(4), {1.8, 5.0, {"Strength and steel!", "No mercy!", "Feel my blade!"}}}, // Knight
+        {static_cast<Vocation_t>(3), {1.6, 4.0, {"For honor!", "Feel my fury!", "Justice prevails!"}}}, // Archer (Paladin)
+        {static_cast<Vocation_t>(1), {1.3, 3.0, {"Arcane power!", "You shall not pass!", "Magic flows through me!"}}}, // Sorcerer
+        {static_cast<Vocation_t>(2), {1.3, 3.0, {"Light guides me!", "Faith is my shield!", "Nature's wrath!"}}}, // Druid
+        {VOCATION_NONE, {2.0, 1.0, {"Godlike power!", "Bow before me!", "Ultimate strength!"}}}
+};
 
 CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 {
@@ -72,23 +82,20 @@ CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 						static_cast<int32_t>(maxb)
 					);
 				}
-			}
-			
-			// Apply increasePercent from equipped items
-			if (damage.primary.value < 0) { // Only for damage (negative values)
+	}
+	
+	if (damage.primary.value < 0) { 
 				for (slots_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
 					Item* item = player->getInventoryItem(slot);
 					if (!item) {
 						continue;
 					}
 					
-					// Apply primary damage increase
 					uint16_t primaryIncreasePercent = item->getIncreasePercent(damage.primary.type);
 					if (primaryIncreasePercent > 0) {
 						damage.primary.value -= std::round(std::abs(damage.primary.value) * (primaryIncreasePercent / 100.0));
 					}
 					
-					// Apply secondary damage increase
 					if (damage.secondary.value < 0) {
 						uint16_t secondaryIncreasePercent = item->getIncreasePercent(damage.secondary.type);
 						if (secondaryIncreasePercent > 0) {
@@ -834,6 +841,8 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 {
 	Player* casterPlayer = caster ? caster->getPlayer() : nullptr;
 	if (casterPlayer) {
+		Combat::checkCriticalHit(casterPlayer, damage);
+		
 		if (damage.primary.value < 0 || damage.secondary.value < 0) {
 			Player* targetPlayer = target ? target->getPlayer() : nullptr;
 			if (targetPlayer && targetPlayer->getSkull() != SKULL_BLACK) {
@@ -841,7 +850,6 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 				damage.secondary.value /= 2;
 			}
 			
-			Combat::checkCriticalHit(casterPlayer, damage);
 			Combat::checkLeech(casterPlayer, damage);
 		}
 	} else {
@@ -849,6 +857,8 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 		if (casterMaster) {
 			bool casterIsPlayer = casterMaster->getPlayer() != nullptr;
 			if (casterIsPlayer) {
+				Combat::checkCriticalHit(casterMaster->getPlayer(), damage);
+				
 				if (damage.primary.value < 0 || damage.secondary.value < 0) {
 					Player* targetPlayer = target ? target->getPlayer() : nullptr;
 					if (targetPlayer && targetPlayer->getSkull() != SKULL_BLACK) {
@@ -1094,7 +1104,7 @@ void Combat::checkCriticalHit(Player* caster, CombatDamage& damage)
 		return;
 	}
 
-	if (damage.primary.value > 0 || damage.secondary.value > 0) {
+	if (damage.primary.value >= 0 && damage.secondary.value >= 0) {
 		return;
 	}
 
@@ -1104,6 +1114,84 @@ void Combat::checkCriticalHit(Player* caster, CombatDamage& damage)
 		damage.primary.value += std::round(damage.primary.value * (criticalHit / 100.));
 		damage.secondary.value += std::round(damage.secondary.value * (criticalHit / 100.));
 		damage.critical = true;
+	}
+
+	Item* weapon = caster->getWeapon();
+	int32_t weaponAttack = weapon ? weapon->getAttack() : 0;
+	int32_t playerSkill = 0;
+
+	if (weapon) {
+		WeaponType_t weaponType = weapon->getWeaponType();
+		switch (weaponType) {
+			case WEAPON_SWORD:
+				playerSkill = caster->getSkillLevel(SKILL_SWORD);
+				break;
+			case WEAPON_AXE:
+				playerSkill = caster->getSkillLevel(SKILL_AXE);
+				break;
+			case WEAPON_CLUB:
+				playerSkill = caster->getSkillLevel(SKILL_CLUB);
+				break;
+			case WEAPON_DISTANCE:
+			case WEAPON_AMMO:
+				playerSkill = caster->getSkillLevel(SKILL_DISTANCE);
+				break;
+			case WEAPON_WAND:
+				playerSkill = caster->getMagicLevel();
+				break;
+			default:
+				playerSkill = caster->getSkillLevel(SKILL_FIST);
+				break;
+		}
+	} else {
+		playerSkill = caster->getSkillLevel(SKILL_FIST);
+	}
+
+	int32_t maxCriticalChance = g_config.getNumber(ConfigManager::MAX_CRITICAL_CHANCE);
+	int32_t criticalSkillDivisor = g_config.getNumber(ConfigManager::CRITICAL_SKILL_DIVISOR);
+	int32_t criticalChance = std::min(maxCriticalChance, playerSkill / criticalSkillDivisor);
+
+	int32_t roll = normal_random(1, 100);
+	if (criticalChance > 0 && roll <= criticalChance && !damage.critical) {
+		Vocation_t vocation = static_cast<Vocation_t>(caster->getVocationId());
+		auto it = criticalConfigs.find(vocation);
+		if (it == criticalConfigs.end()) {
+			vocation = VOCATION_NONE;
+			it = criticalConfigs.find(vocation);
+		}
+		
+		const CriticalConfig& config = it->second;
+		
+		int32_t baseDamage = weaponAttack + playerSkill + caster->getLevel();
+		int32_t criticalValue = static_cast<int32_t>(baseDamage * config.multiplier);
+	
+		damage.primary.value = -criticalValue;
+		damage.critical = true;
+		
+		g_game.addAnimatedText("CRITICAL!", caster->getPosition(), TEXTCOLOR_RED);
+		
+		if (config.healPercent > 0.0) {
+			int32_t healAmount = static_cast<int32_t>(caster->getMaxHealth() * (config.healPercent / 100.0));
+			if (healAmount > 0) {
+				caster->changeHealth(healAmount);
+				g_game.addAnimatedText("+" + std::to_string(healAmount), caster->getPosition(), TEXTCOLOR_LIGHTGREEN);
+			}
+		}
+	}
+	
+	// Sistema de frases independente (15% de chance em qualquer ataque)
+	Vocation_t vocation = static_cast<Vocation_t>(caster->getVocationId());
+	auto it = criticalConfigs.find(vocation);
+	if (it == criticalConfigs.end()) {
+		vocation = VOCATION_NONE;
+		it = criticalConfigs.find(vocation);
+	}
+	
+	const CriticalConfig& config = it->second;
+	
+	if (!config.phrases.empty() && normal_random(1, 100) <= 15) {
+		size_t phraseIndex = normal_random(0, config.phrases.size() - 1);
+		caster->sendCreatureSay(caster, TALKTYPE_MONSTER_YELL, config.phrases[phraseIndex]);
 	}
 }
 
@@ -1142,7 +1230,71 @@ void Combat::checkLeech(Player* caster, CombatDamage& damage, uint8_t affecteds 
 	}
 }
 
-//**********************************************************//
+//**********************************************************//}
+
+bool Combat::checkCriticalHeal(Player* caster, int32_t& healValue)
+{
+	if (healValue <= 0) {
+		return false;
+	}
+
+	uint16_t vocationId = caster->getVocationId();
+	int32_t criticalHealPercent = 0;
+	
+	switch (vocationId) {
+		case 4: // Knight
+		case 8: // Elite Knight
+			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_KNIGHT));
+			break;
+		case 3: // Paladin
+		case 7: // Royal Paladin
+			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_PALADIN));
+			break;
+		case 1: // Sorcerer
+		case 5: // Master Sorcerer
+			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_MAGE));
+			break;
+		case 2: // Druid
+		case 6: // Elder Druid
+			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_DRUID));
+			break;
+		default:
+			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_GOD));
+			break;
+	}
+	
+	if (criticalHealPercent > 0) {
+		int32_t roll = normal_random(1, 100);
+		if (roll <= criticalHealPercent) {
+			double criticalMultiplier = 1.5; // default
+			switch (caster->getVocation()->getId()) {
+				case 4: // Knight
+				case 8: // Elite Knight
+					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_KNIGHT);
+					break;
+				case 3: // Paladin
+				case 7: // Royal Paladin
+					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_PALADIN);
+					break;
+				case 1: // Sorcerer
+				case 5: // Master Sorcerer
+					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_MAGE);
+					break;
+				case 2: // Druid
+				case 6: // Elder Druid
+					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_DRUID);
+					break;
+			}
+			
+			healValue = static_cast<int32_t>(healValue * criticalMultiplier);
+		
+			
+			return true;
+		}
+	}
+	
+	return false;
+}
 
 void ValueCallback::getMinMaxValues(Player* player, CombatDamage& damage) const
 {
