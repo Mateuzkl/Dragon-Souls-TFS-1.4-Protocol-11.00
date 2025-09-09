@@ -264,6 +264,7 @@ class Combat
 		static bool isInPvpZone(const Creature* attacker, const Creature* target);
 		static bool isProtected(const Player* attacker, const Player* target);
 		static bool isPlayerCombat(const Creature* target);
+		static bool isNonValan(const Player* attacker, const Player* target);
 		static CombatType_t ConditionToDamageType(ConditionType_t type);
 		static ConditionType_t DamageToConditionType(CombatType_t type);
 		static ReturnValue canTargetCreature(Player* attacker, Creature* target);

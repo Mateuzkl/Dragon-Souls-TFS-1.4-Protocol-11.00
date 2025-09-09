@@ -1224,6 +1224,9 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER:
 			return "You may not attack this player.";
 
+		case RETURNVALUE_NONVALAN_CANNOTATTACKPLAYER:
+			return "System non-valan: You cannot attack this player.";
+
 		case RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE:
 			return "You may not attack this creature.";
 

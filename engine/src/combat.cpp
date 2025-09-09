@@ -316,6 +316,36 @@ bool Combat::isProtected(const Player* attacker, const Player* target)
 	return false;
 }
 
+bool Combat::isNonValan(const Player* attacker, const Player* target)
+{
+	if (!attacker || !target) {
+		return false;
+	}
+
+	uint16_t attackerVocation = attacker->getVocationId();
+	uint16_t targetVocation = target->getVocationId();
+
+	if ((attackerVocation >= 1 && attackerVocation <= 8) && (targetVocation >= 1 && targetVocation <= 8)) {
+		return false;
+	}
+
+	if (attackerVocation >= 9 && attackerVocation <= 16) {
+		if (targetVocation >= 1 && targetVocation <= 8) {
+			return true;
+		}
+
+		if (targetVocation >= 9 && targetVocation <= 16) {
+			return false;
+		}
+	}
+
+	if ((attackerVocation >= 1 && attackerVocation <= 8) && (targetVocation >= 9 && targetVocation <= 16)) {
+		return true;
+	}
+
+	return false;
+}
+
 ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 {
 	if (!target || target->isDead()) {
@@ -369,6 +399,11 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 					return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 				}
 
+				// Non-Valan System: Check vocation restrictions
+				if (isNonValan(attackerPlayer, targetPlayer)) {
+					return RETURNVALUE_NONVALAN_CANNOTATTACKPLAYER;
+				}
+
 				//nopvp-zone
 				const Tile* targetPlayerTile = targetPlayer->getTile();
 				if (targetPlayerTile->hasFlag(TILESTATE_NOPVPZONE)) {
@@ -391,8 +426,13 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 					if (isProtected(masterAttackerPlayer, targetPlayer)) {
 						return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 					}
-				}
+
+			if (isNonValan(masterAttackerPlayer, targetPlayer)) {
+				return RETURNVALUE_NONVALAN_CANNOTATTACKPLAYER;
 			}
+		}
+	}
+
 		} else if (target->getMonster()) {
 			if (const Player* attackerPlayer = attacker->getPlayer()) {
 				if (attackerPlayer->hasFlag(PlayerFlag_CannotAttackMonster)) {
@@ -433,7 +473,6 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 	}
 	return g_events->eventCreatureOnTargetCombat(attacker, target);
 }
-
 
 void Combat::setPlayerCombatValues(formulaType_t formulaType, double mina, double minb, double maxa, double maxb)
 {
