@@ -1653,6 +1653,7 @@ CREATE TABLE `players` (
   `group_id` int(11) NOT NULL DEFAULT 1,
   `account_id` int(11) NOT NULL DEFAULT 0,
   `level` int(11) NOT NULL DEFAULT 1,
+   `reset` int(11) NOT NULL DEFAULT 0,
   `vocation` int(11) NOT NULL DEFAULT 0,
   `health` int(11) NOT NULL DEFAULT 150,
   `healthmax` int(11) NOT NULL DEFAULT 150,
