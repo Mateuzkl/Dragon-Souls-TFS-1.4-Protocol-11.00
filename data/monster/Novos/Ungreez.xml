@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Ungreez" nameDescription="Ungreez" race="fire" experience="8100" speed="400" manacost="0">
+	<health now="24000" max="24000"/>
+	<look type="617" corpse="5995" race="2"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="70" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="2500"/>
+	</flags>
+	<attacks> 
+	<attack name="melee" interval="1000" min="-350" max="-500"/>
+    <attack name="melee_fire" interval="1500" min="-550" max="-900" range="1"/>  
+	<attack name="explosion_Monster" interval="2400" min="-600" max="-1300" chance="70" range="5"/>
+	<attack name="manadrain" interval="3400" chance="15" range="5" min="-1250" max="-1500"/>
+	<attack name="dragon lord fireball" interval="4300" min="-600" max="-1200" chance="50" range="5"/>
+	</attacks>
+	<defenses armor="90" defense="111">
+		<defense name="healing" interval="1000" chance="9" min="1500" max="2500">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="healing" interval="1000" chance="17" min="600" max="1000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="7000" chance="5" speedchange="650" duration="7000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element physicalPercent="10"/>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+		<element deathPercent="50"/>
+		<element icePercent="-20"/>
+		<element holyPercent="-25"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="0">
+		<summon name="demon" interval="1000" chance="10" max="3"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="PRAISED BE MY MASTERS, THE RUTHLESS SEVEN!" yell="1"/>
+		<voice sentence="YOU ARE DOOMED!" yell="1"/>
+		<voice sentence="Be prepared for the day my masters will come for you!"/>
+	</voices>
+	<loot>
+    <item id="2152" countmax="100" chance="99900"/><!-- platium coin -->
+	<item id="2152" countmax="100" chance="99900"/><!-- platium coin -->
+	<item id="2164" countmax="1" chance="6500"/><!-- might ring -->
+	<item id="2432" countmax="1" chance="6000"/><!-- fire axe -->
+	<item id="2393" countmax="1" chance="5500"/><!-- giant sword -->
+	<item id="12374" countmax="1" chance="5500"/><!-- concentrated demoniac blood -->
+	<item id="2123" countmax="1" chance="4500"/><!-- ring of the sky -->
+	<item id="2462" countmax="1" chance="4000"/><!-- devil helmet -->
+	<item id="5954" countmax="5" chance="1000"/><!-- teddy bear -->
+    <item id="10518" countmax="1" chance="60000">
+      <inside>
+	  <item id="11809" chance="800"/> <!-- blind-steel armor -->
+		<item id="12534" chance="800"/><!-- golden legs -->
+		<item id="13763" chance="400"/><!-- shroud of despair -->
+		<item id="11735" countmax="1" chance="1000"/><!-- spyked legs -->
+		<item id="2514" countmax="1" chance="2000"/><!-- mastermind shield -->
+		<item id="2195" countmax="1" chance="3000"/><!-- boots of haste -->
+		<item id="2520" countmax="1" chance="3500"/><!-- demon shield -->
+		<item id="12184" countmax="1" chance="750"/><!-- Shyne Boots -->
+		<item id="2421" countmax="1" chance="800"/><!-- thunder hammer -->
+		<item id="2436" countmax="1" chance="5000"/><!-- skull staff -->
+		<item id="11734" countmax="1" chance="700"/><!-- spyked armor -->
+		<item id="2377" countmax="1" chance="20000"/><!-- two handed sword -->
+		<item id="2185" countmax="1" chance="3500"/><!-- necrotic rod -->
+      </inside>
+    </item>
+  </loot>
+</monster>
+	
+		
+

@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Wolf" nameDescription="a wolf" race="blood" experience="18" speed="82" manacost="255" raceid="27">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Wolf" nameDescription="wolf" race="blood" experience="18" speed="195" manacost="255">
 	<health now="25" max="25"/>
 	<look type="27" corpse="5968"/>
-	<targetchange interval="4000" chance="0"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="1"/>
 		<flag attackable="1"/>
@@ -15,26 +16,20 @@
 		<flag targetdistance="1"/>
 		<flag staticattack="90"/>
 		<flag runonhealth="8"/>
-		<flag canwalkonenergy="0"/>
-		<flag canwalkonfire="0"/>
-		<flag canwalkonpoison="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-20"/>
+		<attack name="melee" interval="1500" skill="14" attack="22"/>
 	</attacks>
-	<defenses armor="5" defense="5"/>
+	<defenses armor="1" defense="4"/>
 	<elements>
-		<element earthPercent="5"/>
-		<element holyPercent="5"/>
+		<element earthPercent="10"/>
+		<element holyPercent="10"/>
 		<element icePercent="-5"/>
-		<element deathPercent="-5"/>
+		<elemetn deathPercent="-5"/>
 	</elements>
-	<voices interval="5000" chance="10">
-		<voice sentence="Yoooohhuuuu!"/>
-		<voice sentence="Grrrrrrr"/>
-	</voices>
 	<loot>
-		<item name="meat" countmax="2" chance="55000"/>
-		<item name="wolf paw" chance="980"/>
+		<item id="3976" countmax="10" chance="50000"/><!-- worm -->
+		<item id="2666" countmax="3" chance="90000"/><!-- meat -->
+		<item id="5897" countmax="1" chance="6666"/><!-- wolf paw -->
 	</loot>
 </monster>

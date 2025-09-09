@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Abigor" nameDescription="abigor" race="blood" experience="10100" speed="300" manacost="0">
+	<health now="18200" max="18200"/>
+	<look type="352" corpse="11488"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="49"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="10"/>
+    </flags>
+    <attacks>
+		   	<attack name="melee" interval="1500" min="-300" max="-900"/>
+	  <attack name="manadrain" interval="3000" chance="50" range="5" min="-300" max="-500"/>
+      <attack name="melee_death" interval="2000" min="-860" max="-1050" range="1"/>
+      <attack name="dark sd" interval="3900" min="-860" max="-1250" range="5" chance="60"/>
+      <attack name="dark sd" interval="5300" min="-1060" max="-1350" range="5" chance="40"/>
+	  <attack name="Tides of Darkness_M" interval="6800" min="-1060" max="-1450" chance="30"/>
+    </attacks>
+    <defenses armor="3" defense="2"/>
+	<elements>
+		<element firePercent="0"/>
+		<element physicalPercent="10"/>
+		<element earthpercent="0"/>
+		<element energyPercent="0"/>
+		<element deathPercent="30"/>
+		<element icePercent="-25"/>
+		<element holyPercent="-10"/>
+	</elements>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="90000" chance="5">
+      <voice sentence="Groar"/>
+      <voice sentence="Die humans!!"/>
+    </voices>
+    <loot>  
+	  <item id="2794" countmax="10" chance1="10000" chancemax="0"/>
+	  <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+	  <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+	  <item id="2154" chance="10000"/><!-- Crystal -->
+	  <item id="2112" countmax="1" chance="1000"/><!-- teddy bear -->
+	  <item id="2123" countmax="1" chance="4500"/><!-- ring of the sky -->     
+      <item id="1999" chance="70000">
+      <inside>
+	  	    <item id="11734" countmax="1" chance="1000"/><!-- spyked armor -->
+          <item id="11772" chance="700"/> <!-- Mask of jason -->
+          <item id="11987" chance="700"/> <!-- Magik wand -->
+		  <item id="11735" chance="700"/><!-- spyked legs -->
+		  <item id="11815" chance="500"/> <!-- golden enchanted armor -->
+		  <item id="2523" chance="700"/> <!-- blessed shield -->
+		  <item id="2195" chance="900"/> <!-- boots of haste -->
+		  <item id="2520" chance="800"/> <!-- demon shield -->
+		  <item id="12534" chance="800"/> <!-- golden legs -->
+		  <item id="2514" chance="800"/> <!-- mastermind shield -->
+		  <item id="2393" chance="1428"/><!-- giant sword -->
+		  <item id="2268" countmax="3" chance1="1000" chancemax="0"/>
+	      </inside>
+     </item> 
+    </loot>
+  </monster>

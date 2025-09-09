@@ -1,53 +1,71 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Troll" nameDescription="a troll" race="blood" experience="20" speed="63" manacost="290" raceid="15">
-	<health now="50" max="50"/>
-	<look type="15" corpse="5960"/>
-	<targetchange interval="4000" chance="0"/>
-	<flags>
-		<flag summonable="1"/>
-		<flag attackable="1"/>
-		<flag hostile="1"/>
-		<flag illusionable="1"/>
-		<flag convinceable="1"/>
-		<flag pushable="1"/>
-		<flag canpushitems="0"/>
-		<flag canpushcreatures="0"/>
-		<flag targetdistance="1"/>
-		<flag staticattack="90"/>
-		<flag runonhealth="15"/>
-		<flag canwalkonenergy="0"/>
-		<flag canwalkonfire="0"/>
-		<flag canwalkonpoison="0"/>
-	</flags>
-	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-15"/>
-	</attacks>
-	<defenses armor="10" defense="10"/>
-	<elements>
-		<element energyPercent="25"/>
-		<element holyPercent="10"/>
-		<element earthPercent="-10"/>
-		<element deathPercent="-10"/>
-	</elements>
-	<voices interval="5000" chance="10">
-		<voice sentence="Grrr"/>
-		<voice sentence="Groar"/>
-		<voice sentence="Gruntz!"/>
-		<voice sentence="Hmmm, bugs"/>
-		<voice sentence="Hmmm, dogs"/>
-	</voices>
-	<loot>
-		<item id="2120" chance="7950"/><!-- rope -->
-		<item name="gold coin" countmax="12" chance="65300"/>
-		<item name="silver amulet" chance="80"/>
-		<item name="hand axe" chance="18000"/>
-		<item name="spear" chance="13000"/>
-		<item name="studded club" chance="5000"/>
-		<item name="leather helmet" chance="12000"/>
-		<item id="2512" chance="4730"/><!-- wooden shield -->
-		<item name="leather boots" chance="10000"/>
-		<item name="meat" chance="15000"/>
-		<item name="bunch of troll hair" chance="1000"/>
-		<item id="26654" chance="1000"/> <!-- heavy old tome -->
-	</loot>
-</monster>
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Troll" nameDescription="troll" race="venom" experience="30000" speed="400" manacost="290">
+    <health now="300000" max="300000"/>
+    <look type="701" head="20" body="30" legs="40" feet="50" corpse="38909"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="49"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="10"/>
+    </flags>
+    <attacks>
+      <attack name="mas poison" interval="7000"  chance="40" min="-2200" max="-3600"/>
+      <attack name="melee" interval="3000" min="-3000" max="-3400"/>
+      <attack name="melee" interval="2000" min="-3000" max="-4200"/>
+      <attack name="poison" interval="5000" chance="50" min="-2800" max="-3000"/>
+      <attack name="poison" interval="6000" chance="10" min="-2800" max="-3500"/>
+      <attack name="hydra poisonwave" interval="4000" min="-3520" max="-3700" chance="30"/>
+    </attacks>
+    <defenses armor="3" defense="2"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <voices interval="90000" chance="5">
+      <voice sentence="Groar"/>
+      <voice sentence="Die humans!!"/>
+    </voices>
+    <loot>
+      <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+      <item id="2789" countmax="15" chance1="10000" chancemax="0"/>
+      <item id="2149" countmax="15" chance1="10000" chancemax="0"/>
+      <item id="2523" chance="400"/>
+      <item id="2798" chance="450"/>
+      <item id="2522" chance="350"/>
+      <item id="1998" chance="70000">
+      <inside>
+          <item id="2496" chance="600"/> --Horned Helmet
+          <item id="38856" chance="600"/> --Horned Armor
+          <item id="38828" chance="700"/> --Spyked Armor
+          <item id="2431" chance="700"/> --Stonecutter Axe
+          <item id="2400" chance="700"/> --Magic Sword
+          <item id="2408" chance="700"/> --Warlord Sword
+          <item id="2415" chance="700"/> --Great Axe
+          <item id="5803" chance="700"/> --Arbalest
+          <item id="38869" chance="700"/> --Horned Shield
+	      <item id="39014" chance="600"/> --swamplair armor
+		  <item id="38931" chance="700"/> --thordain helmet
+	      <item id="39024" chance="700"/> --thordain cloak
+		    <item id="10134" chance="800"/><!-- posion medal -->
+	      </inside>
+     </item>
+    </loot>
+  </monster>

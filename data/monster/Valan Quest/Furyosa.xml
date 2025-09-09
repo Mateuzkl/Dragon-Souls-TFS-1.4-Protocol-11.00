@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Furyosa" nameDescription="Furyosa" tp="1" race="undead" species="blood" experience="10000" speed="200" manacost="10000" skull="red">
+    <health now="90000" max="90000"/>
+    <look type="177" head="0" body="0" legs="0" feet="94" corpse="6080" race="2"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="1"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="40"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="4"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="arcane wand" interval="1000" min="-500" max="-750" range="4"/>
+	  <attack name="dark sd" interval="3210" min="-500" max="-1000" range="4"/>
+	  <attack name="master gravita" interval="4320" chance="70" min="-1000" max="-1500" range="4"/>
+      <attack name="Great Energy Beam" interval="5000" chance="50" min="-1500" max="-1800"/>
+    </attacks>
+    <defenses armor="25" defense="30">
+		<defense name="healing" interval="1000" chance="25" min="60" max="100">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="invisible" interval="8000" chance="30" duration="5000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+<element earthPercent="100"/>
+<element icePercent="40"/>
+<element holyPercent="25"/>
+<element physicalPercent="20"/>
+<element energyPercent="0"/>
+</elements>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="80000" chance="10">
+      <voice sentence="Morra!!!!"/>
+    </voices>
+    <loot>
+      <item id="2160" countmax="10" chance1="100000" chancemax="0"/>
+    </loot>
+<script>
+<event name="Transformation 4"/>
+</script>
+</monster>

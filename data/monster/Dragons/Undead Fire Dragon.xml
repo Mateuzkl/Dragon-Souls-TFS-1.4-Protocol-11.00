@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<monster name="Undead Fire Dragon" nameDescription="Undead Fire Dragon" experience="320000" speed="300" race="Blood">
+  <health now="450000" max="450000"/>
+  <look type="165" head="94" body="114" legs="94" feet="94" corpse="6068"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100"/>
+ <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" chance="100" min="-4300" max="-4800" range="1"/>
+    <attack name="Great Fireball" interval="3000" chance="60" min="-3900" max="-4100">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="explosion" interval="4000" chance="70" min="-4300" max="-4600">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="dragon firewave" interval="4500" chance="50" min="-4500" max="-5300">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="dragon firebomb" interval="5000" chance="60" min="-20" max="-20">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses defense="45" armor="40">
+    <defense name="Light Healing" interval="18000" chance="60" min="7000" max="11000">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices speed="0" chance="10">
+    <voice sentence="burn on the bottom of hell, human!"/>
+    <voice sentence="burn!"/>
+  </voices>
+  <loot>
+  </loot>
+</monster>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Angry Demon" nameDescription="Angry Demon" race="fire" experience="7100" speed="380" manacost="0">
+	<health now="14500" max="14500"/>
+	<look type="627" corpse="5995" race="2"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="70" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="2500"/>
+	</flags>
+	<attacks> 
+	<attack name="melee" interval="1000" min="-250" max="-500"/>
+    <attack name="melee_fire" interval="1500" min="-500" max="-750" range="1"/>  
+	<attack name="explosion_Monster" interval="2400" min="-750" max="-1000" chance="70" range="5"/>
+	<attack name="manadrain" interval="3400" chance="15" range="5" min="-1000" max="-1250"/>
+	<attack name="dragon lord fireball" interval="4300" min="-600" max="-1200" chance="50" range="5"/>
+	</attacks>
+	<defenses armor="90" defense="111">
+		<defense name="healing" interval="1000" chance="9" min="1500" max="2500">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="healing" interval="1000" chance="17" min="600" max="1000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element physicalPercent="0"/>
+		<element firePercent="100"/>
+		<element earthPercent="100"/>
+		<element deathPercent="50"/>
+		<element icePercent="-20"/>
+		<element holyPercent="-25"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="0">
+		<summon name="demon" interval="1000" chance="10" max="3"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="PRAISED BE MY MASTERS, THE RUTHLESS SEVEN!" yell="1"/>
+		<voice sentence="YOU ARE DOOMED!" yell="1"/>
+		<voice sentence="Be prepared for the day my masters will come for you!"/>
+	</voices>
+	<loot>
+    <item id="2152" countmax="50" chance="99900"/><!-- platium coin -->
+	<item id="2152" countmax="50" chance="99900"/><!-- platium coin -->
+	<item id="2164" countmax="1" chance="6500"/><!-- might ring -->
+	<item id="12374" countmax="1" chance="700"/><!-- demoniac blood -->
+	<item id="2462" countmax="1" chance="4000"/><!-- devil helmet -->
+	<item id="2167" countmax="1" chance="2500"/><!-- energy ring -->
+	<item id="2124" countmax="1" chance="2000"/><!-- crystal ring -->
+	<item id="2214" countmax="1" chance="1500"/><!-- ring of healing -->
+    <item id="10518" countmax="1" chance="60000">
+      <inside>
+	  	<item id="2432" countmax="1" chance="6000"/><!-- fire axe -->
+		<item id="2393" countmax="1" chance="5500"/><!-- giant sword -->
+	  	<item id="13791" chance="700"/>	<!-- firemind hauberk -->
+		<item id="2421" chance="700"/><!-- thunder hammer -->
+		<item id="2493" chance="900"/><!-- demon helmet -->
+		<item id="2494" chance="1000"/><!-- demon armor -->
+		<item id="2495" chance="1200"/><!-- demon legs -->
+		<item id="2514" countmax="1" chance="1000"/><!-- mastermind shield -->
+		<item id="2195" countmax="1" chance="4000"/><!-- boots of haste -->
+		<item id="2520" countmax="1" chance="1000"/><!-- demon shield -->
+		<item id="7382" countmax="1" chance="900"/><!-- demonorange sword -->
+		<item id="2436" countmax="1" chance="5000"/><!-- skull staff -->
+		<item id="2377" countmax="1" chance="20000"/><!-- two handed sword -->
+		<item id="3955" countmax="1" chance="100"/><!-- voodoo doll -->
+		<item id="2185" countmax="1" chance="3500"/><!-- necrotic rod -->
+		<item id="11780" chance="700"/><!-- magnet helmet -->
+      </inside>
+    </item>
+  </loot>
+</monster>

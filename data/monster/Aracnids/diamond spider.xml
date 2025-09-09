@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Diamond Spider" tp="1" nameDescription="a Diamond Spider" race="undead" experience="4900" speed="270" manacost="0">
+    <health now="1250" max="1250"/>
+    <look type="263" head="0" body="0" legs="0" feet="0" corpse="7344"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" skill="50" attack="240" />
+     <attack name="melee" interval="4000" range="2" chance="5" min="-0" max="-600"/>
+      <attack name="ice" interval="3000" chance="90" min="-80" max="-500"/>
+      <attack name="haste" interval="3000" chance="90" min="-0" max="-0"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+    </defenses>
+    <immunities>
+      <immunity fire="0"/>
+      <immunity poison="0"/>
+      <immunity paralyze="1"/>
+      <immunity invisible="0"/>
+    </immunities>
+    <voices interval="2000" chance="5">
+      <voice sentence="Screeech!"/>
+    </voices>
+  <loot>
+    <item id="2152" countmax="5" chance1="100000" chancemax="0"/> 
+    <item id="2463" chance="3333"/> 
+    <item id="2476" chance="1428"/>
+    <item id="2457" chance="3555"/>
+    <item id="2171" chance="1222"/> 
+    <item id="7437" chance="1077"/>
+    <item id="1987" chance="100000">
+      <inside>
+        <item id="7449" chance="2455"/> 
+        <item id="2477" chance="1300"/> 
+        <item id="7364" countmax="7" chance1="4777" chancemax="0"/> 
+        <item id="7290" chance="2000"/>
+		<item id="7441" chance="5000"/> 
+      </inside>
+    </item>
+  </loot>
+</monster>

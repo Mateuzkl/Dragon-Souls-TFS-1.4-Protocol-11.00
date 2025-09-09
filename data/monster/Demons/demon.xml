@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Demon" nameDescription="a demon" race="fire" experience="6000" speed="128" raceid="35">
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Demon" nameDescription="a demon" race="fire" experience="6000" speed="280" manacost="0">
+
 	<health now="8200" max="8200"/>
 	<look type="35" corpse="5995"/>
-	<targetchange interval="4000" chance="20"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<level min="5" max="100" />
 	<flags>
 		<flag summonable="0"/>
 		<flag attackable="1"/>
@@ -13,96 +16,86 @@
 		<flag canpushitems="1"/>
 		<flag canpushcreatures="1"/>
 		<flag targetdistance="1"/>
-		<flag staticattack="70"/>
+		<flag staticattack="40"/>
 		<flag runonhealth="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-520"/>
-		<attack name="manadrain" interval="2000" chance="10" range="7" min="0" max="-120"/>
-		<attack name="fire" interval="2000" chance="20" range="7" radius="7" target="1" min="-150" max="-250">
+<attack name="melee" interval="1000" min="-60" max="-300"/>
+		<attack name="melee" interval="2000" min="-60" max="-700"/>
+		<attack name="manadrain" interval="3000" chance="13" range="7" min="-200" max="-300"/>
+		<attack name="fire" interval="2000" chance="14" range="7" radius="7" target="1" min="-160" max="-350">
 			<attribute key="shootEffect" value="fire"/>
 			<attribute key="areaEffect" value="firearea"/>
 		</attack>
-		<attack name="firefield" interval="2000" chance="10" range="7" radius="1" target="1">
+		<attack name="firefield" interval="1000" chance="15" range="7" radius="1" target="1">
 			<attribute key="shootEffect" value="fire"/>
 		</attack>
-		<attack name="lifedrain" interval="2000" chance="10" length="8" spread="0" min="-300" max="-490">
-			<attribute key="areaEffect" value="purpleenergy"/>
-		</attack>
-		<attack name="energy" interval="2000" chance="10" range="1" min="-210" max="-300">
-			<attribute key="shootEffect" value="energy"/>
-		</attack>
-		<attack name="speed" interval="2000" chance="15" radius="1" target="1" speedchange="-700" duration="30000">
-			<attribute key="areaEffect" value="redshimmer"/>
+		<attack name="energy" interval="3000" chance="30" length="8" spread="0" min="-220" max="-460">
+			<attribute key="areaEffect" value="energy"/>
 		</attack>
 	</attacks>
-	<defenses armor="55" defense="55">
-		<defense name="healing" interval="2000" chance="15" min="180" max="250">
+	<defenses armor="50" defense="55">
+		<defense name="healing" interval="1000" chance="15" min="90" max="300">
 			<attribute key="areaEffect" value="blueshimmer"/>
 		</defense>
-		<defense name="speed" interval="2000" chance="15" speedchange="320" duration="5000">
+		<defense name="speed" interval="1000" chance="15" speedchange="200" duration="20000">
 			<attribute key="areaEffect" value="redshimmer"/>
 		</defense>
 	</defenses>
-	<elements>
-		<element physicalPercent="30"/>
-		<element deathPercent="30"/>
-		<element energyPercent="50"/>
-		<element earthPercent="40"/>
-		<element icePercent="-10"/>
-		<element holyPercent="-10"/>
-	</elements>
 	<immunities>
-		<immunity fire="1"/>
-		<immunity drown="1"/>
-		<immunity lifedrain="1"/>
-		<immunity paralyze="1"/>
-		<immunity invisible="1"/>
-	</immunities>
-	<summons maxSummons="1">
-		<summon name="fire elemental" interval="2000" chance="10"/>
+    <immunity physical="0"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+  </immunities>
+	<summons maxSummons="2">
+		<summon name="fire elemental" interval="2000" chance="10" max="2"/>
 	</summons>
 	<voices interval="5000" chance="10">
-		<voice sentence="Your soul will be mine!"/>
-		<voice sentence="MUHAHAHAHA!"/>
-		<voice sentence="CHAMEK ATH UTHUL ARAK!"/>
-		<voice sentence="I SMELL FEEEEAAAAAR!"/>
+		<voice sentence="MUHAHAHAHA!" yell="1"/>
+		<voice sentence="I SMELL FEEEEEAAAR!" yell="1"/>
+		<voice sentence="CHAMEK ATH UTHUL ARAK!" yell="1"/>
 		<voice sentence="Your resistance is futile!"/>
+		<voice sentence="Your soul will be mine!" yell="0"/>
 	</voices>
 	<loot>
-		<item name="purple tome" chance="1180"/>
-		<item name="gold coin" countmax="100" chance="60000"/>
-		<item name="gold coin" countmax="100" chance="60000"/>
-		<item name="small emerald" countmax="5" chance="9690"/>
-		<item name="small amethyst" countmax="5" chance="7250"/>
-		<item name="small ruby" countmax="5" chance="7430"/>
-		<item name="small topaz" countmax="5" chance="7470"/>
-		<item name="red gem" chance="2220"/>
-		<item name="demonic essence" chance="14630"/>
-		<item name="talon" chance="3430"/>
-		<item name="platinum coin" countmax="8" chance="90540"/>
-		<item name="might ring" chance="1890"/>
-		<item name="stealth ring" chance="2170"/>
-		<item name="platinum amulet" chance="680"/>
-		<item name="orb" chance="2854"/>
-		<item name="gold ring" chance="1050"/>
-		<item name="ring of healing" chance="1990"/>
-		<item name="giant sword" chance="1980"/>
-		<item name="ice rapier" chance="1550"/>
-		<item name="golden sickle" chance="1440"/>
-		<item name="fire axe" chance="4030"/>
-		<item name="devil helmet" chance="1180"/>
-		<item name="golden legs" chance="440"/>
-		<item name="magic plate armor" chance="130"/>
-		<item name="mastermind shield" chance="480"/>
-		<item name="demon shield" chance="740"/>
-		<item name="fire mushroom" countmax="6" chance="19660"/>
-		<item name="demon horn" chance="14920"/>
-		<item name="assassin star" countmax="10" chance="12550"/>
-		<item name="demonrage sword" chance="70"/>
-		<item id="7393" chance="90"/><!-- demon trophy -->
-		<item name="great mana potion" countmax="3" chance="22220"/>
-		<item name="ultimate health potion" countmax="3" chance="19540"/>
-		<item name="great spirit potion" countmax="3" chance="18510"/>
+		<item id="2148" countmax="100" chance="100000"/><!-- gold coin -->
+		<item id="2148" countmax="25" chance="100000"/><!-- gold coin -->
+		<item id="2393" chance="1428"/><!-- giant sword -->
+		<item id="2514" chance="500"/><!-- mastermind shield -->
+		<item id="2432" chance="1200"/><!-- fire axe -->
+		<item id="2472" chance="130"/><!-- magic plate armor -->
+		<item id="5906" countmax="1" chance="1000"/><!-- demon dust -->
+		<item id="5954" countmax="1" chance="1000"/><!-- demon horn -->
+		<item id="2164" chance="200"/><!-- might ring -->
+		<item id="2176" chance="3000"/><!-- orb -->
+		<item id="1982" chance="1300"/><!-- purple tome -->
+		<item id="7368" countmax="4" chance="1200"/><!-- assassin star -->
+		<item id="2165" chance="1400"/><!-- stealth ring -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2214" chance="500"/><!-- ring of healing -->
+				<item id="38828" chance="400"/><!-- spyked armor -->
+				<item id="2179" chance="1100"/><!-- gold ring -->
+				<item id="2795" countmax="6" chance="20000"/><!-- fire mushroom -->
+				<item id="2678" countmax="3" chance="10000"/><!-- coconut -->
+				<item id="2148" countmax="100" chance="100000"/><!-- gold coin -->
+				<item id="2151" countmax="4" chance="4000"/><!-- talon -->
+				<item id="2462" chance="1200"/><!-- devil helmet -->
+				<item id="2149" countmax="3" chance="11000"/><!-- small emerald -->
+				<item id="2171" chance="800"/><!-- platinum amulet -->
+				<item id="2387" chance="20000"/><!-- double axe -->
+				<item id="2470" chance="400"/><!-- golden legs -->
+				<item id="2520" chance="700"/><!-- demon shield -->
+				<item id="2418" chance="1500"/><!-- golden sickle -->
+				<item id="7382" chance="4100"/><!-- demonrage sword -->
+				<item id="2377" chance="3333"/><!-- two handed sword -->
+			</inside>
+		</item>
 	</loot>
 </monster>

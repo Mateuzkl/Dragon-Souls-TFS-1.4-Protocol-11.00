@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="murphas" nameDescription="a murphas" race="undead" experience="3100" speed="160" manacost="0">
+  <health now="36000" max="36000"/>
+  <look type="88" head="20" body="30" legs="40" feet="50" corpse="3016"/>
+  <targetchange interval="2000" chance="5"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="0"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag staticattack="50"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="100"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" min="-3500" max="-5000"/>
+    <attack name="Great Energy Beam" interval="5000" chance="40" min="-3500" max="-4500"/>
+  </attacks>
+  <defenses armor="45" defense="40"/>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="0"/>
+    <immunity drunk="0"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <voices interval="2000" chance="5">
+    <voice sentence="Nauuur!"/>
+  </voices>
+	<summons maxSummons="2">
+		<summon name="Scaravelho" interval="2000" chance="10" max="3"/>
+	</summons>
+   <loot>
+       <item id="2447" chance="100000"/>
+   </loot>
+</monster>

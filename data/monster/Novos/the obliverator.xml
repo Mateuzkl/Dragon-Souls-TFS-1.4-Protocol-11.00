@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="The Obliverator" species="magic" nameDescription="the obliverator" race="blood" experience="2000000" speed="600" manacost="0">
+    <health now="1000000" max="1000000"/>
+    <look type="456" corpse="11515"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+		<attack name="melee" interval="1000" chance="90" min="-10000" max="-18000"/>
+		<attack name="Diceshaker_1" interval="2500" chance="40" min="-15000" max="-19000"/>
+		<attack name="berserk_1" interval="4500" chance="60" min="-13470" max="-23995"/>
+		<attack name="Critical1" interval="6000" chance="100" min="-18000" max="-25000"/>
+    </attacks>
+    <defenses armor="20" defense="20">
+	<defense name="healing" interval="3000" chance="15" min="5000" max="10000">
+	<attribute key="areaEffect" value="blueshimmer"/>
+  </defense>
+	<defense name="healing" interval="4000" chance="15" min="10000" max="25000">
+	<attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="4000" chance="25">
+      <voice sentence="YOU WILL DARKNESS!"/>
+      <voice sentence="DIE HUMAN!"/>
+    </voices>
+    <loot>
+      <item id="11531" chance="10000">  <!-- red camouflage backpack -->
+        <inside>
+          <item id="11715" chance="700"/> <!-- magic fur helmet -->
+          <item id="11716" chance="700"/> <!-- magic fur Armor -->
+          <item id="11717" chance="700"/> <!-- magic fur Legs -->
+          <item id="11936" chance="700"/> <!-- skulldeath shield -->
+		  <item id="7406" chance="700"/>  <!-- blacksteel sword -->
+		  <item id="7423" chance="700"/>  <!-- skullcrusher -->
+		  <item id="12155" chance="700"/> <!-- iron guard axe -->
+        </inside>
+      </item>     
+	  <item id="7242" chance="1000000"/>
+	  <item id="12426" countmax="1" chance="1000"/> <!-- DodgeCrystal -->
+	  <item id="11394" countmax="3" chance1="100000" chancemax="0"/> <!-- Ruby Coin -->
+    </loot>
+  </monster>

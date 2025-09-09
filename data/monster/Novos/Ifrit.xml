@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Ifrit" nameDescription="ifrit" race="fire" experience="8100" speed="300" manacost="0">
+	<health now="12500" max="12500"/>
+	<look type="355" corpse="11485"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="40"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+    <attack name="melee" interval="1000" min="-550" max="-700"/>  
+    <attack name="melee_fire" interval="2530" min="-750" max="-1000" range="1"/>   
+    <attack name="dragon firewave" interval="3200" min="-900" max="1200" chance="50"/>
+	<attack name="manadrain" interval="3400" chance="30" range="5" min="-150" max="-300"/>
+    <attack name="explosion_Monster" interval="7100" min="-1000" max="-1500" chance="30" range="5"/>
+</attacks>
+	<defenses armor="50" defense="55">
+		<defense name="healing" interval="1000" chance="15" min="90" max="300">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="15" speedchange="200" duration="20000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element physicalPercent="5"/>
+		<element earthpercent="20"/>
+		<element energyPercent="20"/>
+		<element deathPercent="30"/>
+		<element icePercent="-25"/>
+		<element holyPercent="-10"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="0">
+		<summon name="fire elemental" interval="2000" chance="10" max="2"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="MUHAHAHAHA!" yell="1"/>
+		<voice sentence="I SMELL FEEEEEAAAR!" yell="1"/>
+		<voice sentence="CHAMEK ATH UTHUL ARAK!" yell="1"/>
+		<voice sentence="Your resistance is futile!"/>
+		<voice sentence="Your soul will be mine!" yell="0"/>
+	</voices>
+	<loot>
+		<item id="2147" countmax="3" chance="11000"/><!-- small emerald -->
+		<item id="2795" countmax="6" chance="20000"/><!-- fire mushroom -->
+		<item id="2432" chance="1200"/><!-- fire axe -->
+		<item id="2164" chance="600"/><!-- might ring -->
+		<item id="2176" chance="3000"/><!-- orb -->
+		<item id="2165" chance="1400"/><!-- stealth ring -->
+		<item id="2152" countmax="25" chance="100000"/><!-- gold coin -->
+		<item id="2152" countmax="25" chance="100000"/><!-- gold coin -->
+		<item id="2000" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2214" chance="700"/><!-- ring of healing -->
+				<item id="2179" chance="1100"/><!-- gold ring -->	
+				<item id="2462" chance="1200"/><!-- devil helmet -->
+				<item id="2195" chance="900"/><!-- boots of haste -->
+				<item id="12534" chance="700"/><!-- golden legs -->
+				<item id="11767" chance="660"/> <!-- winged'red helmet -->
+				<item id="2393" chance="1428"/><!-- giant sword -->
+				<item id="2520" chance="800"/><!-- demon shield -->
+				<item id="7382" chance="4100"/><!-- demonrage sword -->
+				<item id="2514" chance="800"/><!-- mastermind shield -->
+				<item id="13791" chance="800"/><!-- firemind hauberk -->
+			</inside>
+		</item>
+	</loot>
+</monster>

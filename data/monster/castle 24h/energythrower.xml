@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Energythrower" nameDescription="an energythrower" race="undead" experience="0" speed="0">
+	<health now="15000" max="15000" />
+	<look typeex="17586" corpse="0" />
+	<targetchange interval="5000" chance="15" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="0" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+		<flag hidehealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
+	</flags>
+	<attacks>
+		<attack name="energy" interval="2000" chance="70" range="7" min="-150" max="-500">
+			<attribute key="shootEffect" value="energy" />
+		</attack>
+		<attack name="energy" interval="2000" chance="100" range="10" radius="3" target="1" min="-100" max="-250">
+			<attribute key="shootEffect" value="energyball" />
+			<attribute key="areaEffect" value="energyarea" />
+		</attack>
+	</attacks>
+	<defenses armor="35" defense="55">
+	</defenses>
+	<elements>
+		<element icePercent="-5" />
+		<element holyPercent="-5" />
+		<element physicalPercent="-10" />
+	</elements>
+	<immunities>
+		<immunity energy="1" />
+		<immunity fire="1" />
+		<immunity paralyze="1" />
+		<immunity drunk="1" />
+		<immunity outfit="1" />
+		<immunity invisible="1" />
+	</immunities>
+</monster>

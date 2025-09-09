@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Tritao" nameDescription="Tritão" race="undead" experience="100000" speed="1000" manacost="0">
+	<health now="700000" max="700000"/>
+	<look type="399" corpse="6068"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag staticattack="90"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+      <attack name="melee" interval="2000" min="-7000" max="-8200"/>
+      <attack name="quara dragon" interval="3000" chance="40" min="-8000" max="-10200"/>
+      <attack name="quara dragon1" interval="4000" chance="60" min="-9000" max="-10000"/>
+      <attack name="quara dragon" interval="6000" chance="10" min="-8000" max="-12000"/>
+      <attack name="quara dragon1" interval="5000" chance="10" min="-9000" max="-12000"/>
+    </attacks>
+	<defenses armor="15" defense="18"/>
+	<immunities>
+		<immunity ice="1"/>
+		<immunity fire="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<elements>
+		<element energyPercent="-25"/>
+		<element earthPercent="-10"/>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Qua hah tsh!"/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="100000"/><!-- gold coin -->
+	</loot>
+<script>
+<event name="tritao"/>
+</script>
+</monster>

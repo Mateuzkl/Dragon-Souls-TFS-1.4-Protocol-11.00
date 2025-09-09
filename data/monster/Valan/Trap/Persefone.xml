@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Persefone" species="human" nameDescription="persefone" race="blood" experience="100000" speed="500" manacost="0">
+    <health now="900000" max="900000"/>
+    <look type="1643" head="0" body="0" legs="0" feet="0" addons="3" corpse="3058"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="5"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="arcane wands" interval="2000" chance="20"  min="-13000" max="-17000"/>
+      <attack name="arcane wands" interval="2500" chance="10" min="-13000" max="-15000"/>
+      <attack name="Explosion" interval="2500" chance="40" min="-11000" max="-12500"/>
+      <attack name="Sudden Death" interval="3000" chance="10" min="-14000" max="-15000"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+      <defense name="light healing" interval="4000" chance="20" min="6000" max="8000"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <summons maxSummons="3">
+      <summon name="under guard" interval="6000" chance="40"/>
+    </summons>
+    <voices interval="5000" chance="5">
+      <voice sentence="im protector of hades, out here!!!"/>
+    </voices>
+    <loot>
+      <item id="38915" countmax="1" chance1="100000" chancemax="0"/>
+	   <item id="32836" countmax="3" chance="10000"/> 
+      <item id="3940" chance="100000">
+        <inside>
+        <item id="38860" chance="700"/>
+		<item id="38866" chance="700"/> 
+        <item id="38762" chance="700"/> 
+        <item id="38875" chance="700"/> 
+        <item id="38841" chance="700"/> 
+        <item id="38955" chance="700"/> 
+        <item id="39000" chance="700"/> 
+		<item id="39057" chance="700"/>
+		<item id="38962" chance="700"/> 
+        </inside>
+      </item>
+    </loot>
+  </monster>

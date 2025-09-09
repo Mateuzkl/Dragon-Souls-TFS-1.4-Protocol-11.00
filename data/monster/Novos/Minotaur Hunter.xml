@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<monster name="Minotaur Hunter" nameDescription="Minotaur Hunter" experience="62500" speed="450" race="Blood">
+  <health now="300000" max="300000"/>
+  <look type="480" corpse="12347"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100"/>
+  <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1000" chance="100" min="-1500" max="-2500"/>
+    <attack name="melee" interval="2000" chance="60" min="-2000" max="-4000"/>
+    <attack name="large rock" interval="4500" chance="30" min="-3500" max="-5000">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="Diceshaker" interval="6300" chance="20" min="-4000" max="-6000">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses defense="44" armor="47">
+    <defense name="Light Healing" interval="8000" chance="60" min="100" max="200">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices speed="0" chance="30">
+    <voice sentence="Chrush the intruders!"/>
+    <voice sentence="my strength and my size overcomes many of you!"/>
+    <voice sentence="You're so little!"/>
+  </voices>
+    <loot>
+	  <item id="2160" countmax="3" chance1="100000" chancemax="0"/>
+	  <item id="2144" countmax="15" chance1="10000" chancemax="0"/>
+	  <item id="1294" countmax="10" chance1="100000" chancemax="0"/>
+      <item id="11536" chance="20000">
+      <inside>
+        <item id="11765" chance="700"/> <!-- Horned Helmet -->
+		<item id="11766" chance="700"/> <!-- Horned Armor -->   
+		<item id="11932" chance="700"/> <!-- Horned Shield -->	  
+        <item id="2408" chance="700"/> <!-- warlord sword -->        
+        <item id="8929" chance="700"/> <!-- the stomper -->
+        <item id="12023" chance="700"/> <!-- Sword Of Teseu -->
+        <item id="2415" chance="700"/> <!-- Great Axe -->
+        <item id="2522" chance="1100"/> <!-- Great Shield -->	
+		<item id="2523" chance="750"/> <!-- Blessed shield -->
+		<item id="2199" chance="700"/> <!-- samantha amulet -->
+       </inside>
+     </item>
+    </loot>
+  </monster>

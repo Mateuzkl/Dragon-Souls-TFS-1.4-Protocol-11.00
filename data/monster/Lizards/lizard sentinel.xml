@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lizard Sentinel" nameDescription="a lizard sentinel" race="blood" experience="110" speed="150" manacost="560">
+  <health now="265" max="265"/>
+  <look type="114" head="0" body="0" legs="0" feet="0" corpse="4259"/>
+  <targetchange interval="2000" chance="5"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="0"/>
+    <flag convinceable="1"/>
+    <flag pushable="0"/>
+    <flag canpushitems="0"/>
+    <flag staticattack="70"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="6"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" min="-30" max="-50"/>
+    <attack name="spear" interval="2500" min="-20" max="-55" chance="50"/>
+  </attacks>
+  <defenses armor="3" defense="5"/>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="0"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="0"/>
+    <immunity outfit="0"/>
+    <immunity drunk="0"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <voices interval="2000" chance="5">
+    <voice sentence="Tssss!"/>
+  </voices>
+  <loot>
+    <item id="2148" countmax="60" chance1="80000" chancemax="0"/>
+    <item id="3974" chance="4000"/>
+	<item id="2425" chance="2000"/>
+    <item id="2389" countmax="3" chance1="15000" chancemax="0"/>
+    <item id="5881" countmax="1" chance1="1000" chancemax="0"/>
+    <item id="5876" countmax="1" chance1="1000" chancemax="0"/>
+	<item id="2464" chance="15000"/>
+	<item id="1987" chance="100000">
+   <inside>
+    <item id="2381" chance="10333"/>
+    <item id="2145" countmax="1" chance1="4000" chancemax="0"/>	
+    <item id="2483" chance="20000"/>
+   </inside>
+   </item>
+  </loot>
+</monster>

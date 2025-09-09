@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lizard Snakecharmer" nameDescription="a lizard snakecharmer" race="blood" experience="210" speed="184" manacost="3">
+  <health now="325" max="325"/>
+  <look type="115" head="0" body="0" legs="0" feet="0" corpse="4262"/>
+  <targetchange interval="2000" chance="5"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="0"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="0"/>
+    <flag staticattack="50"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="4"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" min="-1" max="-30"/>
+    <attack name="poison spit" interval="3500" chance="60" min="-60" max="-110"/>
+    <attack name="Stalagmite" interval="6300" chance="60" min="-10" max="-11"/>
+  </attacks>
+  <defenses armor="9" defense="10">
+    <defense name="light healing" interval="4500" chance="40" min="115" max="145"/>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="0"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="0"/>
+    <immunity drunk="1"/>
+    <immunity invisible="0"/>
+  </immunities>
+  <summons maxSummons="4">
+		<summon name="cobra" interval="3000" chance="20" max="3"/>
+	</summons>
+  <voices interval="2000" chance="5">
+    <voice sentence="I ssssmell warm blood!"/>
+    <voice sentence="Shhhhhhhh"/>
+  </voices>
+  <loot>
+    <item id="2148" countmax="60" chance1="80000" chancemax="0"/>
+    <item id="2150" countmax="1" chance1="3000" chancemax="0"/>
+    <item id="2148" countmax="1" chance1="1000" chancemax="0"/>
+    <item id="2148" countmax="1" chance1="1000" chancemax="0"/>
+	<item id="2237" chance="20000"/>
+	<item id="2654" chance="10000"/>
+	<item id="2177" chance="2000"/>
+	<item id="2168" chance="3000"/>
+    <item id="2817" chance="30000"/>
+	<item id="1987" chance="100000">
+	<inside>
+    <item id="3971" chance="1000"/>
+    <item id="2182" chance="3000"/>
+	<item id="2181" chance="4000"/>
+   </inside>
+   </item>
+  </loot>
+</monster>

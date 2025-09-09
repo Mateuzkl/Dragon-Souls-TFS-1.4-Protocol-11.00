@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Giant Soldier" nameDescription="giant soldier" tp="1" race="undead" species="blood" experience="10000" speed="300" manacost="10000">
+    <health now="16500" max="16500"/>
+    <look type="564" corpse="13679" race="2"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="1"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="40"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="1500" min="-250" max="-750"/>
+	  <attack name="Extreme Explosion" interval="3410" chance="70" range="4" min="-400" max="-800"/>
+	  <attack name="berserk_1" interval="4320" chance="50" min="-500" max="-1000"/>
+      <attack name="Critical1" interval="6000" chance="30" min="-1000" max="-1300" range="1"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="9000" chance="60" min="1000" max="2000"/>
+    </defenses>
+    <elements>
+		<element firePercent="0"/>
+		<element physicalPercent="15"/>
+		<element earthpercent="30"/>
+		<element energyPercent="20"/>
+		<element deathPercent="0"/>
+		<element icePercent="-25"/>
+		<element holyPercent="-10"/>
+	</elements>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="80000" chance="10">
+      <voice sentence="Morra!!!!"/>
+    </voices>
+       <loot>    
+      <item id="2789" countmax="15" chance1="10000" chancemax="0"/>
+      <item id="2149" countmax="15" chance1="10000" chancemax="0"/>
+	  <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+	  <item id="2152" countmax="100" chance1="100000" chancemax="0"/>	
+      <item id="3940" chance="10000">
+      <inside>
+	        <item id="12533" chance="700"/> <!-- Golden Armor -->
+	  <item id="12534" chance="700"/> <!-- Golden legs -->
+	  <item id="12535" chance="700"/> <!-- Golden shield -->
+	  	<item id="11691" countmax="1" chance="600"/><!-- magic plate helmet -->
+		<item id="11692" countmax="1" chance="500"/><!-- magic plate armor -->
+		<item id="11693" countmax="1" chance="700"/><!-- magic plate legs -->
+		<item id="11694" countmax="1" chance="700"/><!-- magic plate boots -->
+        <item id="2400" chance="750"/> <!-- Magic Sword -->
+	    <item id="2522" chance="700"/> <!-- great shield -->
+	    <item id="2195" chance="900"/><!-- boots of haste -->
+		<item id="2421" countmax="1" chance="1350"/><!-- thunder hammer -->
+		<item id="12535" chance="800"/><!-- golden shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

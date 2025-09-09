@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dragon Essence" nameDescription="Dragon Essence" race="blood" experience="125000" speed="350" manacost="0">
+  <health now="400000" max="400000"/>
+  <look type="385" corpse="13712"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+  <attack name="melee" interval="1000" min="-2000" max="-4000"/>
+  <attack name="heavy magic missile" interval="3000" chance="100" min="-5000" max="-6000" range="5"/>
+  <attack name="Energy Wave" interval="4500" chance="100" min="-7580" max="-9020"/>
+  <attack name="heavy magic missile" interval="7000" chance="40" min="-6580" max="-7520"/>
+  <attack name="heavy magic missile" interval="5000" chance="50" range="5" min="-7070" max="-8095"/>
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="4000" chance="15" min="1200" max="1400">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="1"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="urak hai" interval="1000" chance="3000"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="You are Dead!"/>
+    <voice sentence="SHHH SHHHH SHHHHHH ..."/>
+  </voices>
+  <loot> 
+  	<item id="2160" countmax="7" chance1="100000" chancemax="0"/>
+    <item id="2160" countmax="5" chance1="100000" chancemax="0"/>
+	<item id="8300" chance="1000"/> --semantycristal
+    <item id="11553" chance="60000">
+      <inside>
+		<item id="11788" chance="700"/> <!-- sindra scale armor -->
+		<item id="11677" chance="700"/> <!-- magic iron helmet -->
+		<item id="11678" chance="700"/> <!-- magic iron armor -->
+		<item id="11945" chance="700"/> <!-- magic iron shield -->
+        <item id="11234" chance="700"/> <!-- guardian boots -->
+        <item id="8858" chance="700"/> <!-- elethriel's elemental bow -->
+		<item id="12162" chance="700"/> <!-- forged crystal axe -->
+		<item id="12512" chance="700"/> <!-- elethriel'sword -->
+      </inside>
+    </item>
+
+  </loot>
+<script>
+<event name="Sindragosa"/>
+</script>
+</monster>

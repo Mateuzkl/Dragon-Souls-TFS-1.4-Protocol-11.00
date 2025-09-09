@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<monster name="Rainbow Balrog" nameDescription="Rainbow Balrog" experience="400000" speed="300" race="Blood">
+  <health now="500000" max="500000"/>
+  <look type="12" head="96" body="110" legs="86" feet="94" corpse="6068"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="65" defense="20"/>
+  <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1000" chance="100" min="-5800" max="-9000" range="1"/>
+    <attack name="sudden death" interval="2500" chance="30" min="-11900" max="-12100">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="tides of darkness" interval="3000" chance="20" min="-9500" max="-12700">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses defense="45" armor="40">
+    <defense name="Invisible" interval="6000" chance="30"/>
+    <defense name="Light Healing" interval="20000" chance="40" min="9000" max="12000">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices speed="0" chance="20">
+    <voice sentence="feel the power of the great power eternal darkness!"/>
+    <voice sentence="Slay your friends and I will spare you!"/>
+  </voices>
+  <loot>
+    <item id="2003" countmax="1" chance="100000">
+      <inside>
+      </inside>
+    </item>
+	<item id="12520" countmax="1" chance="700"/>
+	<item id="6500" countmax="4" chance="20000"/>
+    <item id="2144" countmax="15" chance="100000"/>
+    <item id="2160" countmax="7" chance="100000"/>
+  </loot>
+</monster>

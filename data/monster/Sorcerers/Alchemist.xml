@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Alchemist" tp="1" species="magic"  nameDescription="a Alchemist" race="blood" experience="25000" speed="500" manacost="0">
+    <health now="300000" max="300000"/>
+    <look type="133" head="0" body="94" legs="94" feet="81" addons="1" corpse="3128"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="30"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="5"/>
+      <flag runonhealth="250"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-2000" max="-3000"/>
+      <attack name="Explosion" interval="2500" chance="70" min="-3780" max="-5020"/>
+      <attack name="Sudden Death" interval="3000" chance="60" min="-3970" max="-5395"/>
+      <attack name="Master Gravita" interval="3000" chance="50" min="-5000" max="-8000"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Invisible" interval="10000" chance="20"/>
+      <defense name="Light Healing" interval="4000" chance="5" min="1150" max="1300"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="0"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="2000" chance="70">
+      <voice sentence="Your energy is mine."/>
+      <voice sentence="Now your life has come to the end, hahahaha!"/>
+    </voices>
+    <loot>
+      <item id="2152" countmax="100" chance1="33333" chancemax="0"/>
+      <item id="2152" countmax="100" chance1="10000" chancemax="0"/>
+      <item id="2789" countmax="20" chance1="33333" chancemax="0"/>
+      <item id="2031" chance="66666"/>
+      <item id="2070" chance="44444"/>
+      <item id="2167" chance="4444"/>
+      <item id="2436" chance="2222"/>
+      <item id="2126" chance="3400"/>
+      <item id="7390" chance="1600"/>
+      <item id="3939" chance="10000">
+        <inside>
+          <item id="38836" chance="1400"/>
+	  <item id="2129" chance="3400"/>
+          <item id="2453" chance="1400"/> 
+          <item id="7426" chance="1400"/> 
+          <item id="38845" chance="1400"/> 
+          <item id="2505" chance="1400"/> 
+          <item id="38782" chance="1400"/> 
+          <item id="2506" chance="1400"/> 
+        </inside>
+      </item>
+    </loot>
+  </monster>

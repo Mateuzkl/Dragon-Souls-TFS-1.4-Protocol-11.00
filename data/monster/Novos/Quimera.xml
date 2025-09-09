@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Quimera" nameDescription="Quimera" race="blood" experience="500000" speed="500" manacost="0">
+    <health now="1000000" max="1000000"/>
+    <look type="389" corpse="14324"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="210"/>
+    </flags>
+	<attacks>
+      <attack name="melee" interval="1000" min="-8000" max="-10000"/>
+	  <attack name="dark sd" interval="4000" chance="70" min="-9000" max="-12000" range="3"/> 
+	  <attack name="Tides of Darkness_M" interval="10000" chance="60" min="-13000" max="-15000"/>
+      <attack name="dragon firewave" interval="3500" chance="40" min="-9000" max="-13200"/>
+   	  <attack name="Ghastly darkwave" interval="5000" chance="100" min="-9000" max="-15200"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+      <defense name="light healing" interval="4000" chance="40" min="3800" max="6300"/>
+    </defenses>
+	<elements>
+		<element physicalPercent="20"/>
+		<element firePercent="20"/>
+		<element icePercent="20"/>
+		<element earthPercent="20"/>
+		<element energyPercent="-20"/>
+		<element holyPercent="-15"/>
+	</elements>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="8000" chance="10">
+      <voice sentence="YOU WILL DARKNESS!"/>
+      <voice sentence="DIE HUMAN!"/>
+    </voices>
+    <loot>
+      <item id="2160" countmax="50" chance1="1000000" chancemax="0"/>
+	  <item id="12426" countmax="1" chance="1000"/> <!-- dodgecrystal -->
+	  <item id="8300" chance="1000"/> <!-- sematcrystal -->
+      <item id="3940" chance="20000">
+        <inside>
+          <item id="11602" chance="700"/> <!-- naz gul scale helmet -->     
+          <item id="11829" chance="700"/> <!--naz gul scale mail -->   
+          <item id="8909" chance="700"/> <!--naz gul scale boots -->   
+          <item id="12207" chance="700"/> <!--dommed axe -->   
+          <item id="11814" chance="700"/> <!--hammer of hercules -->     
+        </inside>
+      </item>
+    </loot>
+</monster>

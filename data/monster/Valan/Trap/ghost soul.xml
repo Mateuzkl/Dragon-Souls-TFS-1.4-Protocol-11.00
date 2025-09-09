@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Ghost Soul" nameDescription="a ghost soul" race="undead" experience="50000" speed="290" manacost="0">
+  <health now="350000" max="350000"/>
+  <look type="48" head="20" body="30" legs="40" feet="50" corpse="5993"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+
+      <attack name="melee" interval="2000" min="-2000" max="-4000"/>
+  <attack name="energy" interval="1000" chance="10" range="7" min="-5015" max="-6035">
+  <attribute key="shootEffect" value="energy" /> 
+  </attack>
+      <attack name="Ultimate Mort" interval="4500" chance="10" min="-7580" max="-10020"/>
+      <attack name="energy beam" interval="2500" chance="30" min="-3580" max="-3820"/>
+      <attack name="Sudden Death" interval="7000" chance="10" min="-3070" max="-10595"/>
+  <attack name="melee" interval="1000" range="2" chance="5" min="-2000" max="-3000" > 
+  <attribute key="shootEffect" value="death" /> 
+  </attack>
+
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="4000" chance="15" min="1200" max="1400">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="1"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="100"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="BUUUUUU!"/>
+    <voice sentence="SHHH SHHHH SHHHHHH ..."/>
+  </voices>
+  <loot>
+    <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+    <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+    <item id="2177" countmax="5" chance="60000"/>
+    <item id="2472" chance="800"/>
+    <item id="2195" chance="1000"/>
+    <item id="8931" chance="700"/> 
+    <item id="1995" chance="60000">
+      <inside>
+        <item id="38747" chance="700"/> 
+        <item id="2268" countmax="3" chance="100000"/>
+        <item id="39493" chance="700"/> 
+        <item id="2496" chance="700"/> 
+        <item id="38811" chance="700"/> 
+		<item id="38948" chance="700"/>
+        <item id="38762" chance="700"/> 
+      </inside>
+    </item>
+  </loot>
+</monster>

@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?> 
+ <monster name="David Jones" nameDescription="a david jones" race="blood" experience="4350" speed="290" manacost="0">
+  <health now="3675" max="3675" /> 
+  <look type="46" corpse="6065"/>
+
+  <targetchange interval="1000" chance="8" /> 
+  <strategy attack="100" defense="10" /> 
+ <flags>
+  <flag summonable="0" /> 
+  <flag attackable="1" /> 
+  <flag hostile="1" /> 
+  <flag illusionable="0" /> 
+  <flag convinceable="0" /> 
+  <flag pushable="0" /> 
+  <flag canpushitems="1" /> 
+  <flag canpushcreatures="1" /> 
+  <flag targetdistance="1" /> 
+  <flag staticattack="40" /> 
+  <flag runonhealth="0" /> 
+  </flags>
+ <attacks>
+ <attack name="melee" interval="2000" min="-100" max="-370"/>
+ <attack name="poison" interval="2000" chance="10" range="7" radius="6" target="0" min="-255" max="-440">
+  <attribute key="areaEffect" value="bluebubble" /> 
+  </attack>
+<attack name="ice" interval="1000" chance="15" radius="2" target="1" min="-140" max="-320">
+  <attribute key="areaEffect" value="bluebubble" /> 
+  <attribute key="shootEffect" value="ice" /> 
+  </attack>
+<attack name="melee" interval="1000" chance="30" range="7" radius="3" target="0" min="-200" max="-300">
+
+<attribute key="areaEffect" value="rednote"/>
+
+</attack>
+
+  </attacks>
+  <defenses armor="25" defense="20" /> 
+ <elements>
+  <element earthPercent="32" /> 
+  <element holyPercent="30" /> 
+  <element deathPercent="-18" /> 
+  <element icePercent="-15" /> 
+  <element firePercent="-27" /> 
+  </elements>
+ <immunities>
+  <immunity invisible="1" /> 
+  </immunities>
+ <voices interval="5000" chance="10">
+  <voice sentence="Leave me alone!" /> 
+  <voice sentence="Human suckers!" /> 
+  <voice sentence="Get away from my chest!!" /> 
+  </voices>
+ <loot>
+<item id="5943" chance="100000"/>
+  </loot>
+  </monster>

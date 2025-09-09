@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lord Noryb" nameDescription="Lord Noryb" race="blood" experience="0" speed="0">
+	<health now="50000" max="50000" />
+	<look type="557" corpse="0" />
+	<targetchange interval="5000" chance="8" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="90" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-2340" />
+		<attack name="speed" interval="1000" chance="17" range="7" radius="4" target="1" speedchange="-600" duration="1500">
+		</attack>
+		<attack name="ice" interval="2000" chance="25" range="6" radius="2" target="1" min="-130" max="-350">
+			<attribute key="shootEffect" value="smallice" />
+			<attribute key="areaEffect" value="giantice" />
+		</attack>
+		<attack name="death" interval="3000" chance="30" length="8" spread="3" min="-150" max="-230">
+			<attribute key="areaEffect" value="blacksmoke" />
+		</attack>
+		<attack name="drunk" interval="2000" chance="15" length="7" spread="0" duration="6000">
+			<attribute key="areaEffect" value="explosion" />
+		</attack>
+		<attack name="death" interval="2000" chance="70" range="7" min="-110" max="-420">
+			<attribute key="shootEffect" value="suddendeath" />
+			<attribute key="areaeffect" value="yalaharighost" />
+		</attack>
+	</attacks>
+	<defenses armor="75" defense="75">
+	</defenses>
+	<elements>
+		<element energyPercent="20" />
+		<element earthPercent="40" />
+		<element firePercent="-40" />
+	</elements>
+	<immunities>
+		<immunity death="1" />
+		<immunity lifedrain="1" />
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Feel the sweet taste of death taking your soul!" />
+		<voice sentence="The monsters in the mirror will come eat your bowels." />
+		<voice sentence="Your life has come to an end!" />
+		<voice sentence="Come to death, child..." />
+	</voices>
+</monster>

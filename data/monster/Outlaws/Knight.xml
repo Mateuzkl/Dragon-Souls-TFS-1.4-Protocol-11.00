@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Knight" nameDescription="Knight" race="blood" experience="60" speed="180" manacost="420">
+	<health now="200" max="200"/>
+	<look type="131" head="57" body="57" legs="57" feet="57" addons="3" corpse="6080"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="18"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2500" min="-5" max="-10" range="1"/>
+		<attack name="Critical1" interval="6300" min="-10" max="-50" range="1" chance="50"/>
+	</attacks>
+	<defenses armor="1" defense="1"/>
+	<elements>
+		<element firePercent="20"/>
+		<element holyPercent="10"/>
+		<element physicalPercent="0"/>
+		<element icePercent="-10"/>
+		<element deathPercent="-5"/>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Morra!"/>
+	</voices>
+	<loot>
+		<item id="2152" countmax="5" chance="100000"/> <!-- gold coin -->
+		<item id="11550" chance="100000"><!-- bag -->
+		<inside>
+	       <item id="8602" chance="100000"/>
+			</inside>
+		</item>
+	</loot>
+<script>
+<event name="knight"/>
+</script>
+</monster>

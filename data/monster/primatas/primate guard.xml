@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Primate Guard" nameDescription="a primate guard" race="blood" experience="5000" speed="400" manacost="0">
+   <health now="14000" max="14000"/>
+    <look type="253" head="95" body="95" legs="95" feet="95" corpse="3128"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="1500" min="-400" max="-600"/>
+      <attack name="Spear" interval="2000" chance="100" min="-400" max="-500"/>
+      <attack name="Diceshaker" interval="6000" chance="20" min="-300" max="-800"/>
+      <attack name="berserk" interval="5000" chance="70" min="-200" max="-700"/>
+    </attacks>
+    <defenses armor="43" defense="45"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="2000" chance="5">
+      <voice sentence="Mim Kill"/>
+      <voice sentence="Umbaca"/>
+      <voice sentence="You're no match for me!"/>
+      <voice sentence="NO MERCY!"/>
+     </voices>
+    <loot>
+<item id="2148" countmax="100" chance1="100000" chancemax="0"/>
+<item id="2148" countmax="100" chance1="100000" chancemax="0"/>
+<item id="2152" countmax="3" chance1="100000" chancemax="0"/> 
+      <item id="2149" countmax="5" chance1="100000" chancemax="0"/>
+      <item id="2147" countmax="5" chance1="5000" chancemax="0"/> 
+      <item id="1987" chance="100000">
+        <inside>
+      <item id="2498" chance="3000"/> 
+      <item id="2519" chance="2800"/> 
+      <item id="2487" chance="2000"/> 
+      <item id="2488" chance="2500"/> 
+      <item id="2466" chance="2000"/> 
+      <item id="2492" chance="2000"/> 
+      <item id="2472" chance="800"/> 
+      <item id="2195" chance="2000"/>
+      <item id="2470" chance="1000"/> 
+      <item id="2645" chance="1500"/> 
+      <item id="2393" chance="3000"/> 
+      <item id="2414" chance="1000"/> 
+        </inside>
+      </item>
+    </loot>
+  </monster>

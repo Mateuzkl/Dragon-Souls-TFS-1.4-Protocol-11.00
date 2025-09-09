@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Ancient Boss" nameDescription="Ancient Boss" race="blood" experience="1200000" skull="red" speed="400" manacost="0">
+    <health now="1000000" max="1000000"/>
+    <look type="394" head="0" body="132" legs="0" feet="132" addons="3" corpse="6080"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="3"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+	 <attack name="arcane wand" interval="2000" min="-7000" max="-8200" range="5"/>
+      <attack name="heavy magic missile" interval="4000" chance="60" min="-7000" max="-8300" range="5"/>
+      <attack name="master gravita" interval="10000" chance="50" min="-8200" max="-9300" range="5"/>
+      <attack name="arcane wand" interval="8000" range="5" chance="50" min="-5500" max="-6500"/>
+      <attack name="dark sd" interval="6000" chance="70" min="-4000" max="-4900"/>
+    </attacks>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="2000" chance="20">
+      <voice sentence="Your energy is mine."/>
+      <voice sentence="Now your life has come to the end, hahahaha!"/>
+    </voices>
+    <loot>
+	 <item id="40816" countmax="5" chance1="100000" chancemax="0"/>
+      <item id="41438" chance="33333"/>
+      <item id="2167" chance="2222"/>
+      <item id="2436" chance="1111"/>
+      <item id="8300" chance="1500"/>
+      <item id="7390" chance="800"/>
+        <inside>
+		
+	 </inside>
+      </item>
+    </loot>
+  </monster>

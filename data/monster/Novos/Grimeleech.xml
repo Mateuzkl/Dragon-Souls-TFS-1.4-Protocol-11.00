@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Grimeleech" species="human" nameDescription="grimeleech" race="blood" experience="4000000" speed="500" manacost="0">
+    <health now="800000" max="800000"/>
+    <look type="613" head="0" body="0" legs="0" feet="0" addons="3" corpse="3128"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="5"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-80" max="-500"/>
+     <attack name="arcane wands" interval="1000" min="-15000" max="-18800"/>
+      <attack name="arcane wands" interval="2000" min="-19000" max="-20000"/>
+      <attack name="arcane wands" interval="2500" chance="10" min="-12000" max="-15000"/>
+      <attack name="Explosion" interval="3000" chance="40" min="-10000" max="-20000"/>
+      <attack name="Sudden Death" interval="3500" chance="10" min="-15000" max="-20000"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+      <defense name="Invisible" interval="10000" chance="20"/>
+      <defense name="light healing" interval="4000" chance="20" min="6000" max="8000"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <summons max="3">
+      <summon name="Urak Hai" interval="6000" chance="40"/>
+    </summons>
+    <voices interval="5000" chance="5">
+      <voice sentence="my spirit increase to fight."/>
+    </voices>
+    <loot>
+      <item id="11394" countmax="10" chance1="100000" chancemax="0"/>
+	  <item id="12426" countmax="1" chance="1400"/>
+      <item id="11553" chance="100000">
+        <inside>
+          <item id="11581" chance="500"/> <!-- merlian magic hat -->
+          <item id="11582" chance="500"/> <!-- merlian magic robe -->
+          <item id="11583" chance="500"/> <!-- merlian magic legs -->
+          <item id="11953" chance="500"/> <!-- merlian shield -->
+          <item id="11966" chance="650"/> <!-- merlian staff -->
+	 </inside>
+      </item>
+    </loot>
+  </monster>

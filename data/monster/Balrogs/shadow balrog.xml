@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<monster name="Shadow Balrog" nameDescription="Shadow Balrog" experience="80000" speed="300" race="Blood">
+  <health now="450000" max="450000"/>
+  <look type="12" head="114" body="114" legs="76" feet="94" corpse="6068"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="65" defense="20"/>
+  <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" chance="100" min="-9800" max="-9900" range="1"/>
+    <attack name="sudden death" interval="2500" chance="30" min="-6900" max="-10100">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="tides of darkness" interval="3000" chance="20" min="-9500" max="-13700">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses defense="45" armor="40">
+    <defense name="Invisible" interval="6000" chance="30"/>
+    <defense name="Light Healing" interval="20000" chance="40" min="9000" max="12000">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+  <voices speed="0" chance="20">
+    <voice sentence="feel the power of the great power eternal darkness!"/>
+    <voice sentence="Slay your friends and I will spare you!"/>
+  </voices>
+  <loot>
+    <item id="2003" countmax="1" chance="100000">
+      <inside>
+        <item id="39493" countmax="1" chance="850"/>
+        <item id="38812" countmax="1" chance="700"/>
+        <item id="38807" countmax="1" chance="350"/>
+        <item id="38779" countmax="1" chance="600"/>
+        <item id="38852" countmax="1" chance="600"/>
+		<item id="38740" countmax="1" chance="600"/>
+        <item id="38854" countmax="1" chance="400"/>
+        <item id="38832" countmax="1" chance="500"/>
+        <item id="38868" countmax="1" chance="700"/>
+        <item id="38718" countmax="1" chance="500"/>
+        <item id="39015" countmax="1" chance="300"/>
+        <item id="39047" countmax="1" chance="700"/>
+        <item id="39033" countmax="1" chance="550"/>
+        <item id="2136" countmax="1" chance="400"/>
+      </inside>
+    </item>
+	<item id="6500" countmax="4" chance="2800"/>
+    <item id="2144" countmax="15" chance="100000"/>
+    <item id="2160" countmax="7" chance="100000"/>
+	 <item id="23541" chance="800"/><!-- aol -->
+  </loot>
+</monster>

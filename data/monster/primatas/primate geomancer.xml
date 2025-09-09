@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Primate Geomancer" species="human" nameDescription="a primate geomancer" race="blood" experience="4500" speed="390" manacost="0">
+  <health now="5800" max="5800"/>
+  <look type="264" head="0" body="95" legs="95" feet="2" corpse="3128"/>
+  <targetchange interval="60000" chance="0"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="2"/>
+    <flag convinceable="2"/>
+    <flag pushable="2"/>
+    <flag canpushitems="1"/>
+    <flag staticattack="90"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="5"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="ultimate mort" interval="5000" chance="5" min="-250" max="-300"/>
+    <attack name="sudden death" interval="1000" chance="100" min="-352" max="-480"/>
+    <attack name="death strike" interval="2000" chance="70" min="-140" max="-200"/>
+    <attack name="arcane wands" interval="3000" chance="70" min="-340" max="-400"/>
+  </attacks>
+  <defenses armor="43" defense="45"/>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="0"/>
+    <immunity outfit="0"/>
+    <immunity drunk="0"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <voices interval="2000" chance="5">
+    <voice sentence="Death Strike!"/>
+    <voice sentence="UMBACAAA!"/>
+  </voices>
+  <loot>
+    <item id="2152" countmax="30" chance="100000"/>
+    <item id="2152" countmax="20" chance="100000"/>
+    <item id="2149" countmax="7" chance="100000"/>
+    <item id="2147" countmax="8" chance="5000"/>
+    <item id="1995" chance="2500">
+      <inside>
+        <item id="2508" chance="800"/>
+        <item id="2656" chance="10000"/>
+        <item id="38754" chance="800"/>
+        <item id="2149" countmax="10" chance="100000"/>
+        <item id="2147" countmax="16" chance="5000"/>
+      </inside>
+    </item>
+  </loot>
+</monster>

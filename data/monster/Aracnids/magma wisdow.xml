@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Beeruger Wisdow" tp="1" nameDescription="Beeruger Wisdow" species="fire" race="fire" experience="40000" speed="300" manacost="0">
+    <health now="350000" max="350000"/>
+    <look type="722" head="0" body="0" legs="0" feet="0" corpse="5995"/>
+    <targetchange interval="5000000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="1"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="explosion" interval="4000" chance="70" min="-4300" max="-5600"/>
+      <attack name="melee" interval="20000" min="-3200" max="-6600"/>
+      <attack name="melee" interval="15000" min="-3200" max="-6600"/>
+      <attack name="melee" interval="2000" min="-2200" max="-5600"/>
+      <attack name="melee" interval="9500" range="2" chance="5" min="-3900" max="-6500"/>
+      <attack name="dragon firewave" interval="3500" chance="50" min="-5100" max="-6300"/>
+    </attacks>
+    <defenses armor="3" defense="35"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+     <loot>
+       <item id="2160" countmax="8" chance1="100000" chancemax="0"/>
+      <item id="2147" countmax="15" chance1="100000" chancemax="0"/>
+      <item id="5468" chance="2500"/> 
+      <item id="2353" chance="2500"/>     
+      <item id="1993" chance="100000">
+        <inside>
+          <item id="38808" chance="300"/> --Magma Axe
+          <item id="2539" chance="400"/>  --Phoenix Shield
+          <item id="9933" chance="400"/>  --Firewalker Boots
+        </inside>
+      </item>
+    </loot>
+  </monster>

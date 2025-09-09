@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Frost Balrog" nameDescription="Frost Balrog" tp="1" race="undead" species="magic" experience="22500" speed="300" manacost="10000">
+    <health now="50000" max="50000"/>
+    <look type="12" head="104" body="87" legs="85" feet="94" corpse="6068"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="1"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="40"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+    <attack name="melee" interval="1500" min="-800" max="-1400"/>
+      <attack name="great energy beam" interval="4000" chance="40" min="-900" max="-1500"/>
+<attack name="energy" interval="2500" range="7" radius="4" target="1" min="-600" max="-800">
+  <attribute key="shootEffect" value="energy" /> 
+  <attribute key="areaEffect" value="energyarea" /> 
+  </attack>
+      <attack name="energy" interval="3000" chance="50" min="-20" max="-20"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="4000" chance="60" min="50" max="80"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="80000" chance="10">
+      <voice sentence="ENERGY!!!!"/>
+    </voices>
+    <loot>
+      <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+      <item id="2677" countmax="10" chance1="100000" chancemax="0"/>
+      <item id="2146" countmax="2" chance="10000"/>
+      <item id="7407" chance="1200"/>
+      <item id="1995" chance="100000">
+	  <item id="6500" countmax="2" chance="20000"/>
+       <inside>
+	  <item id="2196" chance="850"/>
+          <item id="2542" chance="700"/> <!-- Plasma Shield -->
+          <item id="6132" chance="300"/> <!-- Soft Boots -->
+          <item id="11753" chance="500" /> <!-- arcane robe -->
+		  <item id="11754" chance="600" /> <!-- arcane legs -->
+          <item id="2421" chance="700"/> <!-- thunder hammer -->
+          <item id="2407" chance="900"/> <!-- Bright Sword -->
+		  <item id="10220" chance="700"/> <!-- eletric amulet -->
+        </inside>
+       </item>
+    </loot>
+  </monster>

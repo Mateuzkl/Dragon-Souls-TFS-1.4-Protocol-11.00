@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Stone Man" nameDescription="Stone Man" race="blood" experience="38000" speed="300" manacost="0">
+    <health now="150000" max="150000"/>
+    <look type="333" head="96" body="97" legs="96" feet="97" addons="3" corpse="3065"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="1500" min="-1000" max="-2000"/>
+      <attack name="melee" interval="2500" chance="70" min="-2000" max="-3500"/>
+      <attack name="dark sd" interval="3000" chance="70" min="-2000" max="-2900" range="4"/>
+      <attack name="master gravita" interval="4000" min="-3500" max="-4500" range="4"/>
+	  <attack name="Drunk rune" interval="3500" chance="40" range="4"/>
+    </attacks>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="2000" chance="20">
+      <voice sentence="Your energy is mine."/>
+      <voice sentence="Now your life has come to the end, hahahaha!"/>
+    </voices>
+    <loot>
+	  <item id="2152" countmax="20" chance1="333333" chancemax="0"/> <!-- Platinum gold -->
+      <item id="2152" countmax="30" chance1="100000" chancemax="0"/> <!-- Platinum gold -->
+	  <item id="2031" chance="66666"/> <!-- waterskin of void -->
+	  <item id="2789" countmax="10" chance1="333333" chancemax="0"/> <!-- brown mushroom -->
+	  <item id="7390" chance="900"/> <!-- Justice Seeker -->
+	  <item id="2436" chance="9000"/> <!-- Skull Staff -->
+	  <item id="8300" chance="700"/> <!-- sematcrystal -->
+      <item id="2167" chance="10000"/> <!-- Energy Ring -->     
+	  <item id="2070" chance="22222"/>
+      <item id="11536" chance="40000">
+        <inside>
+          <item id="11689" chance="620"/> <!-- Mind Hat -->
+		  <item id="11690" chance="640"/> <!-- Mind Robe -->
+		  <item id="11978" chance="601"/> <!-- Mind Wand -->
+          <item id="2453" chance="760"/>  <!-- Arcane Wand --> 
+		  <item id="11768" chance="780"/> <!-- floyd blue hat -->          
+		  <item id="12184" chance="750"/> <!-- Shynne Boots -->
+		  <item id="11917" chance="730"/> <!-- Mind Shield -->  
+		  <item id="11405" chance="700"/> <!-- priest amulet -->
+	 </inside>
+      </item>
+    </loot>
+  </monster>

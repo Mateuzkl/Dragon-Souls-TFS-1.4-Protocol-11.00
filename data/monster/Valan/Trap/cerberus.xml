@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Cerberus" nameDescription="a cerberus" race="fire" experience="38000" speed="240" manacost="150">
+  <health now="350250" max="350250"/>
+  <look type="757" head="20" body="30" legs="40" feet="50" corpse="39537"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+     <attack name="melee" interval="1000" min="-3000" max="-6000"/>
+     <attack name="physical" interval="1000" chance="5" range="7" min="-3015" max="-4035">
+     <attribute key="shootEffect" value="largerock" /> 
+  </attack>
+     <attack name="dragon firewave" interval="2500" chance="10" min="-3580" max="-4020"/>
+     <attack name="dragon fireball" interval="2500" chance="10" min="-3070" max="-4595"/>
+     <attack name="melee" interval="2500" range="2" chance="5" min="-3000" max="-4000" > 
+     <attribute key="shootEffect" value="largerock" /> 
+  </attack>
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="4000" chance="15" min="1200" max="1400">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="0"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="100"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="CAN NOT LEAVE!"/>
+    <voice sentence="GRRRRRRRR ..."/>
+  </voices>
+  <loot>
+    <item id="2160" countmax="3" chance1="100000" chancemax="0"/>
+    <item id="2160" countmax="3" chance1="100000" chancemax="0"/>
+     <item id="5468" chance="2500"/> 
+     <item id="2353" chance="2500"/>  
+    <item id="2400" chance="1000"/> 
+    <item id="1993" chance="80000">
+      <inside>
+        <item id="6300" chance="1000"/> 
+        <item id="38875" chance="800"/> 
+        <item id="38948" chance="700"/> 
+        <item id="38777" chance="700"/> 
+	<item id="38979" chance="700"/> 
+      </inside>
+    </item>
+  </loot>
+</monster>

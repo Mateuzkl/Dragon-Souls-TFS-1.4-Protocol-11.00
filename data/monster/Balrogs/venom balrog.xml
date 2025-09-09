@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<monster name="Venom Balrog" nameDescription="Venom Balrog" experience="45000" speed="300" race="Venom">
+  <health now="400000" max="400000"/>
+  <look type="12" head="82" body="114" legs="82" feet="82" corpse="6068"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100"/>
+   <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1000" chance="100" min="-2400" max="-3700" range="1"/>
+    <attack name="melee" interval="2000" chance="100" min="-2400" max="-3700" range="1"/>
+    <attack name="poison" interval="3500" chance="60" min="-5200" max="-5400"/>
+    <attack name="hydra poisonwave" interval="2000" chance="40" min="-5100" max="-6300">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="poison" interval="3000" chance="30" min="-5500" max="-6700"/>
+  </attacks>
+  <defenses defense="45" armor="40">
+    <defense name="Light Healing" interval="20000" chance="60" min="8000" max="12000">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+  <voices speed="0" chance="5">
+    <voice sentence="Venom!!!"/>
+  </voices>
+  <loot>
+    <item id="1998" countmax="1" chance="100000">
+      <inside>
+        <item id="39515" countmax="1" chance="700"/>
+        <item id="38849" countmax="1" chance="500"/>
+        <item id="38871" countmax="1" chance="500"/>
+        <item id="38861" countmax="1" chance="500"/>
+        <item id="38768" countmax="1" chance="500"/>
+        <item id="38987" countmax="1" chance="500"/>
+        <item id="39056" countmax="1" chance="500"/>
+        <item id="2132" countmax="1" chance="850"/>
+        <item id="2522" countmax="1" chance="700"/>
+        <item id="2523" countmax="1" chance="750"/>
+      </inside>
+    </item>
+    <item id="2149" countmax="15" chance="10000"/>
+    <item id="2152" countmax="100" chance="100000"/>
+    <item id="2160" countmax="5" chance="100000"/>
+    <item id="2408" countmax="1" chance="700"/>
+    <item id="2789" countmax="15" chance="10000"/>
+	<item id="6500" countmax="3" chance="2800"/>
+    <item id="2798" countmax="1" chance="900"/>
+  </loot>
+</monster>

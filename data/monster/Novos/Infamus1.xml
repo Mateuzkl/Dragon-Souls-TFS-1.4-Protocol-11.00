@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Infamus" species="magic" nameDescription="Infamus" skull="red" race="blood" experience="500000" speed="600" manacost="0">
+    <health now="800000" max="800000"/>
+    <look type="351" head="95" body="116" legs="95" feet="114" corpse="11357"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-7000" max="-8200"/>
+      <attack name="dark music" interval="3000" chance="40" min="-8000" max="-9000"/>
+      <attack name="tides of darkness" interval="4500" chance="60" min="-7000" max="-8000"/>
+      <attack name="Sudden Death" interval="6000" chance="10" min="-8000" max="-9000"/>
+      <attack name="melee" interval="10000" chance="10" min="-8000" max="-9000"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+		<defense name="invisible" interval="5000" chance="50" duration="5000">
+		<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <loot>
+    </loot>
+  </monster>

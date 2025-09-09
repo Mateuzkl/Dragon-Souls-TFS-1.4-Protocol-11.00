@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Royal Protector" tp="1" species="human"  nameDescription="a royal protector" race="blood" experience="6000" speed="220" manacost="0">
+    <health now="5000" max="5000"/>
+    <look type="130" head="1" body="68" legs="114" feet="114" corpse="3128"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="30"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="5"/>
+      <flag runonhealth="2100"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="1000" min="-200" max="-550"/>
+      <attack name="Energy" interval="0" chance="20"  min="-200" max="-150"/>
+      <attack name="Great Energy Beam" interval="1" chance="20" min="-100" max="-350"/>
+      <attack name="ultimate mort" interval="1" chance="20" min="-100" max="-450"/>
+      <attack name="energy strike" interval="1" chance="20" min="-100" max="-150"/>
+    </attacks>
+    <defenses armor="19" defense="45">
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="0"/>
+      <immunity poison="0"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <loot>
+      <item id="4851" chance="100000"/>
+    </loot>
+  </monster>

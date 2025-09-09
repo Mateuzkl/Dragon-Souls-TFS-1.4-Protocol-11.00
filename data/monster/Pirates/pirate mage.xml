@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<monster name="Pirate Mage" nameDescription="a pirate mage" race="blood" experience="1550" speed="310" manacost="0">
+
+	<health now="805" max="805"/>
+
+  <look type="196" corpse="6071" /> 
+	<targetchange interval="5000" chance="8"/>
+
+	<strategy attack="100" defense="0"/>
+	<flags>
+
+		<flag summonable="0"/>
+
+		<flag attackable="1"/>
+
+		<flag hostile="1"/>
+	
+		<flag illusionable="0"/>
+
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+
+		<flag canpushitems="1"/>
+
+		<flag canpushcreatures="1"/>
+
+		<flag staticattack="90"/>
+
+		<flag targetdistance="4"/>
+
+		<flag runonhealth="100"/>
+
+	</flags>
+
+ <attacks>
+  <attack name="melee" interval="2000" skill="75" attack="30" /> 
+ <attack name="fire" interval="2000" chance="13" range="7" min="-160" max="-390">
+  <attribute key="shootEffect" value="fire" /> 
+  <attribute key="areaEffect" value="firearea" /> 
+  </attack>
+ <attack name="energy" interval="3000" chance="34" range="7" min="-115" max="-345">
+  <attribute key="shootEffect" value="energy" /> 
+  <attribute key="areaEffect" value="energy" /> 
+  </attack>
+ <attack name="poisonfield" interval="1000" chance="15" range="7" radius="1" target="1">
+  <attribute key="shootEffect" value="energy" /> 
+  </attack>
+  </attacks>
+ <defenses armor="16" defense="10">
+ <defense name="healing" interval="1000" chance="10" min="10" max="40">
+  <attribute key="areaEffect" value="blueshimmer" /> 
+  </defense>
+  </defenses>
+	<elements>
+
+  <element physicalPercent="70" /> 
+  <element deathPercent="80" /> 
+  <element earthPercent="90" /> 
+  <element holyPercent="-50" />	</elements>
+
+	<immunities>
+		<immunity invisible="1"/>
+
+	</immunities>
+
+	<voices interval="5000" chance="10">
+	
+  <voice sentence="Yooh Ho Hooh Ho!" /> 
+  <voice sentence="Hell is waiting for You!" /> 
+  <voice sentence="It's alive!" /> 
+  <voice sentence="The curse! Aww the curse!" /> 
+  <voice sentence="You will not get my treasure!" /> 
+
+	</voices>
+
+	<loot>
+	
+	<item id="2148" countmax="74" chance="40000"/><!-- gold coin -->
+	
+	<item id="2385" chance="10321"/><!-- sabre -->
+
+	<item id="2114" chance="833"/><!-- piggy bank -->
+	
+	<item id="2489" chance="1333"/><!-- dark armor -->
+	
+	<item id="2521" chance="1000"/><!-- dark shield -->
+	
+  <item id="2165" chance="666" /> 
+	<item id="6096" chance="909"/><!-- pirate hat -->
+	
+	<item id="6095" chance="5000"/><!-- pirate shirt -->
+	
+  <item id="2655" chance="666" /> 
+	<item id="5926" chance="100000"><!-- pirate backpack -->
+	
+		<inside>
+	
+			<item id="5091" chance="1666"/><!-- treasure map -->
+	
+			<item id="5462" chance="450"/><!-- pirate boots -->
+
+  <item id="2165" chance="666" /> 	
+			<item id="5792" chance="3333"/><!-- dice -->
+	
+  <item id="5917" chance="916" /> 
+			<item id="2376" chance="6666"/><!-- sword -->
+	
+  <item id="2383" chance="800" /> 
+		<item id="6098" countmax="1" chance="5000"/><!-- eye patch -->
+
+			</inside>
+
+		</item>
+
+	</loot>
+
+</monster>

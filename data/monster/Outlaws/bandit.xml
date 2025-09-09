@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<monster name="Bandit" nameDescription="a bandit" race="blood" experience="65" speed="90" manacost="450" raceid="223">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Bandit" nameDescription="a bandit" race="blood" experience="300" speed="180" manacost="450">
 	<health now="245" max="245"/>
-	<look type="129" head="58" body="59" legs="45" feet="114" corpse="20331"/>
-	<targetchange interval="5000" chance="0"/>
+	<look type="129" head="58" body="59" legs="45" feet="114" corpse="6080"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
 	<flags>
 		<flag summonable="1"/>
 		<flag attackable="1"/>
@@ -15,16 +16,13 @@
 		<flag targetdistance="1"/>
 		<flag staticattack="90"/>
 		<flag runonhealth="25"/>
-		<flag canwalkonenergy="0"/>
-		<flag canwalkonfire="0"/>
-		<flag canwalkonpoison="0"/>
 	</flags>
 	<attacks>
-		<attack name="melee" interval="2000" min="0" max="-45"/>
+		<attack name="melee" interval="2000" min="-5" max="-43"/>
 	</attacks>
-	<defenses armor="15" defense="15"/>
+	<defenses armor="11" defense="15"/>
 	<elements>
-		<element physicalPercent="-10"/>
+		<element physicalPercent="-12"/>
 		<element deathPercent="-5"/>
 	</elements>
 	<voices interval="5000" chance="10">
@@ -32,14 +30,17 @@
 		<voice sentence="Hand me your purse!"/>
 	</voices>
 	<loot>
-		<item name="gold coin" countmax="30" chance="49000"/>
-		<item name="axe" chance="29900"/>
-		<item name="mace" chance="10100"/>
-		<item name="chain helmet" chance="5000"/>
-		<item name="iron helmet" chance="520"/>
-		<item name="brass armor" chance="2500"/>
-		<item name="brass shield" chance="16800"/>
-		<item name="leather legs" chance="15500"/>
-		<item id="2685" countmax="2" chance="7630"/> <!-- tomato -->
+		<item id="2148" countmax="28" chance="100000"/><!-- gold coin -->
+		<item id="2388" chance="6666"/><!-- hatchet -->
+		<item id="2386" chance="5000"/><!-- axe -->
+		<item id="2484" chance="20000"/><!-- studded armor -->
+		<item id="2530" chance="6666"/><!-- copper shield -->
+		<item id="2649" chance="10000"/><!-- leather legs -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2787" countmax="2" chance="20000"/><!-- white mushroom -->
+<item id="2391" chance="4000"/><!-- war hammer -->
+			</inside>
+		</item>
 	</loot>
 </monster>

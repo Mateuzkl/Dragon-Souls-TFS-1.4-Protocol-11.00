@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Dark Star Eye" species="magic" nameDescription="Dark Star Eye" race="blood" experience="500000" speed="400" manacost="0">
+    <health now="1400000" max="1400000"/>
+    <look type="530" corpse="13716"/>
+    <targetchange interval="10000" chance="5"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="210"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="1000" min="-8000" max="-10000"/>
+	  <attack name="dark sd" interval="4000" chance="70" min="-9000" max="-12000" range="3"/> 
+	  <attack name="Tides of Darkness_M" interval="10000" chance="60" min="-13000" max="-15000"/>
+      <attack name="dark berserk" interval="3500" chance="40" min="-9000" max="-13200"/>
+   	  <attack name="Ghastly darkwave" interval="5000" chance="100" min="-9000" max="-15200"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+      <defense name="light healing" interval="4000" chance="40" min="13800" max="16300"/>
+    </defenses>
+		<elements>
+		<element physicalPercent="20"/>
+		<element firePercent="20"/>
+		<element icePercent="20"/>
+		<element earthPercent="20"/>
+		<element energyPercent="-20"/>
+		<element holyPercent="-15"/>
+	</elements>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="8000" chance="10">
+      <voice sentence="I will be reborn even stronger!"/>
+      <voice sentence="DIE HUMAN!"/>
+    </voices>
+    <loot>
+		<item id="2160" countmax="50" chance1="100000" chancemax="0"/>
+		<item id="11667" chance="700"/> <!-- master balrog helmet -->        
+		<item id="11668" chance="700"/> <!-- master balrog armor -->
+		<item id="11765" chance="700"/> <!-- horned helmet  -->        
+		<item id="11766" chance="700"/> <!-- horned armor -->
+		<item id="12426" countmax="1" chance="1000"/> <!-- dodgecrystal -->
+		 <item id="8300" chance="1000"/> <!-- sematcrystal -->
+		<item id="2147" countmax="15" chance1="100000" chancemax="0"/>
+		<item id="11531" chance="20000">
+        <inside>
+          <item id="11741" chance="500"/> <!-- Ancalagon helmet -->        
+          <item id="11742" chance="500"/> <!-- ancalagon armor -->
+          <item id="11743" chance="500"/> <!-- Ancalagon legs -->
+          <item id="11924" chance="600"/> <!-- Ancalagon shield -->
+          <item id="12013" chance="600"/> <!-- ancalagon grinder -->
+          <item id="12194" chance="600"/> <!-- darkness axe -->
+		  <item id="12040" chance="600"/> <!-- darkness'bat sword -->
+        </inside>
+      </item>
+    </loot>
+<script>
+<event name="Ancalagon"/>
+</script>
+</monster>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <monster name="Undergrownd" nameDescription="a undergrownd" race="blood" experience="21500" speed="290" manacost="0">
+  <health now="40000" max="40000" /> 
+  <look type="344" corpse="11305" /> 
+  <targetchange interval="5000" chance="8" /> 
+  <strategy attack="100" defense="0" /> 
+ <flags>
+<flag summonable="0"/>
+<flag attackable="1"/>
+<flag hostile="1"/>
+<flag illusionable="0"/>
+<flag convinceable="0"/>
+<flag pushable="0"/>
+<flag canpushitems="1"/>
+<flag canpushcreatures="1"/>
+<flag targetdistance="1"/>
+<flag staticattack="90"/>
+<flag runonhealth="0"/>
+  </flags>
+ <attacks>
+  <attack name="melee" interval="2000" chance="24" min="-1050" max="-1510"/>
+  <attack name="berserk" interval="3000"  chance="24" min="-350" max="-610"/>
+  <attack name="dark music" interval="3500"  chance="24" min="-2000" max="-2999"/>
+  <attack name="nazgul sonar" interval="6000"  chance="24" min="-3000" max="-3123"/>
+  <attack name="explosion" interval="2000" chance="24"  min="-250" max="-410"/>
+ <attack name="physical" interval="1000" chance="24" range="7" min="-50" max="-500">
+  <attribute key="shootEffect" value="largerock" /> 
+  </attack>
+  </attacks>
+ <defenses armor="26" defense="20">
+ <defense name="healing" interval="1000" chance="10" min="150" max="305">
+  <attribute key="areaEffect" value="blueshimmer" /> 
+  </defense>
+  </defenses>
+ <elements>
+  <element earthPercent="100" /> 
+  <element physicalPercent="22" /> 
+  <element deathPercent="20" /> 
+  <element firePercent="-50" /> 
+  </elements>
+ <immunities>
+  <immunity lifedrain="1" /> 
+  </immunities>
+ <voices interval="5000" chance="10">
+  <voice sentence="SSSSZSSSZSS!" /> 
+  <voice sentence="FARENIGHT POWER!" /> 
+  </voices>
+ <loot>
+  <item id="2148" countmax="100" chance="100000" /> 
+
+  <item id="2148" countmax="100" chance="100000" /> 
+  <item id="2148" countmax="100" chance="100000" /> 
+<!--  gold coin 
+  --> 
+  <item id="2149" countmax="3" chance="2333" /> 
+ <!--  sshapire 
+  --> 
+  <item id="2230" chance="100000" /> 
+ <!--  bone
+  --> 
+  <item id="2487" chance="1200" /> 
+<!--  royal helmet 
+  --> 
+ <!--  blind armor 
+  --> 
+  <item id="11365" countmax="5" chance="3333" /> 
+ <!--  terramite legs
+  --> 
+  <item id="2492" chance="1000" /> 
+ <!--  dsm
+  --> 
+ <item id="1987" chance="100000">
+ <!--  bag 
+  --> 
+ <inside>
+  <item id="2476" chance="2000" /> 
+ <!--  k armor 
+  --> 
+ <!--  awakus sword
+  --> 
+  </inside>
+  </item>
+  </loot>
+  </monster>

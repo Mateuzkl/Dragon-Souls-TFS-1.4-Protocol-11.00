@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Aracnid" tp="1" nameDescription="an Aracnid" species="poison" race="venom" experience="15000" speed="300" manacost="0">
+    <health now="100000" max="100000"/>
+    <look type="754" head="0" body="0" legs="0" feet="0" corpse="39529"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="1"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="poison" interval="4000" chance="40" min="-400" max="-800"/>
+      <attack name="melee" interval="15000" chance="40"  min="-1000" max="-1350"/>
+      <attack name="melee" interval="2000"  chance="40" min="-200" max="-600"/>
+      <attack name="melee" interval="9500"  chance="40" range="2" chance="5" min="-890" max="-1300"/>
+      <attack name="poison" interval="3500" chance="40" min="-500" max="-799"/>
+      <attack name="poisonfield" interval="1000" chance="30" range="7" radius="1" target="1">
+      <attribute key="shootEffect" value="poison"/>
+    </attack>
+    </attacks>
+    <defenses armor="3" defense="35"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+     <loot>
+      <item id="2152" countmax="50" chance1="100000" chancemax="0"/>
+      <item id="2152" countmax="80" chance1="100000" chancemax="0"/>
+      <item id="2789" countmax="10" chance1="100000" chancemax="0"/>
+      <item id="2169" chance="5000"/>
+      <item id="1991" chance="100000">
+        <inside>
+          <item id="38924" chance="900"/>
+          <item id="38747" chance="6000"/>
+          <item id="38828" chance="3000"/>
+          <item id="2472" chance="10000"/>
+        </inside>
+      </item>
+    </loot>
+  </monster>

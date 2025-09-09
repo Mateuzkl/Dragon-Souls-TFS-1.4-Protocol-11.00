@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Second General" species="magic" nameDescription="Second General" race="blood" experience="1000000" speed="400" manacost="0">
+    <health now="700000" max="700000"/>
+    <look type="708" head="20" body="30" legs="40" feet="50" corpse="39076"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="4"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="arcane wand" interval="1500"   chance="40" min="-5000" max="-7200" range="5"/>
+      <attack name="heavy magic missile" interval="3000" chance="60" range="5" min="-8000"  max="-9300"/>
+      <attack name="sudden death" interval="4500" chance="40" range="5" min="-8600" max="-13800"/>
+	   <attack name="master gravita" interval="7320" chance="25" min="-13500" max="-16500" range="4"/>
+      <attack name="energy" interval="3500" range="7"  chance="40"  radius="4" target="1" min="-5000" max="-7000">
+  <attribute key="shootEffect" value="energy" /> 
+  <attribute key="areaEffect" value="energyarea" /> 
+  </attack>
+      <attack name="Great Energy Beam" interval="4000" chance="40" min="-9300" max="-13700"/>
+    </attacks>
+        <defenses armor="40" defense="45">
+        <defense name="Invisible" interval="8000" chance="30"/>
+      <defense name="Light Healing" interval="4000" chance="20" min="500" max="600"/>
+    </defenses> 
+	 <immunities>
+    <immunity physical="0"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="0"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+  </immunities>
+    <voices interval="6000" chance="5">
+      <voice sentence="because it will not be as easy."/>
+      <voice sentence="I would like to know as a human can be so strong."/>
+      <voice sentence="Im defenser of the king Sauron!!Kill all intruders!"/>
+    </voices>
+        <loot>
+      <item id="2160" countmax="15" chance1="100000" chancemax="0"/>
+      <item id="2147" countmax="15" chance1="100000" chancemax="0"/>
+      <item id="2145" countmax="15" chance1="100000" chancemax="0"/>
+      <item id="2146" countmax="15" chance1="100000" chancemax="0"/>
+	  <item id="39554" chance="900"/> 
+	    <item id="39556" chance="900"/> 
+      <item id="3940" chance="10000">
+        <inside>
+          <item id="38903" chance="700"/> 
+          <item id="38999" chance="700"/> 
+          <item id="38978" chance="700"/> 
+          <item id="38845" chance="850"/> 
+          <item id="38836" chance="850"/> 
+          <item id="38848" chance="700"/> 
+          <item id="38857" chance="700"/> 
+		  <item id="38849" chance="750"/>
+		  <item id="38971" chance="700"/> 
+		  <item id="39078" chance="700"/>
+		  <item id="38705" chance="750"/> 
+		  <item id="21244" chance="800"/><!-- aol -->
+        </inside>
+      </item>
+    </loot>
+  </monster>

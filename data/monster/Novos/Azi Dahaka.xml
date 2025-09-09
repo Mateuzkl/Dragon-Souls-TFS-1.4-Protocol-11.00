@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<monster name="Azi Dahaka" nameDescription="Azi Dahaka" experience="150000" speed="300" race="Fire">
+  <health now="650000" max="650000"/>
+  <look type="380" corpse="12323"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100"/>
+ <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1300" chance="100" min="-6300" max="-7100" range="1"/>
+    <attack name="Great Fireball" interval="3000" chance="60" min="-7100" max="-8100" range="3">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="explosion_Monster" interval="4000" chance="70" min="-8300" max="-9600" range="3">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="dragon firewave" interval="5000" chance="50" min="-9100" max="-10300">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="dragon lord fireball" interval="6000" chance="60" min="7000" max="11000" range="3">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses defense="45" armor="40">
+    <defense name="Light Healing" interval="18000" chance="60" min="7000" max="11000">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices speed="0" chance="10">
+    <voice sentence="burn on the bottom of hell, human!"/>
+    <voice sentence="burn!"/>
+  </voices>
+  <loot>
+    <item id="2160" countmax="15" chance="100000"/>
+	<item id="12426" countmax="1" chance="1000"/> <!-- dodgecrystal -->
+	<item id="8300" chance="1000"/> <!-- sematcrystal -->
+    <item id="2147" countmax="15" chance="100000"/>
+	<item id="2795" countmax="6" chance="20000"/><!-- fire mushroom -->
+    <item id="2353" countmax="1" chance="2500"/>
+    <item id="5468" countmax="1" chance="2500"/>
+    <item id="11237" countmax="1" chance="100000">
+      <inside>
+	    <item id="11757" countmax="1" chance="600"/> <!-- flame magic hat -->
+        <item id="11758" countmax="1" chance="600"/> <!-- flame magic robe -->
+		<item id="11929" countmax="1" chance="700"/> <!-- flame magic shield -->
+        <item id="12152" countmax="1" chance="800"/> <!-- magma axe -->
+        <item id="12060" countmax="1" chance="800"/> <!-- alabarda of fire -->
+		<item id="12022" countmax="1" chance="800"/> <!-- flame sword -->
+        <item id="12180" countmax="1" chance="800"/> <!-- magic fire axe -->
+		<item id="11984" countmax="1" chance="700"/> <!-- flame magic staff -->
+		<item id="9333" countmax="1" chance="900"/> <!-- firewalker boots -->
+      </inside>
+    </item>
+  </loot>
+</monster>

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<monster name="Ghastly Dragon" nameDescription="ghastly dragon" experience="200000" speed="450" race="Blood">
+  <health now="350000" max="350000"/>
+  <look type="351" body="116" legs="132" feet="94" corpse="11357"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100"/>
+  <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee_death" interval="1000" chance="100" min="-2570" max="-3500" range="1"/>
+    <attack name="melee_death" interval="2000" chance="80" min="-3530" max="-4500" range="1"/>
+    <attack name="dark sd" interval="3000" chance="60" min="-4000" max="-5000" range="5"/>
+    <attack name="dark sd" interval="4000" chance="40" min="-420" max="-5200" range="5"/>
+	<attack name="Ghastly darkwave" interval="7520" chance="100" min="-5000" max="-6000" range="1"/>
+  </attacks>
+  <defenses defense="44" armor="47">
+    <defense name="Light Healing" interval="8000" chance="60" min="1000" max="2000">
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices speed="0" chance="30">
+    <voice sentence="Chrush the intruders!"/>
+    <voice sentence="my strength and my size overcomes many of you!"/>
+    <voice sentence="You're so little!"/>
+  </voices>
+  <loot>
+  </loot>
+</monster>

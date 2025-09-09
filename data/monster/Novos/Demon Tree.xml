@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Demon Tree" nameDescription="Demon Tree" race="venom" experience="14000" speed="200" manacost="150">
+  <health now="45000" max="45000"/>
+  <look type="310" corpse="9868"/>
+  <targetchange interval="5000" chance="8"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1500" min="-800" max="-1500"/>
+	<attack name="melee" interval="2700" chance="80" min="-1000" max="-2000"/> 
+	<attack name="earth atack" interval="3410" chance="70" range="4" min="-1555" max="-2035"/>
+    <attack name="earth atack" interval="5500" chance="50" range="4" min="-1580" max="-2920"/>
+    <attack name="Sudden Death" interval="4500" chance="30" range="4" min="-2070" max="-3595"/>
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="4000" chance="15" min="1200" max="2000">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="0"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="3000"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="CAN NOT LEAVE!"/>
+  </voices>
+    <loot>
+	<item id="2152" countmax="15" chance="99900"/> <!-- platium coin -->
+	<item id="2152" countmax="25" chance="99900"/> <!-- platium coin -->
+	<item id="2149" countmax="3" chance="10000"/> <!-- small emerald -->
+	<item id="2789" countmax="5" chance="60000"/> <!-- ham -->
+	<item id="2168" chance="2500"/> <!-- life ring -->
+	<item id="2214" chance="1200"/> <!-- ring of healing -->
+	<item id="2798" chance="1200"/> <!-- hydra egg -->
+	<item id="11550" chance="80000">
+    <inside>
+		<item id="12522" chance="600"/> 
+		<item id="12523" chance="600"/> 
+		<item id="12524" chance="600"/> 
+		<item id="12567" chance="600"/> 
+		<item id="7392" chance="600"/> 
+		<item id="5803" chance="600"/> 
+		<item id="12184" chance="600"/> 
+	</inside>
+	</item>
+    </loot>
+  </monster>

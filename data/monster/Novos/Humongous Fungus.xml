@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Humongous Fungus" tp="1" nameDescription="Humongous Fungus" race="blood" experience="38000" speed="400" manacost="0">
+    <health now="180000" max="180000"/>
+    <look type="395" corpse="12296"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-2800" max="-3000"/>
+      <attack name="spear" interval="6500" min="-900" max="-2100" range="4"/>
+    </attacks>
+    <defenses armor="41" defense="42"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="4000" chance="60">
+      <voice sentence="Renat Ulderek."/>
+      <voice sentence="Ikem Rambo Zambo."/>
+      <voice sentence="We can not reach a human in general!"/>
+    </voices>
+    <loot>
+      <item id="2160" countmax="4" chance1="100000" chancemax="0"/>
+      <item id="2220" chance="5100"/>
+      <item id="2226" chance="5600"/>
+      <item id="2227" chance="5700"/>
+      <item id="2228" chance="5800"/>
+      <item id="2229" chance="5900"/>
+      <item id="2930" chance="5000"/>
+      <item id="2393" chance="1000"/>
+      <item id="3939" chance="100000">
+        <inside>
+          <item id="2431" chance="600"/> --SCA
+          <item id="2390" chance="600"/> --Magic Longsword 
+          <item id="2415" chance="600"/> --Great Axe
+          <item id="2421" chance="600"/> --Thunder Hammer
+          <item id="2523" chance="600"/> --Blessed Shield
+          <item id="7392" chance="600"/> --Orcish Maul
+          <item id="11407" chance="355"/> --Jomungard Axe
+          <item id="11414" chance="244"/> --Mace of Fury
+        </inside>
+      </item>
+    </loot>
+  </monster>

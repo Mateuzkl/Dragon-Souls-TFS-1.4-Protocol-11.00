@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="First General" species="magic" nameDescription="First General" race="blood" experience="1000000" speed="400" manacost="0">
+    <health now="600000" max="600000"/>
+    <look type="709" head="95" body="116" legs="95" feet="114" corpse="39070"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+	  <attack name="melee" interval="1300" min="-9000" max="-10000"/>
+      <attack name="Critical1" interval="6" chance="20" min="-6000" max="-10200" range="5"/>
+	  	  <attack name="spear" interval="5500" chance="80" min="-6000" max="-10200" range="5"/>
+      <attack name="Diceshaker_1" interval="2000" chance="60" min="-8000" max="-10200"/>
+      <attack name="berserk_1" interval="4500" chance="40" min="-8000" max="-11000"/>
+      <attack name="melee" interval="2000" chance="50" min="-8000" max="-12000"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="4000" chance="20" min="500" max="600"/>
+    </defenses>
+		<immunities>
+    <immunity physical="0"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="0"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+  </immunities>
+    <voices interval="4000" chance="25">
+      <voice sentence="then we will fight!"/>
+      <voice sentence="You'll have to go back to where it came from, because you maybe have to try to move it away."/>
+      <voice sentence="Get out now!!"/>
+    </voices>
+    <loot>
+      <item id="2160" countmax="20" chance1="100000" chancemax="0"/>
+	  <item id="39554" chance="900"/> 
+	  <item id="39556" chance="900"/> 
+      <item id="2147" countmax="15" chance1="100000" chancemax="0"/>
+      <item id="38833" chance="700"/> 
+      <item id="3940" chance="10000">
+        <inside>
+          <item id="38989" chance="700"/> 
+          <item id="38847" chance="700"/> 
+          <item id="38764" chance="700"/> 
+          <item id="38770" chance="750"/> 
+          <item id="38867" chance="700"/> 
+		  <item id="38788" chance="700"/> 
+		  <item id="38791" chance="700"/> 
+		  <item id="39560" chance="700"/>
+		  <item id="38772" chance="700"/> 
+		  <item id="21244" chance="800"/><!-- aol -->
+        </inside>
+      </item>
+    </loot>
+  </monster>

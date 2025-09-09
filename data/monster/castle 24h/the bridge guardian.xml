@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<monster name="The Bridge Guardian" nameDescription="the bridge guardian" race="blood" experience="0" speed="0">
+	<health now="27500" max="27500" />
+	<look typeex="23113" corpse="0" />
+	<targetchange interval="5000" chance="20" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="80" />
+		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-2120" />
+		<attack name="physical" interval="2000" chance="80" range="10" min="-75" max="-465">
+			<attribute key="shootEffect" value="whirlwindsword" />
+			<attribute key="areaEffect" value="stun" />
+		</attack>
+		<attack name="physical" interval="2000" chance="10" length="8" spread="0" min="-150" max="-500">
+			<attribute key="areaEffect" value="dice" />
+		</attack>
+		<attack name="physical" interval="2000" chance="15" length="7" spread="3" min="-75" max="-120">
+			<attribute key="areaEffect" value="blackspark" />
+		</attack>
+	</attacks>
+	<defenses armor="35" defense="35">
+		<defense name="healing" interval="2000" chance="15" min="-50" max="-125">
+			<attribute key="areaEffect" value="whitenote" />
+		</defense>
+	</defenses>
+	<elements>
+		<element energyPercent="10" />
+		<element earthPercent="40" />
+		<element icePercent="-5" />
+		<element holyPercent="-10" />
+		<element physicalPercent="50" />
+		<element deathPercent="-5" />
+		<element firePercent="10" />
+	</elements>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="You are not allowed to pass!" />
+		<voice sentence="Kill all intruders!" />
+		<voice sentence="Obey orders and go back or you will die!" />
+	</voices>
+</monster>

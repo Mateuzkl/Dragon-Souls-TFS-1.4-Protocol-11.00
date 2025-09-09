@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<monster name="Rotspit" nameDescription="Rotspit" experience="100000" speed="300" race="venom">
+  <health now="350000" max="350000"/>
+  <look type="449" corpse="12601"/>
+  <targetchange interval="5000" chance="0"/>
+  <strategy attack="100"/>
+  <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+   <attacks>
+      <attack name="poison" interval="1000" min="-1500" max="-3000" range="1"/>
+	  <attack name="poison" interval="2000" min="-3000" max="-3500" range="1"/>
+      <attack name="poison strike" interval="3500" chance="60" min="-3500" max="-4500" range="5"/>
+	  <attack name="mas poison" interval="6000" chance="40" min="-5300" max="-6300"/>
+      <attack name="poison" interval="5000" chance="50" min="-4300" max="-5300" range="5"/>
+      <attack name="poisonfield" interval="1000" chance="30" range="5" radius="1" target="1">
+      <attribute key="shootEffect" value="poison"/>
+    </attack>
+    </attacks>
+  <defenses defense="44" armor="47">
+    <defense name="Light Healing" interval="8000" chance="60" min="8000" max="12000">
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices interval="5000" chance="30">
+    <voice sentence="Bssssss"/>
+  </voices>
+  <loot>
+  	<item id="2160" countmax="7" chance="100000"/> <!-- crystal coin -->
+  	<item id="2523" countmax="1" chance="700"/> <!-- blessed shield -->
+	<item id="2149" countmax="15" chance="10000"/> <!-- small emeralds -->
+	<item id="2789" countmax="15" chance="10000"/> <!-- brown mushrooms -->
+    <item id="11540" countmax="1" chance="60000">
+      <inside>
+		<item id="12108" countmax="1" chance="700"/> <!-- caribian hammer -->
+        <item id="12063" countmax="1" chance="700"/> <!-- helical sword -->
+		<item id="12183" countmax="1" chance="700"/> <!-- havok's axe -->
+		<item id="12023" countmax="1" chance="700"/> <!-- sword of teseu -->
+        <item id="12177" countmax="1" chance="700"/> <!-- Rose shield -->
+        <item id="11818" countmax="1" chance="700"/> <!-- overseer armor -->
+		<item id="11114" countmax="1" chance="700"/> <!-- overseer boots -->
+		<item id="2522" countmax="1" chance="700"/> <!-- great shield  -->
+      </inside>
+    </item>
+  </loot>
+</monster>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Diamond Golem" tp="1" nameDescription="a Diamond Golem" race="blood" experience="295" speed="570" manacost="0">
+    <health now="385" max="385"/>
+    <look type="261" head="0" body="0" legs="0" feet="0" corpse="7344"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" skill="50" attack="270" />
+      <attack name="berserk" interval="2000" chance="100" min="-42" max="-108" /> 
+      <attack name="paralyze" interval="2000" chance="100" min="-42" max="-108" /> 
+      <attack name="ice" interval="5000" chance="100" min="-42" max="-108" />  
+    </attacks>
+    <defenses armor="30" defense="30">
+      <defense name="light healing" interval="5000" chance="80" min="40" max="85"/>
+    </defenses>
+    <immunities>
+      <immunity poison="0"/>
+      <immunity paralyze="1"/>
+      <immunity invisible="0"/>
+    </immunities>
+    <voices interval="2000" chance="5">
+      <voice sentence="Chrrr"/>
+      <voice sentence="Crrrrk"/>
+      <voice sentence="Gnarr"/>
+    </voices>
+    <loot>
+      <item id="2148" countmax="20" chance1="33333" chancemax="333333"/>
+      <item id="2144" countmax="3" chance1="100" chancemax="0"/>
+      <item id="2146" countmax="5" chance1="100" chancemax="0"/>
+      <item id="2383" chance="1000"/>
+      <item id="2393" countmax="1" chance1="75" chancemax="0"/>
+      <item id="7407" countmax="1" chance1="2500" chancemax="0"/>
+      <item id="2145" countmax="5" chance1="2500" chancemax="0"/>
+      <item id="7441" chance="100"/>
+    </loot>
+  </monster>

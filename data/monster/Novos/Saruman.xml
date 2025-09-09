@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Saruman" species="human" nameDescription="a Saruman" race="blood" experience="200000" speed="500" manacost="0">
+    <health now="800000" max="800000"/>
+    <look type="130" head="0" body="0" legs="0" feet="0" addons="3" corpse="3128"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="5"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+     <attack name="grown trap" interval="9000" chance="35"/>
+    <attack name="silence rune" interval="4000" chance="20"/>
+     <attack name="melee" interval="2000" min="-2500" max="-5000"/>
+    <attack name="sptwand" interval="1000" chance="50" min="-6000" max="-8000"/>
+    <attack name="sudden death" interval="3600" chance="25" min="-7500" max="-9500"/>
+<attack name="ice explosion" interval="4600" chance="30" min="-13500" max="-15500"/>
+<attack name="morte area" interval="3600" chance="25" min="-20500" max="-21500"/>
+    <attack name="Great Energy Beam" interval="5500" chance="30" min="-14000" max="-15000"/>
+	<attack name="paralyze" interval="5000" chance="40" min="-120" max="-320"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+      <defense name="Invisible" interval="10000" chance="20"/>
+      <defense name="light healing" interval="4000" chance="20" min="6000" max="8000"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <summons max="3">
+      <summon name="Urak Hai" interval="6000" chance="40"/>
+    </summons>
+    <voices interval="5000" chance="5">
+      <voice sentence="my spirit increase to fight."/>
+    </voices>
+    <loot>
+      <item id="38915" countmax="3" chance1="100000" chancemax="0"/>
+      <item id="3940" chance="100000">
+        <inside>
+          <item id="38859" chance="650"/>
+          <item id="38882" chance="650"/>
+          <item id="38831" chance="650"/> 
+          <item id="38864" chance="650"/> 
+          <item id="38879" chance="600"/> 
+          <item id="38857" chance="700"/> 
+          <item id="38999" chance="700"/> 
+          <item id="38978" chance="700"/>     
+	      <item id="2138" chance="750"/>  
+        </inside>
+      </item>
+    </loot>
+  </monster>

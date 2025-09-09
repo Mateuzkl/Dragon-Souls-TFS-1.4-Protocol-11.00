@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Archer" nameDescription="Archer" race="blood" experience="60" speed="150" manacost="420">
+	<health now="200" max="200"/>
+	<look type="129" head="114" body="20" legs="22" feet="2" addons="3" corpse="6080"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="2"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="18"/>
+	</flags>
+	<attacks>
+	<attack name="spear" interval="1500" min="-5" max="-15" range="2"/>
+	<attack name="spear" interval="6300" min="-10" max="-50" range="2" chance="50"/>
+	    </attacks>
+	<defenses armor="1" defense="1"/>
+	<elements>
+		<element firePercent="20"/>
+		<element holyPercent="10"/>
+		<element physicalPercent="0"/>
+		<element icePercent="-10"/>
+		<element deathPercent="-5"/>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Morra!"/>
+	</voices>
+	<loot>
+		<item id="2152" countmax="5" chance="100000"/> <!-- gold coin -->
+		<item id="11550" chance="100000"><!-- bag -->
+		<inside>
+	       <item id="2389" countmax="70" chance="100000"/>
+			</inside>
+		</item>
+	</loot>
+<script>
+<event name="archer"/>
+</script>
+</monster>

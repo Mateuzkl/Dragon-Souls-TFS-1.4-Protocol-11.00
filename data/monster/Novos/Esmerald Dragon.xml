@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Esmerald Dragon" nameDescription="Esmerald Dragon" race="fire" experience="7100" speed="300" manacost="0">
+	<health now="10200" max="10200"/>
+	<look type="362" corpse="11497"/>
+	<targetchange interval="5000" chance="8"/>
+<strategy attack="100" defense="0"/>
+	<flags>
+<flag summonable="0"/>
+<flag attackable="1"/>
+<flag hostile="1"/>
+<flag illusionable="1"/>
+<flag convinceable="0"/>
+<flag pushable="0"/>
+<flag canpushitems="1"/>
+<flag canpushcreatures="1"/>
+<flag targetdistance="1"/>
+<flag staticattack="90"/>
+<flag runonhealth="0"/>
+  </flags>
+<attacks>
+    <attack name="melee" interval="1000" min="-150" max="-300"/>  
+    <attack name="melee_fire" interval="1500" min="-150" max="-300" range="1"/>   
+    <attack name="dragon firewave" interval="3200" min="-300" max="-500" chance="50"/>
+    <attack name="explosion_Monster" interval="2100" min="-400" max="-600" chance="50" range="5"/>
+</attacks>
+ <defenses armor="50" defense="55">
+ <defense name="healing" interval="10000" chance="25" min="350" max="605">
+  <attribute key="areaEffect" value="blueshimmer" /> 
+  </defense>
+  </defenses>
+ <elements>
+  <element earthPercent="10" /> 
+  <element icePercent="-10" /> 
+  <element physicalPercent="20" /> 
+  <element deathPercent="10" /> 
+  <element firePercent="100" /> 
+  </elements>
+ <immunities>
+    <immunity invisible="1"/>
+	<immunity lifedrain="1" /> 
+  </immunities>
+	<voices interval="5000" chance="10">
+	<voice sentence="YOU WILL FIRE!" yell="1"/>
+	<voice sentence="ZCHHHHH!" yell="1"/>
+	<voice sentence="I am so cool" yell="1"/>
+	<voice sentence="Chill out!." yell="1"/>
+	</voices>
+	<loot>
+		<item id="2152" countmax="20" chance="100000"/><!-- platium coin -->
+		<item id="5468" chance="2500"/> 
+		<item id="12274" chance="3500"/> 
+		<item id="2353" chance="2500"/>
+		<item id="2033" chance="1968"/><!-- golden mug -->
+		<item id="1973" chance="5222"/><!-- book -->
+		<item id="2672" countmax="1" chance="33000"/><!-- dragon ham -->
+		<item id="2795" countmax="6" chance="20000"/><!-- fire mushroom -->
+		<item id="6529" countmax="3" chance="3500"/><!-- infernal bolt -->
+		<item id="1993" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2195" chance="800"/><!-- boots of haste -->
+				<item id="11812" chance="500"/><!-- Diamond Robe -->
+				<item id="11793" chance="500"/><!-- Diamond Robe -->
+				<item id="2528" chance="2200"/><!-- tower shield -->
+				<item id="12025" chance="700"/><!-- diamond sword -->
+				<item id="2393" chance="1428"/><!-- giant sword -->
+				<item id="2498" chance="800"/><!-- royal helmet -->
+				<item id="2492" chance="800"/><!-- dragon scale mail -->	
+				<item id="2432" chance="1200"/><!-- fire axe -->
+				<item id="11780" chance="300"/><!-- magnet helmet -->
+				<item id="7402" chance="885"/><!-- dragon slayer -->				
+			</inside>
+		</item>
+
+	</loot>
+</monster>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Mantos" tp="1" nameDescription="mantos" species="poison" race="venom" experience="9100" speed="350" manacost="0">
+    <health now="16500" max="16500"/>
+    <look type="354" corpse="11494"/>
+    <targetchange interval="5000000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+   <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="49"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="10"/>
+    </flags>
+    <attacks>
+      <attack name="poison" interval="2000" min="-560" max="-760" range="1"/>
+      <attack name="poison" interval="4500" chance="50" min="-760" max="-950" range="1"/>
+      <attack name="poison ball" interval="5000" chance="50" min="-760" max="-950" range="5"/>
+	  <attack name="mas poison" interval="7000" chance="30" min="-860" max="-1050"/>
+    </attacks>
+    <defenses armor="3" defense="2"/>
+	<elements>
+		<element firePercent="0"/>
+		<element physicalPercent="15"/>
+		<element earthpercent="30"/>
+		<element energyPercent="20"/>
+		<element deathPercent="0"/>
+		<element icePercent="-25"/>
+		<element holyPercent="-10"/>
+	</elements>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="90000" chance="5">
+      <voice sentence="Groar"/>
+      <voice sentence="Die humans!!"/>
+    </voices>
+    <loot>    
+      <item id="2789" countmax="15" chance1="10000" chancemax="0"/>
+      <item id="2149" countmax="15" chance1="10000" chancemax="0"/>
+	  <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+	  <item id="2152" countmax="100" chance1="100000" chancemax="0"/>	
+      <item id="1998" chance="70000">
+      <inside>
+        <item id="2400" chance="750"/> <!-- Magic Sword -->
+	    <item id="11800" chance="700"/> <!-- Mantos Demon armor -->
+		<item id="13641" chance="700"/> <!-- arcane fur helmet -->
+		<item id="11734" chance="700"/> <!-- spyked armor -->
+	    <item id="2522" chance="700"/> <!-- great shield -->
+		<item id="11735" chance="700"/><!-- spyked legs -->
+	    <item id="2195" chance="900"/><!-- boots of haste -->
+		<item id="2452" chance="700"/><!-- heavy mace -->
+		<item id="12184" countmax="1" chance="750"/><!-- Shyne Boots -->
+		<item id="12534" chance="800"/><!-- golden legs -->
+		<item id="12533" chance="800"/><!-- golden amor -->
+		<item id="12535" chance="800"/><!-- golden shield -->
+		<item id="2514" chance="800"/><!-- mastermind shield -->
+			</inside>
+		</item>
+	</loot>
+</monster>

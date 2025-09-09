@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<monster name="Cyclops Warrior" nameDescription="cyclops warrior" experience="250000" speed="450" race="Blood">
+  <health now="400000" max="400000"/>
+  <look type="174" body="116" legs="132" feet="94" corpse="5962"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100"/>
+  <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1000" chance="100" min="-800" max="-2000" range="1"/>
+    <attack name="melee" interval="2000" chance="100" min="-2600" max="-4800" range="1"/>
+    <attack name="melee" interval="3000" chance="100" min="-3600" max="-4800" range="1"/>
+    <attack name="large rock" interval="3300" chance="30" min="-3000" max="-3200">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="large rock" interval="2900" chance="30" min="-3000" max="-3200">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="Diceshaker" interval="3500" chance="20" min="-4000" max="-4900">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses defense="44" armor="47">
+    <defense name="Light Healing" interval="8000" chance="60" min="100" max="200">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices speed="0" chance="30">
+    <voice sentence="Chrush the intruders!"/>
+    <voice sentence="my strength and my size overcomes many of you!"/>
+    <voice sentence="You're so little!"/>
+  </voices>
+  <loot>
+  </loot>
+</monster>

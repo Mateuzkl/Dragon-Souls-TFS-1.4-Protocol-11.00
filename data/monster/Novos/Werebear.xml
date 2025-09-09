@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Werebear" nameDescription="Werebear" race="blood" experience="200000" speed="490" manacost="0">
+  <health now="100000" max="100000"/>
+  <look type="611" corpse="12461"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee_death" interval="1000" chance="100" min="-3000" max="-6200" range="1"/>
+    <attack name="dark sd" interval="3000" chance="60" min="-6000" max="-8200" range="5"/>
+    <attack name="large rock" interval="7000" chance="70" min="-6000" max="-9200" range="5"/>
+	<attack name="Ghastly darkwave" interval="9000" chance="90" min="-6000" max="-10000" range="1"/>
+	<attack name="dark berserk" interval="15000" chance="80" min="-7580" max="-11020"/>
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="5000" chance="15" min="5000" max="6000">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="1"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="3000"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="GGRRRRRRRRRRRRRRR"/>
+    <voice sentence="Come back now!!"/>
+  </voices>
+  <loot>
+    <item id="1996" chance="100000">
+      <inside>
+		  <item id="11607" chance="500"/>  <!-- magic dark helmet -->
+          <item id="11608" chance="500"/> <!-- magic dark armor -->
+          <item id="11609" chance="500"/> <!-- magic dark legs -->
+		  <item id="11814" chance="500"/> <!-- Shadow Cloak -->
+		  <item id="12105" chance="600"/> <!-- death dragon hammer -->
+		  <item id="12005" chance="600"/> <!-- four blades -->
+		  <item id="11234" chance="700"/> <!-- guardian boots -->
+		  <item id="12228" chance="600"/> <!-- darkness crossbow -->
+		  <item id="12147" chance="600"/> <!-- dragonslayer axe -->
+      </inside>
+    </item>
+	<item id="11835" chance="700"/> <!-- magic dark legs -->
+	<item id="12426" countmax="1" chance="1000"/>
+	<item id="2160" countmax="20" chance1="100000" chancemax="0"/>
+  </loot>
+</monster>

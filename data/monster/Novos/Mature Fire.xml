@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Mature Fire" nameDescription="Mature Fire" race="Blood" experience="0" speed="200" manacost="0">
+    <health now="700000" max="700000"/>
+    <look type="376" head="95" body="116" legs="95" feet="114" corpse="6068"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-8000" max="-9200"/>
+      <attack name="Great Fireball" interval="4000" chance="40" min="-8000" max="-9200"/>
+      <attack name="explosion" interval="6000" chance="60" min="-8300" max="-9000"/>
+      <attack name="dragon firebomb" interval="8000" chance="10" min="-7000" max="-8000"/>
+      <attack name="dragon firewave" interval="10000" chance="10" min="-7000" max="-8000"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="4000" chance="20" min="5000" max="6000"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <loot>
+      <item id="7757" chance="100000">
+      </item>
+    </loot>
+  </monster>

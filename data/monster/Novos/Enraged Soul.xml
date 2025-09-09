@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Enraged Soul" tp="1" species="human"  nameDescription="enraged soul" race="undead" experience="5000" speed="220" manacost="0" skull="red">
+    <health now="50000" max="50000"/>
+    <look type="406" head="1" body="68" legs="114" feet="114" corpse="12665"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="30"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="2100"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="1000" min="-500" max="-750"/>
+      <attack name="melee" interval="2340" chance="70" min="-550" max="-1050"/>
+      <attack name="berserk" interval="5430" chance="20" min="-1000" max="-1450" />
+      <attack name="Extreme Explosion" interval="7697" chance="50" min="-1100" max="-1550" range="4"/>
+    </attacks>
+    <defenses armor="19" defense="45">
+    </defenses>
+	<elements>
+		<element earthPercent="-5"/>
+		<element holyPercent="10"/>
+		<element firePercent="80"/>
+		<element energyPercent="20"/>
+		<element deathPercent="-5"/>
+	</elements>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="0"/>
+      <immunity poison="0"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <loot>
+    </loot>
+</monster>

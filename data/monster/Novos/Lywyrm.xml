@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lywyrm" nameDescription="Lywyrm" race="undead" experience="3800" speed="260" manacost="0">
+	<health now="5450" max="5450"/>
+	<look type="388" corpse="7091"/>
+	<targetchange interval="5000" chance="6"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="70"/>
+		<flag runonhealth="250"/>
+	</flags>
+	<attacks>
+		<attack name="melee_ice" interval="1000" range="1" min="-75" max="-150"/>
+		<attack name="melee_ice" interval="2500" range="1" min="-90" max="-220"/>
+		<attack name="dragon icewave" interval="2500" chance="25" min="-140" max="-400"/>
+		<attack name="ice hur" interval="4500" chance="20" range="5" min="-140" max="-400"/>
+		<attack name="ice hur" interval="3000" chance="30" range="5" radius="3" target="0" min="-200" max="-310"/>
+		<attack name="speed" interval="4000" chance="25" range="7" target="1" speedchange="-300" duration="50000">
+		<attribute key="areaEffect" value="redshimmer"/>
+		</attack>
+	</attacks>
+	<defenses armor="22" defense="35">
+		<defense name="healing" interval="500" chance="25" min="80" max="200">
+		<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="-15"/>
+		<element icePercent="100"/>
+		<element earthPercent="100"/>
+		<element physicalPercent="0"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+		</immunities>
+		<voices interval="5000" chance="10">
+		<voice sentence="YOU WILL FREEZE!" yell="1"/>
+		<voice sentence="ZCHHHHH!" yell="1"/>
+		<voice sentence="I am so cool" yell="1"/>
+		<voice sentence="Chill out!." yell="1"/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="100000"/><!-- gold coin -->
+		<item id="2672" countmax="1" chance="33000"/><!-- dragon ham -->
+		<item id="2033" chance="1968"/><!-- golden mug -->
+		<item id="1973" chance="5222"/><!-- book -->
+		<item id="7290" chance="500"/><!-- shard -->
+		<item id="2396" chance="1320"/><!-- ice rapier -->
+		<item id="2547" countmax="1" chance="3500"/><!-- power bolt -->
+		<item id="2796" countmax="1" chance="8000"/><!-- green mushroom -->
+		<item id="11549" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2148" countmax="63" chance="88888"/><!-- gold coin -->
+				<item id="2146" countmax="1" chance="1483"/><!-- small sapphire -->
+				<item id="2528" chance="2200"/><!-- tower shield -->
+				<item id="7441" chance="2900"/><!-- ice cube -->
+				<item id="7402" chance="885"/><!-- dragon slayer -->
+				<item id="2167" chance="2333"/><!-- energy ring -->
+				<item id="13754" chance="500"/><!-- frozeen plate helmet -->
+				<item id="11797" chance="550"/><!-- frozzen demon armor -->
+				<item id="11786" chance="600"/><!-- platinum armor -->
+				<item id="7450" chance="500"/><!-- hammer -->
+				<item id="2498" chance="600"/><!-- royal helmet -->
+			</inside>
+		</item>
+	</loot>
+</monster>

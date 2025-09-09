@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Millepede" nameDescription="millepede" race="venom" experience="4" speed="195" manacost="210">
+	<health now="70" max="70"/>
+	<look type="511" corpse="12287"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="6"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="30" attack="10" poison="22"/>
+	</attacks>
+	<defenses armor="1" defense="1"/>
+	<elements>
+		<element firePercent="-10"/>
+	</elements>
+	<loot>
+		<item id="3976" countmax="10" chance="50000"/><!-- worm -->
+		<item id="2148" countmax="32" chance="100000"/><!-- gold coin -->
+		<item id="2480" chance="3333"/><!-- legion helmet -->
+		<item id="2530" chance="2857"/><!-- copper shield -->
+		<item id="3976" countmax="10" chance="50000"/><!-- worm -->
+		<item id="1987" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2398" chance="3333"/><!-- mace -->
+				<item id="2789" countmax="2" chance="20000"/><!-- ham -->
+				<item id="2376" chance="10000"/><!-- sword -->
+				<item id="2412" chance="2222"/><!-- katana -->
+			</inside>
+		</item>
+	</loot>
+</monster>

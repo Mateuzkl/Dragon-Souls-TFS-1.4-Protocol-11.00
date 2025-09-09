@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Divine Dragon" species="magic" nameDescription="Divine Dragon" race="blood" experience="100000" speed="400" manacost="0">
+    <health now="1400000" max="1400000"/>
+    <look type="381" corpse="11458"/>
+    <targetchange interval="10000" chance="5"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="210"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="1000" min="-9000" max="-12000"/>
+      <attack name="Tides of Darkness_M" interval="2000" chance="60" min="-13000" max="-15000"/>
+      <attack name="Divine Caldera_M" interval="3500" chance="40" min="-10000" max="-13200"/>
+      <attack name="dark sd" interval="4000" chance="70" min="-11000" max="-12000" range="3"/>
+	  <attack name="Ghastly darkwave" interval="5000" chance="100" min="-9000" max="-13200"/>
+    </attacks>
+    <defenses armor="32" defense="34">
+      <defense name="light healing" interval="4000" chance="40" min="13800" max="16300"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="8000" chance="10">
+      <voice sentence="YOU ARE DRAGON KING!"/>
+      <voice sentence="DIE HUMAN!"/>
+    </voices>
+    <loot>
+      <item id="9774" chance="10000">
+        <inside>
+          <item id="2471" chance="500"/> <!-- divine scale helmet -->        
+          <item id="11810" chance="500"/> <!-- divine scale mail -->
+          <item id="11842" chance="500"/> <!-- divine scale legs -->
+          <item id="11914" chance="600"/> <!-- divine scale shield -->
+          <item id="12003" chance="600"/> <!-- dragon butcher -->
+          <item id="12078" chance="600"/> <!-- magic golden sword -->
+		  <item id="12203" chance="600"/> <!-- golden crossbow -->
+		  <item id="12099" chance="600"/> <!-- estrundilion hammer -->
+        </inside>
+      </item>
+	  <item id="11667" chance="700"/> <!-- master balrog helmet -->        
+      <item id="11668" chance="700"/> <!-- master balrog armor -->
+	  <item id="11765" chance="700"/> <!-- horned helmet  -->        
+      <item id="11766" chance="700"/> <!-- horned armor -->
+	  <item id="12426" countmax="1" chance="1000"/>
+	  <item id="2160" countmax="15" chance1="100000" chancemax="0"/>
+	  <item id="2147" countmax="15" chance1="100000" chancemax="0"/>
+    </loot>
+  </monster>

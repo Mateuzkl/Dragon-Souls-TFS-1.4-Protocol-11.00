@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Mean Lost Soul" nameDescription="a Mean Lost Soul" race="Undead" experience="200000" speed="320">
+	  <health now="900000" max="900000"/>
+	 <look type="1268" head="0" body="34" legs="0" feet="55" addons="0" corpse="5993"/>
+	<targetchange interval="4000" chance="10" />
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="0" />
+		<flag targetdistance="1" />
+		<flag staticattack="70" />
+		<flag runonhealth="20" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonpoison="0" />
+	</flags>
+	<attacks>
+ <attack name="melee" interval="2000" min="-10000" max="-13000"/>
+      <attack name="tides of darkness" interval="2500" chance="60" min="-13470" max="-16995"/>
+      <attack name="dragon firewave" interval="3500" chance="40" min="-12000" max="-16000"/>
+      <attack name="nazgul sonar" interval="4000" chance="70" min="-15000" max="-19000"/>
+    </attacks>
+	  <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="4000" chance="20" min="500" max="600"/>
+    </defenses>
+	<elements>
+		<element energyPercent="-20" />
+		<element earthPercent="-20" />
+		<element deathPercent="10" />
+	</elements>
+	<immunities>
+		<immunity ice="1" />
+		<immunity drown="1" />
+		<immunity fire="1" />
+		<immunity invisible="1" />
+		<immunity paralyze="1" />
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="QJELL NETA NA!!" />
+	</voices>
+	<loot>
+		<item name="emerald bangle" countmax="3" chance="2890" />
+		<item name="gold coin" countmax="90" chance="100000" />
+		<item name="gold coin" countmax="90" chance="100000" />
+		<item name="platinum coin" countmax="2" chance="70000" />
+		<item name="great mana potion" countmax="3" chance="14285" />
+		<item name="great health potion" countmax="3" chance="14285" />
+		<item name="heavy trident" chance="1694" />
+		<item name="eye of a deepling" chance="10000" />
+		<item name="deepling guard belt buckle" chance="12500" />
+		<item name="deepling breaktime snack" chance="16666" />
+		<item name="guardian axxe" chance="925" />
+		<item name="deepling claw" chance="9090" />
+		<item name="foxtail" chance="10" />
+		<item name="ornate crossbow" chance="362" />
+		<item name="deepling backpack" chance="333" />
+		<item name="deepling squelcher" chance="751" />
+		 <item id="18402" chance="800"/><!-- aol -->
+	</loot>
+</monster>

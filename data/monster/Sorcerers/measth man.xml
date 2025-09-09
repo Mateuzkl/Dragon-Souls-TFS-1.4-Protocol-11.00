@@ -1,0 +1,96 @@
+﻿ <monster name="Measth Man" nameDescription="a measth man" race="blood" experience="50000" speed="580" manacost="0" level="0">
+  <health now="55000" max="55000" /> 
+  <look type="130" head="23" body="73" legs="28" feet="28" addons="3" corpse="6080" /> 
+  <targetchange interval="5000" chance="30" /> 
+  <strategy attack="100" defense="0" /> 
+ <!-- Flags
+  --> 
+ <flags>
+  <flag summonable="0" /> 
+  <flag attackable="1" /> 
+  <flag hostile="1" /> 
+  <flag illusionable="0" /> 
+  <flag convinceable="0" /> 
+  <flag pushable="0" /> 
+  <flag canpushitems="1" /> 
+  <flag canpushcreatures="1" /> 
+  <flag targetdistance="2" /> 
+  <flag staticattack="90" /> 
+  <flag runonhealth="800" /> 
+  </flags>
+ <!-- Attacks
+  --> 
+ <attacks>
+  <attack name="sudden death" interval="2000" range="7"  chance="5" target="1" min="-1460" max="-1580" /> 
+  <attack name="ultimate mort" interval="2000" chance="5" min="-3460" max="-3580" /> 
+ <attack name="physical" interval="1000" chance="35" range="7" min="-1085" max="-2185">
+  <attribute key="shootEffect" value="energy" /> 
+  </attack>
+  <attack name="manadrain" interval="1000" chance="17" range="7" min="-1075" max="-1160" /> 
+ <attack name="speed" interval="1000" chance="12" range="7" speedchange="-600" duration="40000">
+  <attribute key="areaEffect" value="redshimmer" /> 
+  </attack>
+ <attack name="fire" interval="2000" chance="45" range="7" chance="5"  radius="3" target="1" min="-1150" max="-1220">
+  <attribute key="shootEffect" value="burstarrow" /> 
+  <attribute key="areaEffect" value="firearea" /> 
+  </attack>
+ <attack name="firefield" interval="1000" chance="20" range="7" radius="2" target="1">
+  <attribute key="shootEffect" value="fire" /> 
+  </attack>
+ <attack name="energy" interval="2000" chance="25" length="8" spread="0" min="-1165" max="-1245">
+  <attribute key="areaEffect" value="energy" /> 
+  </attack>
+ <attack name="speed" interval="6000" chance="10" range="5" speedchange="-600" duration="20000">
+  <attribute key="areaEffect" value="redshimmer" /> 
+  </attack>
+  </attacks>
+ <!-- Defenses
+  --> 
+ <defenses armor="60" defense="40">
+ <defense name="speed" interval="2000" chance="100" speedchange="200" duration="2000">
+  <attribute key="areaEffect" value="energy" /> 
+  </defense>
+  </defenses>
+ <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+ <!-- voices
+  --> 
+ <voices interval="2000" chance="1">
+  <voice sentence="The energy become to life!" yell="1" /> 
+  <voice sentence="Even a rat is a better mage than you." /> 
+  <voice sentence="We don't like intruders!" /> 
+  </voices>
+ <!-- Loot
+  --> 
+ <loot>
+  <item id="2152" countmax="80" chance1="10000" chancemax="0" /> 
+  <item id="2152" countmax="80" chance1="10000" chancemax="0" /> 
+  <item id="2146" countmax="7" chance1="10000" chancemax="0" />
+  <item id="2152" countmax="90" chance1="10000" chancemax="0" />  
+  <item id="2192" countmax="1" chance1="5000" chancemax="0" /> 
+  <item id="2167" countmax="1" chance1="5000" chancemax="0" />
+  <item id="8300" chance="1000" /> 
+ <!-- Inside blue bag
+  --> 
+ <item id="1995" chance="20000">
+ <inside>
+  <item id="2152" countmax="80" chance1="10000" chancemax="0" /> 
+  <item id="2146" countmax="2" chance1="9000" chancemax="0" /> 
+  <item id="2508" chance="250" /> 
+  <item id="38754" chance="250" /> 
+  <item id="2507" chance="350" /> 
+  <item id="2146" countmax="25" chance1="800" chancemax="0" /> 
+  </inside>
+  </item>
+  </loot>
+  </monster>

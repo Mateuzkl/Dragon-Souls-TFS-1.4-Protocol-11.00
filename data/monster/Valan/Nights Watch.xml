@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Night Watch" nameDescription="Night Watch" race="Blood" experience="200000" speed="400" manacost="290">
+    <health now="300000" max="300000"/>
+    <look type="308" head="20" body="30" legs="40" feet="50" corpse="6080"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="49"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="10"/>
+    </flags>
+    <attacks>
+      <attack name="Diceshaker" interval="6000" chance="5" min="-100" max="-200"/>
+      <attack name="melee" interval="5000"  chance="10" min="-3000" max="-3400"/>
+      <attack name="melee" interval="2900"  chance="5" min="-3000" max="-4200"/>
+      <attack name="large rock" interval="2500" chance="50" min="-2800" max="-3000"/>
+      <attack name="large rock" interval="3000" chance="10" min="-2800" max="-3500"/>
+      <attack name="berserk" interval="4500" min="-3520" max="-3700" chance="30"/>
+    </attacks>
+    <defenses armor="3" defense="2"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <voices interval="90000" chance="5">
+      <voice sentence="aaauuuu"/>
+      <voice sentence="Die humans!!"/>
+    </voices>
+    <loot>
+      <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+	  <item id="2152" countmax="100" chance1="100000" chancemax="0"/>
+      <item id="1988" chance="70000">
+      <inside>
+          <item id="2496" chance="600"/> 
+          <item id="38856" chance="600"/> 
+		  <item id="38721" chance="600"/> 
+		  <item id="38753" chance="600"/> 
+          <item id="38828" chance="650"/> 
+          <item id="2431" chance="650"/> 
+          <item id="2400" chance="650"/> 
+          <item id="2408" chance="650"/> 
+          <item id="2415" chance="650"/> 
+          <item id="5803" chance="650"/> 
+          <item id="38869" chance="650"/>
+	      </inside>
+     </item>
+    </loot>
+  </monster>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Frost Dragon" nameDescription="a frost dragon" race="undead" experience="0" speed="260" manacost="0">
+	<health now="1800" max="1800"/>
+	<look type="248" head="0" body="0" legs="0" feet="0" corpse="7091"/>
+	<targetchange interval="2000" chance="50"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="1"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="0"/>
+		<flag runonhealth="250"/>
+	</flags>
+	<attacks>
+    <attack name="melee" interval="5000" min="-0" max="-1"/>
+	
+	</attacks>
+  <defenses armor="25" defense="35">
+    <defense name="healing" interval="500" chance="100" min="3000" max="3000"/>
+      
+	    <defense name="speed" interval="2000" chance="10" speedchange="310">
+      <attribute key="areaEffect" value="blueshimmer"/>
+	</defense>
+	</defenses>
+	<elements>
+	<element physicalPercent="15"/>
+	<element energyPercent="-15"/>
+	</elements>
+	<immunities>
+	<immunity physical="1"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="I am so cool"/>
+		<voice sentence="Chill out!"/>
+		<voice sentence="YOU WILL FREEZE!"/>
+		<voice sentence="ZCHHHHH!"/>
+	</voices>
+	<loot>
+	    
+  </loot>
+ </monster>

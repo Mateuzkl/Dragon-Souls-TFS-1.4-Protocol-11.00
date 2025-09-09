@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Blizzard Balrog" nameDescription="Blizzard Balrog" tp="1" race="undead" species="magic" experience="100000" speed="300" manacost="10000">
+    <health now="90000" max="90000"/>
+    <look type="12" head="85" body="114" legs="85" feet="85" corpse="6068"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="1"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="40"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-800" max="-1400"/>
+      <attack name="great energy beam" interval="3000" chance="40" min="-1900" max="-2100"/>
+<attack name="energy" interval="2500" range="7" radius="4" target="1" min="-600" max="-800">
+  <attribute key="shootEffect" value="energy" /> 
+  <attribute key="areaEffect" value="energyarea" /> 
+  </attack>
+      <attack name="energy" interval="3000" chance="50" min="-20" max="-20"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="4000" chance="60" min="50" max="80"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="80000" chance="10">
+      <voice sentence="Eletrick Power!!!!"/>
+    </voices>
+    <loot>
+      <item id="12400" chance="1200"/>
+	  <item id="2146" countmax="2" chance="10000"/>
+	  <item id="2160" countmax="50" chance1="100000" chancemax="0"/>
+      <item id="12559" chance="100000">
+       <inside>
+          <item id="11684" chance="700"/> <!-- elektric helmet -->
+          <item id="11792" chance="300"/> <!-- elektric armor -->
+          <item id="11898" chance="500" /> <!-- elektric shield -->
+		  <item id="12491" chance="600" /> <!-- Iced-Shock Sword -->
+          <item id="12513" chance="700"/> -<!-- Diamondcutter axe -->
+        </inside>
+       </item>
+    </loot>
+  </monster>

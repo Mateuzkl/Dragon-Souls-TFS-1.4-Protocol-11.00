@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Forest Protector" nameDescription="forest protector" race="blood" experience="38000" speed="300" manacost="0">
+    <health now="150000" max="150000"/>
+    <look type="474" corpse="12314"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee_tera" interval="1500" min="-1000" max="-2000" range="1"/>
+      <attack name="melee_tera" interval="2500" chance="70" min="-2000" max="-3500" range="1"/>
+      <attack name="Terra Strike" interval="3000" chance="70" min="-2000" max="-2900" range="4"/>
+      <attack name="Terra Strike" interval="4000" min="-3500" max="-4500" range="4"/>
+    </attacks>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="2000" chance="20">
+      <voice sentence="I protect the forest."/>
+      <voice sentence="Now your life has come to the end!"/>
+    </voices>
+    <loot>
+	  <item id="2152" countmax="20" chance1="333333" chancemax="0"/> <!-- Platinum gold -->
+      <item id="2152" countmax="30" chance1="100000" chancemax="0"/> <!-- Platinum gold -->
+	  <item id="2789" countmax="10" chance1="333333" chancemax="0"/> <!-- brown mushroom -->
+      <item id="2168" chance="10000"/> <!-- life ring -->
+      <item id="8300" chance="700"/> <!-- sematcrystal -->
+      <item id="11536" chance="40000">
+        <inside>
+          <item id="2415" chance="510"/>  <!-- Great Axe -->           
+          <item id="3972" chance="500"/>  <!-- Elven Helmet -->
+		  <item id="2505" chance="400"/>  <!-- Elven Armor -->
+		  <item id="2507" chance="530"/>  <!-- Elven legs -->
+		  <item id="12184" chance="650"/> <!-- Shynne Boots -->
+		  <item id="11897" chance="500"/> <!-- Elven Shield -->
+		  <item id="11776" chance="600"/> <!-- infantry helmet -->
+		  <item id="11801" chance="600"/> <!-- rustic armor -->
+	 </inside>
+      </item>
+    </loot>
+  </monster>

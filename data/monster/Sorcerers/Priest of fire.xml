@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Priest of Fire" nameDescription="Priest of Fire" race="fire" experience="8000" speed="220" manacost="0">
+	<health now="90000" max="90000"/>
+	<look type="593" head="0" body="114" legs="114" feet="114" addons="3" corpse="3128"/>
+	<targetchange interval="5000" chance="30"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="4"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="800"/>
+	</flags>
+	<attacks>
+    <attack name="fire shot" interval="1000" min="-900" max="-1000" range="4"/>  
+    <attack name="fire shot 2" interval="2300" min="-1000" max="-1600" chance="70" range="4"/>  
+    <attack name="fire shot 2" interval="3200" min="-1000" max="-1600" chance="50" range="4"/>
+    <attack name="explosion_Monster" interval="2100" min="-1000" max="-1800" chance="50" range="4"/>
+</attacks>
+	<defenses armor="25" defense="30">
+		<defense name="healing" interval="1000" chance="25" min="60" max="100">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="invisible" interval="5000" chance="50" duration="5000">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element energyPercent="100"/>
+		<element icePercent="100"/>
+		<element earthPercent="90"/>
+		<element holyPercent="-25"/>
+		<element physicalPercent="-33"/>
+	</elements>
+	<immunities>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="Demon" interval="1000" chance="10" max="1"/>
+		<summon name="Ifrit" interval="7000" chance="10" max="1"/>
+		<summon name="Angry Demon" interval="9000" chance="10" max="1"/>
+		<summon name="Diamond Dragon" interval="5000" chance="10" max="1"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="Learn the secret of our magic! YOUR death!"/>
+		<voice sentence="Even a rat is a better mage than you."/>
+		<voice sentence="We don't like intruders!"/>
+	</voices>
+	<loot>
+		<item id="2160" countmax="3" chance="100000"/><!-- gold coin -->
+		<item id="2600" chance="10000"/><!-- inkwell -->
+		<item id="12383" chance="10000"/><!-- pass to quest-->
+		<item id="7368" countmax="4" chance="1200"/><!--  -->
+		<item id="2114" chance="1400"/><!-- piggy bank -->
+		<item id="2151" countmax="2" chance="1100"/><!-- talon -->
+		<item id="11237" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2146" countmax="2" chance="1400"/><!-- small sapphire -->
+				<item id="13657" countmax="1" chance="700"/><!-- hat -->
+				<item id="13710" countmax="1" chance="700"/><!-- robe -->
+				<item id="11894" countmax="1" chance="700"/><!-- shield -->
+				<item id="2411" chance="5000"/><!-- poison dagger -->
+
+				<item id="2793" countmax="2" chance="6666"/><!-- mushrooms -->
+				<item id="2466" chance="788"/><!-- golden armor -->
+				<item id="2436" chance="1428"/><!-- skull staff -->
+				<item id="2123" chance="500"/><!-- ring of the sky -->
+			</inside>
+		</item>
+	</loot>
+</monster>

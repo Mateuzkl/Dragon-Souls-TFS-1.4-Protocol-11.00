@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Bahamut" nameDescription="Bahamut" race="fire" experience="1000000" speed="0" manacost="150">
+  <health now="900000" max="900000"/>
+  <look type="168" corpse="12420"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee_Fire" interval="1000" chance="100" min="-8000" max="-9000" range="5"/>
+	 <attack name="melee" interval="2000" chance="80" min="-8000" max="-9000"/>
+    <attack name="dragon lord fireball" interval="3000" chance="70" min="-8000" max="-9000" range="5">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="explosion_Monster" interval="5000" chance="60" min="-8000" max="-9000" range="5">
+      <attribute key="areaEffect" value="redspark"/>
+    </attack>
+    <attack name="dragon firewave" interval="7500" chance="50" min="-8100" max="-10300">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="4000" chance="15" min="7200" max="11400">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="0"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="3000"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="CAN NOT LEAVE!"/>
+    <voice sentence="GRRRRRRRR ..."/>
+  </voices>
+  <loot>
+    <item id="12420" chance="100000"/>
+  </loot>
+</monster>

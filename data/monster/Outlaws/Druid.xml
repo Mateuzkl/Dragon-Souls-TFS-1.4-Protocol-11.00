@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Druid" nameDescription="Druid" race="blood" experience="60" speed="100" manacost="420">
+	<health now="200" max="200"/>
+	<look type="144" head="95" body="101" legs="101" feet="96" addons="3" corpse="6080"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="2"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="18"/>
+	</flags>
+	<attacks>
+		<attack name="poison shot" interval="2500" min="-5" max="-15" range="3"/>
+		<attack name="Terra Strike" interval="6300" min="-10" max="-50" range="3" chance="50"/>
+	</attacks>
+	<defenses armor="1" defense="1"/>
+	<elements>
+		<element firePercent="20"/>
+		<element holyPercent="10"/>
+		<element physicalPercent="0"/>
+		<element icePercent="-10"/>
+		<element deathPercent="-5"/>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Morra!"/>
+	</voices>
+	<loot>
+		<item id="2152" countmax="5" chance="100000"/> <!-- gold coin -->
+		<item id="11550" chance="100000"><!-- bag -->
+		<inside>
+	       <item id="2182" chance="100000"/>
+			</inside>
+		</item>
+	</loot>
+<script>
+<event name="druid"/>
+</script>
+</monster>

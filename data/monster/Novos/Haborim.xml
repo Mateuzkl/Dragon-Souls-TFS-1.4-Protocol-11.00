@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Haborim" species="human" nameDescription="Haborim" race="blood" experience="400000" speed="400" manacost="0">
+    <health now="600000" max="600000"/>
+    <look type="517" head="0" body="114" legs="95" feet="95" addons="3" corpse="3128"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="4"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+		<attack name="arcane wands" interval="1000" min="-5600" max="-7600" range="4"/>
+		<attack name="Sudden Death" interval="3350" chance="60" min="-7123" max="-9130" range="4"/>
+		<attack name="master gravita" interval="4950" chance="50" min="-5000" max="-7000" range="4"/>
+		<attack name="Sudden Death" interval="5430" chance="40" min="-7000" max="-8600" range="4"/>
+		<attack name="master gravita" interval="6521" chance="30" min="-9500" max="-11700" range="4"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+	<defense name="Invisible" interval="8000" chance="30"/>
+    <defense name="light healing" interval="4000" chance="20" min="6000" max="8000"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+    <summons max="0">
+      <summon name="under guard" interval="6000" chance="40"/>
+    </summons>
+    <voices interval="5000" chance="5">
+      <voice sentence="im protector of obliverator, out here!!!"/>
+    </voices>
+       <loot>
+	  <item id="2147" countmax="15" chance1="100000" chancemax="0"/>
+      <item id="2145" countmax="15" chance1="100000" chancemax="0"/>
+	  <item id="12426" countmax="1" chance="1000"/>
+      <item id="2146" countmax="15" chance1="100000" chancemax="0"/>
+	  <item id="2160" countmax="20" chance1="100000" chancemax="0"/>
+      <item id="9774" chance="10000">
+        <inside>
+        <item id="11654" chance="700"/> <!-- sengard fur-hat -->
+        <item id="11655" chance="700"/> <!-- isengard fur-Robe -->
+        <item id="11942" chance="700"/> <!-- isengard magic shield -->
+		<item id="11995" chance="700"/> <!-- Pallando Staff -->
+		<item id="11758" chance="700"/> <!-- Magma robe -->
+		<item id="11757" chance="700"/> <!-- Magma Hat -->
+		<item id="11725" chance="700"/> <!-- flame hat -->
+		<item id="11726" chance="700"/> <!-- flame robe -->
+		<item id="9933"  chance="800"/> <!-- firewalker boots -->
+        </inside>
+      </item>
+    </loot>
+  </monster>

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Shadow Dragon" nameDescription="shadow dragon" race="blood" experience="175000" speed="300" manacost="0">
+    <health now="600000" max="600000"/>
+    <look type="371" corpse="11476"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="210"/>
+    </flags>
+    <attacks>
+    <attack name="melee_death" interval="1000" chance="100" min="-3123" max="-9130" range="1"/>
+	<attack name="melee_death" interval="3000" chance="80" min="-6123" max="-9130" range="1"/>
+    <attack name="Ghastly darkwave" interval="5000" chance="50" min="-11150" max="-14600" range="1"/>
+	<attack name="dark sd" interval="7000" chance="30" min="-9150" max="-11150" range="3">
+      <attribute key="areaEffect" value="redspark"/>
+    </attack>
+    <attack name="Tides of Darkness_M" interval="9000" chance="60" min="-9500" max="-11700"/>
+  </attacks>
+    <defenses armor="32" defense="34">
+      <defense name="light healing" interval="4000" chance="40" min="3800" max="6300"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="8000" chance="10">
+      <voice sentence="YOU WILL DARKNESS!"/>
+      <voice sentence="DIE HUMAN!"/>
+    </voices>
+    <loot>
+	  <item id="2160" countmax="15" chance1="100000" chancemax="0"/>
+      <item id="2144" countmax="10" chance1="100000" chancemax="0"/>
+	  <item id="2169" chance="1000"/>  <!-- time ring -->
+      <item id="11543" chance="20000">
+        <inside>
+		 <item id="11607" chance="500"/>  <!-- magic dark helmet -->
+          <item id="11608" chance="500"/> <!-- magic dark armor -->
+          <item id="11609" chance="500"/> <!-- magic dark legs -->
+		  <item id="11916" chance="650"/> <!-- seeker shield -->
+          <item id="12037" chance="600"/> <!-- Darkness sword --> 
+          <item id="12119" chance="600"/> <!-- greatsmith hammer -->
+		  <item id="12105" chance="600"/> <!-- death dragon hammer -->
+		  <item id="12005" chance="600"/> <!-- four blades -->
+		  <item id="11234" chance="700"/> <!-- guadian boots -->
+		  <item id="12149" chance="550"/> <!-- skullz axe -->
+        </inside>
+      </item>
+    </loot>
+  </monster>

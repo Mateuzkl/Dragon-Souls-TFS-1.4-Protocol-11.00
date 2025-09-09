@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Tarnished Spirit" tp="1" species="human"  nameDescription="tarnished spirit" race="undead" experience="5000" speed="220" manacost="0" skull="green">
+    <health now="50000" max="50000"/>
+    <look type="405" head="1" body="68" legs="114" feet="114" corpse="12662"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="0"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="30"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="4"/>
+      <flag runonhealth="2100"/>
+    </flags>
+    <attacks>
+      <attack name="arcane wands" interval="1000" min="-500" max="-750" range="4"/>
+      <attack name="arcane wands" interval="2340" chance="70" min="-550" max="-1050" range="4"/>
+      <attack name="Great Energy Beam" interval="7000" chance="20" min="-1000" max="-1450" />
+      <attack name="energy strike" interval="5000" chance="50" min="-1100" max="-1550" range="4"/>
+    </attacks>
+    <defenses armor="19" defense="45">
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="0"/>
+      <immunity poison="0"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <loot>
+    </loot>
+</monster>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Hades" nameDescription="Hades" race="blood" experience="280800" speed="350" manacost="0">
+  <health now="4000000" max="4000000"/>
+  <look type="767" head="7" body="7" legs="7" feet="7" corpse="3058"/>
+  <targetchange interval="5000" chance="8"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+   <attacks>
+      <attack name="melee" interval="2000" min="-30000" max="-40000"/>
+      <attack name="berserk" interval="2500" chance="40" min="-40000" max="-50000"/>
+      <attack name="Tides Of Darkness" interval="5000" chance="30" min="-40000" max="-50000"/>
+      <attack name="Diceshaker" interval="4000" chance="30" min="-60000" max="-70000"/>
+	  <attack name="spear" interval="3000" chance="30"  min="-70000" max="-80000"/>
+	  <attack name="life drain" interval="3500" chance="30"  min="-80000" max="-90000"/>
+    </attacks>
+  <defenses armor="20" defense="20">
+	<defense name="outfit" interval="2000" chance="30" monster="hades balrog" duration="6000">
+	<attribute key="areaEffect" value="blueshimmer"/>
+  </defense>
+	<defense name="healing" interval="4000" chance="15" min="10000" max="25000">
+	<attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="1"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="100"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="RIARIAIRAIR ITS MY WORLD!"/>
+    <voice sentence="You are dead!!!"/>
+  </voices>
+  <loot>
+    <item id="38915" countmax="5" chance1="100000" chancemax="0"/>
+    <item id="3940" chance="10000">
+      <inside>
+        <item id="38934" chance="200"/>
+        <item id="38759" chance="200"/>
+        <item id="38949" chance="300"/>
+        <item id="38771" chance="150"/>
+		<item id="38991" chance="200"/>
+		<item id="38997" chance="200"/>
+        <item id="38727" chance="150"/>
+	    <item id="38726" chance="200"/>
+		<item id="38720" chance="200"/>
+      </inside>
+    </item>
+  </loot>
+</monster>

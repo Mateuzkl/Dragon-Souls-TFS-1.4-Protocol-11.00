@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Beeruger Wisdow" tp="1" nameDescription="Beeruger Wisdow" race="fire" experience="125000" speed="300" manacost="0">
+    <health now="400000" max="400000"/>
+    <look type="722" corpse="5995"/>
+    <targetchange interval="5000000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="1"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+	  <attack name="melee_fire" interval="1500" min="-2500" max="-4500" range="1"/>
+	  <attack name="melee_fire" interval="2500" chance="70" range="5" min="-3000" max="-5000"/>
+	  <attack name="explosion_Monster" interval="4000" chance="50" range="5" min="-3200" max="-5600"/>
+	  <attack name="Flame Strike" interval="6500" chance="60" range="5" min="-4200" max="-6500"/>
+	  <attack name="dragon lord fireball" interval="8000" range="5" chance="20" min="-5200" max="-7600"/>
+	  <attack name="Flame Strike" interval="6000" range="5" chance="40" min="-4000" max="-6000"/>
+    </attacks>
+    <defenses armor="3" defense="35"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+     <loot>
+	<item id="2160" countmax="7" chance1="100000" chancemax="0"/> <!-- crystal coin --> 
+	<item id="2795" countmax="10" chance="20000"/><!-- fire mushroom -->
+    <item id="2147" countmax="10" chance1="100000" chancemax="0"/> <!-- small rubies -->
+    <item id="5468" chance="2500"/> <!-- fire bug -->
+    <item id="2353" chance="2500"/> <!-- burning heart --> 
+      <item id="41352" chance="100000"> <!-- Bag -->
+        <inside>
+			<item id="8906"  chance="610"/> <!-- alabarda shield -->
+			<item id="9933"  chance="740"/> <!-- firewalker boots -->
+			<item id="40845" chance="630"/> <!-- alabarda of fire -->
+			<item id="40851" chance="640"/> <!-- magic fire axe -->
+			<item id="40882" chance="660"/> <!-- phoenix helmet -->
+		   <item id="10136" chance="800"/><!-- fire medal -->
+        </inside>
+      </item>
+    </loot>
+  </monster>

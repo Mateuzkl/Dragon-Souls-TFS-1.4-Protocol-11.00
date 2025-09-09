@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lost Dragon" nameDescription="Lost Dragon" race="blood" experience="45000" speed="400" manacost="0">
+<health now="350000" max="350000"/>
+<look type="769" corpse="38914"/>
+<targetchange interval="5000" chance="8"/>
+<strategy attack="100" defense="0"/>
+<flags>
+	<flag summonable="0"/>
+	<flag attackable="1"/>
+	<flag hostile="1"/>
+	<flag illusionable="1"/>
+	<flag convinceable="0"/>
+	<flag pushable="0"/>
+	<flag canpushitems="1"/>
+	<flag canpushcreatures="1"/>
+	<flag targetdistance="1"/>
+	<flag staticattack="90"/>
+	<flag runonhealth="300"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-5200" max="-6600"/>
+		<attack name="mas poison" interval="3000" chance="40"   min="-4200" max="-5600"/>
+		<attack name="hydra poisonwave" interval="4000"  chance="42"  min="-7200" max="-8600"/>
+		<attack name="tides of darkness" interval="5000"  chance="45"  min="-6200" max="-8000"/>
+		<attack name="sudden death" interval="6000" range="3" chance="5" min="-3900" max="-6500"/>
+		<attack name="poison" interval="7000" chance="40" min="-4700" max="-4900"/>
+    </attacks>
+		<defenses armor="25" defense="35">
+		<defense name="healing" interval="5000" chance="25" min="1200" max="2500">
+		<attribute key="areaEffect" value="blueshimmer"/>
+	</defense>
+	</defenses>
+	<elements>
+		<element earthPercent="100"/>
+		<element icePercent="40"/>
+		<element holyPercent="25"/>
+		<element physicalPercent="0"/>
+		<element energyPercent="0"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+		<voices interval="5000" chance="10">
+		<voice sentence="FCHHHHH"/>
+		<voice sentence="HISSSS"/>
+	</voices>
+ <loot>
+      <item id="2160" countmax="7" chance1="100000" chancemax="0"/>
+	  <item id="2160" countmax="8" chance1="100000" chancemax="0"/>
+	   <item id="7633" countmax="3" chance="10000"/> 
+      <item id="1994" chance="70000">
+      <inside>
+          <item id="38833" chance="500"/> 
+          <item id="38822" chance="500"/> 
+		  <item id="38721" chance="600"/> 
+          <item id="38849" chance="500"/> 
+          <item id="38779" chance="500"/> 
+          <item id="39033" chance="500"/>
+          <item id="38861" chance="500"/>
+          <item id="2415" chance="600"/> 
+          <item id="38782" chance="600"/>
+          <item id="39493" chance="600"/> 
+		  <item id="38738" chance="600"/>
+	      </inside>
+     </item>
+    </loot>
+  </monster>

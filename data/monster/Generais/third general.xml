@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Third General" species="magic" nameDescription="Third General" race="blood" experience="1000000" speed="500" manacost="0">
+  <health now="900000" max="900000"/>
+  <look type="707" head="95" body="116" legs="95" feet="114" corpse="39073"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="0"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag staticattack="50"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1000" min="-9000" max="-12000"/>
+    <attack name="Critical1" interval="6000" chance="50" min="-15000" max="-18200" range="5"/>
+    <attack name="Diceshaker_1" interval="5500" chance="80" min="-8000" max="-10200"/>
+    <attack name="spear" interval="2500" chance="80" min="-6000" max="-10200" range="5"/>
+    <attack name="berserk_1" interval="4500" chance="60" min="-13000" max="-15000"/>
+  </attacks>
+  <defenses armor="40" defense="45">
+    <defense name="Light Healing" interval="4000" chance="20" min="200" max="300"/>
+  <defense name="haste" interval="7200" chance="40"/>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="0"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <voices interval="5000" chance="30">
+    <voice sentence="give human as I am not so weak and dunnky Agrie!"/>
+    <voice sentence="What is the motivation to reach this point? Why? What is your goal, to conquer the realms of Lord Sauron?"/>
+  </voices>
+  <loot>
+    <item id="2160" countmax="20" chance1="100000" chancemax="0"/>
+    <item id="39020" chance="750"/> 
+	<item id="39554" chance="900"/> 
+	 <item id="39556" chance="900"/> 
+    <item id="2474" chance="1500"/> 
+    <item id="3940" chance="10000">
+      <inside>
+        <item id="39357" chance="750"/> 
+        <item id="38717" chance="700"/> 
+        <item id="38796" chance="800"/> 
+        <item id="38783" chance="750"/>
+        <item id="38763" chance="800"/> 
+        <item id="38766" chance="750"/> 
+        <item id="39079" chance="750"/> 
+		 <item id="21244" chance="800"/><!-- aol -->
+      </inside>
+    </item>
+  </loot>
+</monster>

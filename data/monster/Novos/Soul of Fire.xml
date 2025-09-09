@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Soul of Fire" tp="1" nameDescription="Soul of Fire" race="fire" experience="6000" speed="220" manacost="0">
+    <health now="450000" max="450000"/>
+      <look type="242" corpse="1488"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="30"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="5"/>
+      <flag runonhealth="2100"/>
+    </flags>
+    <attacks>
+ <attack name="Fire Attack 1" interval="1" chance="20" min="-100" max="-950"/>
+ <attack name="Fire Attack 1" interval="1" chance="20" min="-650" max="-1550"/>
+ <attack name="Fire Attack 1" interval="1" chance="20" min="-750" max="-1750"/>
+ <attack name="Fire Attack 1" interval="1" chance="20" min="-1000" max="-1850"/>
+ <attack name="Fire Attack 1" interval="3" chance="20" min="-800" max="-1650"/>
+    </attacks>
+    <defenses armor="19" defense="45">
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <loot>
+      <item id="4851" chance="100000"/>
+    </loot>
+  </monster>

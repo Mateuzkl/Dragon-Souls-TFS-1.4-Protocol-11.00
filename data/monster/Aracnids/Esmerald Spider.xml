@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Esmerald Spider" tp="1" nameDescription="esmerald spider" race="undead" experience="2900" speed="270" manacost="0">
+    <health now="3200" max="3200"/>
+    <look type="364" head="0" body="0" legs="0" feet="0" corpse="7344"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee_ice" interval="2000" range="1" skill="50" attack="240" />
+      <attack name="melee_ice" interval="4000" range="1" chance="5" min="-200" max="-600"/>
+      <attack name="ice hur" interval="3000" range="5" chance="90" min="-250" max="-500"/>
+      <attack name="ice hur" interval="3000" chance="90" min="-100" max="-300"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+    </defenses>
+	<elements>
+		<element firePercent="-15"/>
+		<element icePercent="100"/>
+		<element earthPercent="0"/>
+		<element energyPercent="0"/>
+	</elements>
+    <immunities>
+      <immunity fire="0"/>
+      <immunity poison="0"/>
+      <immunity paralyze="1"/>
+      <immunity invisible="0"/>
+    </immunities>
+    <voices interval="2000" chance="5">
+      <voice sentence="Screeech!"/>
+    </voices>
+  <loot>
+  	<item id="2152" countmax="5" chance1="100000" chancemax="0"/> --Gold Coins
+    <item id="2463" chance="3333"/> --Plate Armor
+    <item id="2476" chance="1428"/> --Knight Armor
+    <item id="2457" chance="3555"/> --Steel Helmet
+    <item id="2171" chance="1222"/> --Platinum Amulet
+    <item id="11550" chance="100000"> --Bag
+      <inside>
+        <item id="7449" chance="700"/> --Crystal Sword
+        <item id="11836" chance="1300"/> --samurai Legs
+        <item id="7364" countmax="7" chance1="4777" chancemax="0"/> --Sniper Arrows
+        <item id="7290" chance="2000"/> --Shard
+		<item id="7441" chance="5000"/> --Ice Cube
+		<item id="7902" chance="700"/><!-- helmet -->
+		<item id="7896" chance="700"/><!-- legs -->
+      </inside>
+    </item>
+  </loot>
+</monster>

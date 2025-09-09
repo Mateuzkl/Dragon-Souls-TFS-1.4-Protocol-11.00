@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Soul of Fire Guard" tp="1" nameDescription="Soul of Fire Guard" race="fire" experience="6000" speed="220" manacost="0">
+    <health now="450000" max="450000"/>
+      <look type="243" corpse="1488"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="30"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="0"/>
+      <flag runonhealth="2100"/>
+    </flags>
+    <attacks>
+ <attack name="melee" interval="1000" min="-500" max="-950"/>
+ <attack name="Fire Attack 2" interval="2300" chance="80" min="-1000" max="-1550"/>
+ <attack name="Fire Berserk" interval="3500" chance="60" min="-1000" max="-1750"/>
+ <attack name="fire shot 2"	 interval="4700" chance="40" min="-1000" max="-1850"/>
+ <attack name="critical hit" interval="7000" chance="20" min="-1000" max="-2650"/>
+    </attacks>
+    <defenses armor="19" defense="45">
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <loot>
+      <item id="4851" chance="100000"/>
+    </loot>
+  </monster>

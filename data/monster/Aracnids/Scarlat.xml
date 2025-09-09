@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Scarlat" tp="1" nameDescription="Scarlat" species="poison" race="venom" experience="50000" speed="300" manacost="0">
+    <health now="450000" max="450000"/>
+    <look type="706" head="0" body="0" legs="0" feet="0" corpse="38893"/>
+    <targetchange interval="5000000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="1"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="mas poison" interval="4000" chance="5" min="-4200" max="-5600"/>
+      <attack name="melee" interval="20000" min="-6200" max="-9600"/>
+      <attack name="melee" interval="15000" min="-6200" max="-8600"/>
+      <attack name="melee" interval="2000" min="-4200" max="-6600"/>
+      <attack name="melee" interval="9500" range="2" chance="5" min="-4900" max="-7500"/>
+      <attack name="poison" interval="3500" chance="40" min="-3700" max="-4900"/>
+      <attack name="poisonfield" interval="1000" chance="30" range="7" radius="1" target="1">
+      <attribute key="shootEffect" value="poison"/>
+    </attack>
+    </attacks>
+    <defenses armor="3" defense="35"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+     <loot>
+      <item id="2152" countmax="50" chance1="100000" chancemax="0"/>
+      <item id="2152" countmax="80" chance1="100000" chancemax="0"/>
+      <item id="2789" countmax="10" chance1="100000" chancemax="0"/>
+      <item id="5812" chance="5000"/>
+      <item id="2169" chance="5000"/>
+      <item id="1991" chance="100000">
+        <inside>
+          <item id="38746" chance="400"/> 
+          <item id="39017" chance="400"/> 
+          <item id="2443" chance="4000"/> 
+          <item id="2444" chance="4000"/> 
+	      <item id="38872" chance="400"/> 
+        </inside>
+      </item>
+    </loot>
+  </monster>

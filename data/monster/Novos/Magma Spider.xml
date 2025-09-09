@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<monster name="Magma Spider" nameDescription="Magma Spider" race="Blood" experience="10500" speed="250" manacost="0">
+	<health now="5500" max="5500"/> 
+	<look type="755" corpse="41473"/> 
+	<targetchange interval="5000" chance="8"/> 
+<strategy attack="100" defense="0"/> 
+	<flags>
+<flag summonable="0"/>
+<flag attackable="1"/>
+<flag hostile="1"/>
+<flag illusionable="1"/>
+<flag convinceable="0"/>
+<flag pushable="0"/>
+<flag canpushitems="1"/>
+<flag canpushcreatures="1"/>
+<flag targetdistance="1"/>
+<flag staticattack="90"/>
+<flag runonhealth="300"/>
+  </flags>
+<attacks>
+	<attack name="melee" interval="1000" min="-350" max="-610"/>
+	<attack name="dragon fireball" interval="2000" chance="24"  min="-250" max="-410"/>
+	<attack name="explosion" interval="3000" chance="24" range="3" min="-50" max="-500"/>
+</attacks>
+ <defenses armor="26" defense="20">
+ <defense name="healing" interval="1000" chance="10" min="150" max="305">
+  <attribute key="areaEffect" value="blueshimmer" /> 
+  </defense>
+  </defenses>
+ <elements>
+  <element earthPercent="100" /> 
+  <element physicalPercent="22" /> 
+  <element deathPercent="20" /> 
+  <element firePercent="-50" /> 
+  </elements>
+ <immunities>
+      <immunity invisible="1"/>
+  <immunity lifedrain="1" /> 
+  </immunities>
+ <voices interval="5000" chance="10">
+  <voice sentence="LEAVE!" /> 
+  <voice sentence="SPIDER POWER!" /> 
+  </voices>
+	<loot>
+		<item id="2152" countmax="25" chance="100000"/><!-- platium coin -->
+		<item id="5468" chance="2500"/> 
+		<item id="2353" chance="2500"/>
+		<item id="1993" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2152" countmax="25" chance="100000"/><!-- platium coin -->
+				<item id="2195" chance="800"/><!-- boots of haste -->
+				<item id="2528" chance="2200"/><!-- tower shield -->
+				<item id="2432" chance="1200"/><!-- fire axe -->
+				<item id="2393" chance="1428"/><!-- giant sword -->
+				<item id="2476" chance="1000"/><!-- knight armor -->
+				<item id="2498" chance="800"/><!-- royal helmet -->
+			</inside>
+		</item>
+	</loot>
+</monster>

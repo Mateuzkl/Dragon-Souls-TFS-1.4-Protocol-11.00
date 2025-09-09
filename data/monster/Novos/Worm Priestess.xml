@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Worm Priestess" tp="1" species="magic"  nameDescription="Worm Priestess" race="blood" experience="45000" speed="300" manacost="0">
+    <health now="200000" max="200000"/>
+    <look type="481" corpse="12350"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="1"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="30"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="4"/>
+      <flag runonhealth="250"/>
+    </flags>
+    <attacks>
+      <attack name="arcane wands" interval="1500" min="-500" max="-1500" range="4"/>
+      <attack name="Heavy Magic Missile" interval="2000" chance="60" min="-3970" max="-5095" range="4"/>
+	  <attack name="Explosion" interval="3000" chance="70" min="-2780" max="-4320" range="4"/>
+      <attack name="dark sd" interval="4000" chance="50" min="-3000" max="-5600" range="4"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="4000" chance="5" min="1150" max="1300"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="0"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="4000" chance="30">
+      <voice sentence="I am power."/>
+      <voice sentence="Now your life has come to the end!"/>
+    </voices>
+    <loot>
+		<item id="2152" countmax="100" chance1="33333" chancemax="0"/>
+		<item id="2152" countmax="100" chance1="10000" chancemax="0"/>
+		<item id="2789" countmax="20" chance1="33333" chancemax="0"/>
+		<item id="10576" countmax="3" chance="100000"/><!-- mystical hourglasses -->
+		<item id="2167" chance="4444"/> <!-- Energy Ring -->
+		<item id="7390" chance="900"/> <!-- Justice Seeker -->
+		<item id="2436" chance="9000"/> <!-- Skull Staff -->
+		<item id="8300" chance="900"/> <!-- sematcrystal -->
+		<item id="11768" chance="780"/> <!-- floyd blue hat -->  
+      <item id="11532" chance="200000">
+        <inside>
+          <item id="11689" chance="820"/> <!-- Mind Hat -->
+		  <item id="11690" chance="740"/> <!-- Mind Robe -->
+		  <item id="11978" chance="701"/> <!-- Mind Wand -->
+		  <item id="11785" chance="720"/> <!-- protector hat -->
+		  <item id="11820" chance="740"/> <!-- protector Robe -->
+		  <item id="11892" chance="701"/> <!-- protector shield -->
+          <item id="2453" chance="860"/>  <!-- Arcane Wand --> 
+		  <item id="11768" chance="880"/> <!-- floyd blue hat -->          
+		  <item id="12184" chance="850"/> <!-- Shynne Boots -->
+		  <item id="11917" chance="830"/> <!-- Mind Shield -->  
+        </inside>
+      </item>
+    </loot>
+  </monster>

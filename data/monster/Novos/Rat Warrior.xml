@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Rat Warrior" nameDescription="Rat Warrior" race="blood" experience="4" speed="150" manacost="450">
+	<health now="100" max="100"/>
+	<look type="475" head="58" body="59" legs="45" feet="114" corpse="12250"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="25"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-1" max="-13" chance="100"/>
+		<attack name="spear" interval="5000" min="-5" max="-33" range="2" chance="50"/>
+	</attacks>
+	<defenses armor="1" defense="3"/>
+	<elements>
+		<element physicalPercent="-12"/>
+		<element deathPercent="-5"/>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Meeeeep!"/>
+		<voice sentence="Meep!"/>
+	</voices>
+	<loot>
+		<item id="12268" countmax="3" chance="6666"/>
+		<item id="2448" chance="10000"/> <!-- club -->
+		<item id="2696" chance="20000"/><!-- cheese -->
+		<item id="2148" countmax="20" chance="100000"/> <!-- gold coin -->
+		<item id="11550" chance="100000"><!-- bag -->
+			<inside>
+		<item id="11943" chance="1500"/> <!-- shield -->
+		<item id="12112" chance="2000"/> <!-- club -->
+		<item id="11819" chance="1700"/> <!-- armor -->
+		<item id="2649" chance="2500"/> <!-- leather legs -->
+			</inside>
+		</item>
+	</loot>
+</monster>

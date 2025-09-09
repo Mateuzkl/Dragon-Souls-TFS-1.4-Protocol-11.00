@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+ <monster name="Under Guard" nameDescription="a under guard" race="blood" experience="55000" speed="290" manacost="0">
+  <health now="180000" max="180000" /> 
+  <look type="337" corpse="11281" /> 
+  <targetchange interval="5000" chance="8" /> 
+  <strategy attack="100" defense="0" /> 
+ <flags>
+<flag summonable="0"/>
+<flag attackable="1"/>
+<flag hostile="1"/>
+<flag illusionable="1"/>
+<flag convinceable="0"/>
+<flag pushable="0"/>
+<flag canpushitems="1"/>
+<flag canpushcreatures="1"/>
+<flag targetdistance="1"/>
+<flag staticattack="90"/>
+<flag runonhealth="0"/>
+  </flags>
+ <attacks>
+   <attack name="melee" interval="2000" min="-1050" max="-1510"/>
+   <attack name="berserk" interval="3000"   chance="40" min="-350" max="-610"/>
+   <attack name="dark music" interval="3500"  chance="40"  min="-2000" max="-2999"/>
+   <attack name="poison" interval="2500" chance="50" min="-2800" max="-3000"/>
+   <attack name="explosion" interval="2000" chance="40"  min="-250" max="-410"/>
+   <attack name="physical" interval="1000" chance="24" range="7" min="-50" max="-500">
+  <attribute key="shootEffect" value="largerock" /> 
+  </attack>
+  </attacks>
+ <defenses armor="26" defense="20">
+ <defense name="healing" interval="1000" chance="10" min="150" max="305">
+  <attribute key="areaEffect" value="blueshimmer" /> 
+  </defense>
+  </defenses>
+ <elements>
+  <element earthPercent="0" /> 
+  <element physicalPercent="26" /> 
+  <element deathPercent="20" /> 
+  <element firePercent="-50" /> 
+  </elements>
+ <immunities>
+  <immunity lifedrain="1" /> 
+  <immunity invisible="1"/>
+  </immunities>
+ <voices interval="5000" chance="10">
+  <voice sentence="SHHHHHHHHHHHHHZ!!" /> 
+  <voice sentence="UNDER FAMILY!" /> 
+  </voices>
+  <loot>
+      <item id="2160" countmax="5" chance1="100000" chancemax="0"/>
+      <item id="2160" countmax="7" chance1="100000" chancemax="0"/>
+      <item id="3939" chance="100000">
+        <inside>
+          <item id="2453" chance="500"/>
+	  <item id="39034" chance="400"/> 
+          <item id="38855" chance="400"/> 
+          <item id="39011" chance="400"/>
+        </inside>
+      </item>
+    </loot>
+  </monster>

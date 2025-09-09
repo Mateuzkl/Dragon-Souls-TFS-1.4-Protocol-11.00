@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Thornfire Wolf" nameDescription="Thornfire Wolf" race="fire" experience="1800" speed="300" manacost="0">
+	<health now="2020" max="2020"/>
+	<look type="469" corpse="7969"/>
+	<targetchange interval="5000" chance="8"/>
+<strategy attack="100" defense="0"/>
+	<flags>
+<flag summonable="0"/>
+<flag attackable="1"/>
+<flag hostile="1"/>
+<flag illusionable="1"/>
+<flag convinceable="0"/>
+<flag pushable="0"/>
+<flag canpushitems="1"/>
+<flag canpushcreatures="1"/>
+<flag targetdistance="1"/>
+<flag staticattack="90"/>
+<flag runonhealth="0"/>
+  </flags>
+<attacks>
+    <attack name="melee" interval="1000" min="-50" max="-150"/>  
+    <attack name="melee_fire" interval="1500" min="-150" max="-200" range="1"/>   
+    <attack name="dragon firewave" interval="3200" min="-200" max="-300" chance="50"/>
+    <attack name="explosion_Monster" interval="2100" min="-300" max="-400" chance="20" range="5"/>
+</attacks>
+ <defenses armor="50" defense="55">
+ <defense name="healing" interval="10000" chance="25" min="350" max="605">
+  <attribute key="areaEffect" value="blueshimmer" /> 
+  </defense>
+  </defenses>
+ <elements>
+  <element earthPercent="10" /> 
+  <element icePercent="-10" /> 
+  <element physicalPercent="20" /> 
+  <element deathPercent="10" /> 
+  <element firePercent="100" /> 
+  </elements>
+ <immunities>
+    <immunity invisible="1"/>
+	<immunity lifedrain="1" /> 
+  </immunities>
+	<voices interval="5000" chance="10">
+	<voice sentence="YOU WILL FIRE!" yell="1"/>
+	<voice sentence="ZCHHHHH!" yell="1"/>
+	<voice sentence="I am so cool" yell="1"/>
+	<voice sentence="Chill out!." yell="1"/>
+	</voices>
+	<loot>
+	</loot>
+</monster>

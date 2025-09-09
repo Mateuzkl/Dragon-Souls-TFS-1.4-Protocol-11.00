@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Kronos" nameDescription="Kronos" race="undead" experience="100000" speed="500" manacost="0">
+	<health now="1400000" max="1400000"/>
+	<look type="12" head="114" body="94" legs="76" feet="0" corpse="6068"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag staticattack="90"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+    <attack name="melee" interval="2000" chance="100" min="-8100" max="-8900" range="1"/>
+    <attack name="sudden death" interval="4000" chance="30" min="-8900" max="-10100">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="tides of darkness" interval="9550" chance="20" min="-8500" max="-10700">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+	<defenses armor="15" defense="18"/>
+	<immunities>
+		<immunity ice="1"/>
+		<immunity fire="1"/>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<elements>
+		<element energyPercent="-25"/>
+		<element earthPercent="-10"/>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Qua hah tsh!"/>
+	</voices>
+	<loot>
+		<item id="2160" countmax="100" chance="100000"/><!-- gold coin -->
+	</loot>
+<script>
+<event name="Kronos"/>
+</script>
+</monster>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<monster name="Florest Balrog" nameDescription="Florest Balrog" experience="40000" speed="500" race="Blood">
+  <health now="350000" max="350000"/>
+  <look type="12" head="114" body="121" legs="114" feet="94" corpse="6068"/>
+  <strategy attack="100"/>
+<flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" chance="100" min="-4400" max="-4700" range="1"/>
+    <attack name="poison" interval="3000" chance="60" min="-5200" max="-6400">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="Terra Wave" interval="6000" chance="30" min="-5500" max="-6700">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses defense="45" armor="40">
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+    </immunities>
+  <voices speed="0" chance="5">
+    <voice sentence="Florest!"/>
+  </voices>
+  <loot>
+    <item id="1998" countmax="1" chance="100000">
+      <inside>
+        <item id="38807" countmax="1" chance="400"/>
+        <item id="38792" countmax="1" chance="400"/>
+        <item id="38782" countmax="1" chance="400"/>
+        <item id="38779" countmax="1" chance="200"/>
+        <item id="39033" countmax="1" chance="400"/>
+        <item id="39097" countmax="1" chance="400"/>
+        <item id="2415" countmax="1" chance="400"/>
+        <item id="2522" countmax="1" chance="700"/>
+        <item id="2523" countmax="1" chance="700"/>
+      </inside>
+    </item>
+    <item id="2149" countmax="15" chance="10000"/>
+    <item id="2160" countmax="7" chance="100000"/>
+	<item id="6500" countmax="4" chance="2800"/>
+    <item id="2408" countmax="1" chance="700"/>
+  </loot>
+</monster>

@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<monster name="Waspoid" nameDescription="Waspoid" experience="11000" speed="300" race="venom">
+  <health now="35000" max="35000"/>
+  <look type="442" corpse="12598"/>
+  <targetchange interval="5000" chance="0"/>
+  <strategy attack="100"/>
+  <flags>
+    <flag canpushitems="1"/>
+    <flag hostile="1"/>
+    <flag attackable="1"/>
+    <flag pushable="0"/>
+    <flag staticattack="50"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="50"/>
+  </flags>
+   <attacks>
+      <attack name="melee" interval="1000" min="-500" max="-1000" range="1"/>
+      <attack name="poison" interval="2210" min="-1000" max="-1300" range="1"/>
+	  <attack name="melee" interval="3300" min="-1300" max="-1700" range="1"/>
+      <attack name="poison strike" interval="3500" chance="60" min="-1500" max="-2000" range="5"/>
+      <attack name="poisonfield" interval="1000" chance="30" range="5" radius="1" target="1" min="-1500" max="-2000">
+      <attribute key="shootEffect" value="poison"/>
+    </attack>
+    </attacks>
+  <defenses defense="44" armor="47">
+    <defense name="Light Healing" interval="8000" chance="60" min="8000" max="12000">
+    </defense>
+  </defenses>
+  <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="0"/>
+    </immunities>
+  <voices interval="5000" chance="30">
+    <voice sentence="Bssssss"/>
+  </voices>
+  <loot>
+  	<item id="2160" countmax="7" chance="100000"/> <!-- crystal coin -->
+
+	<item id="2149" countmax="15" chance="10000"/> <!-- small emeralds -->
+	<item id="2789" countmax="15" chance="10000"/> <!-- brown mushrooms -->
+    <item id="11540" countmax="1" chance="60000">
+      <inside>
+		<item id="11795" countmax="1" chance="700"/> 
+        <item id="11886" countmax="1" chance="700"/> 
+		<item id="2523" countmax="1" chance="700"/> <!-- blessed shield -->
+		<item id="11776" countmax="1" chance="700"/> <!-- infantry helmet -->
+        <item id="12125" countmax="1" chance="300"/>
+        <item id="8931" countmax="1" chance="700"/>
+		<item id="5803" chance="600"/> 
+      </inside>
+    </item>
+  </loot>
+</monster>

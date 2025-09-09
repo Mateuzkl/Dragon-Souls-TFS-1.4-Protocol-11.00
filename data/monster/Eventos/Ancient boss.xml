@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Ancient Boss" nameDescription="ancient boss" race="blood" experience="62500" skull="Red" speed="200" manacost="0">
+    <health now="150000" max="150000"/>
+    <look type="394" corpse="6080"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-400" max="-800"/>
+      <attack name="great energy beam" interval="4000" chance="50" min="-500" max="-1000"/>
+      <attack name="Drunk Rune" interval="6000" chance="40"/>
+      <attack name="manadrain" interval="6000" chance="40" min="-500" max="-1000"/>
+    </attacks>
+    <defenses armor="30" defense="30">
+      <defense name="ultimate healing" interval="5000" chance="80" min="300" max="500"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="2000" chance="5">
+      <voice sentence="Huff Huff!"/>
+      <voice sentence="I'm an old man, can not run."/>
+      <voice sentence="Human power should be equaled to the earth's crust!"/>
+    </voices>
+    <loot>
+	  <item id="13772" countmax="5" chance1="100000" chancemax="0"/> <!-- TLP Coin -->
+      <item id="2160" countmax="20" chance1="100000" chancemax="0"/> <!-- Crystal Coin -->
+	  <item id="8300" chance="5000"/> <!-- sematcrystal -->
+       <item id="10521" chance="100000"> <!-- BP -->
+        <inside>
+          <item id="6570" chance="700"/> <!-- surprise bag -->
+		  <item id="6571" chance="700"/> <!-- surprise bag  -->
+		  <item id="11837" chance="700"/> <!-- legs -->
+		  <item id="11839" chance="700"/> <!-- legs -->
+		  <item id="11845" chance="700"/> <!-- legs -->
+		  <item id="2453" chance="1000"/>  <!-- Arcane Wand -->    
+        </inside>
+      </item>
+    </loot>
+  </monster>

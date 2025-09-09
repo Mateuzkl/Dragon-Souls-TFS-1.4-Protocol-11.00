@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Cerberus" nameDescription="cerberus" race="fire" experience="125000" speed="300" manacost="150">
+  <health now="450000" max="450000"/>
+  <look type="370" corpse="11473"/>
+  <targetchange interval="5000" chance="25"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="1000" chance="100" min="-3100" max="-6100" range="1"/>
+    <attack name="dragon lord fireball" interval="3000" chance="70" min="-5100" max="-6100" range="4">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+    <attack name="explosion_Monster" interval="5000" chance="60" min="-6300" max="-7600" range="4">
+      <attribute key="areaEffect" value="redspark"/>
+    </attack>
+    <attack name="dragon firewave" interval="7500" chance="50" min="-4100" max="-8300">
+      <attribute key="areaEffect" value="redspark"/>
+      <attribute key="shootEffect" value="spear"/>
+    </attack>
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="4000" chance="15" min="7200" max="11400">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <elements>
+		<element physicalPercent="0"/>
+		<element firePercent="30"/>
+		<element icePercent="-30"/>
+		<element earthPercent="30"/>
+		<element energyPercent="0"/>
+		<element holyPercent="-10"/>
+	</elements>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="0"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="3000"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="CAN NOT LEAVE!"/>
+    <voice sentence="GRRRRRRRR ..."/>
+  </voices>
+  <loot>
+  	<item id="2160" countmax="10" chance1="100000" chancemax="0"/> <!-- crystal coin -->
+	<item id="2795" countmax="10" chance="20000"/><!-- fire mushroom -->
+    <item id="2147" countmax="10" chance1="100000" chancemax="0"/> <!-- small rubies -->
+    <item id="5468" chance="2500"/> <!-- fire bug -->
+    <item id="2353" chance="2500"/> <!-- burning heart --> 
+    <item id="11237" chance="20000">
+<inside>
+    <item id="11725" chance="500"/> <!-- flame hat -->
+    <item id="11726" chance="500"/> <!-- flame robe -->
+	<item id="11950"  chance="700"/> <!-- flame shield -->
+	<item id="8906"  chance="700"/> <!-- alabarda shield -->
+	<item id="9933"  chance="800"/> <!-- firewalker boots -->
+    <item id="12060" chance="700"/> <!-- alabarda of fire -->
+    <item id="12152" chance="700"/> <!-- magma axe -->
+	<item id="12180" chance="700"/> <!-- magic fire axe -->
+	<item id="11980" chance="700"/> <!-- phoenix wand -->
+	<item id="12005" chance="600"/> <!-- four blades -->
+</inside>
+    </item>
+
+  </loot>
+</monster>

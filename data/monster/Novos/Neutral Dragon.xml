@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Neutral Dragon" nameDescription="Neutral Dragon" race="blood" experience="15000" speed="260" manacost="0">
+<health now="12500" max="12500"/>
+<look type="772" corpse="5973"/>
+<targetchange interval="5000" chance="8"/>
+<strategy attack="100" defense="0"/>
+<flags>
+<flag summonable="0"/>
+<flag attackable="1"/>
+<flag hostile="1"/>
+<flag illusionable="1"/>
+<flag convinceable="0"/>
+<flag pushable="0"/>
+<flag canpushitems="1"/>
+<flag canpushcreatures="1"/>
+<flag targetdistance="1"/>
+<flag staticattack="90"/>
+<flag runonhealth="0"/>
+  </flags>
+ <attacks>
+      <attack name="melee" interval="1000" min="-400" max="-600"/>   
+      <attack name="hydra bubblewave" interval="2000" min="-600" max="-800" chance="40"/>
+      <attack name="hydra poisonwave" interval="3000" min="-800" max="-1000" chance="20"/>
+  	<attack name="paralyze" interval="10000" chance="70"/>
+    </attacks>
+ <defenses armor="26" defense="20">
+ <defense name="healing" interval="1000" chance="10" min="150" max="305">
+  <attribute key="areaEffect" value="blueshimmer" /> 
+  </defense>
+  </defenses>
+ <elements>
+  <element earthPercent="100" /> 
+  <element physicalPercent="22" /> 
+  <element deathPercent="20" /> 
+  <element firePercent="-50" /> 
+  </elements>
+ <immunities>
+    <immunity invisible="1"/>
+	<immunity lifedrain="1" /> 
+  </immunities>
+  	<loot>
+		<item id="2152" countmax="25" chance="100000"/><!-- platium coin -->
+		<item id="2671" countmax="3" chance="100000"/><!-- ham --> 
+		<item id="2146" countmax="1" chance="5000"/><!-- small sapphire -->
+		<item id="2214" chance="1200"/><!-- ring of healing -->
+		<item id="2168" chance="2500"/><!-- life ring -->
+		  <item id="7632" countmax="3" chance="10000"/> 
+		<item id="1991" chance="100000"><!-- bag -->
+			<inside>
+				<item id="2152" countmax="25" chance="100000"/><!-- platium coin -->
+				<item id="2195" chance="800"/><!-- boots of haste -->
+				<item id="2475" chance="800"/><!-- warrior helmet -->
+				<item id="38855" chance="600"/><!-- rustic armor-->
+				<item id="2476" chance="800"/><!-- knight armor -->
+				<item id="2498" chance="800"/><!-- royal helmet -->
+				<item id="39039" chance="600"/><!-- infantry helmet-->
+				<item id="2536" chance="800"/><!-- medusa shield -->
+				<item id="38747" chance="400"/><!--  shyne boots-->
+				<item id="2476" chance="2000"/><!-- knight armor -->
+				<item id="39005"	 chance="2000"/><!-- forest robe -->
+			</inside>
+		</item>
+	</loot>
+</monster>

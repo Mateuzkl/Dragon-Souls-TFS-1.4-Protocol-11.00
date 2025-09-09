@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Smaug" species="fire" nameDescription="smaug" race="undead" experience="2000000" speed="600" manacost="0">
+    <health now="100000" max="100000"/>
+    <look type="412" head="20" body="30" legs="40" feet="50" corpse="3128"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="210"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-10000" max="-18000"/>
+      <attack name="tides of darkness" interval="2500" chance="60" min="-23470" max="-23995"/>
+      <attack name="dragon firewave" interval="3500" chance="40" min="-15000" max="-19000"/>
+      <attack name="nazgul sonar" interval="4000" chance="70" min="-18000" max="-25000"/>
+    </attacks>
+    <defenses armor="32" defense="34">
+      <defense name="light healing" interval="4000" chance="40" min="3800" max="6300"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="8000" chance="10">
+      <voice sentence="YOU WILL DARKNESS!"/>
+      <voice sentence="DIE HUMAN!"/>
+    </voices>
+    <loot>
+      <item id="11510" countmax="3" chance1="100000" chancemax="0"/>
+      <item id="2160" countmax="100" chance1="10000" chancemax="0"/>
+      <item id="2229" chance="100000"/>
+      <item id="2230" chance="100000"/>
+      <item id="2231" chance="100000"/>
+	  <item id="12520" countmax="1" chance="1400"/>
+	  <item id="12529" chance="100000"/>
+      <item id="12652" chance="10000">
+        <inside>
+          <item id="12587" chance="700"/> --naz gul scale helmet        
+          <item id="12588" chance="700"/> --naz gul scale mail
+          <item id="12589" chance="700"/> --naz gul scale legs
+          <item id="12586" chance="700"/> --naz gul scale boots
+          <item id="12660" chance="700"/> --dommed axe
+          <item id="11413" chance="700"/> --hammer of hercules
+		  <item id="12423" chance="700"/> --dommed sword
+		  <item id="2200" chance="850"/>  --angel magic amulet
+        </inside>
+      </item>
+    </loot>
+  </monster>

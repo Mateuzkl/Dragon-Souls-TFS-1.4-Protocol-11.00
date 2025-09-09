@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="shadow imp" nameDescription="shadow imp" race="blood" experience="60000" speed="240" manacost="150">
+  <health now="550000" max="550000"/>
+  <look type="300" head="20" body="30" legs="40" feet="50" corpse="8955"/>
+  <targetchange interval="5000" chance="8"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+	<attack name="melee" interval="1000" min="-3000" max="-6000"/>
+	<attack name="physical" interval="1000" chance="5" range="7" min="-4015" max="-7035">
+	<attribute key="shootEffect" value="largerock" /> 
+</attack>
+	<attack name="Sudden Death" interval="2500" chance="10" min="-3070" max="-3595"/>
+	<attack name="tides of darkness" interval="3000" chance="20" min="-7500" max="-8700"/>
+	<attack name="melee" interval="2500" range="2" chance="5" min="-2000" max="-4000" > 
+	<attribute key="shootEffect" value="largerock" /> 
+</attack>
+  </attacks>
+  <defenses armor="20" defense="20">
+    <defense name="healing" interval="4000" chance="15" min="1200" max="1400">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="1"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+    <immunity ice="0"/>
+    <immunity holy="0"/>
+    <immunity death="0"/>
+    <immunity earth="1"/>
+  </immunities>
+  <summons maxSummons="0">
+    <summon name="tarantula" interval="1000" chance="100"/>
+  </summons>
+  <voices interval="5000" chance="10">
+    <voice sentence="CAN NOT LEAVE!"/>
+    <voice sentence="GRRRRRRRR ..."/>
+  </voices>
+  <loot>
+    <item id="2160" countmax="7" chance1="100000" chancemax="0"/>
+    <item id="2160" countmax="7" chance1="100000" chancemax="0"/>
+    <item id="2003" chance="50000">
+      <inside>
+        <item id="38811" chance="700"/>
+		<item id="39015" chance="700"/> 
+        <item id="38760" chance="700"/> 
+        <item id="38875" chance="700"/> 
+        <item id="38852" chance="700"/> 
+        <item id="39060" chance="700"/> 
+        <item id="38812" chance="700"/> 
+        <item id="38955" chance="700"/> 
+        <item id="39000" chance="700"/> 
+		<item id="39057" chance="700"/> 
+		<item id="38938" chance="700"/> 
+		<item id="38718" chance="700"/>
+      </inside>
+    </item>
+  </loot>
+</monster>

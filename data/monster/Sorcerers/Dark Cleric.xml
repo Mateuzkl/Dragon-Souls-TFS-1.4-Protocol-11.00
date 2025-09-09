@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Dark Cleric" nameDescription="Dark Cleric" race="blood" experience="15000" speed="300" manacost="0">
+    <health now="150000" max="150000"/>
+    <look type="909" head="96" body="97" legs="96" feet="97" addons="3" corpse="6080"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="Master Gravita" interval="8000" min="-3000" max="-3600" chance="75"/>
+      <attack name="melee" interval="2000" min="-3000" max="-3600"/>
+      <attack name="melee" interval="2500" range="2" chance="5" min="-3500" max="-4500"/>
+      <attack name="Sudden Death" interval="3000" chance="70" min="-2000" max="-2900"/>
+      <attack name="Drunk rune" interval="3500" chance="40"/>
+    </attacks>
+	<defenses armor="21" defense="23">
+    <defense name="haste" interval="5000" chance="100"/>
+  </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <voices interval="2000" chance="20">
+      <voice sentence="Your energy is mine."/>
+      <voice sentence="Now your life has come to the end, hahahaha!"/>
+    </voices>
+    <loot>
+      <item id="2152" countmax="50" chance1="100000" chancemax="0"/>
+      <item id="2152" countmax="80" chance1="100000" chancemax="0"/>
+      <item id="2789" countmax="10" chance1="100000" chancemax="0"/>
+      <item id="2031" chance="33333"/>
+      <item id="2167" chance="2222"/>
+      <item id="2436" chance="1111"/>
+      <item id="38878" chance="1000"/> 
+      <item id="8300" chance="1500"/>
+      <item id="38875" chance="1000"/> 
+      <item id="7390" chance="800"/>
+      <item id="3939" chance="100000">
+        <inside>
+          <item id="38836" chance="700"/> 
+		  <item id="38747" chance="700"/> 
+          <item id="2453" chance="700"/>  
+          <item id="7426" chance="700"/>  
+          <item id="38845" chance="700"/> 
+          <item id="2505" chance="700"/>  
+          <item id="11355" chance="700"/> 
+          <item id="2506" chance="700"/>  
+		  <item id="2507" chance="700"/>  
+		  <item id="38993" chance="700"/> 
+		  <item id="10133" chance="800"/><!-- royal medal -->
+	 </inside>
+      </item>
+    </loot>
+  </monster>

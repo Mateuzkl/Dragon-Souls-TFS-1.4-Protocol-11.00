@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="First General" species="magic" nameDescription="First General" race="blood" experience="100000" speed="400" manacost="0">
+    <health now="700000" max="700000"/>
+    <look type="187" head="95" body="116" legs="95" feet="114" corpse="12767"/>
+    <targetchange interval="5000" chance="25"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="1"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-9000" max="-13200"/>
+      <attack name="spear" interval="2500" chance="40" min="-8000" max="-10200"/>
+      <attack name="berserk" interval="4500" chance="60" min="-13000" max="-15000"/>
+      <attack name="melee" interval="6000" chance="10" min="-8000" max="-12000"/>
+      <attack name="melee" interval="10000" chance="10" min="-9000" max="-12000"/>
+    </attacks>
+    <defenses armor="40" defense="45">
+      <defense name="Light Healing" interval="4000" chance="20" min="500" max="600"/>
+    </defenses>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="1"/>
+      <immunity fire="1"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="1"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="1"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+      <immunity drown="1"/>
+      <immunity emo="1"/>
+    </immunities>
+    <voices interval="4000" chance="25">
+      <voice sentence="then we will fight!"/>
+      <voice sentence="You'll have to go back to where it came from, because you maybe have to try to move it away."/>
+      <voice sentence="Get out now!!"/>
+    </voices>
+    <loot>
+    </loot>
+  </monster>
