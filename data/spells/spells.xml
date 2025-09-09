@@ -227,6 +227,12 @@
 		<vocation name="Royal Paladin" />
 		<vocation name="Elite Knight" />
 	</instant>
+	<instant group="support" aggressive="0" spellid="200" name="Hastega" words="utani gran hur mas" lvl="35" mana="150" prem="1" aggressive="0" selftarget="1" exhaustion="30000" groupcooldown="2000" needlearn="0" script="support/hastega.lua">
+		<vocation name="Sorcerer" />
+		<vocation name="Druid" />
+		<vocation name="Master Sorcerer" />
+		<vocation name="Elder Druid" />
+	</instant>
 	<instant group="healing" spellid="84" name="Heal Friend" words="exura sio" lvl="18" mana="140" prem="1" aggressive="0" blockwalls="1" needtarget="1" playernameparam="1" params="1" exhaustion="1000" groupcooldown="1000" needlearn="0" script="healing/heal friend.lua">
 		<vocation name="Druid" />
 		<vocation name="Elder Druid" />

@@ -498,7 +498,8 @@ enum ConditionType_t {
 	CONDITION_STUN = 1 << 28,
 	CONDITION_STAMINAREGEN = 1 << 29,
 	CONDITION_SOULBONUS = 1 << 30,
-	CONDITION_SILENCE = 1U << 31
+	CONDITION_SILENCE = 1U << 31,
+	CONDITION_HASTEGA = 1ULL << 32
 };
 
 enum ConditionId_t : int8_t {

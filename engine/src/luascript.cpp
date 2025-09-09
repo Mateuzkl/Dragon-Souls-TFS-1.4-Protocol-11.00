@@ -1234,6 +1234,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_ENERGY)
 	registerEnum(CONDITION_BLEEDING)
 	registerEnum(CONDITION_HASTE)
+	registerEnum(CONDITION_HASTEGA)
 	registerEnum(CONDITION_PARALYZE)
 	registerEnum(CONDITION_OUTFIT)
 	registerEnum(CONDITION_INVISIBLE)
@@ -1283,6 +1284,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_PARAM_MANATICKS)
 	registerEnum(CONDITION_PARAM_DELAYED)
 	registerEnum(CONDITION_PARAM_SPEED)
+
 	registerEnum(CONDITION_PARAM_LIGHT_LEVEL)
 	registerEnum(CONDITION_PARAM_LIGHT_COLOR)
 	registerEnum(CONDITION_PARAM_SOULGAIN)
@@ -2809,6 +2811,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "hasChaseMode", LuaScriptInterface::luaPlayerHasChaseMode);
 	registerMethod("Player", "hasSecureMode", LuaScriptInterface::luaPlayerHasSecureMode);
 	registerMethod("Player", "getFightMode", LuaScriptInterface::luaPlayerGetFightMode);
+	registerMethod("Player", "getAttackSpeed", LuaScriptInterface::luaPlayerGetAttackSpeed);
+	registerMethod("Player", "setAttackSpeed", LuaScriptInterface::luaPlayerSetAttackSpeed);
 
 	registerMethod("Player", "getPreyState", LuaScriptInterface::luaPlayerGetPreyState);
 	registerMethod("Player", "changePreyState", LuaScriptInterface::luaPlayerChangePreyState);
@@ -12013,6 +12017,32 @@ int LuaScriptInterface::luaPlayerHasSecureMode(lua_State* L)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		pushBoolean(L, player->secureMode);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSetAttackSpeed(lua_State* L)
+{
+	// player:setAttackSpeed(ms)
+	Player* player = getUserdata<Player>(L, 1);
+	uint32_t ms = getNumber<uint32_t>(L, 2);
+	if (player) {
+		player->setAttackSpeed(ms);
+		pushBoolean(L, true);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetAttackSpeed(lua_State* L)
+{
+	// player:getAttackSpeed()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getAttackSpeed());
 	} else {
 		lua_pushnil(L);
 	}

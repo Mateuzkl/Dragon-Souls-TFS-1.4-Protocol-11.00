@@ -1927,6 +1927,7 @@ class Player final : public Creature, public Cylinder
 
 		int32_t preyExhaust = 0;
 		uint32_t inventoryWeight = 0;
+		uint32_t attackSpeed = 0;
 		uint32_t capacity = 40000;
 		uint32_t damageImmunities = 0;
 		uint32_t conditionImmunities = 0;
@@ -2033,8 +2034,23 @@ class Player final : public Creature, public Cylinder
 
 		bool isPromoted() const;
 
+		void setAttackSpeed(uint32_t speed) {
+			attackSpeed = speed;
+		}
+
 		uint32_t getAttackSpeed() const {
-			return vocation->getAttackSpeed();
+			uint32_t speed;
+			if (attackSpeed > 0) {
+				speed = attackSpeed;
+			} else {
+				speed = vocation->getAttackSpeed();
+			}
+			
+			if (hasCondition(CONDITION_HASTEGA)) {
+				speed /= 2;
+			}
+			
+			return speed;
 		}
 
 		static uint8_t getPercentLevel(uint64_t count, uint64_t nextLevelCount);

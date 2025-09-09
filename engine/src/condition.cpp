@@ -202,6 +202,7 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_PACIFIED:
 		case CONDITION_MANASHIELD:
 		case CONDITION_STUN:
+		case CONDITION_HASTEGA:
 			return new ConditionGeneric(id, type, ticks, buff, subId);
 
 		default:
