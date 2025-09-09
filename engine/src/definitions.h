@@ -1,4 +1,4 @@
- /**
+/**
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -20,10 +20,10 @@
 #ifndef FS_DEFINITIONS_H_877452FEC245450C9F96B8FD268D8963
 #define FS_DEFINITIONS_H_877452FEC245450C9F96B8FD268D8963
 
-static constexpr auto STATUS_SERVER_NAME = "Otg Server";
+static constexpr auto STATUS_SERVER_NAME = "Dragon Souls Server";
 static constexpr auto STATUS_SERVER_VERSION = "1.4 (Protocol 1100)";
-static constexpr auto STATUS_SERVER_CREDITS = "TFS Team, Erick Nunes, Leo Pereira, Marson Schneider, LukST, worthdavi, OTX Team, OTG Team";
-static constexpr auto STATUS_SERVER_CONTRIBUTORS = "Johncore, Mark Samman and Mateuskl (Mateus Roberto)";
+static constexpr auto STATUS_SERVER_CREDITS = "Mateus Roberto";
+static constexpr auto STATUS_SERVER_CONTRIBUTORS = "Mateus Roberto";
 
 static constexpr auto CLIENT_VERSION_MIN = 1100;
 static constexpr auto CLIENT_VERSION_MAX = 1100;

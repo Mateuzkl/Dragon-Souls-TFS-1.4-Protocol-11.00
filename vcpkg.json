@@ -1,5 +1,5 @@
 {
-  "name": "otg-server",
+  "name": "dragon-souls-server",
   "version": "1.0.0",
   "dependencies": [
     "boost-iostreams",

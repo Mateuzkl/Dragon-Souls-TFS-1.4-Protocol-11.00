@@ -182,6 +182,8 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_SILENCE:
 			return new ConditionSilence(id, type, ticks, buff, subId);
 
+
+
 		case CONDITION_ATTRIBUTES:
 			return new ConditionAttributes(id, type, ticks, buff, subId);
 

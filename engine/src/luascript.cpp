@@ -2714,6 +2714,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "sendTextMessage", LuaScriptInterface::luaPlayerSendTextMessage);
 	registerMethod("Player", "sendChannelMessage", LuaScriptInterface::luaPlayerSendChannelMessage);
 	registerMethod("Player", "sendPrivateMessage", LuaScriptInterface::luaPlayerSendPrivateMessage);
+	registerMethod("Player", "sendSpellCooldownMessage", LuaScriptInterface::luaPlayerSendSpellCooldownMessage);
 	registerMethod("Player", "channelSay", LuaScriptInterface::luaPlayerChannelSay);
 	registerMethod("Player", "openChannel", LuaScriptInterface::luaPlayerOpenChannel);
 
@@ -10777,6 +10778,46 @@ int LuaScriptInterface::luaPlayerChannelSay(lua_State* L)
 	uint16_t channelId = getNumber<uint16_t>(L, 5);
 	player->sendToChannel(speaker, type, text, channelId);
 	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerSendSpellCooldownMessage(lua_State* L)
+{
+	// player:sendSpellCooldownMessage(spellName)
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	const std::string& spellName = getString(L, 2);
+	if (spellName.empty()) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	InstantSpell* spell = g_spells->getInstantSpellByName(spellName);
+	if (!spell) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	uint32_t spellId = spell->getId();
+	
+	Condition* condition = player->getCondition(CONDITION_SPELLCOOLDOWN, CONDITIONID_DEFAULT, spellId);
+	if (condition) {
+		uint32_t remainingTime = condition->getTicks() / 1000;
+		
+		std::ostringstream ss;
+		ss << "CD: " << spellName << " - " << remainingTime << "s";
+		
+		TextMessage message(MESSAGE_STATUS_CONSOLE_BLUE, ss.str());
+		player->sendTextMessage(message);
+		
+		pushBoolean(L, true);
+	} else {
+		pushBoolean(L, false);
+	}
 	return 1;
 }
 

@@ -1033,6 +1033,7 @@ class LuaScriptInterface
 		static int luaPlayerSendTextMessage(lua_State* L);
 		static int luaPlayerSendChannelMessage(lua_State* L);
 		static int luaPlayerSendPrivateMessage(lua_State* L);
+		static int luaPlayerSendSpellCooldownMessage(lua_State* L);
 
 		static int luaPlayerChannelSay(lua_State* L);
 		static int luaPlayerOpenChannel(lua_State* L);

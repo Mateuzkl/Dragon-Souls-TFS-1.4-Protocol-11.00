@@ -125,10 +125,12 @@ void printServerVersion()
 #endif
 
     startupMsg << hrLine;
-    startupMsg << "- " << "A server developed by " << console::setColor(console::developers, "Johncore, Mark Samman and Mateuskl (Mateus Roberto)") << std::endl;
-    startupMsg << "- " << "Engine Credits for: " << console::setColor(console::developers, "TFS Team, Erick Nunes, Leo Pereira, Marson Schneider, LukST, worthdavi, OTX Team, OTG Team") << std::endl;
-    startupMsg << "- " << "Based on TFS 1.4 (Protocol 1100), heavily modified by " << console::setColor(console::error, "Mateus Roberto") << std::endl;
-    startupMsg << "- " << "Visit our community: " << console::setColor(console::community, "https://github.com/Mateuzkl") << " and " << console::setColor(console::community, "https://github.com/otg-br") << std::endl;
+    startupMsg << "- " << "Dragon Souls Server - Protocol Version 1.4" << std::endl;
+    startupMsg << "- " << "Lead Developer and Project Maintainer: " << console::setColor(console::developers, "Mateus Roberto") << std::endl;
+    startupMsg << "- " << "Built upon The Forgotten Server (TFS) Framework 1.4" << std::endl;
+    startupMsg << "- " << "Incorporating Evolutions OTServ Version 0.7.8 (TFS 1.4 7.92) Architecture" << std::endl;
+    startupMsg << "- " << "Enhanced with Custom Features and Gameplay Modifications" << std::endl;
+    startupMsg << "- " << "Official Repository: https://github.com/Mateuzkl" << std::endl;
     startupMsg << hrLine;
     std::cout << startupMsg.str() << std::flush;
 
