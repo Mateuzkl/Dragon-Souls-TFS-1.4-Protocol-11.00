@@ -642,6 +642,15 @@ class Player final : public Creature, public Cylinder
 		void addDeath() {
 			++deaths;
 		}
+		uint32_t getPoints() const {
+			return points;
+		}
+		void setPoints(uint32_t newPoints) {
+			points = newPoints;
+		}
+		void addPoint() {
+			++points;
+		}
 
 		Item* getInventoryItem(slots_t slot) const;
 
@@ -1975,6 +1984,7 @@ class Player final : public Creature, public Cylinder
 		int16_t lastDepotId = -1;
 		uint32_t kills = 0;
 		uint32_t deaths = 0;
+		uint32_t points = 0;
 
 		uint8_t soul = 0;
 		uint8_t levelPercent = 0;

@@ -1165,12 +1165,6 @@ bool Creature::onKilledCreature(Creature* target, bool)
 		master->onKilledCreature(target);
 	}
 
-	Player* player = getPlayer();
-	Player* targetPlayer = target->getPlayer();
-	if (player && targetPlayer && player != targetPlayer) {
-		player->addKill();
-	}
-
 	//scripting event - onKill
 	const CreatureEventList& killEvents = getCreatureEvents(CREATURE_EVENT_KILL);
 	for (CreatureEvent* killEvent : killEvents) {

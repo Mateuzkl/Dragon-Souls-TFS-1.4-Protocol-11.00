@@ -4154,6 +4154,27 @@ bool Player::onKilledCreature(Creature* target, bool lastHit/* = true*/)
 	Creature::onKilledCreature(target, lastHit);
 
 	if (Player* targetPlayer = target->getPlayer()) {
+		if (targetPlayer != this && !isPartner(targetPlayer)) {
+			addKill();
+			targetPlayer->addDeath();
+			addPoint();
+			
+			std::ostringstream globalMsg;
+			globalMsg << "PvP: " << getName() << " (Level: " << getLevel() << ") matou "
+					  << targetPlayer->getName() << " (Level: " << targetPlayer->getLevel() << ").";
+			
+			for (const auto& it : g_game.getPlayers()) {
+				if (Player* player = it.second) {
+					player->sendTextMessage(MESSAGE_EVENT_ORANGE, globalMsg.str());
+				}
+			}
+			
+			std::ostringstream personalMsg;
+			personalMsg << getName() << " Kills: " << getKills()
+						<< " Mortes: " << getDeaths() << " Points: " << getPoints() << ".";
+			sendTextMessage(MESSAGE_EVENT_ORANGE, personalMsg.str());
+		}
+		
 		if (targetPlayer && (targetPlayer->getZone() == ZONE_PVP)) {
 			targetPlayer->setDropLoot(false);
 			targetPlayer->setSkillLoss(false);
