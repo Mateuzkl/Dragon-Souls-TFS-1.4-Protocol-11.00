@@ -216,6 +216,9 @@ deSpawnRadius = 50
 -- Stamina
 staminaSystem = true
 
+-- Player Look Settings
+showKillsDeathsOnLook = true
+
 -- Scripts
 warnUnsafeScripts = true
 convertUnsafeScripts = true

@@ -212,6 +212,10 @@ std::string Player::getDescription(int32_t lookDistance) const
 		}
 	}
 
+	if (g_config.getBoolean(ConfigManager::SHOW_KILLS_DEATHS_ON_LOOK)) {
+		s << " Kills: [" << kills << "]. Deaths: [" << deaths << "]";
+	}
+
 	return s.str();
 }
 
