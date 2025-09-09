@@ -445,7 +445,7 @@ protected:
 class ConditionStamina final : public ConditionGeneric {
 public:
 	ConditionStamina(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0) :
-			ConditionGeneric(id, type, ticks, buff, subId) {}
+		ConditionGeneric(id, type, ticks, buff, subId) {}
 
 	void addCondition(Creature *creature, const Condition *addCondition) final;
 
@@ -467,6 +467,24 @@ protected:
 	uint32_t internalStaminaTicks = 0;
 	uint32_t staminaTicks = 0;
 	uint16_t staminaGain = 1;
+};
+
+class ConditionSilence final : public ConditionGeneric
+{
+public:
+	ConditionSilence(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0) :
+		ConditionGeneric(id, type, ticks, buff, subId) {}
+
+	bool startCondition(Creature* creature) final;
+	bool executeCondition(Creature* creature, int32_t interval) final;
+	void endCondition(Creature* creature) final;
+	void addCondition(Creature* creature, const Condition* addCondition) final;
+
+	ConditionSilence* clone() const final {
+		return new ConditionSilence(*this);
+	}
+
+	uint32_t getIcons() const final;
 };
 
 #endif

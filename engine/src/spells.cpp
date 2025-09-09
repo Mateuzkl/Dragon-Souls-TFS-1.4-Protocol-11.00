@@ -611,6 +611,12 @@ bool Spell::playerSpellCheck(Player* player) const
 		return true;
 	}
 
+	if (player->hasCondition(CONDITION_SILENCE)) {
+		player->sendCancelMessage(RETURNVALUE_YOUARESILENCED);
+		g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);
+		return false;
+	}
+
 	if (!enabled) {
 		return false;
 	}

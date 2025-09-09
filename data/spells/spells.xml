@@ -15,15 +15,15 @@
 	</instant>
 	<!-- under construction -->
 	<instant group="support" aggressive="0" spellid="192" name="Conjure Diamond Arrow" words="exevo gran con hur" lvl="150" mana="1000" soul="0" prem="1" aggressive="0" selftarget="1" exhaustion="420000" groupcooldown="2000" needlearn="0" script="conjuring/Conjure_Diamond_Arrow.lua">
-		<vocation name="Paladin" />
-		<vocation name="Royal Paladin" />
+		<vocation name="Archer" />
+		<vocation name="Royal Archer" />
 	</instant>
 	<instant group="support" aggressive="0" spellid="193" name="Conjure Spectral Bolt" words="exevo gran con vis" lvl="150" mana="1000" soul="0" prem="1" aggressive="0" selftarget="1" exhaustion="600000" groupcooldown="2000" needlearn="0" script="conjuring/Conjure_Spectral_Bolt.lua">
-		<vocation name="Paladin" />
+		<vocation name="Archer" />
 		<vocation name="Royal Paladin" />
 	</instant>
 	<instant group="support" aggressive="0" spellid="191" name="Conjure Royal Star" words="exevo gran con grav" lvl="150" mana="1000" soul="0" prem="1" aggressive="0" selftarget="1" exhaustion="600000" groupcooldown="2000" needlearn="0" script="conjuring/Conjure_Royal_Star.lua">
-		<vocation name="Paladin" />
+		<vocation name="Archer" />
 		<vocation name="Royal Paladin" />
 	</instant>
 	<instant group="support" aggressive="0" spellid="92" name="Conjure Wand of Darkness" words="exevo gran mort" lvl="41" mana="250" soul="0" prem="1" aggressive="0" selftarget="1" exhaustion="1200000" groupcooldown="2000" needlearn="0" script="conjuring/Conjure_Wand_of_Darkness.lua">
@@ -512,7 +512,7 @@
 	<rune group="attack" spellid="77" name="Stalagmite" id="2292" allowfaruse="1" charges="10" lvl="24" maglv="3" exhaustion="2000" groupcooldown="2000" needtarget="1" script="attack/stalagmite.lua" />
 	<rune group="attack" spellid="130" name="Holy Missile" id="2295" allowfaruse="1" charges="5" lvl="27" maglv="4" exhaustion="2000" groupcooldown="2000" needtarget="1" blocktype="solid" script="attack/holy missile.lua">
 		<vocation name="Paladin" />
-		<vocation name="Royal Paladin" showInDescription="0" />
+		<vocation name="Royal Archer" showInDescription="0" />
 	</rune>
 	<rune group="attack" spellid="86" name="Magic Wall" id="2293" allowfaruse="1" charges="3" lvl="32" maglv="9" exhaustion="2000" groupcooldown="2000" blocktype="all" script="support/magic wall rune.lua" />
 	<rune group="attack" spellid="116" name="Light Stone Shower" id="23722" allowfaruse="1" charges="4" lvl="1" maglv="0" cooldown="2000" groupcooldown="2000" script="attack/light stone shower.lua" />
@@ -771,6 +771,14 @@
 	<instant group="support" aggressive="0" name="Holy Missile" words="adori san" lvl="27" mana="300" soul="3" prem="1" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/holy_missile_rune.lua">
 		<vocation name="Paladin" />
 		<vocation name="Royal Paladin" />
+	</instant>
+
+	<!-- Silence Spell -->
+	<instant group="attack" spellid="200" name="Silence" words="exura silence" level="50" mana="300" premium="0" aggressive="1" needtarget="1" cooldown="55000" groupcooldown="2000" needlearn="0" script="silence_spell.lua">
+		<vocation name="Sorcerer" />
+		<vocation name="Druid" />
+		<vocation name="Master Sorcerer" />
+		<vocation name="Elder Druid" />
 	</instant>
 
 	<!-- House Spells -->

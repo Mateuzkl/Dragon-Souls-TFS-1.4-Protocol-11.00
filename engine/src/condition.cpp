@@ -179,6 +179,9 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_STAMINAREGEN:
 			return new ConditionStamina(id, type, ticks, buff, subId);
 
+		case CONDITION_SILENCE:
+			return new ConditionSilence(id, type, ticks, buff, subId);
+
 		case CONDITION_ATTRIBUTES:
 			return new ConditionAttributes(id, type, ticks, buff, subId);
 
@@ -1846,4 +1849,31 @@ bool ConditionSpellGroupCooldown::startCondition(Creature* creature)
 		}
 	}
 	return true;
+}
+
+bool ConditionSilence::startCondition(Creature* creature)
+{
+	return Condition::startCondition(creature);
+}
+
+bool ConditionSilence::executeCondition(Creature* creature, int32_t interval)
+{
+	return Condition::executeCondition(creature, interval);
+}
+
+void ConditionSilence::endCondition(Creature* creature)
+{
+	// Silence condition ended - no special cleanup needed
+}
+
+void ConditionSilence::addCondition(Creature* creature, const Condition* addCondition)
+{
+	if (addCondition->getTicks() > getTicks()) {
+		setTicks(addCondition->getTicks());
+	}
+}
+
+uint32_t ConditionSilence::getIcons() const
+{
+	return ICON_SILENCE;
 }

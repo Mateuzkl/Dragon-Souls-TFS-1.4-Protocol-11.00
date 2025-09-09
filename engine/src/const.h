@@ -421,7 +421,8 @@ enum Icons_t {
 	ICON_REDSWORDS = 1 << 13,
 	ICON_PIGEON = 1 << 14,
 	ICON_BLEEDING = 1 << 15,
-	ICON_WITHIN_RESTING_AREA = 1<<16 //client 11.40+
+	ICON_WITHIN_RESTING_AREA = 1<<16, //client 11.40+
+	ICON_SILENCE = 1 << 17
 };
 
 enum WeaponType_t : uint8_t {
