@@ -1,0 +1,7 @@
+<npc name="Lamber Jack" script="lamber.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="143" head="20" body="116" legs="97" feet="115" addons="1"/>
+	<parameters>
+	<parameter key="message_greet" value="Hey |PLAYERNAME|, are losted? what i can do for you?" />
+	</parameters>
+</npc>

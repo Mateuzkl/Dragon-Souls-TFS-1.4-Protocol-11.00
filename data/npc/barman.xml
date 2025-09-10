@@ -1,0 +1,4 @@
+<npc name="Tavern Willian" script="bar.lua" autowalk="10" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="151" head="95" body="96" legs="114" feet="115" corpse="3128"/>
+</npc>

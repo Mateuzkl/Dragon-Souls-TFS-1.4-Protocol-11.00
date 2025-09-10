@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<npc name="Donald" script="food.lua" access="3" lookdir="3">
+	<health now="1000" max="1000"/>
+	<look type="128" head="20" body="100" legs="50" feet="99"/>
+</npc>

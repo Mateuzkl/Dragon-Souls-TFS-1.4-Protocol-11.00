@@ -1,0 +1,77 @@
+
+
+local focus = 0
+local talk_start = 0
+local target = 0
+local days = 0
+
+function onThingMove(creature, thing, oldpos, oldstackpos)
+
+end
+
+
+function onCreatureAppear(creature)
+end
+
+
+function onCreatureDisappear(cid, pos)
+  	end
+
+
+function onCreatureTurn(creature)
+end
+
+
+function msgcontains(txt, str)
+  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
+end
+
+function onCreatureSay(cid, type, msg)
+  	msg = string.lower(msg)
+
+  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
+ 		selfSay('Ha! Ola mortal ' .. creatureGetName(cid) .. ', fico impresionado que tenha chegado ate aqui, força já vi que você tem, agora vamos ver cérebro, esta pronto?')
+ 		focus = cid
+ 		talk_start = os.clock()
+
+	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
+  		selfSay('Uma criança de cada vez.')
+
+  	elseif focus == cid then
+		talk_start = os.clock()
+
+	if msgcontains(msg, 'sim') or msgcontains(msg, 'yes') then
+			selfSay('/send ' .. creatureGetName(cid) .. ', 481 260 15')
+			selfSay('/B Parabéns ' .. creatureGetName(cid) .. ', está a caminho da ultima sala do templo dos Deuses, e a um passo da imortalidade. Boa sorte!')
+			talk_state = 2
+
+
+  		elseif msgcontains(msg, 'byyfce') and getDistanceToCreature(cid) < 4 then
+  			selfSay('Good bye, ')
+  			focus = 0
+  			talk_start = 0
+  		end
+  	end
+end
+
+function onCreatureChangeOutfit(creature)
+
+end
+
+
+function onThink()
+	
+	doNpcSetCreatureFocus(focus)
+  	if (os.clock() - talk_start) > 120 then
+  		if focus > 0 then
+  			selfSay('Tempo esgotado!')
+  		end
+  			focus = 0
+  	end	if focus ~= 0 then
+ 		if getDistanceToCreature(focus) > 25 then
+ 			selfSay('Não me deixe falando sozinho!')
+ 			focus = 0
+ 		end
+ 	end
+end
+

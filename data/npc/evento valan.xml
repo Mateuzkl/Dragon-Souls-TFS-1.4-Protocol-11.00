@@ -1,0 +1,4 @@
+<npc name="General Valan" script="evento valan.lua" autowalk="0" floorchange="10" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="134" head="20" body="114" legs="115" feet="116" addons="3"/>
+</npc>

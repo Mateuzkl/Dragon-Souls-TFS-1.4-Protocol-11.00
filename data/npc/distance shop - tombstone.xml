@@ -1,0 +1,14 @@
+<npc name="Bruien" script="bows.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="37" head="58" body="76" legs="114" feet="58" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="shop_sellable" value="crossbow,2455,320;bow,2456,130" />
+		<parameter key="shop_buyable" value="
+crossbow,2455,500;
+bow,2456,350;
+spear,2389,10;
+bolt,2543,3;
+arrow,2544,2" />
+	</parameters>
+</npc>

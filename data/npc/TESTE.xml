@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<npc name="TESTE" script="teste.lua" access="5" lookdir="2" autowalk="25">
+	<mana now="800" max="800"/>
+	<health now="200" max="200"/>
+	<look type="134" head="78" body="88" legs="0" feet="88" addons="3"/>
+	<parameters>
+	<parameter key="message_greet" value="Greetings |PLAYERNAME|. What you want today?" />
+	</parameters>
+</npc>

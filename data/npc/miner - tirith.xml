@@ -1,0 +1,10 @@
+<npc name="Miner Bricken" script="mining.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="160" head="96" body="39" legs="76" feet="58" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello novice miner. If you need any information about mining, just ask for HELP." />
+		<parameter key="shop_sellable" value="small diamond,2145,300;small emerald,2149,250;small ruby,2147,250;small sapphire,2146,250;black pearl,2144,260;white pearl,2143,160;small stone,1294,10" />
+		<parameter key="shop_buyable" value="pick,2553,40" />
+	</parameters>
+</npc>

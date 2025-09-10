@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<npc name="Malak" script="runes.lua" access="3" lookdir="1">
+	<health now="1000" max="1000"/>
+<look type="130" head="132" body="116" legs="116" feet="76"/>
+</npc>

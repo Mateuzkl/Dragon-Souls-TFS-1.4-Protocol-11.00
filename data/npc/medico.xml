@@ -1,0 +1,7 @@
+<npc name="Medic Sgar" script="medico.lua" autowalk="10" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="129" head="24" body="58" legs="95" feet="58" corpse="3128" addons="0"/>
+	<parameters>
+	<parameter key="message_greet" value="Hi |PLAYERNAME|, I am the doctor of this town, do you have any trouble?" />
+	</parameters>
+</npc>

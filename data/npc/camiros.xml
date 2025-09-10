@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<npc name="Camiros" script="Teleport 1.lua" access="3">
+ 	<look type="132" head="124" body="124" legs="105" feet="0"/>
+</npc>

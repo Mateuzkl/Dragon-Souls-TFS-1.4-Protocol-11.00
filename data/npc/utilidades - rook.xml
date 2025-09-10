@@ -1,0 +1,9 @@
+<npc name="Ferona" script="utilitariorook.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="140" head="3" body="78" legs="78" feet="0" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello young recrut! Welcome to my shop." />
+		<parameter key="shop_sellable" value="vial,2006,50;flask,2006,50" />
+	</parameters>
+</npc>

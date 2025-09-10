@@ -1,0 +1,9 @@
+<npc name="Camile" script="gems.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="140" head="49" body="37" legs="85" feet="25" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello young travaler.Welcome to my shop." />
+		<parameter key="shop_sellable" value="small diamond,2145,300;small emerald,2149,250;small ruby,2147,250;small sapphire,2146,250;small amethyst,2150,250;black pearl,2144,260;white pearl,2143,160" />
+	</parameters>
+</npc>

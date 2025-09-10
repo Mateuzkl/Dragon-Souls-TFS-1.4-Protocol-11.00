@@ -1,0 +1,7 @@
+<npc name="Chief Amstrong" script="petshop.lua"  autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="132" head="1" body="2" legs="3" feet="4" corpse="3128"/>
+	<parameters>
+		
+	</parameters>
+</npc>

@@ -1,0 +1,7 @@
+<npc name="Mark Merchant" script="dsp.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="128" head="96" body="97" legs="116" feet="115" corpse="3128" addons="1"/>
+	<parameters>
+	<parameter key="message_greet" value="Hi |PLAYERNAME|, wanna change some thing today?" />
+	</parameters>
+</npc>

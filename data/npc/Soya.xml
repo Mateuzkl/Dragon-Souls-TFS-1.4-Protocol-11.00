@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<npc name="Soya" script="loot.lua" access="3" lookdir="2">
+	<mana now="800" max="800"/>
+	<health now="200" max="200"/>
+<look type="139" head="132" body="79" legs="97" feet="132"/>
+</npc>

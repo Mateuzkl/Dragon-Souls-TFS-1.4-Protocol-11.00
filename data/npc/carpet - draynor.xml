@@ -1,0 +1,7 @@
+<npc name="Uh'stad" script="tapete - draynor.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="1" max="1"/>
+	<look type="104" head="1" body="113" legs="113" feet="3" addons="2"/>
+	<parameters>
+		<parameter key="message_greet" value="Lil |PLAYERNAME|! What you do here?" />
+	</parameters>
+</npc>

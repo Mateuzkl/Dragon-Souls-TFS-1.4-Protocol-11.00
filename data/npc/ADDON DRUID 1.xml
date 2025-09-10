@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<npc name="Stelios" script="addon druid 1.lua" access="5" lookdir="2" autowalk="15">
+	<mana now="800" max="800"/>
+	<health now="200" max="200"/>
+	<look type="148" head="19" body="97" legs="116" feet="58" addons="1"  corpse="3128"/>
+	<parameters>
+	<parameter key="message_greet" value="Hi! Im Stelios the Druid. How can I help you |PLAYERNAME|?" />
+	</parameters>
+</npc>

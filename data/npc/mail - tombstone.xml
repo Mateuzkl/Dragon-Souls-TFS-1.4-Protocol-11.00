@@ -1,0 +1,9 @@
+<npc name="Berlinda" script="mail.lua"  autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="33" head="78" body="56" legs="75" feet="114" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. What do you want today?" />
+		<parameter key="shop_buyable" value="label,2599,5;letter,2597,10" />
+	</parameters>
+</npc>

@@ -1,0 +1,4 @@
+<npc name="Master Cooker" script="cozinhera.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="136" head="39" body="0" legs="57" feet="115" addons="2"/>
+</npc>

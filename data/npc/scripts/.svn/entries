@@ -1,0 +1,57 @@
+8
+
+dir
+2044
+https://opentibia.svn.sourceforge.net/svnroot/opentibia/otserv/trunk/data/npc/scripts
+https://opentibia.svn.sourceforge.net/svnroot/opentibia
+
+
+
+2004-12-06T01:02:24.000000Z
+172
+tliffrag
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+c77455bc-2124-0410-8220-ac9e7aafbb94
+
+lib
+dir
+
+sven.lua
+file
+
+
+
+
+2006-12-14T20:36:35.121000Z
+d672a341b888bdd8d96817c87f159a5a
+2004-12-04T18:25:10.000000Z
+169
+tliffrag
+has-props
+
+bug.lua
+file
+
+
+
+
+2006-12-14T20:36:35.121000Z
+2a7a2037a2c314254329d77e63657577
+2004-12-06T01:02:24.000000Z
+172
+tliffrag
+has-props
+

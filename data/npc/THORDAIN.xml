@@ -1,0 +1,9 @@
+<npc name="Thordain" script="thordain.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="160" head="0" body="58" legs="78" feet="114" addons="0"/>
+
+	<parameters>
+	<parameter key="message_greet" value="Wow an Human! How did you got in here |PLAYERNAME|? Im happy to you. Anyway, so what do you want?" />
+	<parameter key="talkradius" value="2" />
+	</parameters>
+</npc>

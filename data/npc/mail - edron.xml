@@ -1,0 +1,9 @@
+<npc name="Crystal" script="mail.lua"  autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="136" head="38" body="58" legs="78" feet="58" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. What do you want today?" />
+		<parameter key="shop_buyable" value="label,2599,5;letter,2597,10" />
+	</parameters>
+</npc>

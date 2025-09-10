@@ -1,0 +1,7 @@
+<npc name="Retorno" script="retorno.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="1" max="1"/>
+	<look type="146" head="95" body="95" legs="95" feet="3" addons="2"/>
+	<parameters>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|! So how are your hunt? Want back to Mordor?" />
+	</parameters>
+</npc>

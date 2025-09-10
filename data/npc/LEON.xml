@@ -1,0 +1,7 @@
+<npc name="Leon" script="leon.lua" autowalk="50" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="129" head="24" body="58" legs="95" feet="58" corpse="3128" addons="0"/>
+	<parameters>
+	<parameter key="message_greet" value="Hi |PLAYERNAME|, I am sad , i lost my backpack, i didnt knew that a Dragon Lord would be there!" />
+	</parameters>
+</npc>

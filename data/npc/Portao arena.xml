@@ -1,0 +1,8 @@
+<npc name="Guard" script="portao arena.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+<look type="131" head="57" body="57" legs="57" feet="58" addons="3"/>
+	<parameters>
+	<parameter key="message_greet" value="Hello |PLAYERNAME|! What bringhs you to Arena today?" />
+	<parameter key="talkradius" value="2" />
+	</parameters>
+</npc>

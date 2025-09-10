@@ -1,0 +1,6 @@
+<npc name="Anoriel" script="Teleport 3.lua" autowalk="0" floorchange="0" access="5" level="100" maglevel="1">
+	<health now="150" max="150"/>
+ 	<look type="130" head="0" body="85" legs="85" feet="78"/>
+	<parameters>
+	</parameters>
+</npc>

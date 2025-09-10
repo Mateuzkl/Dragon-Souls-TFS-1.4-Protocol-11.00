@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<npc name="Athan" script="aol.lua" access="3" lookdir="3">
+	<health now="1" max="1"/>
+	<look type="128" head="20" body="100" legs="50" feet="99"/>
+</npc>

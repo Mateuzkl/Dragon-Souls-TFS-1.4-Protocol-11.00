@@ -1,0 +1,90 @@
+<npc name="Mari Jane" script="compra todos loots.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="100" head="58" body="76" legs="95" feet="116" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I buy swords, clubs, axes, helmets, boots, legs, shields and armors." />
+		<parameter key="shop_sellable" value="
+royal helmet,2498,30000;
+magic plate armor,2472,100000;
+warrior helmet,2475,4000;
+steel helmet,2457,300;
+crusader helmet,2497,5000;
+crown helmet,2491,3000;
+devil helmet,2462,900;
+mystic turban,2663,1000;
+chain helmet,2458,100;
+iron helmet,2459,300;
+strange helmet,2479,1000;
+soldier helmet,2481,50;
+viking helmet,2473,140;
+brass helmet,2460,60;
+dark helmet,2490,200;
+boots of haste,2195,40000;
+dragon scale mail,2492,50000;
+golden armor,2466,30000;
+crown armor,2487,20000;
+knight armor,2476,5000;
+blue robe,2656,10000;
+lady armor,2500,6000;
+plate armor,2463,500;
+brass armor,2465,300;
+chain armor,2464,140;
+dark armor,2489,1000;
+scale armor,2483,150;
+golden legs,2470,70000;
+crown legs,2488,30000;
+knight legs,2477,10000;
+plate legs,2647,1000;
+brass legs,2478,100;
+chain legs,2648,50;
+mastermind shield,2514,70000;
+demon shield,2520,40000;
+vampire shield,2534,20000;
+medusa shield,2536,10000;
+amazon shield,2537,5000;
+crown shield,2519,8000;
+tower shield,2528,8000;
+guardian shield,2515,3000;
+beholder shield,2518,2000;
+dragon shield,2516,8000;
+dwarven shield,2525,200;
+battle shield,2513,200;
+plate shield,2510,100;
+steel shield,2509,160;
+scarab shield,2540,2000;
+castle shield,2535,1000;
+giant sword,2393,30000;
+bright sword,2407,20000;
+ice rapier,2396,2000;
+fire sword,2392,7000;
+serpent sword,2409,1000;
+spike sword,2383,500;
+two-handed sword,2377,900;
+broad sword,2413,500;
+short sword,2406,60;
+sword,2376,50;
+sabre,2385,50;
+longsword,2397,100;
+katana,2412,30;
+dragon lance,2414,25000;
+fire axe,2432,8000;
+knight axe,2430,3000;
+double axe,2387,520;
+guardian halberd,2427,10000;
+halberd,2381,800;
+battle axe,2378,160;
+hatchet,2388,50;
+golden sickle,2418,600;
+barbarian axe,2429,300;
+obsidian lance,2425,1000;
+war hammer,2391,2000;
+skull staff,2436,10000;
+dragon hammer,2434,3000;
+clerical mace,2423,400;
+battle hammer,2417,240;
+steel boots,2645,100000;
+mace,2398,60;
+morning star,2394,200;" />
+	</parameters>
+</npc>

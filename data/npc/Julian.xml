@@ -1,0 +1,7 @@
+<npc name="Isolda" script="isolda.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="141" head="38" body="50" legs="79" feet="66" corpse="3128" addons="0"/>
+	<parameters>
+	<parameter key="message_greet" value="Hi |PLAYERNAME|, what you want mortal?" />
+	</parameters>
+</npc>

@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<npc name="Lola" script="furniture.lua" access="3" lookdir="3">
+	<health now="1000" max="1000"/>
+<look type="142" head="114" body="0" legs="95" feet="114"/>
+</npc>
