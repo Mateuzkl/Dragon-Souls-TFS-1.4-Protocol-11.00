@@ -1,433 +1,292 @@
-
 --------------------------------------------------------------------------------------------
 ------------------------------------ Advanced Addon NPC ------------------------------------
 -------------------------------- Script made by teh_pwnage ---------------------------------
 --------------- Special thanks to: mokerhamer, Xidaozu and Jiddo, deaths'life --------------
 ------------------------------- Thanks also to everyone else -------------------------------
 ------------------------------ NPC based on Evolutions V0.7.7 ------------------------------
+-------------------------------- Converted to modern format --------------------------------
+----------------------- Adapted for TFS 1.4 Protocol 11.00 by Mateus Roberto --------------
 --------------------------------------------------------------------------------------------
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
--- OTServ event handling functions start
-function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
-function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
-function onCreatureSay(cid, type, msg)                         npcHandler:onCreatureSay(cid, type, msg) end
-function onThink() 						npcHandler:onThink() end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
+local voices = { {text = "I can help you with elemental items and blessings!"} }
+npcHandler:addModule(VoiceModule:new(voices))
 
--- OTServ event handling functions end
+keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, text = 'I am a servant of Merlian!'})
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'I can do an element item or energize your element item, i only need all {necklace}, {amulet} or {magic} amulet, also can {bless} a little mortal and {reset} a god! Say {info} for reset information.'})
+keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, text = 'I am not a merchant!'})
+keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, text = 'I am not a merchant!'})
+keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! You are only a novice!'})
+keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! You are only a novice!'})
 
 function creatureSayCallback(cid, type, msg)
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	if(npcHandler.focus ~= cid) then
-		return false
-	end
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
 
-	preco = getPlayerLevel(cid)*3
-    	bless = getPlayerBlessing(cid,1)
-	vezes = getResets(cid)
-	rubys = (getPlayerLevel(cid)*4000)*(vezes*30*2)/1000000
-	
-		if msgcontains(msg, 'necklace') then
-			selfSay('I only need a mysterious, dragon breath, scorpion, platinum, fluids and vampire tooth, accept change all for a Elemental necklace?')
-			talk_state = 1
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-		elseif msgcontains(msg, 'amulet') then
-			selfSay('I only need a Ialamar, frozzen, sickness, Samantha, Mastafar, priest and eletric, accept change all for a Spirit Elemental amulet?')
-			talk_state = 2
+    local preco = player:getLevel() * 3
+    local bless = player:hasBlessing(1)
+    local currentResets = player:getReset()
+    local rubys = math.floor((player:getLevel() * 4000) * (currentResets * 30 * 2) / 1000000)
 
-		elseif msgcontains(msg, 'magic') then
-			selfSay('I only need a Merlian, relic of the hell, Broonier, Thordain, dark wyzard, angel and gaya, accept change all for a Elemental magic amulet?')
-			talk_state = 3
+    if msgcontains(msg, 'necklace') then
+        npcHandler:say('I only need a mysterious, dragon breath, scorpion, platinum, fluids and vampire tooth, accept change all for a Elemental necklace?', cid)
+        npcHandler.topic[cid] = 1
 
-		elseif msgcontains(msg, 'energyze') then
-			selfSay('I can energyze your necklace for 50k, amulet for 100k or your magic amulet for 150k, do you want energyze?')
-			talk_state = 4
+    elseif msgcontains(msg, 'amulet') then
+        npcHandler:say('I only need a Ialamar, frozen, sickness, Samantha, Mastafar, priest and electric, accept change all for a Spirit Elemental amulet?', cid)
+        npcHandler.topic[cid] = 2
 
-		elseif msgcontains(msg, 'bless') or msgcontains(msg, 'blessing') then
-			selfSay('Bless a mortal? Hmm... Sure I can bless, but it will not be cheap, what do you say about ' .. preco .. 'k?')
-			talk_state = 5
+    elseif msgcontains(msg, 'magic') then
+        npcHandler:say('I only need a Merlian, relic of the hell, Broonier, Thordain, dark wizard, angel and gaya, accept change all for a Elemental magic amulet?', cid)
+        npcHandler.topic[cid] = 3
 
-		elseif msgcontains(msg, 'reset') then
-		if vezes == -1 or vezes == 0 then
-			selfSay('Reset a god? Hmm... First time? Ok, i will do it free this time!')
-			talk_state = 6
-		else
-			selfSay('Reset a god? Hmm... Sure I can, but it will not be cheap, what do you say about ' .. rubys .. ' ruby coins?')
-			talk_state = 6
-		end
+    elseif msgcontains(msg, 'energize') then
+        npcHandler:say('I can energize your necklace for 50k, amulet for 100k or your magic amulet for 150k, do you want energize?', cid)
+        npcHandler.topic[cid] = 4
 
+    elseif msgcontains(msg, 'bless') or msgcontains(msg, 'blessing') then
+        npcHandler:say('Bless a mortal? Hmm... Sure I can bless, but it will not be cheap, what do you say about ' .. preco .. 'k?', cid)
+        npcHandler.topic[cid] = 5
 
-		elseif msgcontains(msg, 'job') then
-			selfSay('I am a servent of Merlian!')
+    elseif msgcontains(msg, 'reset') then
+        if currentResets == 0 then
+            npcHandler:say('Reset a god? Hmm... First time? Ok, i will do it free this time!', cid)
+            npcHandler.topic[cid] = 6
+        else
+            npcHandler:say('Reset a god? Hmm... Sure I can, but it will not be cheap, what do you say about ' .. rubys .. ' ruby coins?', cid)
+            npcHandler.topic[cid] = 6
+        end
 
-		elseif msgcontains(msg, 'offer') then
-			selfSay('I can do an element item or energyze your element item, i only need all "necklace", "amulet" ou "magic" amulet, also can bless a little mortal and reset a god!')
+    elseif msgcontains(msg, 'info') or msgcontains(msg, 'information') then
+        npcHandler:say('Current status: Level ' .. player:getLevel() .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. ', Resets: ' .. currentResets .. '. Custo prÃ³ximo reset: ' .. rubys .. ' ruby coins.', cid)
+        npcHandler.topic[cid] = 0
 
-		elseif msgcontains(msg, 'sell') then
-			selfSay('I am not a merchant!')
+    elseif npcHandler.topic[cid] == 1 then -- Necklace
+        if msgcontains(msg, 'yes') then
+            if player:getItemCount(2198) >= 1 and player:getItemCount(2161) >= 1 and 
+               player:getItemCount(2170) >= 1 and player:getItemCount(2171) >= 1 and 
+               player:getItemCount(2172) >= 1 and player:getItemCount(2201) >= 1 then
+                
+                npcHandler:say('Its all yours!', cid)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce recebeu um Elemental necklace.")
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                
+                player:removeItem(2198, 1)
+                player:removeItem(2161, 1)
+                player:removeItem(2170, 1)
+                player:removeItem(2171, 1)
+                player:removeItem(2172, 1)
+                player:removeItem(2201, 1)
+                player:addItem(38906, 1)
+                npcHandler.topic[cid] = 0
+            else
+                npcHandler:say('You dont have these items!', cid)
+                npcHandler.topic[cid] = 0
+            end
+        end
 
-		elseif msgcontains(msg, 'buy') then
-			selfSay('I am not a merchant!')
+    elseif npcHandler.topic[cid] == 2 then -- Amulet
+        if msgcontains(msg, 'yes') then
+            if player:getItemCount(2129) >= 1 and player:getItemCount(2133) >= 1 and 
+               player:getItemCount(2130) >= 1 and player:getItemCount(2199) >= 1 and 
+               player:getItemCount(2135) >= 1 and player:getItemCount(2126) >= 1 and 
+               player:getItemCount(2131) >= 1 then
+                
+                npcHandler:say('Its all yours!', cid)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce recebeu um Spirit Elemental amulet.")
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                
+                player:removeItem(2129, 1)
+                player:removeItem(2133, 1)
+                player:removeItem(2130, 1)
+                player:removeItem(2199, 1)
+                player:removeItem(2135, 1)
+                player:removeItem(2126, 1)
+                player:removeItem(2131, 1)
+                player:addItem(38901, 1)
+                npcHandler.topic[cid] = 0
+            else
+                npcHandler:say('You dont have these items!', cid)
+                npcHandler.topic[cid] = 0
+            end
+        end
 
-		elseif msgcontains(msg, 'quest') then
-			selfSay('Ha! You are only a novice!')
+    elseif npcHandler.topic[cid] == 3 then -- Magic Amulet
+        if msgcontains(msg, 'yes') then
+            if player:getItemCount(2218) >= 1 and player:getItemCount(2142) >= 1 and 
+               player:getItemCount(2132) >= 1 and player:getItemCount(2136) >= 1 and 
+               player:getItemCount(2138) >= 1 and player:getItemCount(2200) >= 1 and 
+               player:getItemCount(2196) >= 1 then
+                
+                npcHandler:say('Its all yours!', cid)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce recebeu um Elemental magic amulet.")
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                
+                player:removeItem(2218, 1)
+                player:removeItem(2142, 1)
+                player:removeItem(2132, 1)
+                player:removeItem(2136, 1)
+                player:removeItem(2138, 1)
+                player:removeItem(2200, 1)
+                player:removeItem(2196, 1)
+                player:addItem(38900, 1)
+                npcHandler.topic[cid] = 0
+            else
+                npcHandler:say('You dont have these items!', cid)
+                npcHandler.topic[cid] = 0
+            end
+        end
 
-		elseif msgcontains(msg, 'mission') then
-			selfSay('Ha! You are only a novice!')
+    elseif npcHandler.topic[cid] == 4 then -- Energize
+        if msgcontains(msg, 'yes') and player:getItemCount(2197) >= 1 then
+            if player:removeMoney(50000) then
+                npcHandler:say('Its all yours!', cid)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce energizou seu Elemental necklace.")
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                player:removeItem(2197, 1)
+                player:addItem(38906, 1)
+                npcHandler.topic[cid] = 0
+            else
+                npcHandler:say('You dont have this money!', cid)
+                npcHandler.topic[cid] = 0
+            end
 
--- neck
-	elseif talk_state == 1 then
-	if msgcontains(msg, 'yes') then
-		if getPlayerItemCount(cid,2198) >= 1 and getPlayerItemCount(cid,2161) >= 1 and getPlayerItemCount(cid,2170) >= 1 and getPlayerItemCount(cid,2171) >= 1 and getPlayerItemCount(cid,2172) >= 1 and getPlayerItemCount(cid,2201) >= 1 then
-			selfSay('Its all yours!')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu um Elemental necklace.")
-  			doSendMagicEffect(getPlayerPosition(cid),12)
-			doPlayerRemoveItem(cid,2198,1)
-			doPlayerRemoveItem(cid,2161,1)
-			doPlayerRemoveItem(cid,2170,1)
-			doPlayerRemoveItem(cid,2171,1)
-			doPlayerRemoveItem(cid,2172,1)
-			doPlayerRemoveItem(cid,2201,1)
-			doPlayerAddItem(cid,2197,1)
-			talk_state = 0
-			else
-			selfSay('You dont have this itens!')
-			talk_state = 0
-			end
-		end
--- amulet
+        elseif msgcontains(msg, 'yes') and player:getItemCount(2173) >= 1 then
+            if player:removeMoney(100000) then
+                npcHandler:say('Its all yours!', cid)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce energizou seu Spirit Elemental amulet.")
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                player:removeItem(2173, 1)
+                player:addItem(38901, 1)
+                npcHandler.topic[cid] = 0
+            else
+                npcHandler:say('You dont have this money!', cid)
+                npcHandler.topic[cid] = 0
+            end
 
-	elseif talk_state == 2 then
-	if msgcontains(msg, 'yes') then
-		if getPlayerItemCount(cid,2129) >= 1 and getPlayerItemCount(cid,2133) >= 1 and getPlayerItemCount(cid,2130) >= 1 and getPlayerItemCount(cid,2199) >= 1 and getPlayerItemCount(cid,2135) >= 1 and getPlayerItemCount(cid,2126) >= 1 and getPlayerItemCount(cid,2131) >= 1 then
-			selfSay('Its all yours!')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu um Spirit Elemental amulet.")
-  			doSendMagicEffect(getPlayerPosition(cid),12)
-			doPlayerRemoveItem(cid,2129,1)
-			doPlayerRemoveItem(cid,2133,1)
-			doPlayerRemoveItem(cid,2130,1)
-			doPlayerRemoveItem(cid,2199,1)
-			doPlayerRemoveItem(cid,2135,1)
-			doPlayerRemoveItem(cid,2126,1)
-			doPlayerRemoveItem(cid,2131,1)
-			doPlayerAddItem(cid,2173,1)
-			talk_state = 0
-			else
-			selfSay('You dont have this itens!')
-			talk_state = 5
-			end
-		end
+        elseif msgcontains(msg, 'yes') and player:getItemCount(38894) >= 1 then
+            if player:removeMoney(150000) then
+                npcHandler:say('Its all yours!', cid)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce energizou seu Elemental magic amulet.")
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                player:removeItem(38894, 1)
+                player:addItem(38900, 1)
+                npcHandler.topic[cid] = 0
+            else
+                npcHandler:say('You dont have this money!', cid)
+                npcHandler.topic[cid] = 0
+            end
+        else
+            npcHandler:say('You dont have this item!', cid)
+            npcHandler.topic[cid] = 0
+        end
 
-	elseif talk_state == 3 then
-	if msgcontains(msg, 'yes') then
-		if getPlayerItemCount(cid,2218) >= 1 and getPlayerItemCount(cid,2142) >= 1 and getPlayerItemCount(cid,2132) >= 1 and getPlayerItemCount(cid,2136) >= 1 and getPlayerItemCount(cid,2138) >= 1 and getPlayerItemCount(cid,2200) >= 1 and getPlayerItemCount(cid,2196) >= 1 then
-			selfSay('Its all yours!')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu um Elemental magic amulet.")
-  			doSendMagicEffect(getPlayerPosition(cid),12)
-			doPlayerRemoveItem(cid,2218,1)
-			doPlayerRemoveItem(cid,2142,1)
-			doPlayerRemoveItem(cid,2132,1)
-			doPlayerRemoveItem(cid,2136,1)
-			doPlayerRemoveItem(cid,2138,1)
-			doPlayerRemoveItem(cid,2200,1)
-			doPlayerRemoveItem(cid,2196,1)
-			doPlayerAddItem(cid,2125,1)
-			talk_state = 0
-			else
-			selfSay('You dont have this itens!')
-			talk_state = 5
-			end
-		end
--- energ
+    elseif npcHandler.topic[cid] == 5 then -- Bless
+        if msgcontains(msg, 'yes') then
+            if bless then
+                npcHandler:say('You are already blessed my little mortal.', cid)
+                npcHandler.topic[cid] = 0
+            else
+                if player:isPremium() then
+                    if player:removeMoney(preco * 1000) then
+                        npcHandler:say('Receive this bless mortal, with the gods touch i bless you!', cid)
+                        player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce recebeu a bencao de Isolda.")
+                        for i = 1, 5 do
+                            player:addBlessing(i)
+                        end
+                        player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                        npcHandler.topic[cid] = 0
+                    else
+                        npcHandler:say('Sorry mortal, but you dont have this money!', cid)
+                        npcHandler.topic[cid] = 0
+                    end
+                else
+                    npcHandler:say('Sorry but only can bless a premium mortal.', cid)
+                    npcHandler.topic[cid] = 0
+                end
+            end
+        end
 
-	elseif talk_state == 4 then
-	if msgcontains(msg, 'yes') and getPlayerItemCount(cid,2197) >= 1 then
-		if pay(cid,50000) then
-			selfSay('Its all yours!')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu Energizou seu Elemental necklace.")
-  			doSendMagicEffect(getPlayerPosition(cid),12)
-			doPlayerRemoveItem(cid,2197,1)
-			doPlayerAddItem(cid,13682,1)
-			talk_state = 0
-			else
-			selfSay('You dont have this money!')
-			talk_state = 0
-			end
+    elseif npcHandler.topic[cid] == 6 then -- Reset
+        if msgcontains(msg, 'yes') then
+            if player:isPremium() then
+                if player:getLevel() >= 500 then
+                    local vocation = player:getVocation():getId()
+                    if vocation >= 9 then
+                        if vocation >= 13 then -- deuses
+                            if currentResets == 0 or player:getItemCount(38915) >= rubys then
+                                if player:doReset() then
+                                    local newResets = player:getReset()
+                                    
+                                    Game.broadcastMessage("ParabÃ©ns! O jogador " .. player:getName() .. " resetou com sucesso e agora tem " .. newResets .. " resets!", MESSAGE_STATUS_WARNING)
+                                    
+                                    npcHandler:say('Welcome new god! HP: ' .. player:getMaxHealth() .. ', MP: ' .. player:getMaxMana() .. ', Resets: ' .. newResets, cid)
+                                    player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce resetou seu personagem.")
+                                    player:sendTextMessage(MESSAGE_STATUS_WARNING, "VocÃª serÃ¡ desconectado em 5 segundos para finalizar o reset.")
+                                    
+                                    player:addHealth(player:getMaxHealth())
+                                    player:addMana(player:getMaxMana())
+                                    
+                                    player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+                                    
+                                    if currentResets > 0 then
+                                        player:removeItem(38915, rubys)
+                                    end
+                                    
+                                    addEvent(function(playerId)
+                                        local player = Player(playerId)
+                                        if player then
+                                            player:remove()
+                                        end
+                                    end, 5000, player:getId())
+                                    
+                                    npcHandler.topic[cid] = 0
+                                else
+                                    npcHandler:say('Sorry, reset failed. Check requirements!', cid)
+                                    npcHandler.topic[cid] = 0
+                                end
+                            else
+                                npcHandler:say('Sorry mortal, but you dont have this money!', cid)
+                                npcHandler.topic[cid] = 0
+                            end
+                        else
+                            npcHandler:say('Sorry, but only gods i can do that!', cid)
+                            npcHandler.topic[cid] = 0
+                        end
+                    else
+                        npcHandler:say('Sorry, but only gods i can do that!', cid)
+                        npcHandler.topic[cid] = 0
+                    end
+                else
+                    npcHandler:say('Sorry, but only gods level 500 or above can do that!', cid)
+                    npcHandler.topic[cid] = 0
+                end
+            else
+                npcHandler:say('Sorry but only can reset a premium god.', cid)
+                npcHandler.topic[cid] = 0
+            end
+        end
 
-	elseif msgcontains(msg, 'yes') and getPlayerItemCount(cid,2173) >= 1 then
-		if pay(cid,100000) then
-			selfSay('Its all yours!')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu Energizou seu Spirit Elemental amulet.")
-  			doSendMagicEffect(getPlayerPosition(cid),12)
-			doPlayerRemoveItem(cid,2173,1)
-			doPlayerAddItem(cid,13683,1)
-			talk_state = 0
-			else
-			selfSay('You dont have this money!')
-			talk_state = 0
-			end
+    elseif msgcontains(msg, 'no') and (npcHandler.topic[cid] >= 1 and npcHandler.topic[cid] <= 6) then
+        npcHandler:say('Ok then.', cid)
+        npcHandler.topic[cid] = 0
+    end
 
-	elseif msgcontains(msg, 'yes') and getPlayerItemCount(cid,2125) >= 1 then
-		if pay(cid,150000) then
-			selfSay('Its all yours!')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu Energizou seu Elemental magic amulet.")
-  			doSendMagicEffect(getPlayerPosition(cid),12)
-			doPlayerRemoveItem(cid,2125,1)
-			doPlayerAddItem(cid,13684,1)
-			talk_state = 0
-			else
-			selfSay('You dont have this money!')
-			talk_state = 0
-			end
-
-	elseif msgcontains(msg, 'yes') and getPlayerItemCount(cid,2197) >= 0 and getPlayerItemCount(cid,2125) >= 0 and getPlayerItemCount(cid,2173) >= 0 then
-			selfSay('You dont have this item!')
-			talk_state = 0
-
-
-
-		end
-
--- bless
-
-	elseif talk_state == 5 then
-	if msgcontains(msg, 'yes') then
-	if bless then
-		selfSay('You are already blessed my little mortal.')
-		talk_state = 0
-		else
-        if isPremium(cid) then
-	if pay(cid,preco*1000) then
-		selfSay('Receive this bless mortal, with the gods touch i bless you!')
-		doPlayerSendTextMessage(cid,22,"Voce recebeu a benção de Isolda.")
-                doPlayerAddBlessing(cid, 1)
-                doPlayerAddBlessing(cid, 2)
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		talk_state = 0
-		else
-		selfSay('Sorry mortal, but you dont have this monney!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry but only can bless a mortal premmy.')
-		talk_state = 0
-		end
-
-		end
-		end
-
--- reset
-
-	elseif talk_state == 6 then
-	--rubys = (getPlayerLevel(cid)*4000)*(vezes*10)/1000000)
-	if msgcontains(msg, 'yes') then
-        if isPremium(cid) then
-        if getPlayerLevel(cid) >= 500 then
-        if getPlayerVocation(cid) >= 9 then
-	--if pay(cid,(getPlayerLevel(cid)*4000)*(vezes*10)) then
-	
-
-        if getPlayerVocation(cid) == 13 then	-- deuses
-        if getPlayerLevel(cid) >= 500 then
-	if getPlayerItemCount(cid,13685) >= rubys then
-		selfSay('Welcome new god!')
-		doPlayerSendTextMessage(cid,22,"Você resetou seu personagem.")
-		health = getPlayerMaxHealth(cid)
-		mana = getPlayerMaxMana(cid)
-		doPlayerAbortExp(cid,getPlayerExperience(cid))
-           doPlayerIncExp(cid,4200)
-		setPlayerMaxHealth(cid, (health/10)*(vezes+1))
-		doPlayerAddHealth(cid,(health/10)*(vezes+1))
-		setPlayerMaxMana(cid, (mana/15)*(vezes+1))
-		doPlayerAddMana(cid,(mana/15)*(vezes+1))
-           setPlayerMaxCapacity(cid,360)
-		doPlayerAddMagicLevel(cid,25)
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		doPlayerAddResets(cid,1)
-		doPlayerRemoveItem(cid,13685,rubys)
-		talk_state = 0
-		else
-		selfSay('Sorry mortal, but you dont have this monney!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but only gods level 500 or above can do that!')
-		talk_state = 0
-		end
-	end
-        if getPlayerVocation(cid) == 14 then
-        if getPlayerLevel(cid) >= 500 then
-	if getPlayerItemCount(cid,13685) >= rubys then
-		selfSay('Welcome new god!')
-		doPlayerSendTextMessage(cid,22,"Você resetou seu personagem.")
-		health = getPlayerMaxHealth(cid)
-		mana = getPlayerMaxMana(cid)
-		doPlayerAbortExp(cid,getPlayerExperience(cid))
-           doPlayerIncExp(cid,4200)
-		setPlayerMaxHealth(cid, (health/10)*(vezes+1))
-		doPlayerAddHealth(cid,(health/10)*(vezes+1))
-		setPlayerMaxMana(cid, (mana/15)*(vezes+1))
-		doPlayerAddMana(cid,(mana/15)*(vezes+1))
-           setPlayerMaxCapacity(cid,360)
-		doPlayerAddMagicLevel(cid,25)
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		doPlayerAddResets(cid,1)
-		doPlayerRemoveItem(cid,13685,rubys)
-		talk_state = 0
-		else
-		selfSay('Sorry mortal, but you dont have this monney!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but only gods level 500 or above can do that!')
-		talk_state = 0
-		end
-	end
-        if getPlayerVocation(cid) == 15 then
-        if getPlayerLevel(cid) >= 500 then
-	if getPlayerItemCount(cid,13685) >= rubys then
-		selfSay('Welcome new god!')
-		doPlayerSendTextMessage(cid,22,"Você resetou seu personagem.")
-           
-		health = getPlayerMaxHealth(cid)
-		mana = getPlayerMaxMana(cid)
-		doPlayerAbortExp(cid,getPlayerExperience(cid))
-           doPlayerIncExp(cid,4200)
-		setPlayerMaxHealth(cid, (health/10)*(vezes+1))
-		doPlayerAddHealth(cid,(health/10)*(vezes+1))
-		setPlayerMaxMana(cid, (mana/15)*(vezes+1))
-		doPlayerAddMana(cid,(mana/15)*(vezes+1))
-           setPlayerMaxCapacity(cid,360)
-		doPlayerAddMagicLevel(cid,4)
-		doPlayerAddSkill(cid,4,20) 
-		doPlayerAddSkill(cid,5,20) 
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		doPlayerAddResets(cid,1)
-		doPlayerRemoveItem(cid,13685,rubys)
-		talk_state = 0
-		else
-		selfSay('Sorry mortal, but you dont have this monney!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but only gods level 500 or above can do that!')
-		talk_state = 0
-		end
-	end
-
-        if getPlayerVocation(cid) == 16 then
-        if getPlayerLevel(cid) >= 500 then
-	if getPlayerItemCount(cid,13685) >= rubys then
-		selfSay('Welcome new god!')
-		doPlayerSendTextMessage(cid,22,"Você resetou seu personagem.")
-		health = getPlayerMaxHealth(cid)
-		mana = getPlayerMaxMana(cid)
-		doPlayerAbortExp(cid,getPlayerExperience(cid))
-           doPlayerIncExp(cid,4200)
-		setPlayerMaxHealth(cid, (health/10)*(vezes+1))
-		doPlayerAddHealth(cid,(health/10)*(vezes+1))
-		setPlayerMaxMana(cid, (mana/15)*(vezes+1))
-		doPlayerAddMana(cid,(mana/15)*(vezes+1))
-           setPlayerMaxCapacity(cid,360)
-doPlayerAddMagicLevel(cid,1)
-		doPlayerAddSkill(cid,0,20) 
-		doPlayerAddSkill(cid,1,20) 
-		doPlayerAddSkill(cid,2,20) 
-		doPlayerAddSkill(cid,3,20) 
-		doPlayerAddSkill(cid,5,20) 
-doPlayerAddMagicLevel(cid,2)
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		doPlayerAddResets(cid,1)
-		doPlayerRemoveItem(cid,13685,rubys)
-		talk_state = 0
-		else
-		selfSay('Sorry mortal, but you dont have this monney!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but only gods level 500 or above can do that!')
-		talk_state = 0
-		end
-	end
-
-	if getResets(cid) <= 0 and getPlayerVocation(cid) >= 13 and getPlayerLevel(cid) >= 500 then
-		setPlayerStorageValue(cid,7777,1)
-	end
-	
-        if getPlayerVocation(cid) >= 9 and getPlayerVocation(cid) < 13 then	-- semis
-	if getPlayerItemCount(cid,13685) >= 5 then
-		selfSay('Oh! Now you are a god!')
-
-        	if getPlayerVocation(cid) >= 9 and getPlayerVocation(cid) < 11 then
-		doPlayerAddMagicLevel(cid,20)
-           setPlayerMaxCapacity(cid,360)
-		end
-        	if getPlayerVocation(cid) == 11 then
-		doPlayerAddMagicLevel(cid,4)
-		doPlayerAddSkill(cid,4,20)
-		doPlayerAddSkill(cid,5,20)
-           setPlayerMaxCapacity(cid,360)
-		end
-        	if getPlayerVocation(cid) == 12 then
-           doPlayerAddSkill(cid,0,20)
-           doPlayerAddSkill(cid,1,20)
-           doPlayerAddSkill(cid,2,20)
-           doPlayerAddSkill(cid,3,20)
-           doPlayerAddSkill(cid,5,20)
-doPlayerAddMagicLevel(cid,1)
-           setPlayerMaxCapacity(cid,360)
-		end
-
-		doPlayerSendTextMessage(cid,22,"Você evoluiu seu espírito a Deus.")
-		doPlayerAbortExp(cid,getPlayerExperience(cid))
-           doPlayerIncExp(cid,4200)
-		setPlayerMaxHealth(cid,185)
-		doPlayerAddHealth(cid,185)
-		setPlayerMaxMana(cid,35)
-		doPlayerAddMana(cid,35)
-		doPlayerSetVocation(cid, getPlayerVocation(cid)+4)
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		doPlayerRemoveItem(cid,13685,5)
-		talk_state = 0
-
-		else
-		selfSay('Sorry, but you dont have the 5 ruby coins!')
-		talk_state = 0
-		end
-	end
-
-		else
-		selfSay('Sorry, but only gods i can do that!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but only gods level 500 or above can do that!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry but only can reset a god premmy.')
-		talk_state = 0
-		end
-
-		end
-		--end
-
------------------------------------------------- confirm no ------------------------------------------------
-		elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 34) then
-			selfSay('Ok than.')
-			talk_state = 0
-		end
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	return true
+    return true
 end
-
-function teste(cid)
-
-end
-
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

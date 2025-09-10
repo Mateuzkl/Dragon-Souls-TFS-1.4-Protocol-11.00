@@ -463,7 +463,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 	player->charmExpansion = result->getNumber<bool>("charmExpansion");
 
 	player->setSex(static_cast<PlayerSex_t>(result->getNumber<uint16_t>("sex")));
-	player->level = std::max<uint32_t>(1, result->getNumber<uint32_t>("level"));
+	player->level = std::max<uint32_t>(8, result->getNumber<uint32_t>("level"));
 	player->reset = result->getNumber<uint32_t>("reset");
 
 	uint64_t experience = result->getNumber<uint64_t>("experience");

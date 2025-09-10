@@ -180,6 +180,7 @@ class Player final : public Creature, public Cylinder
 		void dismount();
 
 		void doReset(); // reset system
+		std::pair<uint32_t, uint32_t> calculateResetBonus(uint32_t currentResets) const; // calculate reset bonus
 
 		void sendFYIBox(const std::string& message) {
 			if (client) {
@@ -1932,7 +1933,7 @@ class Player final : public Creature, public Cylinder
 		uint32_t damageImmunities = 0;
 		uint32_t conditionImmunities = 0;
 		uint32_t conditionSuppressions = 0;
-		uint32_t level = 1;
+		uint32_t level = 8;
 		uint32_t reset = 0; // reset system
 		uint32_t magLevel = 0;
 		uint32_t actionTaskEvent = 0;
