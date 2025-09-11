@@ -1,246 +1,106 @@
-local focus = 0
-local talk_start = 0
-local target = 0
-local following = false
-local attacking = false
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
-end
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
 
+shopModule:addBuyableItem({'steel boots'}, 2645, 80000, 'steel boots')
+shopModule:addBuyableItem({'boh', 'boots of haste'}, 2195, 80000, 'boots of haste')
+shopModule:addBuyableItem({'golden boots'}, 2646, 200000, 'golden boots')
 
-function onCreatureAppear(creature)
+shopModule:addBuyableItem({'magic plate armor', 'mpa'}, 2472, 200000, 'magic plate armor')
+shopModule:addBuyableItem({'dragon scale mail', 'dsm'}, 2492, 120000, 'dragon scale mail')
+shopModule:addBuyableItem({'golden armor'}, 2189, 60000, 'golden armor')
+shopModule:addBuyableItem({'crown armor'}, 2487, 40000, 'crown armor')
+shopModule:addBuyableItem({'knight armor'}, 2476, 10000, 'knight armor')
+shopModule:addBuyableItem({'blue robe'}, 2656, 30000, 'blue robe')
 
-end
+shopModule:addBuyableItem({'full helmet of the ancients'}, 2343, 200000, 'full helmet of the ancients')
+shopModule:addBuyableItem({'horned helmet'}, 2496, 180000, 'horned helmet')
+shopModule:addBuyableItem({'demon helmet'}, 2493, 100000, 'demon helmet')
+shopModule:addBuyableItem({'winged helmet'}, 2474, 120000, 'winged helmet')
+shopModule:addBuyableItem({'royal helmet'}, 2498, 80000, 'royal helmet')
+shopModule:addBuyableItem({'crusader helmet'}, 2497, 18000, 'crusader helmet')
+shopModule:addBuyableItem({'warrior helmet'}, 2475, 12000, 'warrior helmet')
+shopModule:addBuyableItem({'crown helmet'}, 2491, 10000, 'crown helmet')
+shopModule:addBuyableItem({'lady helmet'}, 2499, 8000, 'lady helmet')
 
+shopModule:addBuyableItem({'dragon scale legs', 'dsl'}, 2469, 200000, 'dragon scale legs')
+shopModule:addBuyableItem({'golden legs'}, 2470, 160000, 'golden legs')
+shopModule:addBuyableItem({'demon legs'}, 2495, 150000, 'demon legs')
+shopModule:addBuyableItem({'crown legs'}, 2488, 30000, 'crown legs')
+shopModule:addBuyableItem({'knight legs'}, 2477, 12000, 'knight legs')
+shopModule:addBuyableItem({'plate legs'}, 2647, 1000, 'plate legs')
+shopModule:addBuyableItem({'brass legs'}, 2478, 200, 'brass legs')
+shopModule:addBuyableItem({'chain legs'}, 2648, 100, 'chain legs')
 
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
-end
+shopModule:addBuyableItem({'blessed shield'}, 2523, 300000, 'blessed shield')
+shopModule:addBuyableItem({'great shield'}, 2522, 200000, 'great shield')
+shopModule:addBuyableItem({'mms', 'mastermind shield'}, 2514, 160000, 'mastermind shield')
+shopModule:addBuyableItem({'phoenix shield'}, 2539, 150000, 'phoenix shield')
+shopModule:addBuyableItem({'demon shield'}, 2520, 80000, 'demon shield')
+shopModule:addBuyableItem({'vampire shield'}, 2534, 50000, 'vampire shield')
+shopModule:addBuyableItem({'medusa shield'}, 2536, 16000, 'medusa shield')
+shopModule:addBuyableItem({'crown shield'}, 2519, 10000, 'crown shield')
+shopModule:addBuyableItem({'tower shield'}, 2528, 8000, 'tower shield')
+shopModule:addBuyableItem({'amazon shield'}, 2537, 8000, 'amazon shield')
+shopModule:addBuyableItem({'dragon shield'}, 2516, 6000, 'dragon shield')
+shopModule:addBuyableItem({'guardian shield'}, 2515, 4000, 'guardian shield')
+shopModule:addBuyableItem({'beholder shield'}, 2518, 3000, 'beholder shield')
+shopModule:addBuyableItem({'dwarven shield'}, 2525, 200, 'dwarven shield')
 
+shopModule:addBuyableItem({'magic longsword'}, 2390, 300000, 'magic longsword')
+shopModule:addBuyableItem({'warlord sword'}, 2408, 200000, 'warlord sword')
+shopModule:addBuyableItem({'magic sword', 'sword of valor'}, 2400, 180000, 'magic sword')
+shopModule:addBuyableItem({'giant sword'}, 2393, 20000, 'giant sword')
+shopModule:addBuyableItem({'bright sword'}, 2407, 12000, 'bright sword')
+shopModule:addBuyableItem({'ice rapier'}, 2396, 8000, 'ice rapier')
+shopModule:addBuyableItem({'fire sword'}, 2392, 6000, 'fire sword')
+shopModule:addBuyableItem({'serpent sword'}, 2409, 3000, 'serpent sword')
+shopModule:addBuyableItem({'spike sword'}, 2383, 1600, 'spike sword')
+shopModule:addBuyableItem({'two handed sword'}, 2377, 800, 'two handed sword')
+shopModule:addBuyableItem({'broad sword'}, 2413, 140, 'broad sword')
+shopModule:addBuyableItem({'short sword'}, 2406, 60, 'short sword')
+shopModule:addBuyableItem({'sabre'}, 2385, 50, 'sabre')
+shopModule:addBuyableItem({'sword'}, 2376, 50, 'sword')
 
-function onCreatureTurn(creature)
+shopModule:addBuyableItem({'stonecutter\'s axe'}, 2431, 180000, 'stonecutter\'s axe')
+shopModule:addBuyableItem({'great axe'}, 2415, 150000, 'great axe')
+shopModule:addBuyableItem({'dragon lance'}, 2414, 20000, 'dragon lance')
+shopModule:addBuyableItem({'fire axe'}, 2432, 20000, 'fire axe')
+shopModule:addBuyableItem({'guardian halberd'}, 2427, 15000, 'guardian halberd')
+shopModule:addBuyableItem({'knight axe'}, 2430, 4000, 'knight axe')
+shopModule:addBuyableItem({'double axe'}, 2387, 400, 'double axe')
+shopModule:addBuyableItem({'halberd'}, 2381, 400, 'halberd')
+shopModule:addBuyableItem({'battle axe'}, 2378, 200, 'battle axe')
+shopModule:addBuyableItem({'hatchet'}, 2388, 40, 'hatchet')
 
-end
+shopModule:addBuyableItem({'thunder hammer'}, 2421, 180000, 'thunder hammer')
+shopModule:addBuyableItem({'skull staff'}, 2436, 20000, 'skull staff')
+shopModule:addBuyableItem({'war hammer'}, 2391, 12000, 'war hammer')
+shopModule:addBuyableItem({'dragon hammer'}, 2434, 4000, 'dragon hammer')
+shopModule:addBuyableItem({'clerical mace'}, 2423, 400, 'clerical mace')
+shopModule:addBuyableItem({'battle hammer'}, 2417, 120, 'battle hammer')
+shopModule:addBuyableItem({'mace'}, 2398, 60, 'mace')
 
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
+shopModule:addBuyableItem({'platinum amulet'}, 2171, 10000, 'platinum amulet')
+shopModule:addBuyableItem({'scarf'}, 2661, 1000, 'scarf')
 
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hello ' .. creatureGetName(cid) .. '! I sell Armors, Helmets, Legs, Shields, Clubs, Axes, Swords, Amulets and Rings.')
-  		focus = cid
-  		talk_start = os.clock()
+keywordHandler:addKeyword({'amulets'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Platinum Amulets (10k) and Scarfs (1k).'})
+keywordHandler:addKeyword({'axes'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Great Axes (150k), Stonecutter\'s Axes (180k), Guardian Halberds (15k), Fire Axes (20k), Knight Axes (4k), Double Axes (400gp) and Battle Axes (200gp), Dragon Lances (20k), Halberds (400gp) and Hatchets (40gp).'})
+keywordHandler:addKeyword({'swords'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Magic Longswords (300k), Magic Swords (180k), Warlord Swords (200k), Giant Swords (20k), Bright Swords(12k), Fire Swords(6k) Serpent Swords (3k), Spike Swords(1,6k) and Two-Handed Swords (800gp), also Ice Rapiers (8k), Broad Swords (140gp), Short Swords (60gp), Sabres (50gp) and Swords (50gp).'})
+keywordHandler:addKeyword({'clubs'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Thunder Hammers (180k) War Hammers (12k), Dragon Hammers (4k) and Battle Hammers (120gp), also Skull Staffs (20k) and Clerical Maces (400gp).'})
+keywordHandler:addKeyword({'armors'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Magic Plate Armors (200k), Dragon Scale Mails (120k), Golden Armors (60k), Crown Armors (40k), Blue Robes (30k) and Knight Armors (10k). I do not sell Demon Armors, because they are bugged.'})
+keywordHandler:addKeyword({'shields'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Blessed Shields (300k), Great Shields (200k), Phoenix Shields (150k), Demon Shields (80k), Vampire Shields (50k), Medusa Shields (16k), Amazon Shields (8k), Crown Shields (10k), Tower Shields (8k), Dragon Shields (6k), Guardian Shields (4k), Beholder Shields (2k), and Dwarven Shields (200gp), also Mastermind Shields (160k)'})
+keywordHandler:addKeyword({'boots'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Golden Boots (200k), Steel Boots (80k) and Boots of Haste (80k).'})
+keywordHandler:addKeyword({'legs'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Dragon Scale Legs (200k), Golden Legs (160k), Crown Legs (30k), Knight Legs (12k), Plate Legs (1k), Brass Legs (200gp) and Chain Legs (100gp).'})
 
-  	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Armors, Helmets, Legs, Shields, Clubs, Axes, Swords, Amulets and Rings.'})
 
-	elseif focus == cid then
-		talk_start = os.clock()
-
-		if msgcontains(msg, 'amulets')  then
-  			selfSay('I sell Platinum Amulets (5k) and Scarfs (1k).')
-		elseif msgcontains(msg, 'axes')  then
-  			selfSay('I sell Great Axes (150k), Stonecutter\'s Axes (180k), Guardian Halberds (15k), Fire Axes (20k), Knight Axes (4k), Double Axes (400gp) and Battle Axes (200gp), Dragon Lances (20k), Halberds (400gp) and Hatchets (40gp).')
-		elseif msgcontains(msg, 'swords')  then
-  			selfSay('I sell Magic Longswords (300k), Magic Swords (180k), Warlord Swords (200k), Giant Swords (20k), Bright Swords(12k), Fire Swords(6k) Serpent Swords (3k), Spike Swords(1,6k) and Two-Handed Swords (800gp), also Ice Rapiers (8k), Broad Swords (140gp), Short Swords (60gp), Sabres (50gp) and Swords (50gp).')
-		elseif msgcontains(msg, 'clubs')  then
-  			selfSay('I sell Thunder Hammers (180k) War Hammers (12k), Dragon Hammers (4k) and Battle Hammers (120gp), also Skull Staffs (20k) and Clerical Maces (400gp).')
-		elseif msgcontains(msg, 'armors') then
-			selfSay('I sell Magic Plate Armors (200k), Dragon Scale Mails (120k), Golden Armors (60k), Crown Armors (40k), Blue Robes (30k) and Knight Armors (10k). I do not sell Demon Armors, because they are bugged.')
-		elseif msgcontains(msg, 'shields')  then
-  			selfSay('I sell Blessed Shields (300k), Great Shields (200k), Phoenix Shields (150k), Demon Shields (80k), Vampire Shields (50k), Medusa Shields (16k), Amazon Shields (8k), Crown Shields (10k), Tower Shields (8k), Dragon Shields (6k), Guardian Shields (4k), Beholder Shields (2k), and Dwarven Shields (200gp), also Mastermind Shields (160k)')
-
-		elseif msgcontains(msg, 'steel boots')  then
-  			buy(cid,2645,getCount(msg),80000)
-  		elseif msgcontains(msg, 'boh') or msgcontains(msg, 'boots of haste')  then
-  			buy(cid,2195,getCount(msg),80000)
-		elseif msgcontains(msg, 'golden boots')  then
-  			buy(cid,2646,getCount(msg),200000)
-		elseif msgcontains(msg, 'boots')  then
-  			selfSay('I sell Golden Boots (200k), Steel Boots (80k) and Boots of Haste (80k).') 
- 
-		elseif msgcontains(msg, 'magic plate armor') or msgcontains(msg, 'mpa') then
-			buy(cid,2472,getCount(msg),200000)
-		elseif msgcontains(msg, 'dragon scale mail') or msgcontains(msg, 'dsm') then
-			buy(cid,2492,getCount(msg),120000)
-		elseif msgcontains(msg, 'golden armor') then
-			buy(cid,2189,getCount(msg),60000)
-		elseif msgcontains(msg, 'crown armor') then
-			buy(cid,2487,getCount(msg),40000)
-		elseif msgcontains(msg, 'knight armor') then
-			buy(cid,2476,getCount(msg),10000)
-		elseif msgcontains(msg, 'blue robe') then
-			buy(cid,2656,getCount(msg),30000)
-
-		elseif msgcontains(msg, 'full helmet of the ancients') then
-			buy(cid,2343,getCount(msg),200000)
-		elseif msgcontains(msg, 'horned helmet') then
-			buy(cid,2496,getCount(msg),180000)
-		elseif msgcontains(msg, 'demon helmet') then
-			buy(cid,2493,getCount(msg),100000)
-		elseif msgcontains(msg, 'winged helmet') then
-			buy(cid,2474,getCount(msg),120000)
-		elseif msgcontains(msg, 'royal helmet') then
-			buy(cid,2498,getCount(msg),80000)
-		elseif msgcontains(msg, 'crusader helmet') then
-			buy(cid,2497,getCount(msg),18000)
-		elseif msgcontains(msg, 'warrior helmet') then
-			buy(cid,2475,getCount(msg),12000)
-		elseif msgcontains(msg, 'crown helmet') then
-			buy(cid,2491,getCount(msg),10000)
-		elseif msgcontains(msg, 'lady helmet') then
-			buy(cid,2499,getCount(msg),8000)
-			
-		elseif msgcontains(msg, 'dragon scale legs') or msgcontains(msg, 'dsl') then
-			buy(cid,2469,getCount(msg),200000)
-		elseif msgcontains(msg, 'golden legs') then
-			buy(cid,2470,getCount(msg),160000)
-		elseif msgcontains(msg, 'demon legs') then
-			buy(cid,2495,getCount(msg),150000)
-		elseif msgcontains(msg, 'crown legs') then
-			buy(cid,2488,getCount(msg),30000)
-		elseif msgcontains(msg, 'knight legs') then
-			buy(cid,2477,getCount(msg),12000)
-		elseif msgcontains(msg, 'plate legs') then
-			buy(cid,2647,getCount(msg),1000)
-		elseif msgcontains(msg, 'brass legs') then
-			buy(cid,2478,getCount(msg),200)
-		elseif msgcontains(msg, 'chain legs') then
-			buy(cid,2648,getCount(msg),100)
-		elseif msgcontains(msg, 'legs')  then
-  			selfSay('I sell Dragon Scale Legs (200k), Golden Legs (160k), Crown Legs (30k), Knight Legs (12k), Plate Legs (1k), Brass Legs (200gp) and Chain Legs (100gp).')
-			
-		elseif msgcontains(msg, 'blessed shield') then
-			buy(cid,2523,getCount(msg),300000)
-		elseif msgcontains(msg, 'great shield') then
-			buy(cid,2522,getCount(msg),200000)
-		elseif msgcontains(msg, 'mms') or msgcontains(msg, 'mastermind shield') then
-			buy(cid,2514,getCount(msg),160000)
-		elseif msgcontains(msg, 'phoenix shield') then
-			buy(cid,2539,getCount(msg),150000)
-		elseif msgcontains(msg, 'demon shield') then
-			buy(cid,2520,getCount(msg),80000)
-		elseif msgcontains(msg, 'vampire shield') then
-			buy(cid,2534,getCount(msg),50000)
-		elseif msgcontains(msg, 'medusa shield') then
-			buy(cid,2536,getCount(msg),16000)
-		elseif msgcontains(msg, 'crown shield') then
-			buy(cid,2519,getCount(msg),10000)
-		elseif msgcontains(msg, 'tower shield') then
-			buy(cid,2528,getCount(msg),8000)
-		elseif msgcontains(msg, 'amazon shield') then
-			buy(cid,2537,getCount(msg),8000)
-		elseif msgcontains(msg, 'dragon shield') then
-			buy(cid,2516,getCount(msg),6000)
-		elseif msgcontains(msg, 'guardian shield') then
-			buy(cid,2515,getCount(msg),4000)
-		elseif msgcontains(msg, 'beholder shield') then
-			buy(cid,2518,getCount(msg),3000)
-		elseif msgcontains(msg, 'dwarven shield') then
-			buy(cid,2525,getCount(msg),200)
-			
-		elseif msgcontains(msg, 'magic longsword') then
-			buy(cid,2390,getCount(msg),300000)
-		elseif msgcontains(msg, 'warlord sword') then
-			buy(cid,2408,getCount(msg),200000)
-		elseif msgcontains(msg, 'magic sword') or msgcontains(msg, 'sword of valor') then
-			buy(cid,2400,getCount(msg),180000)
-		elseif msgcontains(msg, 'stonecutter\'s axe') then
-			buy(cid,2431,getCount(msg),180000)
-		elseif msgcontains(msg, 'thunder hammer') then
-			buy(cid,2421,getCount(msg),180000)
-		elseif msgcontains(msg, 'great axe') then
-			buy(cid,2415,getCount(msg),150000)
-		elseif msgcontains(msg, 'giant sword') then
-  			buy(cid,2393,getCount(msg),20000)
-		elseif msgcontains(msg, 'bright sword') then
-  			buy(cid,2407,getCount(msg),12000)
-		elseif msgcontains(msg, 'ice rapier')  then
-  			buy(cid,2396,getCount(msg),8000)
-		elseif msgcontains(msg, 'fire sword') then
-  			buy(cid,2392,getCount(msg),6000)
-		elseif msgcontains(msg, 'serpent sword')  then
-  			buy(cid,2409,getCount(msg),3000)
-		elseif msgcontains(msg, 'spike sword')  then
-  			buy(cid,2383,getCount(msg),1600)
-  		elseif msgcontains(msg, 'two handed sword')  then
-  			buy(cid,2377,getCount(msg),800)
-		elseif msgcontains(msg, 'broad sword') then
-  			buy(cid,2413,getCount(msg),140)
-		elseif msgcontains(msg, 'short sword') then
-  			buy(cid,2406,getCount(msg),60)
-		elseif msgcontains(msg, 'sabre') then
-  			buy(cid,2385,getCount(msg),50)
-  		elseif msgcontains(msg, 'sword')  then
-  			buy(cid,2376,getCount(msg),50)
-			
-		elseif msgcontains(msg, 'dragon lance')  then
-  			buy(cid,2414,getCount(msg),20000)
-		elseif msgcontains(msg, 'guardian halberd')  then
-  			buy(cid,2427,getCount(msg),15000)
-  		elseif msgcontains(msg, 'fire axe')  then
-  			buy(cid,2432,getCount(msg),20000)
-		elseif msgcontains(msg, 'knight axe')  then
-  			buy(cid,2430,getCount(msg),4000)
-		elseif msgcontains(msg, 'double axe')  then
-  			buy(cid,2387,getCount(msg),400)
-		elseif msgcontains(msg, 'halberd')  then
-  			buy(cid,2381,getCount(msg),400)
-		elseif msgcontains(msg, 'battle axe')  then
-  			buy(cid,2378,getCount(msg),200)
-  		elseif msgcontains(msg, 'hatchet')  then
-  			buy(cid,2388,getCount(msg),40)
-		elseif msgcontains(msg, 'axes')  then
-		
-		elseif msgcontains(msg, 'war hammer') then
-  			buy(cid,2391,getCount(msg),12000)
-		elseif msgcontains(msg, 'skull staff') then
-  			buy(cid,2436,getCount(msg),20000)
-  		elseif msgcontains(msg, 'dragon hammer')  then
-  			buy(cid,2434,getCount(msg),4000)
-  		elseif msgcontains(msg, 'clerical mace')  then
-  			buy(cid,2423,getCount(msg),400)
-  		elseif msgcontains(msg, 'battle hammer')  then
-  			buy(cid,2417,getCount(msg),120)
-  		elseif msgcontains(msg, 'mace') then
-  			buy(cid,2398,getCount(msg),60)
-			
-		elseif msgcontains(msg, 'platinum amulet') then
-  			buy(cid,2171,getCount(msg),10000)
-		elseif msgcontains(msg, 'scarf') then
-  			buy(cid,2661,getCount(msg),1000)
-		elseif msgcontains(msg, 'amulets')  then
-		
-
-		elseif string.find(msg, '(%a*)bye(%a*)') and getDistanceToCreature(cid) < 4 then
-			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-			focus = 0
-			talk_start = 0
-		end
-	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('Next Please...')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:addModule(FocusModule:new())

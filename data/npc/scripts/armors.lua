@@ -1,247 +1,44 @@
-focus = 0
-  talk_start = 0
-  target = 0
-  following = false
-  attacking = false
-  ox = 145
-  oy = 51
-  oz = 6
-  max = 5
-  function onThingMove(creature, thing, oldpos, oldstackpos)
-  
-  end
-  
-  
-  function onCreatureAppear(creature)
-  
-  end
-  
-  
-  function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
-  end
-  
-  
-  function onCreatureTurn(creature)
-  
-  endfunction msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-  end
-  
-  
-  function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-  
-  	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Hello ' .. creatureGetName(cid) .. '! I sell armors, legs, helmets, boots and shields.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-  	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Ola ' .. creatureGetName(cid) .. '! Eu vendo armors,legs,helmets,boots e shields.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
-  
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-  	end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
-  	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Desculpe, ' .. creatureGetName(cid) .. '! Falo contigo em um minuto.')
-  	end
-  
-  	if msgcontains(msg, 'armors') and focus == cid then
-  		selfSay('I sell chain armor, brass armor and scale armor.')
-  		talk_start = os.clock()
-  	end
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
 
-  	if msgcontains(msg, 'armaduras') and focus == cid then
-  		selfSay('Vendo chain armor, brass armor e scale armor.')
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'chain armor') and focus == cid then
-  		buy(cid,2464,1,100)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'brass armor') and focus == cid then
-  		buy(cid,2465,1,250)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'scale armor') and focus == cid then
-  		buy(cid,2483,1,500)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'legs') and focus == cid then
-  		selfSay('I sell chain and brass legs.')
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'chain legs') and focus == cid then
-  		buy(cid,2648,1,80)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'brass legs') and focus == cid then
-  		buy(cid,2478,1,200)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'helmets') and focus == cid then
-  		selfSay('I sell brass helmet, viking helmet and iron helmet.')
-  		talk_start = os.clock()
-  	end
+shopModule:addBuyableItem({'chain armor'}, 2464, 100, 'chain armor')
+shopModule:addBuyableItem({'brass armor'}, 2465, 250, 'brass armor')
+shopModule:addBuyableItem({'scale armor'}, 2483, 500, 'scale armor')
 
-  	if msgcontains(msg, 'capacetes') and focus == cid then
-  		selfSay('Vendo brass helmet, viking helmet e iron helmet.')
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'brass helmet') and focus == cid then
-  		buy(cid,2460,1,50)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'viking helmet') and focus == cid then
-  		buy(cid,2473,1,100)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'iron helmet') and focus == cid then
-  		buy(cid,2459,1,190)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'boots') and focus == cid then
-  		selfSay('I sell leather boots and sandals.')
-  		talk_start = os.clock()
-  	end
+shopModule:addBuyableItem({'chain legs'}, 2648, 80, 'chain legs')
+shopModule:addBuyableItem({'brass legs'}, 2478, 200, 'brass legs')
 
-  	if msgcontains(msg, 'botas') and focus == cid then
-  		selfSay('Vendo leather boots e sandals.')
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'sandals') and focus == cid then
-  		buy(cid,2642,1,10)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'leather boots') and focus == cid then
-  		buy(cid,2443,1,20)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'shields') and focus == cid then
-  		selfSay('I sell plate shield, black shield, cooper shield, bone shield and ornamented shield.')
-  		talk_start = os.clock()
-  	end
+shopModule:addBuyableItem({'brass helmet'}, 2460, 50, 'brass helmet')
+shopModule:addBuyableItem({'viking helmet'}, 2473, 100, 'viking helmet')
+shopModule:addBuyableItem({'iron helmet'}, 2459, 190, 'iron helmet')
 
-  	if msgcontains(msg, 'escudos') and focus == cid then
-  		selfSay('Tenho plate shield, black shield, cooper shield, bone shield e ornamented shield.')
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'plate shield') and focus == cid then
-  		buy(cid,2510,1,50)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'black shield') and focus == cid then
-  		buy(cid,2529,1,70)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'cooper shield') and focus == cid then
-  		buy(cid,2530,1,120)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'bone shield') and focus == cid then
-  		buy(cid,2541,1,150)
-  		talk_start = os.clock()
-  	end
-  
-  	if msgcontains(msg, 'ornamented shield') and focus == cid then
-  		buy(cid,2524,1,200)
-  		talk_start = os.clock()
-  	end
-  
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
-  		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
+shopModule:addBuyableItem({'sandals'}, 2642, 10, 'sandals')
+shopModule:addBuyableItem({'leather boots'}, 2443, 20, 'leather boots')
 
-  	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
-  		selfSay('Adeus, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
+shopModule:addBuyableItem({'plate shield'}, 2510, 50, 'plate shield')
+shopModule:addBuyableItem({'black shield'}, 2529, 70, 'black shield')
+shopModule:addBuyableItem({'cooper shield'}, 2530, 120, 'cooper shield')
+shopModule:addBuyableItem({'bone shield'}, 2541, 150, 'bone shield')
+shopModule:addBuyableItem({'ornamented shield'}, 2524, 200, 'ornamented shield')
 
-  	if string.find(msg, '(%a*)xau(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
-  		selfSay('Volte sempre, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  
-  end
-  
-  
-  function onCreatureChangeOutfit(creature)
-  
-  end
-  
-  
- function onThink() 
-if focus == 0 then
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,20)
-if randmove == 1 then
-nx = cx + 1
-end
-if randmove == 2 then
-nx = cx - 1
-end
-if randmove == 3 then
-ny = cy + 1
-end
-if randmove == 4 then
-ny = cy - 1
-end
-if randmove >= 5 then
-nx = cx
-ny = cy
-end
-moveToPosition(nx, ny, cz)
-end
-end 
+keywordHandler:addKeyword({'armors', 'armaduras'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell chain armor, brass armor and scale armor.'})
+keywordHandler:addKeyword({'legs'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell chain and brass legs.'})
+keywordHandler:addKeyword({'helmets', 'capacetes'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell brass helmet, viking helmet and iron helmet.'})
+keywordHandler:addKeyword({'boots', 'botas'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell leather boots and sandals.'})
+keywordHandler:addKeyword({'shields', 'escudos'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell plate shield, black shield, cooper shield, bone shield and ornamented shield.'})
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell armors, legs, helmets, boots and shields.'})
 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Adeus.')
-  			focus = 0
-  		end
-	end
+keywordHandler:addAliasKeyword({'oi'})
+keywordHandler:addAliasKeyword({'tchau'})
+keywordHandler:addAliasKeyword({'xau'})
 
- 
+npcHandler:addModule(FocusModule:new())

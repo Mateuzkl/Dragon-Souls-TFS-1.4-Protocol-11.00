@@ -1,106 +1,68 @@
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
-local focus = 0
-local talk_start = 0
-local target = 0
-local days = 0
+local QUEST_CONFIG = {
+    questStorage = 6006
+}
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
-
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    local quest1 = player:getStorageValue(QUEST_CONFIG.questStorage)
+    
+    if msgcontains(msg, 'quest') then
+        if quest1 == -1 then
+            selfSay('Hmm... Let me see...', cid)
+            selfSay('Many ages ago, on the second middle earth, Carlin suffered, with surely the most bloody war ever seen in this region. The undead made an alliance with the poison masters, they attacked us with no mercy. We were excellent fighters, but two of us struggled with glory...', cid)
+            selfSay('Shima and Natalier, feared even by the most powerful undead, but I don\'t have time to tell you the whole tale. Finally, we won this war, but we had losses. Shima and Natalier fallen.', cid)
+            selfSay('Buried with them, their legendary weapons, made by Thordain. Your task is simple, find the graves, they are located in Carlin.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "New quest added: 'Shima and Natalier, rest in peace.'")
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+            player:setStorageValue(QUEST_CONFIG.questStorage, 1)
+        else
+            selfSay('Hmm... I know so many quests, but now, I don\'t have time to tell you. Another day, ok?', cid)
+        end
+        
+    elseif msgcontains(msg, 'offer') then
+        selfSay('Hmm... I have nothing to offer now.', cid)
+        
+    elseif msgcontains(msg, 'mission') then
+        selfSay('I don\'t have anything for you, maybe another day, ok?', cid)
+    end
+    
+    return true
 end
 
-
-function onCreatureAppear(creature)
+function onGreet(cid)
+    local player = Player(cid)
+    if player then
+        selfSay('Hello my young ' .. player:getName() .. '! Welcome to my library, at this moment we don\'t have books, but new books are coming!', cid)
+    end
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if player then
+        selfSay('Good bye, ' .. player:getName() .. '!', cid)
+    end
+    return true
 end
 
-
-function onCreatureTurn(creature)
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-
-  	msg = string.lower(msg)
-	quest1 = getPlayerStorageValue(cid,6006)
-	dist = getDistanceToCreature(cid)
-
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and dist < 3 then
-		selfSay('Hello my young ' .. creatureGetName(cid) .. '! Welcome to my library, at this moment we dont have books, but new books are comming!')
-  		focus = cid
-		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-	
-
-	if msgcontains(msg, 'quest') then
-		if quest1 == -1 then
-		selfSay('Hmm... Let\'s me see...')
-		selfSay('Many ages ago, on the second middle earth, Carlin sufered, with sure the most bloody war ever saw in this region, the undeads made an aliance with the poison masters, they attacked us with no mercy, we were exelent fighters, but two of us struggled with glory...')
-		selfSay('Shima and Natalier, feared even by the most powerfull undeads, but i dont have time to tell you the whole tale, finally, we won this war, but we have losses, Shima and Natalier fallen.')
-		selfSay('buried with them, their legendary weapons, made by Thordain. Your task is simple, find the graves, they are located in carlin.')
-		doPlayerSendTextMessage(cid,19,"Nova quest adicionada 'Shima e Natalier, descansem em paz.'.")
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		setPlayerStorageValue(cid,6006,1)
-  			focus = 0
-  			talk_start = 0
-		else
-		selfSay('Hmm... I know so many quests, but now, i dont have time to tell you, another day, ok?')
-		end
-		
-	elseif msgcontains(msg, 'offer') then
-		selfSay('Hmm... I have nothing to offer now.')
-
-	elseif msgcontains(msg, 'mission') then
-		selfSay('I dont have nothing for you, maybe another day, ok?')
-
-
-
-  	elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 3 then
-  		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  			focus = 0
-  			talk_start = 0
-
-end
-end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('See you later.')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:addModule(FocusModule:new())

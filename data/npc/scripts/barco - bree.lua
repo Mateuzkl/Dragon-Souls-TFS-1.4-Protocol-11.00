@@ -2,148 +2,77 @@ local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
-
--- OTServ event handling functions start
-function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
-function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
-function onCreatureSay(cid, type, msg)
-
-npcHandler:onCreatureSay(cid, type, msg) end
-function onThink() 						npcHandler:onThink() end
--- OTServ event handling functions end
+local TRAVEL_CONFIG = {
+    destinations = {
+        raccoon = {x = 209, y = 74, z = 6, cost = 300, premium = true},
+        edron = {x = 736, y = 795, z = 6, cost = 400, premium = true},
+        tirith = {x = 476, y = 293, z = 6, cost = 400, premium = true},
+        carlin = {x = 151, y = 356, z = 6, cost = 200, premium = true}
+    }
+}
 
 function creatureSayCallback(cid, type, msg)
-	if(npcHandler.focus ~= cid) then
-		return false
-	end
-
-  pos = {x=541, y=456, z=5}
-
-	if msgcontains(msg, 'raccoon') then
-		selfSay('Do you wish to travel to Raccoon for 300 gold coins?')
-		talk_state = 2
-
-	elseif msgcontains(msg, 'edron') then
-		selfSay('Do you wish to travel to Edron for 400 gold coins?')
-		talk_state = 3
-
-	elseif msgcontains(msg, 'tirith') then
-		selfSay('Do you wish to travel to Minas Tirith for 400 gold coins?')
-		talk_state = 4
-
-	elseif msgcontains(msg, 'carlin') then
-		selfSay('Do you wish to travel to Carlin for 200 gold coins?')
-		talk_state = 5
-
---
-
-	elseif talk_state == 2 then
-		if msgcontains(msg, 'yes') then
-		if isPremium(cid) then
-		if talk_state == 2 then
-		if pay(cid,300) then
-		travel(cid, 209, 74, 6)
-		talk_state = 0
-		else
-		selfSay('Sorry, you don\'t have this money.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Repeat all again.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Sorry, only premmys can travel whit me.')
-		talk_state = 0
- 		end
-	end
-
-	elseif talk_state == 3 then
-		if msgcontains(msg, 'yes') then
-		if isPremium(cid) then
-		if talk_state == 3 then
-		if pay(cid,400) then
-		travel(cid, 736, 795, 6)
-		talk_state = 0
-		else
-		selfSay('Sorry, you don\'t have this money.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Repeat all again.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Sorry, only premmys can travel whit me.')
-		talk_state = 0
- 		end
-	end
-
-	elseif talk_state == 4 then
-		if msgcontains(msg, 'yes') then
-		if isPremium(cid) then
-		if talk_state == 4 then
-		if pay(cid,400) then
-		travel(cid, 476, 293, 6)
-		talk_state = 0
-		else
-		selfSay('Sorry, you don\'t have this money.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Repeat all again.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Sorry, only premmys can travel whit me.')
-		talk_state = 0
- 		end
-	end
-
-	elseif talk_state == 5 then
-		if msgcontains(msg, 'yes') then
-		if isPremium(cid) then
-		if talk_state == 5 then
-		if pay(cid,200) then
-		travel(cid, 151, 356, 6)
-		talk_state = 0
-		else
-		selfSay('Sorry, you don\'t have this money.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Repeat all again.')
-		talk_state = 0
- 		end
-		else
-		selfSay('Sorry, only premmys can travel whit me.')
-		talk_state = 0
- 		end
-	end
-
-		elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 34) then
-			selfSay('Ok than.')
-			talk_state = 0
-
-
-end
-
-	return true
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if msgcontains(msg, 'raccoon') then
+        selfSay('Do you wish to travel to Raccoon for 300 gold coins?', cid)
+        npcHandler.topic[cid] = 1
+        
+    elseif msgcontains(msg, 'edron') then
+        selfSay('Do you wish to travel to Edron for 400 gold coins?', cid)
+        npcHandler.topic[cid] = 2
+        
+    elseif msgcontains(msg, 'tirith') then
+        selfSay('Do you wish to travel to Minas Tirith for 400 gold coins?', cid)
+        npcHandler.topic[cid] = 3
+        
+    elseif msgcontains(msg, 'carlin') then
+        selfSay('Do you wish to travel to Carlin for 200 gold coins?', cid)
+        npcHandler.topic[cid] = 4
+        
+    elseif msgcontains(msg, 'yes') then
+        local destinations = {'raccoon', 'edron', 'tirith', 'carlin'}
+        local topic = npcHandler.topic[cid]
+        
+        if topic >= 1 and topic <= 4 then
+            local destName = destinations[topic]
+            local dest = TRAVEL_CONFIG.destinations[destName]
+            
+            if dest.premium and not player:isPremium() then
+                selfSay('Sorry, only premiums can travel with me.', cid)
+            elseif player:removeMoney(dest.cost) then
+                selfSay('Set the sails!', cid)
+                player:teleportTo(Position(dest))
+                Position(dest):sendMagicEffect(CONST_ME_TELEPORT)
+            else
+                selfSay('Sorry, you don\'t have enough money.', cid)
+            end
+            npcHandler.topic[cid] = 0
+        end
+        
+    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] >= 1 then
+        selfSay('Ok then.', cid)
+        npcHandler.topic[cid] = 0
+    end
+    
+    return true
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
-
-
--- Don't forget npcHandler = npcHandler in the parameters. It is required for all StdModule functions!
-
-keywordHandler:addKeyword({'destination'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I can take you to Edron, Raccoon, Minas Tirith and Carlin.'})
-
-
-keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I am the Captian of this ship.'})
-keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Since i get busted by pirates, i never get involved in quests again.'})
-keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Since i get busted by pirates, i never get involved in quests again.'})
-keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I can take you to Edron, Raccoon, Minas Tirith and Carlin.'})
-
--- Makes sure the npc reacts when you say hi, bye etc.
 npcHandler:addModule(FocusModule:new())
+
+keywordHandler:addKeyword({'destination', 'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'I can take you to Edron, Raccoon, Minas Tirith and Carlin.'})
+keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, text = 'I am the Captain of this ship.'})
+keywordHandler:addKeyword({'mission', 'quest'}, StdModule.say, {npcHandler = npcHandler, text = 'Since I got busted by pirates, I never get involved in quests again.'})

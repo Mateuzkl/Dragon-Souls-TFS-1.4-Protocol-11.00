@@ -1,234 +1,108 @@
--- the id of the creature we are attacking, following, etc.
- 
-  focus = 0
-  talk_start = 0
-  target = 0
-  following = false
-  attacking = false
-  bless = 0
-  blessa = 1
-  blessb = 0
-  blessc = 0
-  blessd = 0
-  blesse = 0
-  cost = 40000 -- cost of a bless
- 
-  function onThingMove(creature, thing, oldpos, oldstackpos)
- 
-  end
- 
- 
-  function onCreatureAppear(creature)
- 
-  end
- 
- 
-  function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
-  end
- 
- 
-  function onCreatureTurn(creature)
- 
-  endfunction msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-  end
- 
- 
-  function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
- 
-  	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hello, ' .. creatureGetName(cid) .. '!')
-  		focus = cid
-  		talk_start = os.clock()
-		else
-  		if getPlayerVocation(cid) >= 5 then
-  		selfSay('I can only talk to regular vocations.')
-  	end
-  	end
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-  	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Ola, ' .. creatureGetName(cid) .. '!')
-  		focus = cid
-  		talk_start = os.clock()
-		else
-  		if getPlayerVocation(cid) >= 5 then
-  		selfSay('So vocacoes regulares sao permitidas aqui.')
-  	end
-  	end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
-	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Leave us alone, ' .. creatureGetName(cid) .. '!')
-  	end
+local BLESSING_COST = 40000
 
-	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Nos deixe, ' .. creatureGetName(cid) .. '!')
-  	end
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if player:getVocation():getId() >= 5 then
+        selfSay('I can only talk to regular vocations.', cid)
+        return true
+    end
+    
+    if msgcontains(msg, 'bless') then
+        selfSay('Hmm... So you want to be blessed by Arquinothep.... Are you sure about that?', cid)
+        npcHandler.topic[cid] = 1
+        
+    elseif msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+        if npcHandler.topic[cid] == 1 then
+            if not player:hasBlessing(1) then
+                if player:removeMoney(BLESSING_COST) then
+                    for i = 1, 5 do
+                        player:addBlessing(i)
+                    end
+                    if msgcontains(msg, 'sim') then
+                        selfSay('Você está abençoado por Arquinothep!', cid)
+                    else
+                        selfSay('You are blessed by Arquinothep now!', cid)
+                    end
+                else
+                    if msgcontains(msg, 'sim') then
+                        selfSay('Desculpe você não tem o dinheiro.', cid)
+                    else
+                        selfSay('Sorry, you do not have enough money.', cid)
+                    end
+                end
+            else
+                if msgcontains(msg, 'sim') then
+                    selfSay('Você já está abençoado.', cid)
+                else
+                    selfSay('You already got your bless...', cid)
+                end
+            end
+            npcHandler.topic[cid] = 0
+        end
+        
+    elseif msgcontains(msg, 'no') or msgcontains(msg, 'nao') then
+        if npcHandler.topic[cid] == 1 then
+            if msgcontains(msg, 'nao') then
+                selfSay('Gostaria de algo mais?', cid)
+            else
+                selfSay('Ok. Do you want something more?', cid)
+            end
+            npcHandler.topic[cid] = 0
+        end
+        
+    elseif msgcontains(msg, 'status') then
+        selfSay('Hmm... Let me see...', cid)
+        
+        local blessings = {'Spiritual Shielding', 'Embrace of Tibia', 'Fire of the Suns', 'Wisdom of Solitude', 'Spark of the Phoenix'}
+        
+        for i = 1, 5 do
+            if player:hasBlessing(i) then
+                selfSay(string.format('You already got the %s blessing.', blessings[i]), cid)
+            else
+                selfSay(string.format('You didn\'t get the %s blessing yet.', blessings[i]), cid)
+            end
+        end
+    end
+    
+    return true
+end
 
-  	if ((string.find(msg, '(%a*)bless(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hmm... So you want be blessed by Arquinothep.... Are you shure about That?')
- 		talk_start = 1
- 	end
- 
-  	if ((string.find(msg, '(%a*)yes(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 and talk_start == 1 and creatureGetBlessStatusa(cid) == 0 then
- 		bless = creatureGetBless(cid) + 1
- 		blessb = creatureGetBlessStatusb(cid)
- 		blessc = creatureGetBlessStatusc(cid)
- 		blessd = creatureGetBlessStatusd(cid)
- 		blesse = creatureGetBlessStatuse(cid)
- 
- 		if pay(cid,cost) then
- 			setNewBless(focus, cost, blesse, blessd, blessc, blessb, blessa, bless)
- 			selfSay('You are Blessed by Arquinothep now!')
- 		else
- 			selfSay('Sorry, you do not have enough money.')
- 		end
-  		
- 		talk_start = 0
- 	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if player:hasBlessing(1) then
+        selfSay('God will save your soul, ' .. player:getName() .. '!', cid)
+    else
+        selfSay('Beware ' .. player:getName() .. '...', cid)
+    end
+    
+    return true
+end
 
-  	if ((string.find(msg, '(%a*)sim(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 and talk_start == 1 and creatureGetBlessStatusa(cid) == 0 then
- 		bless = creatureGetBless(cid) + 1
- 		blessb = creatureGetBlessStatusb(cid)
- 		blessc = creatureGetBlessStatusc(cid)
- 		blessd = creatureGetBlessStatusd(cid)
- 		blesse = creatureGetBlessStatuse(cid)
- 
- 		if pay(cid,cost) then
- 			setNewBless(focus, cost, blesse, blessd, blessc, blessb, blessa, bless)
- 			selfSay('Voce esta abencoado por Arquinothep!')
- 		else
- 			selfSay('Desculpe voce nao tem o dinheiro.')
- 		end
-  		
- 		talk_start = 0
- 	end
- 
-  	if ((string.find(msg, '(%a*)yes(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 and talk_start == 1 and creatureGetBlessStatusa(cid) >= 1 then
-  		selfSay('You already got Your bless...')
- 		talk_start = 0
- 	end
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:addModule(FocusModule:new())
 
-  	if ((string.find(msg, '(%a*)sim(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 and talk_start == 1 and creatureGetBlessStatusa(cid) >= 1 then
-  		selfSay('Voce ja esta abencoado.')
- 		talk_start = 0
- 	end
- 
-  	if ((string.find(msg, '(%a*)no(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 and talk_start == 1 and creatureGetBlessStatusa(cid) >= 0 then
-  		selfSay('Ok. Do you want something more?')
- 		talk_start = 0
- 	end
-
-  	if ((string.find(msg, '(%a*)nao(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 and talk_start == 1 and creatureGetBlessStatusa(cid) >= 0 then
-  		selfSay('Gostaria de algo mais?')
- 		talk_start = 0
- 	end
- 
-  	if ((string.find(msg, '(%a*)status(%a*)')) and (focus == cid)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hmm... Let me see...')
- 		if creatureGetBlessStatusa(cid) == 0 then
- 			selfSay('You didnt get the Hersthiop bless yet.')
- 		end
- 		if creatureGetBlessStatusa(cid) == 1 then
- 			selfSay('You already got the Hersthiop bless.')
- 		end
- 
- 		if creatureGetBlessStatusb(cid) == 0 then
- 			selfSay('You didnt get the Arquinothep bless yet.')
- 		end
- 		if creatureGetBlessStatusb(cid) == 1 then
- 			selfSay('You already got the Arquinothep bless.')
- 		end
- 
- 		if creatureGetBlessStatusc(cid) == 0 then
- 			selfSay('You didnt get the Skraviosk bless yet.')
- 		end
- 		if creatureGetBlessStatusc(cid) == 1 then
- 			selfSay('You already got the Skraviosk bless.')
- 		end
- 
- 		if creatureGetBlessStatusd(cid) == 0 then
- 			selfSay('You didnt get the UnHolly bless yet.')
- 		end
- 		if creatureGetBlessStatusd(cid) == 1 then
- 			selfSay('You already got the UnHolly bless.')
- 		end
- 
- 		if creatureGetBlessStatuse(cid) == 0 then
- 			selfSay('You didnt get the bless came from God.')
- 		end
- 		if creatureGetBlessStatuse(cid) == 1 then
- 			selfSay('You already got bless came from God.')
- 		end
- 		talk_start = 0
- 	end
- 
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 and creatureGetBlessStatusa(cid) >= 1 then
-  		selfSay('God will save your Soul,  ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  		bless = 0
-  		blessa = 1
-  		blessb = 0
-  		blessc = 0
-  		blessd = 0
-  		blesse = 0
-  	end
-
-  	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 and creatureGetBlessStatusa(cid) >= 1 then
-  		selfSay('Va com Deus,  ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  		bless = 0
-  		blessa = 1
-  		blessb = 0
-  		blessc = 0
-  		blessd = 0
-  		blesse = 0
-  	end
- 
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 and creatureGetBlessStatusa(cid) == 0 then
-  		selfSay('Beware ' .. creatureGetName(cid) .. '...')
-  		focus = 0
-  		talk_start = 0
-  		bless = 0
-  		blessa = 1
-  		blessb = 0
-  		blessc = 0
-  		blessd = 0
-  		blesse = 0
-  	end
-
-  	if string.find(msg, '(%a*)xau(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 and creatureGetBlessStatusa(cid) == 0 then
-  		selfSay('Tome cuidado ' .. creatureGetName(cid) .. '...')
-  		focus = 0
-  		talk_start = 0
-  		bless = 0
-  		blessa = 1
-  		blessb = 0
-  		blessc = 0
-  		blessd = 0
-  		blesse = 0
-  	end
-  end
- 
- 
-  function onCreatureChangeOutfit(creature)
- 
-  end
- 
- 
-  function onThink()
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-  end
- 
+keywordHandler:addKeyword({'oi'}, StdModule.say, {npcHandler = npcHandler, text = 'Olá!'})
+keywordHandler:addKeyword({'tchau'}, StdModule.farewell, {npcHandler = npcHandler})
+keywordHandler:addKeyword({'xau'}, StdModule.farewell, {npcHandler = npcHandler})

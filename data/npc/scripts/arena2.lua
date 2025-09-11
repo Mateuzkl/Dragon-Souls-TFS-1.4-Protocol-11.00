@@ -1,408 +1,179 @@
---------------------------------------------------------------------------------------------
------------------------------------- Advanced Addon NPC ------------------------------------
--------------------------------- Script made by teh_pwnage ---------------------------------
---------------- Special thanks to: mokerhamer, Xidaozu and Jiddo, deaths'life --------------
-------------------------------- Thanks also to everyone else -------------------------------
------------------------------- NPC based on Evolutions V0.7.7 ------------------------------
---------------------------------------------------------------------------------------------
-
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
--- OTServ event handling functions start
-function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
-function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
-function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
-function onThink() 						npcHandler:onThink() end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
+local SKILL_CONFIG = {
+    missionStorage = 8113,
+    gems = {
+        {id = 2149, name = 'small emerald'},
+        {id = 2150, name = 'small amethyst'},
+        {id = 2146, name = 'small sapphire'},
+        {id = 2147, name = 'small ruby'},
+        {id = 2145, name = 'small diamond'}
+    },
+    tradeGems = {
+        {id = 2155, name = 'big emerald', bonus = 10},
+        {id = 2153, name = 'violet gem', bonus = 20},
+        {id = 2158, name = 'blue gem', bonus = 30},
+        {id = 2156, name = 'big ruby', bonus = 40},
+        {id = 2154, name = 'yellow gem', bonus = 50}
+    }
+}
 
--- OTServ event handling functions end
+local function giveVocationRewards(player, magicLevels, skillLevels)
+    local vocation = player:getVocation():getId()
+    
+    if vocation == 9 or vocation == 13 or vocation == 10 or vocation == 14 then
+        player:addMagicLevel(magicLevels)
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("VocÃª recebeu %d magic levels.", magicLevels))
+    elseif vocation == 11 or vocation == 15 then
+        local magicBonus = math.floor(magicLevels / 5)
+        player:addMagicLevel(magicBonus)
+        player:addSkillLevel(SKILL_DISTANCE, skillLevels)
+        player:addSkillLevel(SKILL_SHIELD, skillLevels)
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("VocÃª recebeu %d magic levels e %d skills.", magicBonus, skillLevels))
+    elseif vocation == 12 or vocation == 16 then
+        player:addSkillLevel(SKILL_FIST, skillLevels)
+        player:addSkillLevel(SKILL_CLUB, skillLevels)
+        player:addSkillLevel(SKILL_SWORD, skillLevels)
+        player:addSkillLevel(SKILL_AXE, skillLevels)
+        player:addSkillLevel(SKILL_SHIELD, skillLevels)
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("VocÃª recebeu %d skills.", skillLevels))
+    end
+end
+
+local function tradeGemForHpMp(player, gemId, bonusPercent)
+    if player:getItemCount(gemId) >= 1 then
+        local maxHealth = player:getMaxHealth()
+        local maxMana = player:getMaxMana()
+        
+        local healthBonus = math.floor((maxHealth * bonusPercent) / 100)
+        local manaBonus = math.floor((maxMana * bonusPercent) / 100)
+        
+        player:setMaxHealth(maxHealth + healthBonus)
+        player:setMaxMana(maxMana + manaBonus)
+        player:addHealth(healthBonus)
+        player:addMana(manaBonus)
+        
+        player:removeItem(gemId, 1)
+        player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, string.format("VocÃª recebeu %d pontos de vida e %d pontos de mana.", healthBonus, manaBonus))
+        
+        return true
+    end
+    return false
+end
 
 function creatureSayCallback(cid, type, msg)
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	if(npcHandler.focus ~= cid) then
-		return false
-	end
-
-		if msgcontains(msg, 'job') then
-			selfSay('I am a gladiator, lost in the wonders of this world!')
-
-		elseif msgcontains(msg, 'offer') then
-			selfSay('Aceita uma "missao" ou deseja "trocar" algo?')
-
-		elseif msgcontains(msg, 'knownledge') then
-			selfSay('I have been in long trips and quests! One more dangerous than the other, now i am just traveling and wondering the world beauties!')
-
--- arena "Protect the King"
-
-		elseif msgcontains(msg, 'missao') then
-			if getPlayerStorageValue(cid,8113) == 1 then -- item 1
-			if getPlayerItemCount(cid,2149) >= 10 then
-				selfSay('Como prometido.')
-
-        		if getPlayerVocation(cid) == 9 or getPlayerVocation(cid) == 13 then	
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 10 magic leveis.")
-				doPlayerMagicLevel(cid,10)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2149,10)
-				talk_state = 0
-			end
-       		 	if getPlayerVocation(cid) == 10 or getPlayerVocation(cid) == 14 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 10 magic leveis.")
-				doPlayerMagicLevel(cid,10)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2149,10)
-				talk_state = 0
-			end
-        		if getPlayerVocation(cid) == 11 or getPlayerVocation(cid) == 15 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 2 magic leveis e 10 skills.")
-				doPlayerMagicLevel(cid,2)
-				doPlayerAddSkill(cid,4,10)
-				doPlayerAddSkill(cid,5,10)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2149,10)
-				talk_state = 0
-			end
-			if getPlayerVocation(cid) == 12 or getPlayerVocation(cid) == 16 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 10 skills.")
-				doPlayerAddSkill(cid,0,10)
-				doPlayerAddSkill(cid,1,10)
-				doPlayerAddSkill(cid,2,10)
-				doPlayerAddSkill(cid,3,10)
-				doPlayerAddSkill(cid,5,10)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2149,10)
-				talk_state = 0
-			end
-				setPlayerStorageValue(cid,8113,2)
-				
-
-			else
-				selfSay('Se você me conseguir 10 small emeralds posso lhe conseguir alguns atributos extras, o resto é com você.')
-			end
-			end
-
-			if getPlayerStorageValue(cid,8113) == 2 then -- item 2
-			if getPlayerItemCount(cid,2150) >= 10 then
-				selfSay('Como prometido.')
-				setPlayerStorageValue(cid,8113,3)
-
-        		if getPlayerVocation(cid) == 9 or getPlayerVocation(cid) == 13 then	
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 20 magic leveis.")
-				doPlayerMagicLevel(cid,20)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2150,10)
-				talk_state = 0
-			end
-       		 	if getPlayerVocation(cid) == 10 or getPlayerVocation(cid) == 14 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 20 magic leveis.")
-				doPlayerMagicLevel(cid,20)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2150,10)
-				talk_state = 0
-			end
-        		if getPlayerVocation(cid) == 11 or getPlayerVocation(cid) == 15 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 4 magic leveis e 20 skills.")
-				doPlayerMagicLevel(cid,4)
-				doPlayerAddSkill(cid,4,20)
-				doPlayerAddSkill(cid,5,20)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2150,10)
-				talk_state = 0
-			end
-			if getPlayerVocation(cid) == 12 or getPlayerVocation(cid) == 16 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 20 skills.")
-				doPlayerAddSkill(cid,0,20)
-				doPlayerAddSkill(cid,1,20)
-				doPlayerAddSkill(cid,2,20)
-				doPlayerAddSkill(cid,3,20)
-				doPlayerAddSkill(cid,5,20)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2150,10)
-				talk_state = 0
-			end
-
-			else
-				selfSay('Se você me conseguir 10 small amethysts posso lhe conseguir alguns atributos extras, o resto é com você.')
-			end
-			end
-
-			if getPlayerStorageValue(cid,8113) == 3 then -- item 3
-			if getPlayerItemCount(cid,2146) >= 10 then
-				selfSay('Como prometido.')
-				setPlayerStorageValue(cid,8113,4)
-
-        		if getPlayerVocation(cid) == 9 or getPlayerVocation(cid) == 13 then	
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 30 magic leveis.")
-				doPlayerMagicLevel(cid,30)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2146,10)
-				talk_state = 0
-			end
-       		 	if getPlayerVocation(cid) == 10 or getPlayerVocation(cid) == 14 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 30 magic leveis.")
-				doPlayerMagicLevel(cid,30)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2146,10)
-				talk_state = 0
-			end
-        		if getPlayerVocation(cid) == 11 or getPlayerVocation(cid) == 15 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 6 magic leveis e 30 skills.")
-				doPlayerMagicLevel(cid,6)
-				doPlayerAddSkill(cid,4,30)
-				doPlayerAddSkill(cid,5,30)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2146,10)
-				talk_state = 0
-			end
-			if getPlayerVocation(cid) == 12 or getPlayerVocation(cid) == 16 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 30 skills.")
-				doPlayerAddSkill(cid,0,30)
-				doPlayerAddSkill(cid,1,30)
-				doPlayerAddSkill(cid,2,30)
-				doPlayerAddSkill(cid,3,30)
-				doPlayerAddSkill(cid,5,30)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2146,10)
-				talk_state = 0
-			end
-
-			else
-				selfSay('Se você me conseguir 10 small sapphires posso lhe conseguir alguns atributos extras, o resto é com você.')
-			end
-			end
-
-			if getPlayerStorageValue(cid,8113) == 4 then -- item 4
-			if getPlayerItemCount(cid,2147) >= 10 then
-				selfSay('Como prometido.')
-				setPlayerStorageValue(cid,8113,5)
-
-        		if getPlayerVocation(cid) == 9 or getPlayerVocation(cid) == 13 then	
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 40 magic leveis.")
-				doPlayerMagicLevel(cid,40)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2147,10)
-				talk_state = 0
-			end
-       		 	if getPlayerVocation(cid) == 10 or getPlayerVocation(cid) == 14 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 40 magic leveis.")
-				doPlayerMagicLevel(cid,40)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2147,10)
-				talk_state = 0
-			end
-        		if getPlayerVocation(cid) == 11 or getPlayerVocation(cid) == 15 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 8 magic leveis e 40 skills.")
-				doPlayerMagicLevel(cid,8)
-				doPlayerAddSkill(cid,4,40)
-				doPlayerAddSkill(cid,5,40)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2147,10)
-				talk_state = 0
-			end
-			if getPlayerVocation(cid) == 12 or getPlayerVocation(cid) == 16 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 40 skills.")
-				doPlayerAddSkill(cid,0,40)
-				doPlayerAddSkill(cid,1,40)
-				doPlayerAddSkill(cid,2,40)
-				doPlayerAddSkill(cid,3,40)
-				doPlayerAddSkill(cid,5,40)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2147,10)
-				talk_state = 0
-			end
-
-			else
-				selfSay('Se você me conseguir 10 small rubys posso lhe conseguir alguns atributos extras, o resto é com você.')
-			end
-			end
-
-			if getPlayerStorageValue(cid,8113) == 5 then -- item 5
-			if getPlayerItemCount(cid,2145) >= 10 then
-				selfSay('Como prometido.')
-				setPlayerStorageValue(cid,8113,6)
-
-        		if getPlayerVocation(cid) == 9 or getPlayerVocation(cid) == 13 then	
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 50 magic leveis.")
-				doPlayerMagicLevel(cid,50)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2145,10)
-				talk_state = 0
-			end
-       		 	if getPlayerVocation(cid) == 10 or getPlayerVocation(cid) == 14 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 50 magic leveis.")
-				doPlayerMagicLevel(cid,50)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2145,10)
-				talk_state = 0
-			end
-        		if getPlayerVocation(cid) == 11 or getPlayerVocation(cid) == 15 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 10 magic leveis e 50 skills.")
-				doPlayerMagicLevel(cid,10)
-				doPlayerAddSkill(cid,4,50)
-				doPlayerAddSkill(cid,5,50)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2145,10)
-				talk_state = 0
-			end
-			if getPlayerVocation(cid) == 12 or getPlayerVocation(cid) == 16 then
-				doPlayerSendTextMessage(cid,22,"Voce recebeu 50 skills.")
-				doPlayerAddSkill(cid,0,50)
-				doPlayerAddSkill(cid,1,50)
-				doPlayerAddSkill(cid,2,50)
-				doPlayerAddSkill(cid,3,50)
-				doPlayerAddSkill(cid,5,50)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2145,10)
-				talk_state = 0
-			end
-
-			else
-				selfSay('Se você me conseguir 10 small diamonds posso lhe conseguir alguns atributos extras, o resto é com você.')
-			end
-			end
-
-		elseif msgcontains(msg, 'trocar') then
-				selfSay('Troco big emerald, violet gem, blue gem, big ruby e yellow gem pelos devidos atributos!')
-		
-		elseif msgcontains(msg, 'big emerald') then
-				selfSay('Aceita trocar big emerald por 10% de life e mana?')
-				talk_state = 1
-		
-		elseif msgcontains(msg, 'yes') and talk_state == 1 then
-			if getPlayerItemCount(cid,2155) >= 1 then
-				selfSay('Muito obrigado!')
-
-				health = (getCreatureMaxHealth(cid)/10)
-				mana = (getCreatureMaxMana(cid)/10)
-				hpnew = getCreatureMaxHealth(cid)+health
-				mpnew = getCreatureMaxMana(cid)+mana
-
-				doCreatureChangeMaxHealth(cid, hpnew)
-				doCreatureAddHealth(cid,hpnew)
-				doCreatureChangeMaxMana(cid, mpnew)
-				doPlayerAddMana(cid,mpnew)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2155,1)
-
-				doPlayerSendTextMessage(cid,22,"Voce recebeu "..health.." pontos de vida e "..mana.." pontos de mana.")
-			else
-				selfSay('Você não tem este item!')
-			end
-
-		elseif msgcontains(msg, 'violet gem') then
-				selfSay('Aceita trocar violet gem por 20% de life e mana?')
-				talk_state = 2
-		
-		elseif msgcontains(msg, 'yes') and talk_state == 2 then
-			if getPlayerItemCount(cid,2153) >= 1 then
-				selfSay('Muito obrigado!')
-
-				health = (getCreatureMaxHealth(cid)/10)*2
-				mana = (getCreatureMaxMana(cid)/10)*2
-				hpnew = getCreatureMaxHealth(cid)+health
-				mpnew = getCreatureMaxMana(cid)+mana
-
-				doCreatureChangeMaxHealth(cid, hpnew)
-				doCreatureAddHealth(cid,hpnew)
-				doCreatureChangeMaxMana(cid, mpnew)
-				doPlayerAddMana(cid,mpnew)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2153,1)
-
-				doPlayerSendTextMessage(cid,22,"Voce recebeu "..health.." pontos de vida e "..mana.." pontos de mana.")
-			else
-				selfSay('Você não tem este item!')
-			end
-
-
-		elseif msgcontains(msg, 'blue gem') then
-				selfSay('Aceita trocar blue gem por 30% de life e mana?')
-				talk_state = 3
-		
-		elseif msgcontains(msg, 'yes') and talk_state == 3 then
-			if getPlayerItemCount(cid,2158) >= 1 then
-				selfSay('Muito obrigado!')
-
-				health = (getCreatureMaxHealth(cid)/10)*3
-				mana = (getCreatureMaxMana(cid)/10)*3
-				hpnew = getCreatureMaxHealth(cid)+health
-				mpnew = getCreatureMaxMana(cid)+mana
-
-				doCreatureChangeMaxHealth(cid, hpnew)
-				doCreatureAddHealth(cid,hpnew)
-				doCreatureChangeMaxMana(cid, mpnew)
-				doPlayerAddMana(cid,mpnew)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2158,1)
-
-				doPlayerSendTextMessage(cid,22,"Voce recebeu "..health.." pontos de vida e "..mana.." pontos de mana.")
-			else
-				selfSay('Você não tem este item!')
-			end
-
-
-		elseif msgcontains(msg, 'big ruby') then
-				selfSay('Aceita trocar big ruby por 40% de life e mana?')
-				talk_state = 4
-		
-		elseif msgcontains(msg, 'yes') and talk_state == 4 then
-			if getPlayerItemCount(cid,2156) >= 1 then
-				selfSay('Muito obrigado!')
-
-				health = (getCreatureMaxHealth(cid)/10)*4
-				mana = (getCreatureMaxMana(cid)/10)*4
-				hpnew = getCreatureMaxHealth(cid)+health
-				mpnew = getCreatureMaxMana(cid)+mana
-
-				doCreatureChangeMaxHealth(cid, hpnew)
-				doCreatureAddHealth(cid,hpnew)
-				doCreatureChangeMaxMana(cid, mpnew)
-				doPlayerAddMana(cid,mpnew)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2156,1)
-
-				doPlayerSendTextMessage(cid,22,"Voce recebeu "..health.." pontos de vida e "..mana.." pontos de mana.")
-			else
-				selfSay('Você não tem este item!')
-			end
-
-
-		elseif msgcontains(msg, 'yellow gem') then
-				selfSay('Aceita trocar yellow gem por 50% de life e mana?')
-				talk_state = 5
-		
-		elseif msgcontains(msg, 'yes') and talk_state == 5 then
-			if getPlayerItemCount(cid,2154) >= 1 then
-				selfSay('Muito obrigado!')
-
-				health = (getCreatureMaxHealth(cid)/10)*5
-				mana = (getCreatureMaxMana(cid)/10)*5
-				hpnew = getCreatureMaxHealth(cid)+health
-				mpnew = getCreatureMaxMana(cid)+mana
-
-				doCreatureChangeMaxHealth(cid, hpnew)
-				doCreatureAddHealth(cid,hpnew)
-				doCreatureChangeMaxMana(cid, mpnew)
-				doPlayerAddMana(cid,mpnew)
-  				doSendMagicEffect(getPlayerPosition(cid),12)
-				doPlayerTakeItem(cid,2154,1)
-
-				doPlayerSendTextMessage(cid,22,"Voce recebeu "..health.." pontos de vida e "..mana.." pontos de mana.")
-			else
-				selfSay('Você não tem este item!')
-			end
-
-
-
------------------------------------------------- confirm no ------------------------------------------------
-		elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 34) then
-			selfSay('Ok than.')
-			talk_state = 0
-		end
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	return true
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    local missionProgress = player:getStorageValue(SKILL_CONFIG.missionStorage)
+    
+    if msgcontains(msg, 'job') then
+        selfSay('I am a gladiator, lost in the wonders of this world!', cid)
+        
+    elseif msgcontains(msg, 'offer') then
+        selfSay('Aceita uma "missao" ou deseja "trocar" algo?', cid)
+        
+    elseif msgcontains(msg, 'knowledge') then
+        selfSay('I have been on long trips and quests! One more dangerous than the other, now I am just traveling and wondering the world beauties!', cid)
+        
+    elseif msgcontains(msg, 'missao') then
+        if missionProgress == -1 then
+            selfSay('Se vocÃª me conseguir 10 small emeralds posso lhe conseguir alguns atributos extras, o resto Ã© com vocÃª.', cid)
+            player:setStorageValue(SKILL_CONFIG.missionStorage, 1)
+            
+        elseif missionProgress == 1 and player:getItemCount(2149) >= 10 then
+            selfSay('Como prometido.', cid)
+            player:removeItem(2149, 10)
+            giveVocationRewards(player, 10, 10)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+            player:setStorageValue(SKILL_CONFIG.missionStorage, 2)
+            
+        elseif missionProgress == 2 and player:getItemCount(2150) >= 10 then
+            selfSay('Como prometido.', cid)
+            player:removeItem(2150, 10)
+            giveVocationRewards(player, 20, 20)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+            player:setStorageValue(SKILL_CONFIG.missionStorage, 3)
+            
+        elseif missionProgress == 3 and player:getItemCount(2146) >= 10 then
+            selfSay('Como prometido.', cid)
+            player:removeItem(2146, 10)
+            giveVocationRewards(player, 30, 30)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+            player:setStorageValue(SKILL_CONFIG.missionStorage, 4)
+            
+        elseif missionProgress == 4 and player:getItemCount(2147) >= 10 then
+            selfSay('Como prometido.', cid)
+            player:removeItem(2147, 10)
+            giveVocationRewards(player, 40, 40)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+            player:setStorageValue(SKILL_CONFIG.missionStorage, 5)
+            
+        elseif missionProgress == 5 and player:getItemCount(2145) >= 10 then
+            selfSay('Como prometido.', cid)
+            player:removeItem(2145, 10)
+            giveVocationRewards(player, 50, 50)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+            player:setStorageValue(SKILL_CONFIG.missionStorage, 6)
+            
+        else
+            local gemNames = {'small emerald', 'small amethyst', 'small sapphire', 'small ruby', 'small diamond'}
+            local currentStep = math.max(1, math.min(missionProgress, 5))
+            selfSay(string.format('Se vocÃª me conseguir 10 %ss posso lhe conseguir alguns atributos extras, o resto Ã© com vocÃª.', gemNames[currentStep]), cid)
+        end
+        
+    elseif msgcontains(msg, 'trocar') then
+        selfSay('Troco big emerald, violet gem, blue gem, big ruby e yellow gem pelos devidos atributos!', cid)
+        
+    elseif msgcontains(msg, 'big emerald') then
+        selfSay('Aceita trocar big emerald por 10% de life e mana?', cid)
+        npcHandler.topic[cid] = 1
+        
+    elseif msgcontains(msg, 'violet gem') then
+        selfSay('Aceita trocar violet gem por 20% de life e mana?', cid)
+        npcHandler.topic[cid] = 2
+        
+    elseif msgcontains(msg, 'blue gem') then
+        selfSay('Aceita trocar blue gem por 30% de life e mana?', cid)
+        npcHandler.topic[cid] = 3
+        
+    elseif msgcontains(msg, 'big ruby') then
+        selfSay('Aceita trocar big ruby por 40% de life e mana?', cid)
+        npcHandler.topic[cid] = 4
+        
+    elseif msgcontains(msg, 'yellow gem') then
+        selfSay('Aceita trocar yellow gem por 50% de life e mana?', cid)
+        npcHandler.topic[cid] = 5
+        
+    elseif msgcontains(msg, 'yes') and npcHandler.topic[cid] >= 1 and npcHandler.topic[cid] <= 5 then
+        local gemData = SKILL_CONFIG.tradeGems[npcHandler.topic[cid]]
+        if tradeGemForHpMp(player, gemData.id, gemData.bonus) then
+            selfSay('Muito obrigado!', cid)
+        else
+            selfSay('VocÃª nÃ£o tem este item!', cid)
+        end
+        npcHandler.topic[cid] = 0
+        
+    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] >= 1 then
+        selfSay('Ok then.', cid)
+        npcHandler.topic[cid] = 0
+    end
+    
+    return true
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

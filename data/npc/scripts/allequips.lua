@@ -1,1590 +1,245 @@
- focus = 0
- talk_start = 0
- target = 0
- following = false
- attacking = false
- 
- function onThingMove(creature, thing, oldpos, oldstackpos)
- 
- end
- 
- 
- function onCreatureAppear(creature)
- 
- end
- 
- 
- function onCreatureDisappear(cid, pos)
- 	if focus == cid then
-         selfSay('Good Bye.')
-         focus = 0
-         talk_start = 0
- 	end
- end
- 
- 
- function onCreatureTurn(creature)
- 
- end
- 
- function msgcontains(txt, str)
- 	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
- end
- 
- function onCreatureSay(cid, type, msg)
- 	msg = string.lower(msg)
- 
- 	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
- 		selfSay('Hiho ' .. creatureGetName(cid) .. '! I sell ALL equipments: Shields, Helmets, Legs, Armors, Weapons, Amulets and Rings, also types of pearls, gems, etc. Say the name of the item what you want and I will sell for you!')
- 		selfLook(cid)
-		focus = cid
- 		talk_start = os.clock()
- 	end
- 
- 	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
- 		selfSay('Wait Please.')
- 	end
- 
- 	if msgcontains(msg, 'swords list') and focus == cid then
-		selfSay('I sell Combat Knife, Silver Dagger, Short Sword, Sabre, Bone Sword, Carlin Sword, Heavy Machete, Katana, Longsword, Poison Dagger, Scimitar, Templar Scytheblade, Broad Sword, Serpent Sword, Two-Handed Sword, Fire Sword, Bright Sword, Giant Sword, Magic Sword, Warlord Sword, Magic Long Sword, Ice Rapier.')
- 		talk_start = os.clock()
- 	end
-
-      if msgcontains(msg, 'combat knife') and focus == cid then
-	item = 3230
-	price = 15
-	selfSay('Do you want to buy a Combat Knife for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
- 
- 	if msgcontains(msg, 'silver dagger') and focus == cid then
-	item = 3228
-	price = 20
-	selfSay('Do you want to buy a Silver Dagger for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
- 
- 	if msgcontains(msg, 'short sword') and focus == cid then
-	item = 3232
-	price = 30
-	selfSay('Do you want to buy a Short Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
- 
- 	if msgcontains(msg, 'sabre') and focus == cid then
-	item = 3211
-	price = 35
-	selfSay('Do you want to buy a Sabre for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
- 
- 	if msgcontains(msg, 'bone sword') and focus == cid then
-	item = 3276
-	price = 40
-	selfSay('Do you want to buy a Bone Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'carlin sword') and focus == cid then
-	item = 3221
-	price = 45
-	selfSay('Do you want to buy a Carlin Sword for ' .. price .. ' Gold Coins?')
-	talk_start = os.clock()
- 	end
- 
- 	if msgcontains(msg, 'heavy machete') and focus == cid then
-	item = 3268
-	price = 70
-	selfSay('Do you want to buy a Heavy Machete for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
- 
- 	if msgcontains(msg, 'katana') and focus == cid then
-	item = 3238
-	price = 80
-	selfSay('Do you want to buy a Katana for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'longsword') and focus == cid then
-	item = 3223
-	price = 100
-	selfSay('Do you want to buy a Longsword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'poison dagger') and focus == cid then
-	item = 3237
-	price = 120
-	selfSay('Do you want to buy a Poison Dagger for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'scimitar') and focus == cid then
-	item = 3245
-	price = 150
-	selfSay('Do you want to buy a Scimitar for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'templar scytheblade') and focus == cid then
-	item = 3283
-	price = 500
-	selfSay('Do you want to buy a Templar Scytheblade for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'broad sword') and focus == cid then
-	item = 3239
-	price = 300
-	selfSay('Do you want to buy a Broad Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'serpent sword') and focus == cid then
-	item = 3235
-	price = 600
-	selfSay('Do you want to buy a Serpent Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'two-handed sword') and focus == cid then
-	item = 3203
-	price = 800
-	selfSay('Do you want to buy a Two-Handed Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'fire sword') and focus == cid then
-	item = 3218
-	price = 5000
-	selfSay('Do you want to buy a Fire Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'bright sword') and focus == cid then
-	item = 3233
-	price = 15000
-	selfSay('Do you want to buy a Bright Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'giant sword') and focus == cid then
-	item = 3219
-	price = 20000
-	selfSay('Do you want to buy a Giant Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'magic sword') and focus == cid then
-	item = 3226
-	price = 150000
-	selfSay('Do you want to buy a Magic Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'warlord sword') and focus == cid then
-	item = 3234
-	price = 250000
-	selfSay('Do you want to buy a Warlord Sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'magic long sword') and focus == cid then
-	item = 3216
-	price = 400000
-	selfSay('Do you want to buy a Magic Long sword for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ice rapier') and focus == cid then
-	item = 3222
-	price = 3000
-	selfSay('Do you want to buy a Ice Rapier for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'clubs list') and focus == cid then
-		selfSay('I sell Crowbar, Scythe, Studded Club, Bone Club, Iron Hammer, Daramanian Mace, Battle Hammer, Morning Star, Banana Staff, Clerical Mace, Dragon Hammer, Skull Staff, Crystal Mace, Silver Mace, War Hammer, Hammer of Wrath, Thunder Hammer and Magic Staff.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crowbar') and focus == cid then
-	item = 3242
-	price = 100
-	selfSay('Do you want to buy a Crowbar for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'scythe') and focus == cid then
-	item = 3391
-	price = 10
-	selfSay('Do you want to buy a Scythe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'studded club') and focus == cid then
-	item = 3274
-	price = 15
-	selfSay('Do you want to buy a Studded Club for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'bone club') and focus == cid then
-	item = 3275
-	price = 25
-	selfSay('Do you want to buy a Bone Club for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'iron hammer') and focus == cid then
-	item = 3248
-	price = 80
-	selfSay('Do you want to buy a Iron Hammer for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'daramanian mace') and focus == cid then
-	item = 3265
-	price = 100
-	selfSay('Do you want to buy a Daramanian Mace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'battle hammer') and focus == cid then
-	item = 3146
-	price = 120
-	selfSay('Do you want to buy a Battle Hammer for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'morning star') and focus == cid then
-	item = 3220
-	price = 150
-	selfSay('Do you want to buy a Morning Star for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'banana staff') and focus == cid then
-	item = 3286
-	price = 500
-	selfSay('Do you want to buy a Banana Staff for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'clerical mace') and focus == cid then
-	item = 3249
-	price = 400
-	selfSay('Do you want to buy a Clerical Mace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dragon hammer') and focus == cid then
-	item = 3260
-	price = 3000
-	selfSay('Do you want to buy a Dragon Hammer for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'skull staff') and focus == cid then
-	item = 3262
-	price = 10000
-	selfSay('Do you want to buy a Skull Staff for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crystal mace') and focus == cid then
-	item = 3271
-	price = 40000
-	selfSay('Do you want to buy a Crystal Mace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'silver mace') and focus == cid then
-	item = 3250
-	price = 80000
-	selfSay('Do you want to buy a Silver Mace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'war hammer') and focus == cid then
-	item = 3217
-	price = 5000
-	selfSay('Do you want to buy a War Hammer for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'hammer of wrath') and focus == cid then
-	item = 3270
-	price = 100000
-	selfSay('Do you want to buy a  for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'thunder hammer') and focus == cid then
-	item = 3247
-	price = 150000
-	selfSay('Do you want to buy a Thunder Hammer for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'magic staff') and focus == cid then
-	item = 3259
-	price = 15000
-	selfSay('Do you want to buy a Magic Staff for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'axes list') and focus == cid then
-		selfSay('I sell Hand Axe, Golden Sickle, Hatchet, Hunting Spear, Orcish Axe, Battle Axe, Ripper Lance, Barbarian Axe, Knight Axe, Obsidian Lance, Double Axe, Fire Axe, Naginata, Daramanian Waraxe, Guardian Halberd, Dragon Lance, Stonecutter Axe and Great Axe.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'hand axe') and focus == cid then
-	item = 3206
-	price = 10
-	selfSay('Do you want to buy a Hand Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'golden sickle') and focus == cid then
-	item = 3244
-	price = 1000
-	selfSay('Do you want to buy a Golden Sickle for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'hatchet') and focus == cid then
-	item = 3214
-	price = 30
-	selfSay('Do you want to buy a Hatchet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'hunting spear') and focus == cid then
-	item = 3285
-	price = 500
-	selfSay('Do you want to buy a Hunting Spear for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'orcish axe') and focus == cid then
-	item = 3254
-	price = 400
-	selfSay('Do you want to buy a Orcish Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'battle axe') and focus == cid then
-	item = 3204
-	price = 600
-	selfSay('Do you want to buy a Battle Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ripper lance') and focus == cid then
-	item = 3284
-	price = 2000
-	selfSay('Do you want to buy a Ripper Lance for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'barbarian axe') and focus == cid then
-	item = 3255
-	price = 800
-	selfSay('Do you want to buy a Barbarian Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'knight axe') and focus == cid then
-	item = 3256
-	price = 3000
-	selfSay('Do you want to buy a Knight Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'obsidian lance') and focus == cid then
-	item = 3251
-	price = 600
-	selfSay('Do you want to buy a Obsidian Lance for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'double axe') and focus == cid then
-	item = 3213
-	price = 800
-	selfSay('Do you want to buy a Double Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'fire axe') and focus == cid then
-	item = 3258
-	price = 12000
-	selfSay('Do you want to buy a Fire Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'naginata') and focus == cid then
-	item = 3252
-	price = 10000
-	selfSay('Do you want to buy a Naginata for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'daramanian waraxe') and focus == cid then
-	item = 3266
-	price = 10000
-	selfSay('Do you want to buy a Daramanian Waraxe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'guardian halberd') and focus == cid then
-	item = 3253
-	price = 15000
-	selfSay('Do you want to buy a Guardian Halberd for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dragon lance') and focus == cid then
-	item = 3240
-	price = 20000
-	selfSay('Do you want to buy a Dragon Lance for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'stonecutter axe') and focus == cid then
-	item = 3257
-	price = 150000
-	selfSay('Do you want to buy a Stonecutter Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'great axe') and focus == cid then
-	item = 3241
-	price = 300000
-	selfSay('Do you want to buy a Great Axe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'armors list') and focus == cid then
-		selfSay('I sell Simple Dress, Ball Gown, Cape, Jacket, Green Tunic, Red Robe, Doublet, Red Tunic, Leather Armor, Studded Armor, Chain Armor, Brass Armor, Scale Armor, Plate Armor, Dark Armor, Noble Armor, Knight Armor, Crown Armor, Lady Armor, Blue Robe, Golden Armor, Dragon Scale Mail, Demon Armor, Magic Plate Armor.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'simple dress') and focus == cid then
-	item = 3506
-	price = 200
-	selfSay('Do you want to buy a Simples Dress for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ball gown') and focus == cid then
-	item = 3508
-	price = 300
-	selfSay('Do you want to buy a Ball Gown for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'cape') and focus == cid then
-	item = 3503
-	price = 50
-	selfSay('Do you want to buy a Cape for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'jacket') and focus == cid then
-	item = 3500
-	price = 10
-	selfSay('Do you want to buy a Jacket for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'green tunic') and focus == cid then
-	item = 3501
-	price = 50
-	selfSay('Do you want to buy a Green Tunic for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'red robe') and focus == cid then
-	item = 3504
-	price = 20000
-	selfSay('Do you want to buy a Red Robe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'doublet') and focus == cid then
-	item = 3317
-	price = 30
-	selfSay('Do you want to buy a Doublet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'red tunic') and focus == cid then
-	item = 3502
-	price = 300
-	selfSay('Do you want to buy a Red Tunic for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'leather armor') and focus == cid then
-	item = 3299
-	price = 40
-	selfSay('Do you want to buy a Leather Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'studded armor') and focus == cid then
-	item = 3316
-	price = 60
-	selfSay('Do you want to buy a Studded Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'chain armor') and focus == cid then
-	item = 3296
-	price = 200
-	selfSay('Do you want to buy a Chain Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'brass armor') and focus == cid then
-	item = 3297
-	price = 400
-	selfSay('Do you want to buy a Brass Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'scale armor') and focus == cid then
-	item = 3315
-	price = 300
-	selfSay('Do you want to buy a Scale Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'plate armor') and focus == cid then
-	item = 3295
-	price = 800
-	selfSay('Do you want to buy a Plate Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dark armor') and focus == cid then
-	item = 3321
-	price = 1000
-	selfSay('Do you want to buy a Dark Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'noble armor') and focus == cid then
-	item = 3318
-	price = 2000
-	selfSay('Do you want to buy a Noble Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'knight armor') and focus == cid then
-	item = 3308
-	price = 5000
-	selfSay('Do you want to buy a Knight Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crown armor') and focus == cid then
-	item = 3319
-	price = 10000
-	selfSay('Do you want to buy a Crown Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'lady armor') and focus == cid then
-	item = 3332
-	price = 12000
-	selfSay('Do you want to buy a Lady Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'blue robe') and focus == cid then
-	item = 3505
-	price = 11000
-	selfSay('Do you want to buy a Blue Robe for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'golden armor') and focus == cid then
-	item = 3298
-	price = 50000
-	selfSay('Do you want to buy a  for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dragon scale mail') and focus == cid then
-	item = 3324
-	price = 120000
-	selfSay('Do you want to buy a Dragon Scale Mail for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'demon armor') and focus == cid then
-	item = 3326
-	price = 300000
-	selfSay('Do you want to buy a Demon Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'magic plate armor') and focus == cid then
-	item = 3304
-	price = 500000
-	selfSay('Do you want to buy a Magic Plate Armor for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'shields list') and focus == cid then
-		selfSay('I sell Wooden Shield, Studded Shield, Brass Shield, Plate Shield, Black Shield, Copper Shield, Bone Shield, Steel Shield, Sentinel Shield, Ornamented Shield, Viking Shield, Battle Shield, Scarab Shield, Dark Shield, Salamander Shield, Dwarven Shield, Tusk Shield, Ancient Shield, Rose Shield, Castle Shield, Beholder Shield, Griffin Shield, Guardian Shield, Dragon Shield, Tower Shield, Crown Shield, Amazon Shield, Medusa Shield, Shield of Honour, Vampire Shield, Phoenix Shield, Demon Shield, Mastermind Shield, Great Shield and Blessed Shield.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'wooden shield') and focus == cid then
-	item = 3350
-	price = 10
-	selfSay('Do you want to buy a Wooden Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'studded shield') and focus == cid then
-	item = 3364
-	price = 40
-	selfSay('Do you want to buy a Studded Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'brass shield') and focus == cid then
-	item = 3349
-	price = 60
-	selfSay('Do you want to buy a Brass Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'plate shield') and focus == cid then
-	item = 3348
-	price = 100
-	selfSay('Do you want to buy a Plate Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'black shield') and focus == cid then
-	item = 3367
-	price = 400
-	selfSay('Do you want to buy a Black Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'copper shield') and focus == cid then
-	item = 3368
-	price = 250
-	selfSay('Do you want to buy a Copper Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'bone shield') and focus == cid then
-	item = 3379
-	price = 400
-	selfSay('Do you want to buy a Bone Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'steel shield') and focus == cid then
-	item = 3347
-	price = 400
-	selfSay('Do you want to buy a Steel Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'sentinel shield') and focus == cid then
-	item = 3382
-	price = 800
-	selfSay('Do you want to buy a Sentinel Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ornamented shield') and focus == cid then
-	item = 3362
-	price = 600
-	selfSay('Do you want to buy a Ornamented Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'viking shield') and focus == cid then
-	item = 3369
-	price = 700
-	selfSay('Do you want to buy a Viking Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'battle shield') and focus == cid then
-	item = 3351
-	price = 500
-	selfSay('Do you want to buy a Battle Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'scarab shield') and focus == cid then
-	item = 3378
-	price = 1200
-	selfSay('Do you want to buy a Scarab Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dark shield') and focus == cid then
-	item = 3359
-	price = 600
-	selfSay('Do you want to buy a Dark Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'salamander shield') and focus == cid then
-	item = 3383
-	price = 1800
-	selfSay('Do you want to buy a Salamander Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dwarven shield') and focus == cid then
-	item = 3363
-	price = 200
-	selfSay('Do you want to buy a Dwarven Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'tusk shield') and focus == cid then
-	item = 3381
-	price = 1000
-	selfSay('Do you want to buy a Tusk Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ancient shield') and focus == cid then
-	item = 3370
-	price = 800
-	selfSay('Do you want to buy a Ancient Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'rose shield') and focus == cid then
-	item = 3365
-	price = 2000
-	selfSay('Do you want to buy a Rose Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'castle shield') and focus == cid then
-	item = 3373
-	price = 8000
-	selfSay('Do you want to buy a Castle Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'beholder shield') and focus == cid then
-	item = 3356
-	price = 1500
-	selfSay('Do you want to buy a Beholder Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'griffin shield') and focus == cid then
-	item = 3371
-	price = 2000
-	selfSay('Do you want to buy a Griffin Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'guardian shield') and focus == cid then
-	item = 3353
-	price = 2500
-	selfSay('Do you want to buy a Guardian Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dragon shield') and focus == cid then
-	item = 3354
-	price = 4000
-	selfSay('Do you want to buy a Dragon Shield ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'tower shield') and focus == cid then
-	item = 3366
-	price = 6000
-	selfSay('Do you want to buy a Tower Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crown shield') and focus == cid then
-	item = 3357
-	price = 7000
-	selfSay('Do you want to buy a Crown Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'amazon shield') and focus == cid then
-	item = 3375
-	price = 10000
-	selfSay('Do you want to buy a Amazon Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'medusa shield') and focus == cid then
-	item = 3374
-	price = 10000
-	selfSay('Do you want to buy a Medusa Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'shield of honour') and focus == cid then
-	item = 3355
-	price = 12000
-	selfSay('Do you want to buy a Shield of Honour for ' .. price .. ' Gold Coins?')
-	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'vampire shield') and focus == cid then
-	item = 3372
-	price = 20000
-	selfSay('Do you want to buy a Vampire Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'phoenix shield') and focus == cid then
-	item = 3377
-	price = 23000
-	selfSay('Do you want to buy a Phoenix Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'demon shield') and focus == cid then
-	item = 3358
-	price = 40000
-	selfSay('Do you want to buy a Demon Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'mastermind shield') and focus == cid then
-	item = 3352
-	price = 150000
-	selfSay('Do you want to buy a Mastermind Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'great shield') and focus == cid then
-	item = 3360
-	price = 300000
-	selfSay('Do you want to buy a Great Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'blessed shield') and focus == cid then
-	item = 3361
-	price = 500000
-	selfSay('Do you want to buy a Blessed Shield for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'legs list') and focus == cid then
-		selfSay('I sell Bast Skirt, Leather Legs, Studded Legs, Chain Legs, Brass Legs, Plate Legs, Knight Legs, Crown Legs, Demon Legs, Dragon Scale Legs.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'bast skirt') and focus == cid then
-	item = 3498
-	price = 500
-	selfSay('Do you want to buy a Bast Skirt for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'leather legs') and focus == cid then
-	item = 3497
-	price = 15
-	selfSay('Do you want to buy a Leather Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'studded legs') and focus == cid then
-	item = 3300
-	price = 100
-	selfSay('Do you want to buy a Studded Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'chain legs') and focus == cid then
-	item = 3496
-	price = 80
-	selfSay('Do you want to buy a Chain Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'brass legs') and focus == cid then
-	item = 3310
-	price = 200
-	selfSay('Do you want to buy a Brass Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'plate legs') and focus == cid then
-	item = 3495
-	price = 1000
-	selfSay('Do you want to buy a Plate Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'knight legs') and focus == cid then
-	item = 3309
-	price = 10000
-	selfSay('Do you want to buy a Knight Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crown legs') and focus == cid then
-	item = 3320
-	price = 25000
-	selfSay('Do you want to buy a Crown Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'golden legs') and focus == cid then
-	item = 3302
-	price = 150000
-	selfSay('Do you want to buy a Golden Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'demon legs') and focus == cid then
-	item = 3327
-	price = 400000
-	selfSay('Do you want to buy a Demon Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dragon scale legs') and focus == cid then
-	item = 3301
-	price = 800000
-	selfSay('Do you want to buy a Dragon Scale Legs for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'helmets list') and focus == cid then
-		selfSay('I sell Mystic Turban, Posts Officers Hat, Magician Hat, Leather Helmet, Tribal Mask, Feather Headdress, Chain Helmet, Studded Helmet, Brass Helmet, Viking Helmet, Legion Helmet, Steel Helmet, Horseman Helmet, Dark Helmet, Strange Helmet, Lady Helmet, Crown Helmet, Devil Helmet, Warrior Helmet, Crusader Helmet, Helmet of the Ancients, Royal Helmet, Demon Helmet, Winged Helmet, Horned Helmet, Full Helmet of the Ancients and Golden Helmet.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'mystic turban') and focus == cid then
-	item = 3512
-	price = 1000
-	selfSay('Do you want to buy a Mystic Turban for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'post officers hat') and focus == cid then
-	item = 3514
-	price = 2000
-	selfSay('Do you want to buy a Post Officers Hat for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'magician hat') and focus == cid then
-	item = 3511
-	price = 1000
-	selfSay('Do you want to buy a Magician Hat for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'leather helmet') and focus == cid then
-	item = 3293
-	price = 5
-	selfSay('Do you want to buy a Leather Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'tribal mask') and focus == cid then
-	item = 3341
-	price = 3000
-	selfSay('Do you want to buy a Tribal Mask for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'feather headdress') and focus == cid then
-	item = 3344
-	price = 3000
-	selfSay('Do you want to buy a Feather Headdress for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'chain helmet') and focus == cid then
-	item = 3290
-	price = 25
-	selfSay('Do you want to buy a Chain Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'studded helmet') and focus == cid then
-	item = 3314
-	price = 40
-	selfSay('Do you want to buy a Studded Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'brass helmet') and focus == cid then
-	item = 3292
-	price = 45
-	selfSay('Do you want to buy a Brass Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'viking helmet') and focus == cid then
-	item = 3305
-	price = 60
-	selfSay('Do you want to buy a Viking Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'legion helmet') and focus == cid then
-	item = 3312
-	price = 100
-	selfSay('Do you want to buy a Legion Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'steel helmet') and focus == cid then
-	item = 3289
-	price = 200
-	selfSay('Do you want to buy a Steel Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'horseman helmet') and focus == cid then
-	item = 3343
-	price = 1000
-	selfSay('Do you want to buy a Horseman Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dark helmet') and focus == cid then
-	item = 3322
-	price = 200
-	selfSay('Do you want to buy a Dark Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'strange helmet') and focus == cid then
-	item = 3311
-	price = 300
-	selfSay('Do you want to buy a Strange Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'lady helmet') and focus == cid then
-	item = 3331
-	price = 4000
-	selfSay('Do you want to buy a Lady Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crown helmet') and focus == cid then
-	item = 3323
-	price = 3000
-	selfSay('Do you want to buy a Crown Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'devil helmet') and focus == cid then
-	item = 3294
-	price = 2000
-	selfSay('Do you want to buy a Devil Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'warrior helmet') and focus == cid then
-	item = 3307
-	price = 6000
-	selfSay('Do you want to buy a Warrior Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crusader helmet') and focus == cid then
-	item = 3329
-	price = 10000
-	selfSay('Do you want to buy a Crusader Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'helmet of the ancients') and focus == cid then
-	item = 3333
-	price = 50000
-	selfSay('Do you want to buy a Helmet of the Ancients for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'royal helmet') and focus == cid then
-	item = 3330
-	price = 80000
-	selfSay('Do you want to buy a Royal Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'demon helmet') and focus == cid then
-	item = 3325
-	price = 300000
-	selfSay('Do you want to buy a Demon Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'winged helmet') and focus == cid then
-	item = 3325
-	price = 350000
-	selfSay('Do you want to buy a Winged Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'horned helmet') and focus == cid then
-	item = 3328
-	price = 450000
-	selfSay('Do you want to buy a Horned Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'full helmet of the ancients') and focus == cid then
-	item = 3168
-	price = 600000
-	selfSay('Do you want to buy a Full Helmet of the Ancients for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'golden helmet') and focus == cid then
-	item = 3303
-	price = 1000000
-	selfSay('Do you want to buy a Golden Helmet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'boots list') and focus == cid then
-		selfSay('I sell Boots of Haste, Soft Boots, Sandals, Leather Boots, Crocodile Boots, Steel Boots, Golden Boots.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'boots of haste') and focus == cid then
-	item = 3017
-	price = 40000
-	selfSay('Do you want to buy a Boots of Haste for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'soft boots') and focus == cid then
-	item = 3184
-	price = 60000
-	selfSay('Do you want to buy a Soft Boots for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'sandals') and focus == cid then
-	item = 3489
-	price = 400
-	selfSay('Do you want to buy a Sandals for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'leather boots') and focus == cid then
-	item = 3490
-	price = 10
-	selfSay('Do you want to buy a Leather Boots for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crocodile boots') and focus == cid then
-	item = 3494
-	price = 2000
-	selfSay('Do you want to buy a Crocodile Boots for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'steel boots') and focus == cid then
-	item = 3492
-	price = 100000
-	selfSay('Do you want to buy a Steel Boots for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'golden boots') and focus == cid then
-	item = 3493
-	price = 2000000
-	selfSay('Do you want to buy a Golden Boots for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'amulets list') and focus == cid then
-		selfSay('I sell Bronze Amulet, Crystal Necklace, Dragon Necklace, Elven Amulet, Garlic Necklace, Golden Amulet, Platinum Amulet, Ruby Necklace, Protection Amulet, Silver Amulet, Silver Necklace, Stone Skin Amulet, Strange Symbol, Strange Talisman, Scarab Amulet, Demonbones Amulet and Leaf with Golden items.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'bronze amulet') and focus == cid then
-	item = 2994
-	price = 200
-	selfSay('Do you want to buy a Bronze Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crystal necklace') and focus == cid then
-	item = 2946
-	price = 300
-	selfSay('Do you want to buy a Crystal Necklace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dragon necklace') and focus == cid then
-	item = 3023
-	price = 500
-	selfSay('Do you want to buy a Dragon Necklace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'elven amulet') and focus == cid then
-	item = 2952
-	price = 1000
-	selfSay('Do you want to buy a Elven Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'garlic necklace') and focus == cid then
-	item = 3021
-	price = 500
-	selfSay('Do you want to buy a Garlic Necklace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'golden amulet') and focus == cid then
-	item = 2951
-	price = 7000
-	selfSay('Do you want to buy a Golden Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'platinum amulet') and focus == cid then
-	item = 2993
-	price = 5000
-	selfSay('Do you want to buy a Platinum Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ruby necklace') and focus == cid then
-	item = 2954
-	price = 2000
-	selfSay('Do you want to buy a Ruby Necklace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'protection amulet') and focus == cid then
-	item = 3022
-	price = 700
-	selfSay('Do you want to buy a Protection Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'silver amulet') and focus == cid then
-	item = 2953
-	price = 100
-	selfSay('Do you want to buy a Silver Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'silver necklace') and focus == cid then
-	item = 2992
-	price = 500
-	selfSay('Do you want to buy a Silver Necklace for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'stone skin amulet') and focus == cid then
-	item = 3019
-	price = 3000
-	selfSay('Do you want to buy a Stone Skin Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'strange symbol') and focus == cid then
-	item = 2996
-	price = 1000
-	selfSay('Do you want to buy a Strange Symbol for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'strange talisman') and focus == cid then
-	item = 3144
-	price = 800
-	selfSay('Do you want to buy a Strange Talisman for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'scarab amulet') and focus == cid then
-	item = 2956
-	price = 2000
-	selfSay('Do you want to buy a Scarab Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'demonbones amulet') and focus == cid then
-	item = 2957
-	price = 10000
-	selfSay('Do you want to buy a Demonbones Amulet for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'leaf with golden items') and focus == cid then
-	item = 2958
-	price = 400
-	selfSay('Do you want to buy a Leaf with golden items for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'rings list') and focus == cid then
-		selfSay('I sell Axe Ring, Club Ring, Sword Ring, Crystal Ring, Dwarven Ring, Energy Ring, Gold Ring, Life Ring, Might Ring, Power Ring, Ring of Healing, Ring of the Skies, Stealth Ring, Time Ring and Wedding Ring.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'axe ring') and focus == cid then
-	item = 3030
-	price = 200
-	selfSay('Do you want to buy a Axe Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'club ring') and focus == cid then
-	item = 3031
-	price = 200
-	selfSay('Do you want to buy a Club Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'sword ring') and focus == cid then
-	item = 3029
-	price = 200
-	selfSay('Do you want to buy a Sword Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'crystal ring') and focus == cid then
-	item = 2945
-	price = 1000
-	selfSay('Do you want to buy a Crystal Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'dwarven ring') and focus == cid then
-	item = 3035
-	price = 50
-	selfSay('Do you want to buy a Dwarven Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'energy ring') and focus == cid then
-	item = 2989
-	price = 800
-	selfSay('Do you want to buy a Energy Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'gold ring') and focus == cid then
-	item = 3001
-	price = 8000
-	selfSay('Do you want to buy a Gold Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'life ring') and focus == cid then
-	item = 3027
-	price = 800
-	selfSay('Do you want to buy a Life Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'might ring') and focus == cid then
-	item = 2986
-	price = 800
-	selfSay('Do you want to buy a Might Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'power ring') and focus == cid then
-	item = 2988
-	price = 100
-	selfSay('Do you want to buy a Power Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ring of healing') and focus == cid then
-	item = 3036
-	price = 800
-	selfSay('Do you want to buy a Ring of Healing for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'ring of the skies') and focus == cid then
-	item = 3183
-	price = 50000
-	selfSay('Do you want to buy a Ring of the Skies for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'stealth ring') and focus == cid then
-	item = 2987
-	price = 800
-	selfSay('Do you want to buy a Stealth Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'time ring') and focus == cid then
-	item = 2991
-	price = 2000
-	selfSay('Do you want to buy a Time Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'wedding ring') and focus == cid then
-	item = 2942
-	price = 1000
-	selfSay('Do you want to buy a Wedding Ring for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'pearls list') and focus == cid then
-		selfSay('I sell Scarab Coin, Blue Gem, Big Ruby, Big Emerald, Yellow Gem, Violet Gem, Talon, Small Amethyst, Small Emerald, Small Ruby, Small Sapphire, Small Diamond, Black Pearl and White Pearl.')
- 		talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'scarab coin') and focus == cid then
-	item = 2980
-	price = 100
-	selfSay('Do you want to buy a Scarab Coin for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'blue gem') and focus == cid then
-	item = 2979
-	price = 500
-	selfSay('Do you want to buy a Blue Gem for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'big ruby') and focus == cid then
-	item = 2977
-	price = 1000
-	selfSay('Do you want to buy a Big Ruby for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'big emerald') and focus == cid then
-	item = 2976
-	price = 1000
-	selfSay('Do you want to buy a Big Emerald for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'yellow gem') and focus == cid then
-	item = 2975
-	price = 300
-	selfSay('Do you want to buy a Yellow Gem for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'violet gem') and focus == cid then
-	item = 2974
-	price = 300
-	selfSay('Do you want to buy a Violet Gem for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'talon') and focus == cid then
-	item = 2972
-	price = 200
-	selfSay('Do you want to buy a Talon for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'small amethyst') and focus == cid then
-	item = 2971
-	price = 50
-	selfSay('Do you want to buy a Small Amethyst for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'small emerald') and focus == cid then
-	item = 2970
-	price = 100
-	selfSay('Do you want to buy a Small Emerald for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'small ruby') and focus == cid then
-	item = 2968
-	price = 150
-	selfSay('Do you want to buy a Small Ruby for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'small sapphire') and focus == cid then
-	item = 2967
-	price = 100
-	selfSay('Do you want to buy a Small Sapphire for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'small diamond') and focus == cid then
-	item = 2966
-	price = 200
-	selfSay('Do you want to buy a Small Diamond for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'black pearl') and focus == cid then
-	item = 2965
-	price = 500
-	selfSay('Do you want to buy a Black Pearl for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if msgcontains(msg, 'white pearl') and focus == cid then
-	item = 2964
-	price = 300
-	selfSay('Do you want to buy a White Pearl for ' .. price .. ' Gold Coins?')
- 	talk_start = os.clock()
- 	end
-
- 	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
- 		selfSay('Good bye and enjoy with the item you bought.')
- 		focus = 0
- 		talk_start = 0
- 	end
-
-	if string.find(msg, '(%a*)yes(%a*)') and focus == cid then
- 	buy(cid,item,1,price)
-	talk_star = os.clock()
-
-	elseif string.find(msg, '(%a*)no(%a*)') and focus == cid then
-	selfSay('WHAT!? How can you say this? Leave now..')
-	focus = 0
-	talk_star = 0
- end
- end
- 
- 
- function onCreatureChangeOutfit(creature)
- 
- end
- 
- 
- function onThink()
- 	if (os.clock() - talk_start) > 30 then
- 		if focus > 0 then
- 			selfSay('Next now!!')
- 		end
- 			focus = 0
- 	end
- end
- 
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
+
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+shopModule:addBuyableItem({'combat knife'}, 3230, 15, 'combat knife')
+shopModule:addBuyableItem({'silver dagger'}, 3228, 20, 'silver dagger')
+shopModule:addBuyableItem({'short sword'}, 3232, 30, 'short sword')
+shopModule:addBuyableItem({'sabre'}, 3211, 35, 'sabre')
+shopModule:addBuyableItem({'bone sword'}, 3276, 40, 'bone sword')
+shopModule:addBuyableItem({'carlin sword'}, 3221, 45, 'carlin sword')
+shopModule:addBuyableItem({'heavy machete'}, 3268, 70, 'heavy machete')
+shopModule:addBuyableItem({'katana'}, 3238, 80, 'katana')
+shopModule:addBuyableItem({'longsword'}, 3223, 100, 'longsword')
+shopModule:addBuyableItem({'poison dagger'}, 3237, 120, 'poison dagger')
+shopModule:addBuyableItem({'scimitar'}, 3245, 150, 'scimitar')
+shopModule:addBuyableItem({'templar scytheblade'}, 3283, 500, 'templar scytheblade')
+shopModule:addBuyableItem({'broad sword'}, 3239, 300, 'broad sword')
+shopModule:addBuyableItem({'serpent sword'}, 3235, 600, 'serpent sword')
+shopModule:addBuyableItem({'two-handed sword'}, 3203, 800, 'two-handed sword')
+shopModule:addBuyableItem({'fire sword'}, 3218, 5000, 'fire sword')
+shopModule:addBuyableItem({'bright sword'}, 3233, 15000, 'bright sword')
+shopModule:addBuyableItem({'giant sword'}, 3219, 20000, 'giant sword')
+shopModule:addBuyableItem({'magic sword'}, 3226, 150000, 'magic sword')
+shopModule:addBuyableItem({'warlord sword'}, 3234, 250000, 'warlord sword')
+shopModule:addBuyableItem({'magic long sword'}, 3216, 400000, 'magic long sword')
+shopModule:addBuyableItem({'ice rapier'}, 3222, 3000, 'ice rapier')
+
+shopModule:addBuyableItem({'crowbar'}, 3242, 100, 'crowbar')
+shopModule:addBuyableItem({'scythe'}, 3391, 10, 'scythe')
+shopModule:addBuyableItem({'studded club'}, 3274, 15, 'studded club')
+shopModule:addBuyableItem({'bone club'}, 3275, 25, 'bone club')
+shopModule:addBuyableItem({'iron hammer'}, 3248, 80, 'iron hammer')
+shopModule:addBuyableItem({'daramanian mace'}, 3265, 100, 'daramanian mace')
+shopModule:addBuyableItem({'battle hammer'}, 3146, 120, 'battle hammer')
+shopModule:addBuyableItem({'morning star'}, 3220, 150, 'morning star')
+shopModule:addBuyableItem({'banana staff'}, 3286, 500, 'banana staff')
+shopModule:addBuyableItem({'clerical mace'}, 3249, 400, 'clerical mace')
+shopModule:addBuyableItem({'dragon hammer'}, 3260, 3000, 'dragon hammer')
+shopModule:addBuyableItem({'skull staff'}, 3262, 10000, 'skull staff')
+shopModule:addBuyableItem({'crystal mace'}, 3271, 40000, 'crystal mace')
+shopModule:addBuyableItem({'silver mace'}, 3250, 80000, 'silver mace')
+shopModule:addBuyableItem({'war hammer'}, 3217, 5000, 'war hammer')
+shopModule:addBuyableItem({'hammer of wrath'}, 3270, 100000, 'hammer of wrath')
+shopModule:addBuyableItem({'thunder hammer'}, 3247, 150000, 'thunder hammer')
+shopModule:addBuyableItem({'magic staff'}, 3259, 15000, 'magic staff')
+
+shopModule:addBuyableItem({'hand axe'}, 3206, 10, 'hand axe')
+shopModule:addBuyableItem({'golden sickle'}, 3244, 1000, 'golden sickle')
+shopModule:addBuyableItem({'hatchet'}, 3214, 30, 'hatchet')
+shopModule:addBuyableItem({'hunting spear'}, 3285, 500, 'hunting spear')
+shopModule:addBuyableItem({'orcish axe'}, 3254, 400, 'orcish axe')
+shopModule:addBuyableItem({'battle axe'}, 3204, 600, 'battle axe')
+shopModule:addBuyableItem({'ripper lance'}, 3284, 2000, 'ripper lance')
+shopModule:addBuyableItem({'barbarian axe'}, 3255, 800, 'barbarian axe')
+shopModule:addBuyableItem({'knight axe'}, 3256, 3000, 'knight axe')
+shopModule:addBuyableItem({'obsidian lance'}, 3251, 600, 'obsidian lance')
+shopModule:addBuyableItem({'double axe'}, 3213, 800, 'double axe')
+shopModule:addBuyableItem({'fire axe'}, 3258, 12000, 'fire axe')
+shopModule:addBuyableItem({'naginata'}, 3252, 10000, 'naginata')
+shopModule:addBuyableItem({'daramanian waraxe'}, 3266, 10000, 'daramanian waraxe')
+shopModule:addBuyableItem({'guardian halberd'}, 3253, 15000, 'guardian halberd')
+shopModule:addBuyableItem({'dragon lance'}, 3240, 20000, 'dragon lance')
+shopModule:addBuyableItem({'stonecutter axe'}, 3257, 150000, 'stonecutter axe')
+shopModule:addBuyableItem({'great axe'}, 3241, 300000, 'great axe')
+
+shopModule:addBuyableItem({'simple dress'}, 3506, 200, 'simple dress')
+shopModule:addBuyableItem({'ball gown'}, 3508, 300, 'ball gown')
+shopModule:addBuyableItem({'cape'}, 3503, 50, 'cape')
+shopModule:addBuyableItem({'jacket'}, 3500, 10, 'jacket')
+shopModule:addBuyableItem({'green tunic'}, 3501, 50, 'green tunic')
+shopModule:addBuyableItem({'red robe'}, 3504, 20000, 'red robe')
+shopModule:addBuyableItem({'doublet'}, 3317, 30, 'doublet')
+shopModule:addBuyableItem({'red tunic'}, 3502, 300, 'red tunic')
+shopModule:addBuyableItem({'leather armor'}, 3299, 40, 'leather armor')
+shopModule:addBuyableItem({'studded armor'}, 3316, 60, 'studded armor')
+shopModule:addBuyableItem({'chain armor'}, 3296, 200, 'chain armor')
+shopModule:addBuyableItem({'brass armor'}, 3297, 400, 'brass armor')
+shopModule:addBuyableItem({'scale armor'}, 3315, 300, 'scale armor')
+shopModule:addBuyableItem({'plate armor'}, 3295, 800, 'plate armor')
+shopModule:addBuyableItem({'dark armor'}, 3321, 1000, 'dark armor')
+shopModule:addBuyableItem({'noble armor'}, 3318, 2000, 'noble armor')
+shopModule:addBuyableItem({'knight armor'}, 3308, 5000, 'knight armor')
+shopModule:addBuyableItem({'crown armor'}, 3319, 10000, 'crown armor')
+shopModule:addBuyableItem({'lady armor'}, 3332, 12000, 'lady armor')
+shopModule:addBuyableItem({'blue robe'}, 3505, 11000, 'blue robe')
+shopModule:addBuyableItem({'golden armor'}, 3298, 50000, 'golden armor')
+shopModule:addBuyableItem({'dragon scale mail'}, 3324, 120000, 'dragon scale mail')
+shopModule:addBuyableItem({'demon armor'}, 3326, 300000, 'demon armor')
+shopModule:addBuyableItem({'magic plate armor'}, 3304, 500000, 'magic plate armor')
+
+shopModule:addBuyableItem({'wooden shield'}, 3350, 10, 'wooden shield')
+shopModule:addBuyableItem({'studded shield'}, 3364, 40, 'studded shield')
+shopModule:addBuyableItem({'brass shield'}, 3349, 60, 'brass shield')
+shopModule:addBuyableItem({'plate shield'}, 3348, 100, 'plate shield')
+shopModule:addBuyableItem({'black shield'}, 3367, 400, 'black shield')
+shopModule:addBuyableItem({'copper shield'}, 3368, 250, 'copper shield')
+shopModule:addBuyableItem({'bone shield'}, 3379, 400, 'bone shield')
+shopModule:addBuyableItem({'steel shield'}, 3347, 400, 'steel shield')
+shopModule:addBuyableItem({'sentinel shield'}, 3382, 800, 'sentinel shield')
+shopModule:addBuyableItem({'ornamented shield'}, 3362, 600, 'ornamented shield')
+shopModule:addBuyableItem({'viking shield'}, 3369, 700, 'viking shield')
+shopModule:addBuyableItem({'battle shield'}, 3351, 500, 'battle shield')
+shopModule:addBuyableItem({'scarab shield'}, 3378, 1200, 'scarab shield')
+shopModule:addBuyableItem({'dark shield'}, 3359, 600, 'dark shield')
+shopModule:addBuyableItem({'salamander shield'}, 3383, 1800, 'salamander shield')
+shopModule:addBuyableItem({'dwarven shield'}, 3363, 200, 'dwarven shield')
+shopModule:addBuyableItem({'tusk shield'}, 3381, 1000, 'tusk shield')
+shopModule:addBuyableItem({'ancient shield'}, 3370, 800, 'ancient shield')
+shopModule:addBuyableItem({'rose shield'}, 3365, 2000, 'rose shield')
+shopModule:addBuyableItem({'castle shield'}, 3373, 8000, 'castle shield')
+shopModule:addBuyableItem({'beholder shield'}, 3356, 1500, 'beholder shield')
+shopModule:addBuyableItem({'griffin shield'}, 3371, 2000, 'griffin shield')
+shopModule:addBuyableItem({'guardian shield'}, 3353, 2500, 'guardian shield')
+shopModule:addBuyableItem({'dragon shield'}, 3354, 4000, 'dragon shield')
+shopModule:addBuyableItem({'tower shield'}, 3366, 6000, 'tower shield')
+shopModule:addBuyableItem({'crown shield'}, 3357, 7000, 'crown shield')
+shopModule:addBuyableItem({'amazon shield'}, 3375, 10000, 'amazon shield')
+shopModule:addBuyableItem({'medusa shield'}, 3374, 10000, 'medusa shield')
+shopModule:addBuyableItem({'shield of honour'}, 3355, 12000, 'shield of honour')
+shopModule:addBuyableItem({'vampire shield'}, 3372, 20000, 'vampire shield')
+shopModule:addBuyableItem({'phoenix shield'}, 3377, 23000, 'phoenix shield')
+shopModule:addBuyableItem({'demon shield'}, 3358, 40000, 'demon shield')
+shopModule:addBuyableItem({'mastermind shield'}, 3352, 150000, 'mastermind shield')
+shopModule:addBuyableItem({'great shield'}, 3360, 300000, 'great shield')
+shopModule:addBuyableItem({'blessed shield'}, 3361, 500000, 'blessed shield')
+
+shopModule:addBuyableItem({'bast skirt'}, 3498, 500, 'bast skirt')
+shopModule:addBuyableItem({'leather legs'}, 3497, 15, 'leather legs')
+shopModule:addBuyableItem({'studded legs'}, 3300, 100, 'studded legs')
+shopModule:addBuyableItem({'chain legs'}, 3496, 80, 'chain legs')
+shopModule:addBuyableItem({'brass legs'}, 3310, 200, 'brass legs')
+shopModule:addBuyableItem({'plate legs'}, 3495, 1000, 'plate legs')
+shopModule:addBuyableItem({'knight legs'}, 3309, 10000, 'knight legs')
+shopModule:addBuyableItem({'crown legs'}, 3320, 25000, 'crown legs')
+shopModule:addBuyableItem({'golden legs'}, 3302, 150000, 'golden legs')
+shopModule:addBuyableItem({'demon legs'}, 3327, 400000, 'demon legs')
+shopModule:addBuyableItem({'dragon scale legs'}, 3301, 800000, 'dragon scale legs')
+
+shopModule:addBuyableItem({'mystic turban'}, 3512, 1000, 'mystic turban')
+shopModule:addBuyableItem({'post officers hat'}, 3514, 2000, 'post officers hat')
+shopModule:addBuyableItem({'magician hat'}, 3511, 1000, 'magician hat')
+shopModule:addBuyableItem({'leather helmet'}, 3293, 5, 'leather helmet')
+shopModule:addBuyableItem({'tribal mask'}, 3341, 3000, 'tribal mask')
+shopModule:addBuyableItem({'feather headdress'}, 3344, 3000, 'feather headdress')
+shopModule:addBuyableItem({'chain helmet'}, 3290, 25, 'chain helmet')
+shopModule:addBuyableItem({'studded helmet'}, 3314, 40, 'studded helmet')
+shopModule:addBuyableItem({'brass helmet'}, 3292, 45, 'brass helmet')
+shopModule:addBuyableItem({'viking helmet'}, 3305, 60, 'viking helmet')
+shopModule:addBuyableItem({'legion helmet'}, 3312, 100, 'legion helmet')
+shopModule:addBuyableItem({'steel helmet'}, 3289, 200, 'steel helmet')
+shopModule:addBuyableItem({'horseman helmet'}, 3343, 1000, 'horseman helmet')
+shopModule:addBuyableItem({'dark helmet'}, 3322, 200, 'dark helmet')
+shopModule:addBuyableItem({'strange helmet'}, 3311, 300, 'strange helmet')
+shopModule:addBuyableItem({'lady helmet'}, 3331, 4000, 'lady helmet')
+shopModule:addBuyableItem({'crown helmet'}, 3323, 3000, 'crown helmet')
+shopModule:addBuyableItem({'devil helmet'}, 3294, 2000, 'devil helmet')
+shopModule:addBuyableItem({'warrior helmet'}, 3307, 6000, 'warrior helmet')
+shopModule:addBuyableItem({'crusader helmet'}, 3329, 10000, 'crusader helmet')
+shopModule:addBuyableItem({'helmet of the ancients'}, 3333, 50000, 'helmet of the ancients')
+shopModule:addBuyableItem({'royal helmet'}, 3330, 80000, 'royal helmet')
+shopModule:addBuyableItem({'demon helmet'}, 3325, 300000, 'demon helmet')
+shopModule:addBuyableItem({'winged helmet'}, 3325, 350000, 'winged helmet')
+shopModule:addBuyableItem({'horned helmet'}, 3328, 450000, 'horned helmet')
+shopModule:addBuyableItem({'full helmet of the ancients'}, 3168, 600000, 'full helmet of the ancients')
+shopModule:addBuyableItem({'golden helmet'}, 3303, 1000000, 'golden helmet')
+
+shopModule:addBuyableItem({'boots of haste'}, 3017, 40000, 'boots of haste')
+shopModule:addBuyableItem({'soft boots'}, 3184, 60000, 'soft boots')
+shopModule:addBuyableItem({'sandals'}, 3489, 400, 'sandals')
+shopModule:addBuyableItem({'leather boots'}, 3490, 10, 'leather boots')
+shopModule:addBuyableItem({'crocodile boots'}, 3494, 2000, 'crocodile boots')
+shopModule:addBuyableItem({'steel boots'}, 3492, 100000, 'steel boots')
+shopModule:addBuyableItem({'golden boots'}, 3493, 2000000, 'golden boots')
+
+shopModule:addBuyableItem({'bronze amulet'}, 2994, 200, 'bronze amulet')
+shopModule:addBuyableItem({'crystal necklace'}, 2946, 300, 'crystal necklace')
+shopModule:addBuyableItem({'dragon necklace'}, 3023, 500, 'dragon necklace')
+shopModule:addBuyableItem({'elven amulet'}, 2952, 1000, 'elven amulet')
+shopModule:addBuyableItem({'garlic necklace'}, 3021, 500, 'garlic necklace')
+shopModule:addBuyableItem({'golden amulet'}, 2951, 7000, 'golden amulet')
+shopModule:addBuyableItem({'platinum amulet'}, 2993, 5000, 'platinum amulet')
+shopModule:addBuyableItem({'ruby necklace'}, 2954, 2000, 'ruby necklace')
+shopModule:addBuyableItem({'protection amulet'}, 3022, 700, 'protection amulet')
+shopModule:addBuyableItem({'silver amulet'}, 2953, 100, 'silver amulet')
+shopModule:addBuyableItem({'silver necklace'}, 2992, 500, 'silver necklace')
+shopModule:addBuyableItem({'stone skin amulet'}, 3019, 3000, 'stone skin amulet')
+shopModule:addBuyableItem({'strange symbol'}, 2996, 1000, 'strange symbol')
+shopModule:addBuyableItem({'strange talisman'}, 3144, 800, 'strange talisman')
+shopModule:addBuyableItem({'scarab amulet'}, 2956, 2000, 'scarab amulet')
+shopModule:addBuyableItem({'demonbones amulet'}, 2957, 10000, 'demonbones amulet')
+shopModule:addBuyableItem({'leaf with golden items'}, 2958, 400, 'leaf with golden items')
+
+shopModule:addBuyableItem({'axe ring'}, 3030, 200, 'axe ring')
+shopModule:addBuyableItem({'club ring'}, 3031, 200, 'club ring')
+shopModule:addBuyableItem({'sword ring'}, 3029, 200, 'sword ring')
+shopModule:addBuyableItem({'crystal ring'}, 2945, 1000, 'crystal ring')
+shopModule:addBuyableItem({'dwarven ring'}, 3035, 50, 'dwarven ring')
+shopModule:addBuyableItem({'energy ring'}, 2989, 800, 'energy ring')
+shopModule:addBuyableItem({'gold ring'}, 3001, 8000, 'gold ring')
+shopModule:addBuyableItem({'life ring'}, 3027, 800, 'life ring')
+shopModule:addBuyableItem({'might ring'}, 2986, 800, 'might ring')
+shopModule:addBuyableItem({'power ring'}, 2988, 100, 'power ring')
+shopModule:addBuyableItem({'ring of healing'}, 3036, 800, 'ring of healing')
+shopModule:addBuyableItem({'ring of the skies'}, 3183, 50000, 'ring of the skies')
+shopModule:addBuyableItem({'stealth ring'}, 2987, 800, 'stealth ring')
+shopModule:addBuyableItem({'time ring'}, 2991, 2000, 'time ring')
+shopModule:addBuyableItem({'wedding ring'}, 2942, 1000, 'wedding ring')
+
+shopModule:addBuyableItem({'scarab coin'}, 2980, 100, 'scarab coin')
+shopModule:addBuyableItem({'blue gem'}, 2979, 500, 'blue gem')
+shopModule:addBuyableItem({'big ruby'}, 2977, 1000, 'big ruby')
+shopModule:addBuyableItem({'big emerald'}, 2976, 1000, 'big emerald')
+shopModule:addBuyableItem({'yellow gem'}, 2975, 300, 'yellow gem')
+shopModule:addBuyableItem({'violet gem'}, 2974, 300, 'violet gem')
+shopModule:addBuyableItem({'talon'}, 2972, 200, 'talon')
+shopModule:addBuyableItem({'small amethyst'}, 2971, 50, 'small amethyst')
+shopModule:addBuyableItem({'small emerald'}, 2970, 100, 'small emerald')
+shopModule:addBuyableItem({'small ruby'}, 2968, 150, 'small ruby')
+shopModule:addBuyableItem({'small sapphire'}, 2967, 100, 'small sapphire')
+shopModule:addBuyableItem({'small diamond'}, 2966, 200, 'small diamond')
+shopModule:addBuyableItem({'black pearl'}, 2965, 500, 'black pearl')
+shopModule:addBuyableItem({'white pearl'}, 2964, 300, 'white pearl')
+
+keywordHandler:addKeyword({'swords list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Combat Knife, Silver Dagger, Short Sword, Sabre, Bone Sword, Carlin Sword, Heavy Machete, Katana, Longsword, Poison Dagger, Scimitar, Templar Scytheblade, Broad Sword, Serpent Sword, Two-Handed Sword, Fire Sword, Bright Sword, Giant Sword, Magic Sword, Warlord Sword, Magic Long Sword, Ice Rapier.'})
+keywordHandler:addKeyword({'clubs list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Crowbar, Scythe, Studded Club, Bone Club, Iron Hammer, Daramanian Mace, Battle Hammer, Morning Star, Banana Staff, Clerical Mace, Dragon Hammer, Skull Staff, Crystal Mace, Silver Mace, War Hammer, Hammer of Wrath, Thunder Hammer and Magic Staff.'})
+keywordHandler:addKeyword({'axes list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Hand Axe, Golden Sickle, Hatchet, Hunting Spear, Orcish Axe, Battle Axe, Ripper Lance, Barbarian Axe, Knight Axe, Obsidian Lance, Double Axe, Fire Axe, Naginata, Daramanian Waraxe, Guardian Halberd, Dragon Lance, Stonecutter Axe and Great Axe.'})
+keywordHandler:addKeyword({'armors list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Simple Dress, Ball Gown, Cape, Jacket, Green Tunic, Red Robe, Doublet, Red Tunic, Leather Armor, Studded Armor, Chain Armor, Brass Armor, Scale Armor, Plate Armor, Dark Armor, Noble Armor, Knight Armor, Crown Armor, Lady Armor, Blue Robe, Golden Armor, Dragon Scale Mail, Demon Armor, Magic Plate Armor.'})
+keywordHandler:addKeyword({'shields list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Wooden Shield, Studded Shield, Brass Shield, Plate Shield, Black Shield, Copper Shield, Bone Shield, Steel Shield, Sentinel Shield, Ornamented Shield, Viking Shield, Battle Shield, Scarab Shield, Dark Shield, Salamander Shield, Dwarven Shield, Tusk Shield, Ancient Shield, Rose Shield, Castle Shield, Beholder Shield, Griffin Shield, Guardian Shield, Dragon Shield, Tower Shield, Crown Shield, Amazon Shield, Medusa Shield, Shield of Honour, Vampire Shield, Phoenix Shield, Demon Shield, Mastermind Shield, Great Shield and Blessed Shield.'})
+keywordHandler:addKeyword({'legs list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Bast Skirt, Leather Legs, Studded Legs, Chain Legs, Brass Legs, Plate Legs, Knight Legs, Crown Legs, Demon Legs, Dragon Scale Legs.'})
+keywordHandler:addKeyword({'helmets list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Mystic Turban, Posts Officers Hat, Magician Hat, Leather Helmet, Tribal Mask, Feather Headdress, Chain Helmet, Studded Helmet, Brass Helmet, Viking Helmet, Legion Helmet, Steel Helmet, Horseman Helmet, Dark Helmet, Strange Helmet, Lady Helmet, Crown Helmet, Devil Helmet, Warrior Helmet, Crusader Helmet, Helmet of the Ancients, Royal Helmet, Demon Helmet, Winged Helmet, Horned Helmet, Full Helmet of the Ancients and Golden Helmet.'})
+keywordHandler:addKeyword({'boots list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Boots of Haste, Soft Boots, Sandals, Leather Boots, Crocodile Boots, Steel Boots, Golden Boots.'})
+keywordHandler:addKeyword({'amulets list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Bronze Amulet, Crystal Necklace, Dragon Necklace, Elven Amulet, Garlic Necklace, Golden Amulet, Platinum Amulet, Ruby Necklace, Protection Amulet, Silver Amulet, Silver Necklace, Stone Skin Amulet, Strange Symbol, Strange Talisman, Scarab Amulet, Demonbones Amulet and Leaf with Golden items.'})
+keywordHandler:addKeyword({'rings list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Axe Ring, Club Ring, Sword Ring, Crystal Ring, Dwarven Ring, Energy Ring, Gold Ring, Life Ring, Might Ring, Power Ring, Ring of Healing, Ring of the Skies, Stealth Ring, Time Ring and Wedding Ring.'})
+keywordHandler:addKeyword({'pearls list'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell Scarab Coin, Blue Gem, Big Ruby, Big Emerald, Yellow Gem, Violet Gem, Talon, Small Amethyst, Small Emerald, Small Ruby, Small Sapphire, Small Diamond, Black Pearl and White Pearl.'})
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell ALL equipments: Shields, Helmets, Legs, Armors, Weapons, Amulets and Rings, also types of pearls, gems, etc. Say the name of the item what you want and I will sell for you!'})
+
+npcHandler:addModule(FocusModule:new())
