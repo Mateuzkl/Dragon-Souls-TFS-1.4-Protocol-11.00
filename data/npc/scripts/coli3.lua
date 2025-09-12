@@ -1,66 +1,76 @@
--- sven, the bewitched bunny
--- it's a sample script, i dont know lua well enough to
--- make some fancy code
--- the good thing is, that this scripts can easily be developed
--- seperately from the main programm
--- perhaps we should write some docu
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
--- the id of the creature we are attacking, following, etc.
+local target = 0
+local following = false
+local attacking = false
 
-target = 0
-following = false
-attacking = false
-
-function onThingMove(creature, thing, oldpos, oldstackpos)
-
+function onCreatureAppear(cid)              
+    npcHandler:onCreatureAppear(cid)
+    -- Execute raid when creature appears
+    Game.startRaid('coli3')
 end
 
-
-function onCreatureAppear(creature)
-selfSay('/raid coli3')
+function onCreatureDisappear(cid)           
+    npcHandler:onCreatureDisappear(cid)
+    if cid == target then
+        target = 0
+        attacking = false
+        following = false
+        local npc = Creature(getNpcId())
+        if npc then
+            npc:setTarget(nil)
+        end
+    end
 end
 
-
-function onCreatureDisappear(cid)
+function onCreatureSay(cid, msgType, msg)   
+    npcHandler:onCreatureSay(cid, msgType, msg)
 end
 
-
-function onCreatureTurn(creature)
-
+function onThink()                          
+    npcHandler:onThink()
+    
+    local npc = Creature(getNpcId())
+    if not npc then
+        return
+    end
+    
+    if following == true and target > 0 then
+        local targetCreature = Creature(target)
+        if targetCreature then
+            npc:moveToPosition(targetCreature:getPosition())
+        end
+    end
+    
+    if attacking == true and target > 0 then
+        local targetCreature = Creature(target)
+        if targetCreature then
+            local dist = npc:getPosition():getDistance(targetCreature:getPosition())
+            if dist <= 1 then
+                npc:setTarget(targetCreature)
+            else
+                npc:moveToPosition(targetCreature:getPosition())
+            end
+        else
+            npc:setTarget(nil)
+        end
+    end
 end
 
-
-function onCreatureSay(cid, type, msg)
-	msg = string.lower(msg)
-	if string.find(msg, '(%a*)hi(%a*)') then
-		selfSay('oi oi, ' .. creatureGetName(cid) .. '!')
-end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	--nothing special has happened
-	--but perhaps we want to do an action?
-	if following == true then
-		moveToCreature(target)
-		return
-	end
-	if attacking == true then
-		dist = getDistanceToCreature(target)
-		if dist == nil then
-			selfGotoIdle()
-			return
-		end
-		if dist <= 1 then
-			selfAttackCreature(target)
-		else
-			moveToCreature(target)
-		end
-	end
+local function creatureSayCallback(cid, msgType, msg)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if msgcontains(msg, 'hi') then
+        npcHandler:say('oi oi, ' .. player:getName() .. '!', cid)
+    end
+    
+    return true
 end
 
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

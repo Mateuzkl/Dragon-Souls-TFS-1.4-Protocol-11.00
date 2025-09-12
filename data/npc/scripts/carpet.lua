@@ -1,154 +1,74 @@
-focus = 0
-talk_start = 0
-target = 0
-following = false
-attacking = false
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
 
+local destinations = {
+    ['tombstone'] = {cost = 200, pos = Position(219, 92, 7)},
+    ['tomb'] = {cost = 200, pos = Position(219, 92, 7)},
+    ['hills'] = {cost = 300, pos = Position(307, 378, 4)},
+    ['femur hills'] = {cost = 300, pos = Position(307, 378, 4)},
+    ['edron'] = {cost = 400, pos = Position(752, 816, 3)}
+}
+
+local function greetCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Hello ' .. player:getName() .. '! I can take you to Femur Hills (300gps), Edron (400gps) or Tombstone (200gps). Where do you want to go?', cid)
+    return true
 end
 
-
-function onCreatureAppear(creature)
-
+local function farewellCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Good bye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
- 	if focus == cid then
-         selfSay('Good bye then.')
-         focus = 0
-         talk_start = 0
- 	end
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    
+    -- Check for Portuguese/Spanish greetings
+    if msgcontains(msg, 'oi') then
+        npcHandler:say('Hola ' .. player:getName() .. '! Puesso levar-te a Femur Hills (300gps), Edron (400gps) ou Tombstone (200gps). Onde gostaria de ir?', cid)
+        return true
+    elseif msgcontains(msg, 'tchau') then
+        npcHandler:say('Adios, ' .. player:getName() .. '!', cid)
+        npcHandler:releaseFocus(cid)
+        return true
+    end
+    
+    -- Check all destinations
+    for keyword, data in pairs(destinations) do
+        if msgcontains(msg, keyword) then
+            if player:removeMoney(data.cost) then
+                npcHandler:say('Yhaa!', cid)
+                player:teleportTo(data.pos)
+                data.pos:sendMagicEffect(CONST_ME_TELEPORT)
+                npcHandler:releaseFocus(cid)
+            else
+                npcHandler:say('Sorry, you don\'t have enough money.', cid)
+            end
+            return true
+        end
+    end
+    
+    return true
 end
 
+npcHandler:setMessage(MESSAGE_GREET, 'Hello |PLAYERNAME|! I can take you to Femur Hills (300gps), Edron (400gps) or Tombstone (200gps). Where do you want to go?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Adeus.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'Sorry, |PLAYERNAME|! I talk to you in a minute.')
 
-function onCreatureTurn(creature)
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_FAREWELL, farewellCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
-end
-
-function msgcontains(txt, str)
- 	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
- 	msg = string.lower(msg)
-
- 	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
- 		selfSay('Hello ' .. creatureGetName(cid) .. '! I can take you to Femur Hills (300gps), Edron (400gps) or Tombstone (200gps). Where do you want to go?')
- 		focus = cid
- 		selfLook(cid)
- 		talk_start = os.clock()
- 	end
-
- 	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
- 		selfSay('Hola ' .. creatureGetName(cid) .. '! Puesso levar-te a Femur Hills (300gps), Edron (400gps) ou Tombstone (200gps). Onde gostaria de ir?')
- 		focus = cid
- 		selfLook(cid)
- 		talk_start = os.clock()
- 	end
-
-	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
- 		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
- 	end
-	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
- 		selfSay('Desculpe, ' .. creatureGetName(cid) .. '! Hablo contigo em um minuto.')
- 	end
-
- 	if msgcontains(msg, 'tombstone') and focus == cid then
- 		if pay(cid,200) then
-			selfSay('Yhaa!')
-			selfSay('/send ' .. creatureGetName(cid) .. ', 219 92 7')
-			focus = 0
-			talk_start = 0
-		else
-				selfSay('Sorry, you don\'t have enough money.')
-				talk_start = os.clock()
-			end
-		end
-
- 	if msgcontains(msg, 'tomb') and focus == cid then
- 		if pay(cid,200) then
-			selfSay('Yhaa!')
-			selfSay('/send ' .. creatureGetName(cid) .. ', 219 92 7')
-			focus = 0
-			talk_start = 0
-		else
-				selfSay('Sorry, you don\'t have enough money.')
-				talk_start = os.clock()
-			end
-		end
-
- 	if msgcontains(msg, 'hills') and focus == cid then
- 		if pay(cid,300) then
-			selfSay('Yhaa!')
-			selfSay('/send ' .. creatureGetName(cid) .. ', 307 378 4')
-			focus = 0
-			talk_start = 0
-		else
-				selfSay('Sorry, you don\'t have enough money.')
-				talk_start = os.clock()
-			end
-		end
-
-	if msgcontains(msg, 'femur hills') and focus == cid then
- 		if pay(cid,300) then
-			selfSay('Yhaa!')
-			selfSay('/send ' .. creatureGetName(cid) .. ', 307 378 4')
-			focus = 0
-			talk_start = 0
-		else
-				selfSay('Sorry, you don\'t have enough money.')
-				talk_start = os.clock()
-			end
-		end
-
- 	if msgcontains(msg, 'edron') and focus == cid then
- 		if pay(cid,400) then
-			selfSay('Yhaa!')
-			selfSay('/send ' .. creatureGetName(cid) .. ', 752 816 3')
-			focus = 0
-			talk_start = 0
-		else
-				selfSay('Sorry, you don\'t have enough money.')
-				talk_start = os.clock()
-			end
-		end
-
- 	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
- 		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
- 		focus = 0
- 		talk_start = 0
- 	end
- 	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
- 		selfSay('Adios, ' .. creatureGetName(cid) .. '!')
- 		focus = 0
- 		talk_start = 0
- 	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
- function onThink() 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Adeus.')
-  			focus = 0
-  		end
-	end
-end
- 
+npcHandler:addModule(FocusModule:new())

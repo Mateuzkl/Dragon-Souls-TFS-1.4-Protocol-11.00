@@ -1,168 +1,80 @@
-focus = 0
- talk_start = 0
- target = 0
- following = false
- attacking = false
- talk_state = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+local topicList = {
+    NONE = 0
+}
 
+local destinations = {
+    ['dragon land'] = {cost = 500, pos = Position(122, 119, 7)},
+    ['dragon'] = {cost = 500, pos = Position(122, 119, 7)},
+    ['edron'] = {cost = 120, pos = Position(734, 795, 6)},
+    ['carlin'] = {cost = 200, pos = Position(149, 356, 6)},
+    ['tirith'] = {cost = 500, pos = Position(476, 293, 6)},
+    ['minas tirith'] = {cost = 500, pos = Position(476, 293, 6)},
+    ['tombstone'] = {cost = 100, pos = Position(168, 65, 7)},
+    ['tomb'] = {cost = 100, pos = Position(168, 65, 7)},
+    ['lorien island'] = {cost = 100, pos = Position(309, 53, 7)},
+    ['lorien'] = {cost = 100, pos = Position(309, 53, 7)}
+}
+
+local function greetCallback(cid)
+    local player = Player(cid)
+    if player:isPremium() then
+        npcHandler:say('Hello ' .. player:getName() .. '! I can take you to the Carlin (200gps), Dragon Land (500gp), Tombstone (100gps), Edron (120gps), Minas Tirith (500gps) or Lorien Island (100gps). Where do you want to go?', cid)
+        return true
+    else
+        npcHandler:say('Sorry, only premium players can travel by boat.', cid)
+        return false
+    end
 end
 
-
-function onCreatureAppear(creature)
-
+local function farewellCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Good bye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    
+    -- Check all destinations
+    for keyword, data in pairs(destinations) do
+        if msgcontains(msg, keyword) then
+            if player:removeMoney(data.cost) then
+                npcHandler:say('Let\'s go!', cid)
+                player:teleportTo(data.pos)
+                data.pos:sendMagicEffect(CONST_ME_TELEPORT)
+                npcHandler:releaseFocus(cid)
+            else
+                npcHandler:say('Sorry, you don\'t have enough money.', cid)
+            end
+            return true
+        end
+    end
+    
+    return true
 end
 
+-- Set messages
+npcHandler:setMessage(MESSAGE_GREET, 'Hello |PLAYERNAME|! I can take you to the Carlin (200gps), Dragon Land (500gp), Tombstone (100gps), Edron (120gps), Minas Tirith (500gps) or Lorien Island (100gps). Where do you want to go?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Good bye then.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'Sorry, |PLAYERNAME|! I talk to you in a minute.')
 
-function onCreatureTurn(creature)
+-- Set callbacks
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_FAREWELL, farewellCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
-endfunction msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-		if isPremmium(cid) then
-			selfSay('Hello ' .. creatureGetName(cid) .. '! I can take you to the Carlin (200gps) , Dragon Land (500gp) , Tombstone (100gps), Edron (120gps), Minas Tirith (500gps) or Lorien Island (100gps). Where do you want to go?')
-			focus = cid
- 			selfLook(cid)
-			talk_start = os.clock()
-		else
-			selfSay('Sorry, only premium players can travel by boat.')
-			focus = 0
-			talk_start = 0
-		end
-
-  	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-		if msgcontains(msg, 'dragon land') then
-			if pay(cid,500) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 122 119 7')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end
-
-		        elseif msgcontains(msg, 'edron') then
-			if pay(cid,120) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 734 795 6')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end
-
-		        elseif msgcontains(msg, 'carlin') then
-			if pay(cid,200) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 149 356 6')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end
-
-                       elseif msgcontains(msg, 'tirith') then
-			if pay(cid,500) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 476 293 6')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end
-
-                       elseif msgcontains(msg, 'tombstone') then
-			if pay(cid,100) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 168 65 7')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end		
-
-                       elseif msgcontains(msg, 'tomb') then
-			if pay(cid,100) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 168 65 7')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end		
-
-
-                       elseif msgcontains(msg, 'lorien island') then
-			if pay(cid,100) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 309 53 7')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end
-
-                       elseif msgcontains(msg, 'lorien') then
-			if pay(cid,100) then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 309 53 7')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Sorry, you don\'t have enough money.')
-			end		
-
-
-		elseif msgcontains(msg, 'bye') and getDistanceToCreature(cid) < 4 then
-			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-			focus = 0
-			talk_start = 0
-		end
-	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
- function onThink() 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Good bye then.')
-  			focus = 0
-  		end
- 	end
-end
+npcHandler:addModule(F

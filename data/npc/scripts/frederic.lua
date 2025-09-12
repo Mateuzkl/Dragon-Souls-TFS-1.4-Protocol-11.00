@@ -1,41 +1,59 @@
-STORAGE = 100010 -- Não Mecha
-ITEM = 2403 -- Item a ser adicionado para completar a quest
-QUANT = 50 -- Quantidade de items a ser adicionado
-
+local STORAGE = 100010
+local ITEM = 2403 
+local QUANT = 50
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
 
-function onCreatureAppear(cid)	 npcHandler:onCreatureAppear(cid)	 end
-function onCreatureDisappear(cid)	 npcHandler:onCreatureDisappear(cid)	 end
-function onCreatureSay(cid, type, msg)	 npcHandler:onCreatureSay(cid, type, msg)	 end
-function onThink()	 npcHandler:onThink()	 end
+local topicList = {
+    NONE = 0,
+    MISSION_CONFIRM = 1
+}
 
-function santaNPC(cid, message, keywords, parameters, node)
-if(not npcHandler:isFocused(cid)) then
-return false
-end
-if (parameters.present == true) then
-if (getPlayerStorageValue(cid, STORAGE) < 1) then
-doPlayerAddItem(cid,2403,50)
-setPlayerStorageValue(cid, STORAGE, 1)
-npcHandler:say('Obrigado e Boa Sorte na sua jornada', cid)
-else
-npcHandler:say('Eu ja te dei sua missao.', cid)
-end
-end
-npcHandler:resetNpc()
-return true
+local function greetCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Olá ' .. player:getName() .. '. Eu Tenho uma mission para voce.', cid)
+    return true
 end
 
-npcHandler:setMessage(MESSAGE_GREET, "Olá |PLAYERNAME|. Eu Tenho uma {mission} para voce.")
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    
+    if msgcontains(msg, 'mission') then
+        npcHandler:say('Você aceita esta missão?', cid)
+        npcHandler.topic[cid] = topicList.MISSION_CONFIRM
+    elseif npcHandler.topic[cid] == topicList.MISSION_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getStorageValue(STORAGE) < 1 then
+            player:addItem(ITEM, QUANT)
+            player:setStorageValue(STORAGE, 1)
+            npcHandler:say('Obrigado e Boa Sorte na sua jornada', cid)
+        else
+            npcHandler:say('Eu ja te dei sua missao.', cid)
+        end
+        npcHandler.topic[cid] = topicList.NONE
+    elseif npcHandler.topic[cid] == topicList.MISSION_CONFIRM and msgcontains(msg, 'no') then
+        npcHandler:say('Talvez outra hora.', cid)
+        npcHandler.topic[cid] = topicList.NONE
+    end
+    
+    return true
+end
 
-local noNode = KeywordNode:new({'no'}, santaNPC, {present = false})
-local yesNode = KeywordNode:new({'yes'}, santaNPC, {present = true})
+npcHandler:setMessage(MESSAGE_GREET, 'Olá |PLAYERNAME|. Eu Tenho uma mission para voce.')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Até logo!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Até logo!')
 
-local node = keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Obrigado!'})
-node:addChildKeywordNode(yesNode)
-node:addChildKeywordNode(noNode)
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+
 npcHandler:addModule(FocusModule:new())

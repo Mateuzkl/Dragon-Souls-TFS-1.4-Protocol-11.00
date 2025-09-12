@@ -1,52 +1,35 @@
--- the id of the creature we are attacking, following, etc.
- 
-  target = 0
-  following = false
-  attacking = false
- 
-  function onThingMove(creature, thing, oldpos, oldstackpos)
- 
-  end
- 
- 
-  function onCreatureAppear(creature)
- 
-  end
- 
- 
-  function onCreatureDisappear(cid, pos)
- 
-  end
- 
- 
-  function onCreatureTurn(creature)
- 
-  end
- 
- 
-  function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
- 
-  	if (string.find(msg, '(%a*)hi queen(%a*)')) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hail the Queen!')
-  		focus = cid
- 		selfLook(cid)
-  	end
- 
-  	if (string.find(msg, '(%a*)oi rainha(%a*)')) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Salve a rainha!')
-  		focus = cid
- 		selfLook(cid)
-  	end
-  end
- 
- 
-  function onCreatureChangeOutfit(creature)
- 
-  end
- 
- 
-  function onThink()
- 
-  end
- 
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+local target = 0
+local following = false
+local attacking = false
+
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
+
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        local player = Player(cid)
+        if not player then
+            return false
+        end
+        
+        if msgcontains(msg, 'hi queen') then
+            npcHandler:say('Hail the Queen!', cid)
+            return true
+        elseif msgcontains(msg, 'oi rainha') then
+            npcHandler:say('Salve a rainha!', cid)
+            return true
+        end
+        return false
+    end
+    
+    return true
+end
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

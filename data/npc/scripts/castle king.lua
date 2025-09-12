@@ -1,81 +1,113 @@
--- sven, the bewitched bunny
--- it's a sample script, i dont know lua well enough to
--- make some fancy code
--- the good thing is, that this scripts can easily be developed
--- seperately from the main programm
--- perhaps we should write some docu
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
--- the id of the creature we are attacking, following, etc.
+local target = 0
+local following = false
+local attacking = false
 
-target = 0
-following = false
-attacking = false
+local storevalue = 2223
+local alerttime = 600
 
-local gname = ''		-- guild name
-local cname = ''		-- name of player who talks to us
-
-function onThingMove(creature, thing, oldpos, oldstackpos)
-
+function onCreatureAppear(cid)              
+    npcHandler:onCreatureAppear(cid)
+    attacking = true
+    target = cid
 end
 
-
-function onCreatureAppear(creature)
+function onCreatureDisappear(cid)           
+    npcHandler:onCreatureDisappear(cid)
+    if cid == target then
+        target = 0
+        attacking = false
+        following = false
+        local npc = Creature(getNpcId())
+        if npc then
+            npc:setTarget(nil)
+        end
+    end
 end
 
-
-function onCreatureDisappear(cid)
+function onCreatureSay(cid, msgType, msg)   
+    npcHandler:onCreatureSay(cid, msgType, msg)
 end
 
-
-function onCreatureTurn(creature)
-
+function onThink()                          
+    npcHandler:onThink()
+    
+    local npc = Creature(getNpcId())
+    if not npc then
+        return
+    end
+    
+    if following == true and target > 0 then
+        local targetCreature = Creature(target)
+        if targetCreature then
+            npc:moveToPosition(targetCreature:getPosition())
+        end
+    end
+    
+    if attacking == true and target > 0 then
+        local targetCreature = Creature(target)
+        if targetCreature then
+            local dist = npc:getPosition():getDistance(targetCreature:getPosition())
+            if dist <= 1 then
+                npc:setTarget(targetCreature)
+            else
+                npc:moveToPosition(targetCreature:getPosition())
+            end
+        else
+            npc:setTarget(nil)
+        end
+    end
 end
 
-
-function onCreatureSay(cid, type, msg)
-
-  storevalue = 2223
-  alerttime = 600
-
-  	cname = creatureGetName(cid)
-  	gname = getPlayerGuildName(cname)
-  	gstat = getPlayerGuildStatus(cname)
-
-	msg = string.lower(msg)
-	if string.find(msg, '(%a*)victory(%a*)') and getDistanceToCreature(cid) < 2 then
-	if gstat >= 3 then
-  	if (alert(cid, storevalue, alerttime) == 0) then
-else
-  	selfSay('/B A guilda ' .. gname .. ', esta dominando o castelo!')
-end
-else
-end
-end
+local function alertCheck(cid, storevalue, alerttime)
+    local player = Player(cid)
+    if not player then
+        return 1
+    end
+    
+    local lastAlert = player:getStorageValue(storevalue)
+    local currentTime = os.time()
+    
+    if lastAlert == -1 or (currentTime - lastAlert) >= alerttime then
+        player:setStorageValue(storevalue, currentTime)
+        return 0
+    end
+    
+    return 1
 end
 
-function onCreatureChangeOutfit(creature)
-
+local function creatureSayCallback(cid, msgType, msg)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    local guild = player:getGuild()
+    if not guild then
+        return false
+    end
+    
+    local guildRank = player:getGuildRank()
+    if not guildRank then
+        return false
+    end
+    
+    local gname = guild:getName()
+    local gstat = guildRank:getLevel()
+    
+    if msgcontains(msg, 'victory') then
+        if gstat >= 3 then
+            if alertCheck(cid, storevalue, alerttime) == 0 then
+                Game.broadcastMessage('A guilda ' .. gname .. ', esta dominando o castelo!', MESSAGE_STATUS_WARNING)
+            end
+        end
+    end
+    
+    return true
 end
 
-
-function onThink()
-	--nothing special has happened
-	--but perhaps we want to do an action?
-	if following == true then
-		moveToCreature(target)
-		return
-	end
-	if attacking == true then
-		dist = getDistanceToCreature(target)
-		if dist == nil then
-			selfGotoIdle()
-			return
-		end
-		if dist <= 1 then
-			selfAttackCreature(target)
-		else
-			moveToCreature(target)
-		end
-	end
-end
-
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

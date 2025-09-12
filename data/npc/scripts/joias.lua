@@ -1,148 +1,163 @@
---ox = 44
---oy = 5
---oz = 6
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-focus = 0
-talk_start = 0
-target = 0
-following = false
-attacking = false
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+-- Movement configuration
+local lastMoveTime = 0
+local homePosition = nil
 
+function onThink()
+    npcHandler:onThink()
+    
+    -- Set home position on first run
+    if not homePosition then
+        local npc = Npc()
+        if npc then
+            homePosition = npc:getPosition()
+        end
+    end
+    
+    -- Random movement when not focused
+    if not npcHandler:isFocused() then
+        local currentTime = os.time()
+        if currentTime - lastMoveTime > 3 then -- Move every 3 seconds
+            lastMoveTime = currentTime
+            local npc = Npc()
+            if npc and homePosition then
+                local pos = npc:getPosition()
+                local newPos = Position(pos.x, pos.y, pos.z)
+                local randmove = math.random(1, 20)
+                
+                if randmove == 1 then
+                    newPos.x = pos.x + 1
+                elseif randmove == 2 then
+                    newPos.x = pos.x - 1
+                elseif randmove == 3 then
+                    newPos.y = pos.y + 1
+                elseif randmove == 4 then
+                    newPos.y = pos.y - 1
+                -- randmove >= 5 stays in same position
+                end
+                
+                -- Check if new position is valid and within range
+                if math.abs(newPos.x - homePosition.x) <= 3 and math.abs(newPos.y - homePosition.y) <= 3 then
+                    local tile = Tile(newPos)
+                    if tile and not tile:hasProperty(CONST_PROP_BLOCKINGANDNOTMOVEABLE) then
+                        npc:teleportTo(newPos)
+                    end
+                end
+            end
+        end
+    end
 end
 
+-- Shop Module setup
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
 
-function onCreatureAppear(creature)
+-- Jewelry items for sale
+shopModule:addSellableItem({'amethyst'}, 2971, 200, 'amethyst')
+shopModule:addSellableItem({'diamond'}, 2966, 300, 'diamond')
+shopModule:addSellableItem({'emerald'}, 2970, 250, 'emerald')
+shopModule:addSellableItem({'ruby'}, 2968, 350, 'ruby')
+shopModule:addSellableItem({'sapphire'}, 2967, 400, 'sapphire')
+shopModule:addSellableItem({'white pearl'}, 2964, 160, 'white pearl')
+shopModule:addSellableItem({'black pearl'}, 2965, 280, 'black pearl')
+shopModule:addSellableItem({'blue gem'}, 2979, 20000, 'blue gem')
+shopModule:addSellableItem({'yellow gem'}, 2975, 10000, 'yellow gem')
+shopModule:addSellableItem({'violet gem'}, 2974, 18000, 'violet gem')
+shopModule:addSellableItem({'gold nugget'}, 2978, 30000, 'gold nugget')
+shopModule:addSellableItem({'silver brooch'}, 2955, 15000, 'silver brooch')
+shopModule:addSellableItem({'brooch'}, 2948, 25000, 'brooch')
+shopModule:addSellableItem({'crown'}, 2949, 40000, 'crown')
+shopModule:addSellableItem({'big emerald', 'big esmerald'}, 2976, 22000, 'big emerald')
+shopModule:addSellableItem({'big ruby'}, 2977, 23000, 'big ruby')
+shopModule:addSellableItem({'scarab coin'}, 2980, 100, 'scarab coin')
+shopModule:addSellableItem({'talon'}, 2972, 2000, 'talon')
+shopModule:addSellableItem({'life crystal'}, 2999, 5000, 'life crystal')
+shopModule:addSellableItem({'mind stone'}, 3000, 6000, 'mind stone')
+shopModule:addSellableItem({'horn'}, 3041, 2000, 'horn')
 
+local function greetCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Hello ' .. player:getName() .. '! I selling fantastic julery.', cid)
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-if focus == cid then
-selfSay('Tchau então.')
-focus = 0
-talk_start = 0
-end
+local function farewellCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Goodbye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
-
-function onCreatureTurn(creature)
-
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    -- Handle manual selling commands for compatibility
+    if msgcontains(msg, 'amethyst') then
+        local count = player:getItemCount(2971)
+        if count > 0 then
+            if player:removeItem(2971, count) then
+                player:addMoney(200 * count)
+                npcHandler:say('I bought ' .. count .. ' amethyst for ' .. (200 * count) .. ' gold coins.', cid)
+                player:sendTextMessage(MESSAGE_INFO_DESCR, "You sold " .. count .. " amethyst.")
+            end
+        else
+            npcHandler:say('You don\'t have any amethyst to sell.', cid)
+        end
+    elseif msgcontains(msg, 'offer') then
+        npcHandler:say('I can buy all gems, pearls, horn and many more cool julery from you. Just say the name of the item you want to sell!', cid)
+    elseif msgcontains(msg, 'tchau') then
+        npcHandler:say('Tchau então.', cid)
+        npcHandler:releaseFocus(cid)
+    end
+    
+    return true
 end
 
-function msgcontains(txt, str)
-return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
+-- Keywords for automatic responses
+keywordHandler:addKeyword({'offer'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'I can buy all gems, pearls, horn and many more cool julery from you. Just say the name of the item!'
+})
 
+keywordHandler:addKeyword({'job'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'I am a jewelry trader! I buy precious gems and valuable items.'
+})
 
-function onCreatureSay(cid, type, msg)
-msg = string.lower(msg)
+keywordHandler:addKeyword({'gems'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'I buy amethyst, diamond, emerald, ruby, sapphire and many other precious gems!'
+})
 
-if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
-selfSay('Hello ' .. creatureGetName(cid) .. '! I selling fantastic julery. ')
-focus = cid
-talk_start = os.clock()
-elseif string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
-selfSay('Not now, ' .. creatureGetName(cid) .. '! I will talk with you for moment.') elseif focus == cid then talk_start = os.clock() 
+keywordHandler:addKeyword({'pearls'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'I buy both white pearls and black pearls at good prices!'
+})
 
-if msgcontains(msg, 'amethyst') then
-sell(cid,2971,1,200)
-elseif msgcontains(msg, 'diamond') then
-sell(cid,2966,1,300)
-elseif msgcontains(msg, 'emerald') then
-sell(cid,2970,1,250)
-elseif msgcontains(msg, 'ruby') then
-sell(cid,2968,1,350)
-elseif msgcontains(msg, 'sapphire') then
-sell(cid,2967,1,400)
-elseif msgcontains(msg, 'white pearl') then
-sell(cid,2964,1,160)
-elseif msgcontains(msg, 'black pearl') then
-sell(cid,2965,1,280)
-elseif msgcontains(msg, 'blue gem') then
-sell(cid,2979,1,20000)
-elseif msgcontains(msg, 'yellow gem') then
-sell(cid,2975,1,10000)
-elseif msgcontains(msg, 'violet gem') then
-sell(cid,2974,1,18000)
-elseif msgcontains(msg, 'gold nugget') then
-sell(cid,2978,1,30000)
-elseif msgcontains(msg, 'silver brooch') then
-sell(cid,2955,1,15000)
-elseif msgcontains(msg, 'brooch') then
-sell(cid,2948,1,25000)
-elseif msgcontains(msg, 'crown') then
-sell(cid,2949,1,40000)
-elseif msgcontains(msg, 'big esmerald') then
-sell(cid,2976,1,22000)
-elseif msgcontains(msg, 'big ruby') then
-sell(cid,2977,1,23000)
-elseif msgcontains(msg, 'scarab coin') then
-sell(cid,2980,1,100)
-elseif msgcontains(msg, 'talon') then
-sell(cid,2972,1,2000)
-elseif msgcontains(msg, 'life crystal') then
-sell(cid,2999,1,5000)
-elseif msgcontains(msg, 'mind stone') then
-sell(cid,3000,1,6000)
-elseif msgcontains(msg, 'horn') then
-sell(cid,3041,1,2000)
-elseif msgcontains(msg, 'offer') then
-selfSay('I can sell you all Gems, pearls, horn and many more cool julery. .')
+npcHandler:setMessage(MESSAGE_GREET, 'Hello |PLAYERNAME|! I selling fantastic julery.')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Goodbye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Adeus.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'Not now, |PLAYERNAME|! I will talk with you for moment.')
 
-elseif string.find(msg, '(%a*)bye(%a*)') and getDistanceToCreature(cid) < 3 then
-selfSay('Goodbye, ' .. creatureGetName(cid) .. '!')
-focus = 0
-talk_start = 0
-end
-end
-end
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_FAREWELL, farewellCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
- function onThink() 
-if focus == 0 then
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,20)
-if randmove == 1 then
-nx = cx + 1
-end
-if randmove == 2 then
-nx = cx - 1
-end
-if randmove == 3 then
-ny = cy + 1
-end
-if randmove == 4 then
-ny = cy - 1
-end
-if randmove >= 5 then
-nx = cx
-ny = cy
-end
-moveToPosition(nx, ny, cz)
-end
-end 
-
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Adeus.')
-  			focus = 0
-  		end
-	end
-
- 
+npcHandler:addModule(FocusModule:new())

@@ -1,605 +1,313 @@
---------------------------------------------------------------------------------------------
------------------------------------- Advanced Addon NPC ------------------------------------
--------------------------------- Script made by teh_pwnage ---------------------------------
---------------- Special thanks to: mokerhamer, Xidaozu and Jiddo, deaths'life --------------
-------------------------------- Thanks also to everyone else -------------------------------
------------------------------- NPC based on Evolutions V0.7.7 ------------------------------
---------------------------------------------------------------------------------------------
-
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
--- OTServ event handling functions start
-function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
-function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
-function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
-function onThink() 						npcHandler:onThink() end
-
-
--- OTServ event handling functions end
-
-function creatureSayCallback(cid, type, msg)
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	if(npcHandler.focus ~= cid) then
-		return false
-	end
-
-		dsp = getPlayerItemCount(cid,6527)
-
-
-		if msgcontains(msg, 'job') then
-			selfSay('I am a merchant, lost in the wonders of this world!')
-
-		elseif msgcontains(msg, 'offer') then
-			selfSay('I change runes and premium days for Dragon Souls points!')
-
-		elseif msgcontains(msg, 'sell') then
-			selfSay('Just change!')
-
-		elseif msgcontains(msg, 'buy') then
-			selfSay('Just change!')
-
-		elseif msgcontains(msg, 'quest') then
-			selfSay('I am not geting involved in quests anymore!')
-
-		elseif msgcontains(msg, 'mission') then
-			selfSay('I am not geting involved in missions anymore!')
-
-		elseif msgcontains(msg, 'knownledge') then
-			selfSay('I have been in long trips and quests! One more dangerous than the other, now i am just traveling and wondering the world beauties!')
-
-
-		elseif msgcontains(msg, 'addon') then
-				selfSay('Ahh, this backpack? It\'s a present from Brian.')
-
-		elseif msgcontains(msg, 'backpack') then
-				selfSay('Ahh, this backpack? It\'s a present from Brian.')
-
----------------------------------- itens
-
-		elseif msgcontains(msg, 'uh') then
-			selfSay('Aceita trocar 10 DSP\'s por 1 bp com 20 runas de 20x de uh? (Requerido 45 de cap)')
-			talk_state = 111
-
-		elseif msgcontains(msg, 'explosion') then
-			selfSay('Aceita trocar 15 DSP\'s por uma bp de 60x de explosion? (Requerido 45 de cap)')
-			talk_state = 2
-
-		elseif msgcontains(msg, 'sd') then
-			selfSay('Aceita trocar 20 DSP\'s por uma bp de 20x de sd? (Requerido 45 de cap)')
-			talk_state = 3
-
-		elseif msgcontains(msg, 'gfb') then
-			selfSay('Aceita trocar 10 DSP\'s por 1 bp com 20 runas de 40x de gfb? (Requerido 45 de cap)')
-			talk_state = 4
-
-		elseif msgcontains(msg, 'hmm') then
-			selfSay('Aceita trocar 5 DSP\'s por 1 bp com 20 runas de 100x de hmm? (Requerido 45 de cap)')
-			talk_state = 5
-
-		elseif msgcontains(msg, 'destroy field') then
-			selfSay('Aceita trocar 5 DSP\'s por 1 bp com 20 runas de 60x de destroy field? (Requerido 45 de cap)')
-			talk_state = 6
-
-		elseif msgcontains(msg, 'premium') then
-			selfSay('Aceita trocar 100 DSP\'s por 30 dias de premium?')
-			talk_state = 21
-
-		elseif msgcontains(msg, 'cirurgia') then
-			selfSay('Aceita trocar 10 GP\´s por uma cirurgia de troca de sexo?')
-			talk_state = 22
-
-		elseif msgcontains(msg, 'premmy por gps') then
-			selfSay('Esse sistema foi desativado por enquanto.')
-			--talk_state = 23
-
-			-- selfSay('Aceita pagar 150k por 10 dias de premium?')
-
-		elseif msgcontains(msg, 'life ring') then
-			selfSay('Aceita trocar 10 DSP\'s por 1 bp com 20 life rings? (Requerido 35 de cap)')
-			talk_state = 31
-
-		elseif msgcontains(msg, 'ring of healing') then
-			selfSay('Aceita trocar 20 DSP\'s por 1 bp com 20 ring of healings? (Requerido 35 de cap)')
-			talk_state = 32
-
-		elseif msgcontains(msg, 'mana fluid') then
-			selfSay('Aceita trocar 15 DSP\'s por 1 Large Mana Fluid com 100 cargas? (Requerido 100 de cap)')
-			talk_state = 33
-
-		elseif msgcontains(msg, 'blessed ring') then
-			selfSay('Aceita trocar 40 DSP\'s por 1 bp com 20 Blessed rings? (Requerido 170 de cap)')
-			talk_state = 34
-
-		elseif msgcontains(msg, 'teleport') then
-			selfSay('Aceita trocar 25 DSP\'s por 10 Teleports? (Requerido 10 de cap)')
-			talk_state = 35
-
-		elseif msgcontains(msg, 'small elixir of experience') then
-			selfSay('Aceita trocar 30 DSP\'s por 50 Small Elixir of Experience? (Requerido 60 de cap)')
-			talk_state = 36
-
-		elseif msgcontains(msg, 'normal elixir of experience') then
-			selfSay('Aceita trocar 50 DSP\'s por 50 Normal Elixir of Experience? (Requerido 160 de cap)')
-			talk_state = 37
-
-		elseif msgcontains(msg, 'fighting spirit') then
-			selfSay('Aceita trocar 50 DSP\'s por 1 Fighting Spirit? (Requerido 2 de cap)')
-			talk_state = 38
-
-		elseif msgcontains(msg, 'energetico') then
-			selfSay('Aceita trocar 20 DSP\'s por 1 Energético? (Requerido 30 de cap)')
-			talk_state = 39
-
-		elseif msgcontains(msg, 'blood') then
-			selfSay('Aceita trocar 50 DSP\'s por 1 Backpack com 20 Blood of God\'s? (Requerido 1550 de cap)')
-			talk_state = 40
-
-
-		elseif msgcontains(msg, 'free premmy') then
-			selfSay('Voce ganhara 15 dias de premium de graça, mas só dessa vez!! aceita?!')
-			talk_state = 41
-
--- bps de runas 10x
-
-
-		elseif talk_state == 111 then
-		if msgcontains(msg, 'yes') then	-- uh
-		if getPlayerItemCount(cid,6527) >= 10 then
-		if talk_state == 111 then
-			doPlayerTakeItem(cid,6527,10)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de uh.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 10 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2002, 1)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			doAddContainerItem(container, 2273, 20)
-			talk_state = 0
-		else
-			selfSay('Desculpe, repita tudo dinovo.')
-		end
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-		end
-
-		elseif talk_state == 2 and msgcontains(msg, 'yes') then	-- expl
-		if getPlayerItemCount(cid,6527) >= 15 then
-			doPlayerTakeItem(cid,6527,15)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma backpack de explosion.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 15 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2001, 1)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			doAddContainerItem(container, 2313, 60)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 3 and msgcontains(msg, 'yes') then	-- sd
-		if getPlayerItemCount(cid,6527) >= 20 then
-			doPlayerTakeItem(cid,6527,20)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma backpack de sd.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 20 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2003, 1)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			doAddContainerItem(container, 2268, 20)
-                        doAddContainerItem(container, 2268, 20)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 4 and msgcontains(msg, 'yes') then	-- gfb
-		if getPlayerItemCount(cid,6527) >= 10 then
-			doPlayerTakeItem(cid,6527,10)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de gfb.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 10 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2000, 1)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			doAddContainerItem(container, 2304, 40)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 5 and msgcontains(msg, 'yes') then	-- hmm
-		if getPlayerItemCount(cid,6527) >= 5 then
-			doPlayerTakeItem(cid,6527,5)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de hmm.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 5 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2001, 1)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			doAddContainerItem(container, 2311, 100)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 6 and msgcontains(msg, 'yes') then	-- df
-		if getPlayerItemCount(cid,6527) >= 5 then
-			doPlayerTakeItem(cid,6527,5)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de destroy field.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 5 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2003, 1)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			doAddContainerItem(container, 2261, 60)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
----- premy 30 dias
-
-		elseif talk_state == 21 and msgcontains(msg, 'yes') then	-- premy
-		if getPlayerItemCount(cid,6527) >= 100 then
-			doPlayerTakeItem(cid,6527,100)
-			selfSay('/premium '.. creatureGetName(cid) ..', 30')
-			selfSay('Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu 30 dias de Premium Account.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 100 .. ' Dragon Souls Points.')
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif msgcontains(msg, 'azafyses') and talk_state == 23 then	-- premy gps
-		if isPremium(cid) then
-			selfSay('Desculpe, apenas free accounts podem comprar premmy por gps.')
-			talk_state = 0
-		else
-		if pay(cid,150000) then
-			selfSay('/premium '.. creatureGetName(cid) ..', 10')
-			selfSay('Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu 10 dias de Premium Account.")
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem dinheiro suficiente.')
-		end
-		end
-
--- sexo
-		elseif talk_state == 22 and msgcontains(msg, 'yes') then	-- cirurgia
-		if getPlayerItemCount(cid,2152) >= 1 then
-		if getPlayerSex(cid) == 0 then
-			doPlayerTakeItem(cid,2152,1)
-			selfSay('Obrigado e volte sempre.')
-			doPlayerSetSex(cid, 1)
-			doPlayerSendTextMessage(cid,22,"Voce trocou de sexo com sucesso.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 10 .. ' Dragon Souls Points.')
-			talk_state = 0
-		else
-			doPlayerTakeItem(cid,2152,1)
-			selfSay('Obrigado e volte sempre.')
-			doPlayerSetSex(cid, 0)
-			doPlayerSendTextMessage(cid,22,"Voce trocou de sexo com sucesso.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 10 .. ' Dragon Souls Points.')
-			talk_state = 0
-		end
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-
----- itens
-
-		elseif talk_state == 31 and msgcontains(msg, 'yes') then	-- life ring
-		if getPlayerItemCount(cid,6527) >= 10 then
-			doPlayerTakeItem(cid,6527,10)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de life ring.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 10 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 1998, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			doAddContainerItem(container, 2168, 1)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 32 and msgcontains(msg, 'yes') then	-- roh
-		if getPlayerItemCount(cid,6527) >= 20 then
-			doPlayerTakeItem(cid,6527,20)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de life ring.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 20 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2000, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			doAddContainerItem(container, 2214, 1)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 33 and msgcontains(msg, 'yes') then	-- lmf
-		if getPlayerItemCount(cid,6527) >= 15 then
-			doPlayerTakeItem(cid,6527,15)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu um Large Mana fluid.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 15 .. ' Dragon Souls Points.')
-			doPlayerAddItem(cid, 11771, 100)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 34 and msgcontains(msg, 'yes') then	-- B ring
-		if getPlayerItemCount(cid,6527) >= 40 then
-			doPlayerTakeItem(cid,6527,40)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de Blessed Ring.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 40 .. ' Dragon Souls Points.')
-			container = doPlayerAddItem(cid, 2000, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			doAddContainerItem(container, 13689, 1)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 35 and msgcontains(msg, 'yes') then	-- tp
-		if getPlayerItemCount(cid,6527) >= 25 then
-			doPlayerTakeItem(cid,6527,25)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu 10 Teleports.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 25 .. ' Dragon Souls Points.')
-			doPlayerAddItem(cid, 13691, 10)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 36 and msgcontains(msg, 'yes') then	-- eoe1
-		if getPlayerItemCount(cid,6527) >= 30 then
-			doPlayerTakeItem(cid,6527,30)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu 50 Small Elixir of Experience.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 30 .. ' Dragon Souls Points.')
-			doPlayerAddItem(cid, 13692, 50)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 37 and msgcontains(msg, 'yes') then	-- eoe2
-		if getPlayerItemCount(cid,6527) >= 50 then
-			doPlayerTakeItem(cid,6527,50)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu 50 Normal Elixir of Experience.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 50 .. ' Dragon Souls Points.')
-			doPlayerAddItem(cid, 13693, 50)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 38 and msgcontains(msg, 'yes') then	-- ftxp
-		if getPlayerItemCount(cid,6527) >= 50 then
-			doPlayerTakeItem(cid,6527,50)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu 1 Fighting Spirit.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 50 .. ' Dragon Souls Points.')
-			doPlayerAddItem(cid, 4863, 1)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 39 and msgcontains(msg, 'yes') then	-- energetico
-		if getPlayerItemCount(cid,6527) >= 20 then
-			doPlayerTakeItem(cid,6527,20)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu um Energético.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 20 .. ' Dragon Souls Points.')
-			doPlayerAddItem(cid, 6106, 1)
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-		elseif talk_state == 40 and msgcontains(msg, 'yes') then	-- Blood
-		if getPlayerItemCount(cid,6527) >= 50 then
-			doPlayerTakeItem(cid,6527,50)
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu uma bp de Blood of God's.")
-			doPlayerSendTextMessage(cid, 20, 'Ainda lhe resta ' .. dsp - 50 .. ' Dragon Souls Points.')
-			doPlayerAddItem(cid, 11773, 20)
-
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce não tem DSP\'s suficiente.')
-		end
-
-
-		elseif talk_state == 41 and msgcontains(msg, 'yes') then	-- free premmy
-		 if isPremium(cid) == false then
-                        selfSay('/premium '.. creatureGetName(cid) ..', 15')
-			selfSay('Aqui esta! Obrigado e volte sempre.')
-			doPlayerSendTextMessage(cid,22,"Voce recebeu 15 dias de premium account. Relogue sua conta.")
-			talk_state = 0
-		else
-			selfSay('Desculpe, mas voce ja ganhou sua premium.')
-		end
-
-
-
-
-
-
-		elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 34) then
-			selfSay('Ok then.')
-			talk_state = 0
-		end
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	return true
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
+
+local topicList = {
+    NONE = 0,
+    UH_CONFIRM = 1,
+    EXPLOSION_CONFIRM = 2,
+    SD_CONFIRM = 3,
+    GFB_CONFIRM = 4,
+    HMM_CONFIRM = 5,
+    DESTROY_FIELD_CONFIRM = 6,
+    PREMIUM_CONFIRM = 21,
+    SURGERY_CONFIRM = 22,
+    LIFE_RING_CONFIRM = 31,
+    RING_OF_HEALING_CONFIRM = 32,
+    MANA_FLUID_CONFIRM = 33,
+    BLESSED_RING_CONFIRM = 34,
+    TELEPORT_CONFIRM = 35,
+    SMALL_ELIXIR_CONFIRM = 36,
+    NORMAL_ELIXIR_CONFIRM = 37,
+    FIGHTING_SPIRIT_CONFIRM = 38,
+    ENERGETICO_CONFIRM = 39,
+    BLOOD_CONFIRM = 40,
+    FREE_PREMIUM_CONFIRM = 41
+}
+
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    local dsp = player:getItemCount(6527)
+    
+    if msgcontains(msg, 'job') then
+        npcHandler:say('I am a merchant, lost in the wonders of this world!', cid)
+    elseif msgcontains(msg, 'offer') then
+        npcHandler:say('I change runes and premium days for Dragon Souls points!', cid)
+    elseif msgcontains(msg, 'sell') or msgcontains(msg, 'buy') then
+        npcHandler:say('Just change!', cid)
+    elseif msgcontains(msg, 'quest') or msgcontains(msg, 'mission') then
+        npcHandler:say('I am not getting involved in quests anymore!', cid)
+    elseif msgcontains(msg, 'knowledge') then
+        npcHandler:say('I have been in long trips and quests! One more dangerous than the other, now i am just traveling and wondering the world beauties!', cid)
+    elseif msgcontains(msg, 'addon') or msgcontains(msg, 'backpack') then
+        npcHandler:say('Ahh, this backpack? It\'s a present from Brian.', cid)
+    
+    -- Item exchanges
+    elseif msgcontains(msg, 'uh') then
+        npcHandler:say('Aceita trocar 10 DSP\'s por 1 bp com 20 runas de 20x de uh? (Requerido 45 de cap)', cid)
+        npcHandler.topic[cid] = topicList.UH_CONFIRM
+    elseif msgcontains(msg, 'explosion') then
+        npcHandler:say('Aceita trocar 15 DSP\'s por uma bp de 60x de explosion? (Requerido 45 de cap)', cid)
+        npcHandler.topic[cid] = topicList.EXPLOSION_CONFIRM
+    elseif msgcontains(msg, 'sd') then
+        npcHandler:say('Aceita trocar 20 DSP\'s por uma bp de 20x de sd? (Requerido 45 de cap)', cid)
+        npcHandler.topic[cid] = topicList.SD_CONFIRM
+    elseif msgcontains(msg, 'gfb') then
+        npcHandler:say('Aceita trocar 10 DSP\'s por 1 bp com 20 runas de 40x de gfb? (Requerido 45 de cap)', cid)
+        npcHandler.topic[cid] = topicList.GFB_CONFIRM
+    elseif msgcontains(msg, 'hmm') then
+        npcHandler:say('Aceita trocar 5 DSP\'s por 1 bp com 20 runas de 100x de hmm? (Requerido 45 de cap)', cid)
+        npcHandler.topic[cid] = topicList.HMM_CONFIRM
+    elseif msgcontains(msg, 'destroy field') then
+        npcHandler:say('Aceita trocar 5 DSP\'s por 1 bp com 20 runas de 60x de destroy field? (Requerido 45 de cap)', cid)
+        npcHandler.topic[cid] = topicList.DESTROY_FIELD_CONFIRM
+    elseif msgcontains(msg, 'premium') then
+        npcHandler:say('Aceita trocar 100 DSP\'s por 30 dias de premium?', cid)
+        npcHandler.topic[cid] = topicList.PREMIUM_CONFIRM
+    elseif msgcontains(msg, 'cirurgia') then
+        npcHandler:say('Aceita trocar 10 GP\'s por uma cirurgia de troca de sexo?', cid)
+        npcHandler.topic[cid] = topicList.SURGERY_CONFIRM
+    elseif msgcontains(msg, 'life ring') then
+        npcHandler:say('Aceita trocar 10 DSP\'s por 1 bp com 20 life rings? (Requerido 35 de cap)', cid)
+        npcHandler.topic[cid] = topicList.LIFE_RING_CONFIRM
+    elseif msgcontains(msg, 'ring of healing') then
+        npcHandler:say('Aceita trocar 20 DSP\'s por 1 bp com 20 ring of healings? (Requerido 35 de cap)', cid)
+        npcHandler.topic[cid] = topicList.RING_OF_HEALING_CONFIRM
+    elseif msgcontains(msg, 'mana fluid') then
+        npcHandler:say('Aceita trocar 15 DSP\'s por 1 Large Mana Fluid com 100 cargas? (Requerido 100 de cap)', cid)
+        npcHandler.topic[cid] = topicList.MANA_FLUID_CONFIRM
+    elseif msgcontains(msg, 'blessed ring') then
+        npcHandler:say('Aceita trocar 40 DSP\'s por 1 bp com 20 Blessed rings? (Requerido 170 de cap)', cid)
+        npcHandler.topic[cid] = topicList.BLESSED_RING_CONFIRM
+    elseif msgcontains(msg, 'teleport') then
+        npcHandler:say('Aceita trocar 25 DSP\'s por 10 Teleports? (Requerido 10 de cap)', cid)
+        npcHandler.topic[cid] = topicList.TELEPORT_CONFIRM
+    elseif msgcontains(msg, 'small elixir of experience') then
+        npcHandler:say('Aceita trocar 30 DSP\'s por 50 Small Elixir of Experience? (Requerido 60 de cap)', cid)
+        npcHandler.topic[cid] = topicList.SMALL_ELIXIR_CONFIRM
+    elseif msgcontains(msg, 'normal elixir of experience') then
+        npcHandler:say('Aceita trocar 50 DSP\'s por 50 Normal Elixir of Experience? (Requerido 160 de cap)', cid)
+        npcHandler.topic[cid] = topicList.NORMAL_ELIXIR_CONFIRM
+    elseif msgcontains(msg, 'fighting spirit') then
+        npcHandler:say('Aceita trocar 50 DSP\'s por 1 Fighting Spirit? (Requerido 2 de cap)', cid)
+        npcHandler.topic[cid] = topicList.FIGHTING_SPIRIT_CONFIRM
+    elseif msgcontains(msg, 'energetico') then
+        npcHandler:say('Aceita trocar 20 DSP\'s por 1 Energético? (Requerido 30 de cap)', cid)
+        npcHandler.topic[cid] = topicList.ENERGETICO_CONFIRM
+    elseif msgcontains(msg, 'blood') then
+        npcHandler:say('Aceita trocar 50 DSP\'s por 1 Backpack com 20 Blood of God\'s? (Requerido 1550 de cap)', cid)
+        npcHandler.topic[cid] = topicList.BLOOD_CONFIRM
+    elseif msgcontains(msg, 'free premmy') then
+        npcHandler:say('Voce ganhara 15 dias de premium de graça, mas só dessa vez!! aceita?!', cid)
+        npcHandler.topic[cid] = topicList.FREE_PREMIUM_CONFIRM
+    
+    -- Confirmations
+    elseif npcHandler.topic[cid] == topicList.UH_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 10 then
+            player:removeItem(6527, 10)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma bp de uh.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 10) .. ' Dragon Souls Points.')
+            local container = player:addItem(2002, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2273, 20)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.EXPLOSION_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 15 then
+            player:removeItem(6527, 15)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma backpack de explosion.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 15) .. ' Dragon Souls Points.')
+            local container = player:addItem(2001, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2313, 60)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.SD_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 20 then
+            player:removeItem(6527, 20)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma backpack de sd.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 20) .. ' Dragon Souls Points.')
+            local container = player:addItem(2003, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2268, 20)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.GFB_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 10 then
+            player:removeItem(6527, 10)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma bp de gfb.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 10) .. ' Dragon Souls Points.')
+            local container = player:addItem(2000, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2304, 40)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.HMM_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 5 then
+            player:removeItem(6527, 5)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma bp de hmm.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 5) .. ' Dragon Souls Points.')
+            local container = player:addItem(2001, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2311, 100)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.DESTROY_FIELD_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 5 then
+            player:removeItem(6527, 5)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma bp de destroy field.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 5) .. ' Dragon Souls Points.')
+            local container = player:addItem(2003, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2261, 60)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.PREMIUM_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 100 then
+            player:removeItem(6527, 100)
+            player:addPremiumDays(30)
+            npcHandler:say('Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 30 dias de Premium Account.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 100) .. ' Dragon Souls Points.')
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.SURGERY_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(2152) >= 1 then
+            player:removeItem(2152, 1)
+            if player:getSex() == 0 then
+                player:setSex(1)
+            else
+                player:setSex(0)
+            end
+            npcHandler:say('Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce trocou de sexo com sucesso.")
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem o item necessário.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.LIFE_RING_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 10 then
+            player:removeItem(6527, 10)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma bp de life ring.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 10) .. ' Dragon Souls Points.')
+            local container = player:addItem(1998, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2168, 1)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.RING_OF_HEALING_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 20 then
+            player:removeItem(6527, 20)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu uma bp de ring of healing.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 20) .. ' Dragon Souls Points.')
+            local container = player:addItem(2000, 1)
+            if container then
+                for i = 1, 20 do
+                    container:addItem(2214, 1)
+                end
+            end
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.MANA_FLUID_CONFIRM and msgcontains(msg, 'yes') then
+        if player:getItemCount(6527) >= 15 then
+            player:removeItem(6527, 15)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu um Large Mana fluid.")
+            player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, 'Ainda lhe resta ' .. (dsp - 15) .. ' Dragon Souls Points.')
+            player:addItem(11771, 100)
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce não tem DSP\'s suficiente.', cid)
+        end
+    
+    elseif npcHandler.topic[cid] == topicList.FREE_PREMIUM_CONFIRM and msgcontains(msg, 'yes') then
+        if not player:isPremium() then
+            player:addPremiumDays(15)
+            npcHandler:say('Aqui esta! Obrigado e volte sempre.', cid)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce recebeu 15 dias de premium account. Relogue sua conta.")
+            npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('Desculpe, mas voce ja ganhou sua premium.', cid)
+        end
+    
+    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] > topicList.NONE then
+        npcHandler:say('Ok then.', cid)
+        npcHandler.topic[cid] = topicList.NONE
+    end
+    
+    return true
 end
+
+npcHandler:setMessage(MESSAGE_GREET, 'Hello |PLAYERNAME|! I am a merchant, lost in the wonders of this world!')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Good bye then.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'Sorry, |PLAYERNAME|! I talk to you in a minute.')
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

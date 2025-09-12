@@ -1,98 +1,68 @@
-local focus = 0
-local talk_start = 0
-local target = 0
-local following = false
-local attacking = false
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
 
+local topicList = {
+    NONE = 0,
+    MYSTIC_CONFIRM = 1
+}
+
+local function greetCallback(cid)
+    local player = Player(cid)
+    if player:isPremium() then
+        npcHandler:say('Hello ' .. player:getName() .. '! I can take you to the Mystic Island for 50 gold.', cid)
+        return true
+    else
+        npcHandler:say('Sorry, only premium players can travel by boat.', cid)
+        return false
+    end
 end
 
-
-function onCreatureAppear(creature)
-
+local function farewellCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Good bye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    
+    if msgcontains(msg, 'mystic island') then
+        npcHandler:say('Are you sure you want to go to Mystic Island?', cid)
+        npcHandler.topic[cid] = topicList.MYSTIC_CONFIRM
+    elseif npcHandler.topic[cid] == topicList.MYSTIC_CONFIRM and msgcontains(msg, 'yes') then
+        if player:removeMoney(50) then
+            npcHandler:say('Let\'s go!', cid)
+            player:teleportTo(Position(1447, 1504, 7))
+            Position(1447, 1504, 7):sendMagicEffect(CONST_ME_TELEPORT)
+        else
+            npcHandler:say('Sorry, you don\'t have enough money.', cid)
+        end
+        npcHandler.topic[cid] = topicList.NONE
+    elseif npcHandler.topic[cid] == topicList.MYSTIC_CONFIRM and msgcontains(msg, 'no') then
+        npcHandler:say('Where do you want to go then?', cid)
+        npcHandler.topic[cid] = topicList.NONE
+    end
+    
+    return true
 end
 
+npcHandler:setMessage(MESSAGE_GREET, 'Hello |PLAYERNAME|! I can take you to the Mystic Island for 50 gold.')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Good bye then.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'Sorry, |PLAYERNAME|! I talk to you in a minute.')
 
-function onCreatureTurn(creature)
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_FAREWELL, farewellCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-		if isPremium(cid) then
-			selfSay('Hello ' .. creatureGetName(cid) .. '! I can take you to the Mystic Island for 50 gold.')
-			focus = cid
-			talk_start = os.clock()
-		else
-			selfSay('Sorry, only premium players can travel by boat.')
-			focus = 0
-			talk_start = 0
-		end
-
-  	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-		if msgcontains(msg, 'mystic island') then
-			selfSay('Are you sure you want to go to Mystic Island?')
-			talk_state = 1
-
-		elseif talk_state == 1 then
-			if msgcontains(msg, 'yes') then
-				if pay(cid,50) then
-					travel(cid, 1447, 1504, 7)
-					selfSay('Let\'s go!')
-				else
-					selfSay('Sorry, you don\'t have enough money.')
-				end
- 			end
-			talk_state = 0
-		
-		elseif msgcontains(msg, 'bye') and getDistanceToCreature(cid) < 4 then
-			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-			focus = 0
-			talk_start = 0
-		end
-	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('Next Please...')
-  		end
-  			focus = 0
-  	end
-	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:addModule(FocusModule:new())

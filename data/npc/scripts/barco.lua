@@ -1,108 +1,115 @@
-local internalCustomerQueue = {}
-local keywordHandler = KeywordHandler:new({root = {}})
-local npcHandler = ShopNpcHandler:new({})
-local customerQueue = CustomerQueue:new({customers = internalCustomerQueue, handler = npcHandler})
-npcHandler:init(customerQueue, keywordHandler)
-npcHandler.walkDistance = 0
-local cost = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+local cost = {}
 local destination = {}
 
--- OTServ event handling functions start
-function onThingMove(creature, thing, oldpos, oldstackpos) 				npcHandler:onThingMove(creature, thing, oldpos, oldstackpos) end
-function onCreatureAppear(creature) 							npcHandler:onCreatureAppear(creature) end
-function onCreatureDisappear(id) 							npcHandler:onCreatureDisappear(id) end
-function onCreatureTurn(creature) 							npcHandler:onCreatureTurn(creature) end
-function onCreatureSay(cid, type, msg) 						npcHandler:onCreatureSay(cid, type, msg) end
-function onCreatureChangeOutfit(creature) 						npcHandler:onCreatureChangeOutfit(creature) end
-function onThink() 									npcHandler:onThink() end
--- OTServ event handling functions end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
 
+local topicList = {
+    NONE = 0,
+    TRAVEL_CONFIRM = 1
+}
 
--- Keyword handling functions start
-function tradeItem(cid, message, keywords, parameters) 			return npcHandler:defaultTradeHandler(cid, message, keywords, parameters) end
-function confirmAction(cid, message, keywords, parameters) 		return npcHandler:defaultConfirmHandler(cid, message, keywords, parameters) end
-function sayMessage(cid, message, keywords, parameters) 			return npcHandler:defaultMessageHandler(cid, message, keywords, parameters) end
-function greet(cid, message, keywords, parameters) 			return npcHandler:defaultGreetHandler(cid, message, keywords, parameters) end
-function farwell(cid, message, keywords, parameters) 			return npcHandler:defaultFarwellHandler(cid, message, keywords, parameters) end
--- Keyword handling functions end
-
-
-
-
--- Systema de viajem
-
-function travel(cid, message, keywords, parameters)
-   if(cid ~= npcHandler.focus) then
-      return false
-   end
-if (parameters.premium and getPlayerPremium(cid) <= 0) then                                  -- MUDAR PRA GET PREMIUN FUNCIONANDO
-   selfSay('Only players with premium accounts may travel there.')
-   return true
-end
-   selfSay('Do you wish to travel to ' .. keywords[1] .. ' for ' .. parameters.cost .. ' gold coins?')
-   destination = parameters.pos
-   cost = parameters.cost
-   npcHandler.talkstate = 1
-   return true
-end
-
-function confirmAction(cid, message, keywords, parameters)
-    if(cid ~= npcHandler.focus) then
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
         return false
     end
     
-    if(keywords[1] == 'yes') then
-        if(npcHandler.talkstate == 1) then
-            if(doPlayerRemoveMoney(cid, cost) == TRUE) then
-                selfSay('Set the sails!')
-                doTeleportThing(cid, destination)
-	     doSendMagicEffect(destination,10)
-                npcHandler.talkstate = 0
-            else
-                selfSay('You do not have enough money!')
-                npcHandler.talkstate = 0
-            end
+    local player = Player(cid)
+    
+    if msgcontains(msg, 'tombstone') then
+        if player:isPremium() then
+            npcHandler:say('Do you wish to travel to tombstone for 80 gold coins?', cid)
+            destination[cid] = Position(993, 972, 7)
+            cost[cid] = 80
+            npcHandler.topic[cid] = topicList.TRAVEL_CONFIRM
+        else
+            npcHandler:say('Only players with premium accounts may travel there.', cid)
+            npcHandler.topic[cid] = topicList.NONE
         end
-
-    elseif(keywords[1] == 'no') then
-        if(npcHandler.talkstate == 1) then
-            selfSay('Where do you wish to go then?')
-            npcHandler.talkstate = 0
+    elseif msgcontains(msg, 'carlin') then
+        if player:isPremium() then
+            npcHandler:say('Do you wish to travel to carlin for 80 gold coins?', cid)
+            destination[cid] = Position(998, 968, 7)
+            cost[cid] = 80
+            npcHandler.topic[cid] = topicList.TRAVEL_CONFIRM
+        else
+            npcHandler:say('Only players with premium accounts may travel there.', cid)
+            npcHandler.topic[cid] = topicList.NONE
+        end
+    elseif npcHandler.topic[cid] == topicList.TRAVEL_CONFIRM then
+        if msgcontains(msg, 'yes') then
+            if player:removeMoney(cost[cid]) then
+                npcHandler:say('Set the sails!', cid)
+                player:teleportTo(destination[cid])
+                destination[cid]:sendMagicEffect(CONST_ME_TELEPORT)
+                npcHandler.topic[cid] = topicList.NONE
+                cost[cid] = nil
+                destination[cid] = nil
+            else
+                npcHandler:say('You do not have enough money!', cid)
+                npcHandler.topic[cid] = topicList.NONE
+                cost[cid] = nil
+                destination[cid] = nil
+            end
+        elseif msgcontains(msg, 'no') then
+            npcHandler:say('Where do you wish to go then?', cid)
+            npcHandler.topic[cid] = topicList.NONE
+            cost[cid] = nil
+            destination[cid] = nil
         end
     end
     
     return true
 end
 
--- Systema de viajem Fim
+-- Keywords
+keywordHandler:addKeyword({'offer'}, StdModule.say, {
+    npcHandler = npcHandler, 
+    onlyFocus = true, 
+    text = 'I can take you from here to tombstone and carlin.'
+})
 
+keywordHandler:addKeyword({'travel'}, StdModule.say, {
+    npcHandler = npcHandler, 
+    onlyFocus = true, 
+    text = 'I can take you from here to tombstone and carlin.'
+})
 
+keywordHandler:addKeyword({'sell'}, StdModule.say, {
+    npcHandler = npcHandler, 
+    onlyFocus = true, 
+    text = 'I am not buying anything.'
+})
 
+keywordHandler:addKeyword({'buy'}, StdModule.say, {
+    npcHandler = npcHandler, 
+    onlyFocus = true, 
+    text = 'I am just selling passages for carlin and tombstone.'
+})
 
+keywordHandler:addKeyword({'job'}, StdModule.say, {
+    npcHandler = npcHandler, 
+    onlyFocus = true, 
+    text = 'I am the Captain of this Ship!'
+})
 
--- General message keywords
+keywordHandler:addKeyword({'quest'}, StdModule.say, {
+    npcHandler = npcHandler, 
+    onlyFocus = true, 
+    text = 'Since i get busted by pirates in my quests, i never get out of route again!'
+})
 
-keywordHandler:addKeyword({'tombstone'},       travel, {cost = 80,  premium = true, pos = {x = 993, y = 972, z = 7} })
-keywordHandler:addKeyword({'carlin'},         	travel, {cost = 80,  premium = true, pos = {x = 998, y = 968, z = 7} })
+keywordHandler:addKeyword({'mission'}, StdModule.say, {
+    npcHandler = npcHandler, 
+    onlyFocus = true, 
+    text = 'Since i get busted by pirates in my quests, i never get out of route again!'
+})
 
-keywordHandler:addKeyword({'yes'}, 		confirmAction, nil)
-keywordHandler:addKeyword({'no'}, 		confirmAction, nil)
-
-
-keywordHandler:addKeyword({'offer'},		sayMessage, {text = 'I can take you from here to tombstone and carlin.'})
-keywordHandler:addKeyword({'travel'}, 	sayMessage, {text = 'I can take you from here to tombstone and carlin.'})
-keywordHandler:addKeyword({'sell'}, 		sayMessage, {text = 'I am not buing anything.'})
-keywordHandler:addKeyword({'buy'}, 		sayMessage, {text = 'I am just selling passages for carlin and tombstone.'})
-keywordHandler:addKeyword({'job'}, 		sayMessage, {text = 'I am the Capitan of this Ship!'})
-keywordHandler:addKeyword({'quest'}, 		sayMessage, {text = 'Since i get busted by pirates in my quests, i never get out of route again!'})
-keywordHandler:addKeyword({'mission'}, 	sayMessage, {text = 'Since i get busted by pirates in my quests, i never get out of route again!'})
-
--- General end
-
-
-
--- Hi and Bye
-keywordHandler:addKeyword({'hi'}, greet, nil)
-keywordHandler:addKeyword({'hello'}, greet, nil)
-keywordHandler:addKeyword({'hey'}, greet, nil)
-keywordHandler:addKeyword({'bye'}, farwell, nil)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

@@ -1,132 +1,156 @@
-focus = 0
-  talk_start = 0
-  target = 0
-  following = false
-  attacking = false
-  ox = 145
-  oy = 51
-  oz = 6
-  max = 5
-  function onThingMove(creature, thing, oldpos, oldstackpos)
-  
-  end
-  
-  
-  function onCreatureAppear(creature)
-  
-  end
-  
-  
-  function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
-  end
-  
-  
-  function onCreatureTurn(creature)
-  
-  endfunction msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-  end
-  
-  
-  function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-  
-  	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Hello, ' .. creatureGetName(cid) .. '! I sell beer and wine for 10 gp.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
-  	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Ola, ' .. creatureGetName(cid) .. '! Vendo beer e wine por 10gp.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
-  
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Leave us alone, ' .. creatureGetName(cid) .. '!')
-  	end
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Nos deixe ' .. creatureGetName(cid) .. '!')
-  	end
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-  	if msgcontains(msg, 'buy beer') and focus == cid then
-  		buy(cid,2006,3,10)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'buy wine') and focus == cid then
-  		buy(cid,2006,15,10)
-  		talk_start = os.clock()
-  	end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
 
-        if msgcontains(msg, 'quest') and focus == cid then
-  		selfSay('Explore Dungeon Caves on carlin a tired old man told me anything about a great teasure and many quests on this city')
-  		talk_start = os.clock()
-  	end
-  
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
-  		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 3 then
-  		selfSay('Adeus, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  
-  end
-  
-  
-  function onCreatureChangeOutfit(creature)
-  
-  end
-  
-  
- function onThink() 
-if focus == 0 then
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,20)
-if randmove == 1 then
-nx = cx + 1
-end
-if randmove == 2 then
-nx = cx - 1
-end
-if randmove == 3 then
-ny = cy + 1
-end
-if randmove == 4 then
-ny = cy - 1
-end
-if randmove >= 5 then
-nx = cx
-ny = cy
-end
-moveToPosition(nx, ny, cz)
+-- Movement area configuration
+local ox = 145
+local oy = 51  
+local oz = 6
+local max = 5
+
+local lastRandomMove = 0
+
+function onThink()
+    npcHandler:onThink()
+    
+    -- Random movement when not focused
+    if not npcHandler:isFocused() then
+        local currentTime = os.time()
+        if currentTime - lastRandomMove > 3 then -- Move every 3 seconds
+            lastRandomMove = currentTime
+            local npc = Npc()
+            if npc then
+                local pos = npc:getPosition()
+                local randmove = math.random(1, 20)
+                local newPos = Position(pos.x, pos.y, pos.z)
+                
+                if randmove == 1 then
+                    newPos.x = pos.x + 1
+                elseif randmove == 2 then
+                    newPos.x = pos.x - 1
+                elseif randmove == 3 then
+                    newPos.y = pos.y + 1
+                elseif randmove == 4 then
+                    newPos.y = pos.y - 1
+                end
+                
+                -- Check if new position is within allowed area
+                if math.abs(newPos.x - ox) <= max and math.abs(newPos.y - oy) <= max then
+                    local tile = Tile(newPos)
+                    if tile and not tile:hasProperty(CONST_PROP_BLOCKINGANDNOTMOVEABLE) then
+                        npc:teleportTo(newPos)
+                    end
+                end
+            end
+        end
+    end
 end
 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Adeus.')
-  			focus = 0
-  		end
-	end
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Shop items
+shopModule:addBuyableItem({'beer'}, 2006, 10, 3, 'beer') -- beer with 3 charges
+shopModule:addBuyableItem({'wine'}, 2006, 10, 15, 'wine') -- wine with 15 charges
+
+local function greetCallback(cid)
+    local player = Player(cid)
+    return true
 end
- 
+
+local function farewellCallback(cid)
+    local player = Player(cid)
+    return true
+end
+
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        local player = Player(cid)
+        if not player then
+            return false
+        end
+        
+        if msgcontains(msg, 'hi') then
+            npcHandler:say('Hello, ' .. player:getName() .. '! I sell beer and wine for 10 gp.', cid)
+            return true
+        elseif msgcontains(msg, 'oi') then
+            npcHandler:say('Ola, ' .. player:getName() .. '! Vendo beer e wine por 10gp.', cid)
+            return true
+        end
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if msgcontains(msg, 'buy beer') then
+        if player:removeMoney(10) then
+            player:addItem(2006, 1):setAttribute(ITEM_ATTRIBUTE_FLUIDTYPE, 3) -- beer fluid
+            npcHandler:say('Here is your beer!', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "You bought a beer.")
+        else
+            npcHandler:say('You don\'t have enough money.', cid)
+        end
+        
+    elseif msgcontains(msg, 'buy wine') then
+        if player:removeMoney(10) then
+            player:addItem(2006, 1):setAttribute(ITEM_ATTRIBUTE_FLUIDTYPE, 15) -- wine fluid
+            npcHandler:say('Here is your wine!', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "You bought a wine.")
+        else
+            npcHandler:say('You don\'t have enough money.', cid)
+        end
+        
+    elseif msgcontains(msg, 'quest') then
+        npcHandler:say('Explore Dungeon Caves on carlin a tired old man told me anything about a great teasure and many quests on this city', cid)
+        
+    elseif msgcontains(msg, 'tchau') then
+        npcHandler:say('Adeus, ' .. player:getName() .. '!', cid)
+        npcHandler:releaseFocus(cid)
+    end
+    
+    return true
+end
+
+-- Keywords for automatic responses
+keywordHandler:addKeyword({'quest'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'Explore Dungeon Caves on carlin a tired old man told me anything about a great teasure and many quests on this city'
+})
+
+keywordHandler:addKeyword({'beer'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'I sell fresh beer for 10 gold pieces. Just say "buy beer" if you want one!'
+})
+
+keywordHandler:addKeyword({'wine'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'I sell good wine for 10 gold pieces. Just say "buy wine" if you want one!'
+})
+
+keywordHandler:addKeyword({'offer', 'trade'}, StdModule.say, {
+    npcHandler = npcHandler,
+    onlyFocus = true,
+    text = 'I sell beer and wine, both for 10 gold pieces each.'
+})
+
+-- Greet messages
+npcHandler:setMessage(MESSAGE_GREET, 'Hello |PLAYERNAME|! I sell beer and wine for 10 gp.')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Adeus.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'Leave us alone, |PLAYERNAME|!')
+
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_FAREWELL, farewellCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+
+npcHandler:addModule(FocusModule:new())

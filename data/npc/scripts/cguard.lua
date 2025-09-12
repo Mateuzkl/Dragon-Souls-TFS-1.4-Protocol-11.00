@@ -1,13 +1,10 @@
-dofile('data/npc/lib/npcsystem/npcsystem.lua')
-dofile('data/npc/lib/npcsystem/customModules.lua')
-
 local keywordHandler = KeywordHandler:new()
-local npcHandler = NpcHandler:new(keywordHandler)  
+local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
 function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
 function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
-function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
 function onThink()                          npcHandler:onThink()                        end
 
 local GUARD_CONFIG = {
@@ -33,11 +30,12 @@ local function stopFollowing()
     GUARD_CONFIG.attackCount = 0
 end
 
-local function moveTowardsPlayer(npcPos, playerPos)
-    if not npcPos or not playerPos then
+local function moveTowardsPlayer(npc, playerPos)
+    if not npc or not playerPos then
         return false
     end
     
+    local npcPos = npc:getPosition()
     local dx = playerPos.x - npcPos.x
     local dy = playerPos.y - npcPos.y
     
@@ -60,11 +58,8 @@ local function moveTowardsPlayer(npcPos, playerPos)
     local tile = Tile(newPos)
     
     if tile and not tile:hasFlag(TILESTATE_BLOCKSOLID) then
-        local npc = Npc(getNpcCid())
-        if npc then
-            npc:move(newPos)
-            return true
-        end
+        npc:moveToPosition(newPos)
+        return true
     end
     
     return false
@@ -91,7 +86,7 @@ local function attackCreature(creature, npcPos)
         creature:addHealth(-GUARD_CONFIG.attackDamage)
     end
     
-    Game.sendAnimatedText(GUARD_CONFIG.attackDamage, pos, TEXTCOLOR_RED)
+    pos:sendAnimatedText(GUARD_CONFIG.attackDamage, TEXTCOLOR_RED)
     
     GUARD_CONFIG.attackCount = GUARD_CONFIG.attackCount + 1
 end
@@ -104,12 +99,7 @@ local function guardThinkCheck()
     
     GUARD_CONFIG.lastCheck = currentTime
     
-    local npcCid = getNpcCid()
-    if not npcCid then
-        return
-    end
-    
-    local npc = Npc(npcCid)
+    local npc = Npc(getNpcId())
     if not npc then
         return
     end
@@ -124,19 +114,19 @@ local function guardThinkCheck()
             local distance = npcPos:getDistance(targetPos)
             
             if distance > GUARD_CONFIG.followRadius then
-                selfSay('You escaped this time, coward!')
+                npcHandler:say('You escaped this time, coward!')
                 stopFollowing()
                 return
             end
             
             if isInProtectionZone(targetPos) then
-                selfSay('Hiding in the protection zone like a coward!')
+                npcHandler:say('Hiding in the protection zone like a coward!')
                 stopFollowing()
                 return
             end
             
             if GUARD_CONFIG.attackCount >= GUARD_CONFIG.maxAttacks then
-                selfSay('I think you learned your lesson!')
+                npcHandler:say('I think you learned your lesson!')
                 stopFollowing()
                 return
             end
@@ -144,7 +134,7 @@ local function guardThinkCheck()
             if distance <= 1 then
                 attackCreature(target, npcPos)
             elseif distance <= GUARD_CONFIG.followRadius then
-                moveTowardsPlayer(npcPos, targetPos)
+                moveTowardsPlayer(npc, targetPos)
             end
         else
             stopFollowing()
@@ -159,7 +149,7 @@ local function guardThinkCheck()
         if creature:isPlayer() then
             local player = creature
             if player:getSkull() > 0 and not isInProtectionZone(player:getPosition()) then
-                selfSay('A criminal! Attack!')
+                npcHandler:say('A criminal! Attack!')
                 attackCreature(player, npcPos)
             end
         elseif creature:isMonster() then
@@ -170,19 +160,19 @@ local function guardThinkCheck()
     end
 end
 
-function creatureSayCallback(cid, type, msg)
+local function creatureSayCallback(cid, msgType, msg)
     if not npcHandler:isFocused(cid) then
         if msgcontains(msg, 'fuck') or msgcontains(msg, 'shit') or msgcontains(msg, 'foda') then
             local player = Player(cid)
             if player and npcHandler:getDistanceToCreature(cid) < 4 then
-                selfSay('Watch your mouth, ' .. player:getName() .. '!', cid)
+                npcHandler:say('Watch your mouth, ' .. player:getName() .. '!', cid)
                 if not isInProtectionZone(player:getPosition()) then
-                    selfSay('I will chase you down and teach you some manners!', cid)
+                    npcHandler:say('I will chase you down and teach you some manners!', cid)
                     GUARD_CONFIG.targetPlayer = cid
                     GUARD_CONFIG.following = true
                     GUARD_CONFIG.attackCount = 0
                 else
-                    selfSay('Lucky you are in a safe zone!', cid)
+                    npcHandler:say('Lucky you are in a safe zone!', cid)
                 end
             end
         end
@@ -196,38 +186,39 @@ function creatureSayCallback(cid, type, msg)
     
     if msgcontains(msg, 'fuck') or msgcontains(msg, 'shit') or msgcontains(msg, 'foda') then
         if isInProtectionZone(player:getPosition()) then
-            selfSay('Ha! On protection zone you coward!', cid)
+            npcHandler:say('Ha! On protection zone you coward!', cid)
         else
-            selfSay('You will regret those words! I will hunt you down!', cid)
+            npcHandler:say('You will regret those words! I will hunt you down!', cid)
             GUARD_CONFIG.targetPlayer = cid
             GUARD_CONFIG.following = true
             GUARD_CONFIG.attackCount = 0
         end
         
     elseif msgcontains(msg, 'stop') or msgcontains(msg, 'sorry') then
-        selfSay('Fine! Behave yourself next time!', cid)
+        npcHandler:say('Fine! Behave yourself next time!', cid)
         stopFollowing()
         
     elseif msgcontains(msg, 'help') then
-        selfSay('I am here to protect this town from criminals and monsters.', cid)
+        npcHandler:say('I am here to protect this town from criminals and monsters.', cid)
         
     elseif msgcontains(msg, 'job') then
-        selfSay('I am a guard of this town. I protect citizens and hunt down troublemakers.', cid)
+        npcHandler:say('I am a guard of this town. I protect citizens and hunt down troublemakers.', cid)
     end
     
     return true
 end
 
-function onGreet(cid)
-    selfSay('Long live the Queen! I am a guard of this town.', cid)
+local function onGreet(cid)
+    npcHandler:say('Long live the Queen! I am a guard of this town.', cid)
     return true
 end
 
-function onFarewell(cid)
+local function onFarewell(cid)
     local player = Player(cid)
     if player then
-        selfSay('Stay out of trouble, ' .. player:getName() .. '.', cid)
+        npcHandler:say('Stay out of trouble, ' .. player:getName() .. '.', cid)
     end
+    return true
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

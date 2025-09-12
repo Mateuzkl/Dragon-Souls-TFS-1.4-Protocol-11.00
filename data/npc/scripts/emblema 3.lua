@@ -1,119 +1,95 @@
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-
-local focus = 0
-local talk_start = 0
-local target = 0
-local days = 0
-
-function onThingMove(creature, thing, oldpos, oldstackpos)
-
+function onCreatureAppear(cid)              
+    npcHandler:onCreatureAppear(cid)
+    npcHandler:say('Help!')
 end
 
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
 
-function onCreatureAppear(creature)
-          selfSay('Help!')
+local lastRandomTalk = 0
+
+function onThink()                          
+    npcHandler:onThink()
+    
+    -- Random help messages when not focused
+    if not npcHandler:isFocused() then
+        local currentTime = os.time()
+        if currentTime - lastRandomTalk > 30 then -- Talk every 30 seconds max
+            lastRandomTalk = currentTime
+            local randsay = math.random(1, 100)
+            if randsay == 1 then
+                npcHandler:say('Help!')
+            elseif randsay == 50 then
+                npcHandler:say('Here! I need help!')
+            elseif randsay == 100 then
+                npcHandler:say('Help me please!')
+            end
+        end
+    end
 end
 
+local topicList = {
+    NONE = 0,
+    LETTER_CONFIRM = 1
+}
 
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+local function greetCallback(cid)
+    local player = Player(cid)
+    local addon = player:getStorageValue(30000)
+    
+    if addon == 2 then
+        npcHandler:say('Thanks god! I was losing my hope... I am damaged, can you take a message from me to the queen?', cid)
+        npcHandler.topic[cid] = topicList.LETTER_CONFIRM
+    else
+        npcHandler:say('What you doing here? Take a message from the queen!', cid)
+        npcHandler.topic[cid] = topicList.NONE
+    end
+    return true
 end
 
-
-function onCreatureTurn(creature)
+local function farewellCallback(cid)
+    local player = Player(cid)
+    npcHandler:say('Good bye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    
+    if npcHandler.topic[cid] == topicList.LETTER_CONFIRM and msgcontains(msg, 'yes') then
+        player:setStorageValue(30000, 3)
+        player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+        
+        local letter = player:addItem(2598, 1)
+        if letter then
+            letter:setAttribute(ITEM_ATTRIBUTE_TEXT, "Dagmar was on attack, we need your help my queen! By Narzan.")
+        end
+        
+        npcHandler:say('Say to her that you have a message from Narzan... Run, we have no time!', cid)
+        npcHandler.topic[cid] = topicList.NONE
+    elseif npcHandler.topic[cid] == topicList.LETTER_CONFIRM and msgcontains(msg, 'no') then
+        npcHandler:say('Ok than.', cid)
+        npcHandler.topic[cid] = topicList.NONE
+    end
+    
+    return true
 end
 
+npcHandler:setMessage(MESSAGE_GREET, 'Thanks god! I was losing my hope... I am damaged, can you take a message from me to the queen?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Good bye then.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'Sorry, |PLAYERNAME|! Calm down.')
 
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
+npcHandler:setCallback(CALLBACK_GREET, greetCallback)
+npcHandler:setCallback(CALLBACK_FAREWELL, farewellCallback)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-			addon = getPlayerStorageValue(cid,30000)
-				if addon == 2 then
-					selfSay('Thanks god! I was losing my hope... I am damaged, can you take a message from me to the queen?')
-					talk_state = 1
- 					focus = cid
- 					talk_start = os.clock()
-				else
-					selfSay('What you doing here? Take a message from the queen!')
- 					focus = cid
- 					talk_start = os.clock()
-				end
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! Calm down.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-
-	if msgcontains(msg, 'yes') and talk_state == 1 then
-		setPlayerStorageValue(cid,30000,3)
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		carta = doPlayerAddItem(cid, 2598, 1)
-	doSetItemText(carta,"Dagmar was on attack, we need your help my queen! By Narzan.")
-		selfSay('Say to her that you have a message from Narzan... Run, we have no time!')
-		talk_state = 0
-
-
-
-
-		elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 34) then
-			selfSay('Ok than.')
-			talk_state = 0
-
-  		elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 4 then
-  			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  			focus = 0
-  			talk_start = 0
-  		end
-  	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-
-if focus == 0 then
-randsay = math.random(1,100)
-if randsay == 1 then
- selfSay('Help!') 
-end
-if randsay == 50 then
- selfSay('Here! I need help!') 
-end
-if randsay == 100 then
- selfSay('Help me please!') 
-end
-end
-
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('...')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:addModule(FocusModule:new())
