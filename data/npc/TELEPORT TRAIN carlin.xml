@@ -1,4 +1,4 @@
-<npc name="Sony" script="teleport treino carlin.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Sony" script="teleport treino carlin.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="143" head="60" body="58" legs="57" feet="114" addons="3"/>
 

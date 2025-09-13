@@ -1,4 +1,4 @@
-<npc name="Soya" script="loot.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Soya" script="loot.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="139" head="132" body="79" legs="97" feet="132" corpse="2212"/>
 	<parameters>

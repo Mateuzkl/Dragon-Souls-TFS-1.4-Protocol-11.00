@@ -18,7 +18,7 @@ function onCreatureDisappear(cid)
         target = 0
         attacking = false
         following = false
-        local npc = Creature(getNpcId())
+        local npc = Npc()
         if npc then
             npc:setTarget(nil)
         end
@@ -32,7 +32,7 @@ end
 function onThink()                          
     npcHandler:onThink()
     
-    local npc = Creature(getNpcId())
+    local npc = Npc()
     if not npc then
         return
     end

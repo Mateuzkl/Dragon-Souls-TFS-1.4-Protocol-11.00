@@ -1,29 +1,195 @@
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
+local talkState = {}
 
-
-
--- OTServ event handling functions start
-function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
-function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
-function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
-function onThink() 						npcHandler:onThink() end
--- OTServ event handling functions end
+function onCreatureAppear(cid)	 npcHandler:onCreatureAppear(cid)	 end
+function onCreatureDisappear(cid) npcHandler:onCreatureDisappear(cid)	 end
+function onCreatureSay(cid, type, msg) npcHandler:onCreatureSay(cid, type, msg)	 end
+function onThink()	 npcHandler:onThink()	 end
 
 local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
 
-shopModule:addBuyableItem({'extreme sudden death', 'esd'}, 					2267, 100000, 	10, 	'extreme sudden death 10x')
+shopModule:addBuyableItem({'extreme sudden death'}, 2267, 100000, 20, 'extreme sudden death rune')
+shopModule:addBuyableItem({'extreme explosion'}, 2314, 100000, 30, 'extreme explosion rune')
+shopModule:addBuyableItem({'extreme ultimate healing rune'}, 2275, 100000, 20, 'extreme ultimate healing rune')
 
-shopModule:addBuyableItem({'extreme explosion', 'eexpl'}, 					2315, 150000, 	30, 	'extreme explosion 30x')
 
-shopModule:addBuyableItem({'concentrated demonic blood', 'blood'}, 					6558, 150000, 	1, 	'concentrated demonic blood')
+---------------------------------------- crossbow ---------------------------------------- 
+shopModule:addSellableItem({'arbalest'},		5803,  500000,      'arbalest')
+shopModule:addSellableItem({'elven crossbow'},          38782, 1000000,     'elven crossbow')
+shopModule:addSellableItem({'celestial crossbow'},      38783, 1500000,     'celestial crossbow')
 
-keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Job? Im just a traveller'})
-keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I cant talk about that now!'})
-keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I cant talk about that now!'})
-keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I am buying all equipaments of valans and selling some rare runes and concentrated demonic bloods.'})
-keywordHandler:addKeyword({'runes'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Hmm... I got some rare runes here, like extreme sudden death(esd) and extreme explosion(eexpl).'})
+---------------------------------------- axes ----------------------------------------
+shopModule:addSellableItem({"ravager's axe"},           2443,  200000,     "ravager's axe")
+shopModule:addSellableItem({'stonecutter axe'},         2431,  300000,     'stonecutter axe')
+shopModule:addSellableItem({"great axe"},          		2415,  500000,     'great axe')
+shopModule:addSellableItem({'underguard axe'},          39034, 1000000,    'underguard axe')
+shopModule:addSellableItem({'toguro hammer'},           39017, 1000000,    'toguro hammer')
+shopModule:addSellableItem({'adamantiun axe'},          38796, 3000000,    'adamantiun axe')
+shopModule:addSellableItem({'mithril axe'},          	38812, 2000000,    'mithril axe')
+shopModule:addSellableItem({'diamond axe '},          	38721, 2000000,    'diamond axe ')
+shopModule:addSellableItem({'skullz axe'},          	38811, 2000000,    'skullz axe')
+shopModule:addSellableItem({'guardian axe'},          	38777, 2000000,    'guardian axe')
+shopModule:addSellableItem({'dragonslayer axe'},		39015, 3000000,    'dragonslayer axe')
+shopModule:addSellableItem({'magic fire axe'},			39096, 2000000,    'magic fire axe')
+shopModule:addSellableItem({'axe of thor'},				39560, 3000000,    'axe of thor')
+shopModule:addSellableItem({'dommed axe'},          	39059, 6000000,    'dommed axe')
+shopModule:addSellableItem({'jomungard axe'},           38809, 3000000,    'jomungard axe')
+shopModule:addSellableItem({'magma axe'},          		38808, 4000000,    'magma axe')
+--shopModule:addSellableItem({'bloodhunter axe'},     	13511, 5200000,    'bloodhunter axe')
 
+---------------------------------------- clubs ---------------------------------------- 
+shopModule:addSellableItem({'demonbone'},          		7431,  50000,       'demonbone')
+shopModule:addSellableItem({'hammer of wrath'},         2444,  200000,      'hammer of wrath')
+shopModule:addSellableItem({'orcish maul'},          	7392,  200000,      'orcish maul')
+shopModule:addSellableItem({'heavy mace'},          	2452,  300000,      'heavy mace')
+shopModule:addSellableItem({'thunder hammer'},          2421,  100000,      'thunder hammer')
+shopModule:addSellableItem({'mace of fury'},          	38802, 2500000,     'mace of fury')
+shopModule:addSellableItem({'greatsmith hammer'},       38807, 3000000,     'greatsmith hammer')
+shopModule:addSellableItem({'angelical hammer'},		38788, 4000000,     'angelical hammer')
+shopModule:addSellableItem({'hammer of hercules'},      38803, 6000000,     'hammer of hercules')
+
+---------------------------------------- fists ---------------------------------------- 
+shopModule:addSellableItem({'iron gloves'},          	38717, 3000000,     'iron gloves')
+shopModule:addSellableItem({'four blades'},          	38779, 3000000,     'four blades')
+shopModule:addSellableItem({'golden gloves'},          	38772, 3000000,     'golden gloves')
+shopModule:addSellableItem({'spyked grinder'},          38746, 1500000,     'spyked grinder')
+shopModule:addSellableItem({'fist butcher'},          	38785, 100000,      'fist butcher')
+
+---------------------------------------- swords ---------------------------------------- 
+shopModule:addSellableItem({'magic longsword'},         2390,  200000,      'magic longsword')
+shopModule:addSellableItem({'under sword'},             39048, 200000,      'under sword')
+shopModule:addSellableItem({'magic sword'},          	2400,  100000,      'magic sword')
+shopModule:addSellableItem({'warlord sword'},          	2408,  100000,      'warlord sword')
+shopModule:addSellableItem({'venom magic sword'},       39056, 2000000,     'venom magic sword')
+shopModule:addSellableItem({'darkness sword'},      	38718, 2000000,     'darkness sword')
+shopModule:addSellableItem({'helical sword'},         	39033, 2000000,     'helical sword')
+shopModule:addSellableItem({'divine sword'},         	39357, 6000000,     'divine sword')
+shopModule:addSellableItem({'alabarda of fire'},        38793, 2500000,     'alabarda of fire')
+shopModule:addSellableItem({'sword of teseu'},          38792, 2000000,     'sword of teseu')
+shopModule:addSellableItem({'dommed sword'},            38775, 6000000,     'dommed sword')
+shopModule:addSellableItem({'thurdillion sword'},       38791, 5000000,     'thurdillion sword')
+
+
+---------------------------------------- helmets ---------------------------------------- 
+
+shopModule:addSellableItem({'winged helemt'},          	2474,  100000,    'winged helmet')
+shopModule:addSellableItem({'magic plate helmet'},      38834, 500000,    'magic plate helmet')
+shopModule:addSellableItem({'infantry helmet'},         39039, 500000,    'infantry helmet')
+shopModule:addSellableItem({'floyd pink hat'},          38993, 500000,    'floyd pink hat')
+shopModule:addSellableItem({'elven helmet'},          	2506,  1000000,   'elven helmet')
+shopModule:addSellableItem({'mind helmet'},          	38836, 1000000,   'mind helmet')
+shopModule:addSellableItem({'thordain helmet'},         38931, 1000000,   'thordain helmet')
+shopModule:addSellableItem({'horned helmet'},          	2496,  1000000,   'horned helmet')
+shopModule:addSellableItem({'gladiator helmet'},        38833, 1500000,   'gladiator helmet')
+shopModule:addSellableItem({'blacksmith helmet'},       38938, 1800000,   'blacksmith helmet')
+shopModule:addSellableItem({'venom scale helmet'},      38987, 1800000,   'venom scale helmet')
+shopModule:addSellableItem({'phoenix helmet'},          38838, 2000000,   'phoenix helmet')
+shopModule:addSellableItem({'dark stuff helmet'},       38738, 2000000,   'dark stuff helmet')
+shopModule:addSellableItem({'darkness scale helmet'},   38832, 2300000,   'darkness scale helmet')
+shopModule:addSellableItem({'diabolic hat'},   			38740, 2300000,   'diabolic hat')
+shopModule:addSellableItem({'enchanted golden helmet'}, 39020, 2500000,   'enchanted golden helmet')
+shopModule:addSellableItem({'darkness golden helmet'},  38989, 3000000,   'darkness golden helmet')
+shopModule:addSellableItem({'demoniac helmet'},         38978, 3000000,   'demoniac helmet')
+shopModule:addSellableItem({"naz'gul scale helmet"},    38982, 4000000,   "naz'gul scale helmet")
+shopModule:addSellableItem({'merlian hat'},          	38831, 4000000,   'merlian hat')
+shopModule:addSellableItem({'soul helmet'},          	38874, 5000000,   'soul helmet')
+shopModule:addSellableItem({'legendary helmet'},        38840, 6000000,   'legendary helmet')
+
+---------------------------------------- armors ----------------------------------------
+
+shopModule:addSellableItem({'forest robe'},          	39005, 250000,      'forest robe') 
+shopModule:addSellableItem({'diamond robe'},          	39023, 250000,      'diamond robe') 
+shopModule:addSellableItem({'spyked armor'},          	38828, 250000,      'spyked armor')
+shopModule:addSellableItem({'rustic armor'},          	38855, 500000,      'rustic armor') 
+shopModule:addSellableItem({'arcane robe'},          	2508,  500000,      'arcane robe') 
+shopModule:addSellableItem({'elven armor'},          	2505,  1000000,     'elven armor')
+shopModule:addSellableItem({'mind robe'},          		38845, 1000000,     'mind robe')
+shopModule:addSellableItem({'thordain cloak'},          39024, 1000000,     'thordain cloak')
+shopModule:addSellableItem({"night's watch mail"},      38753, 1300000,     "night's watch mail")
+shopModule:addSellableItem({'horned armor'},          	38856, 1500000,     'horned armor')
+shopModule:addSellableItem({'cursed armor'},          	38979, 2000000,     'cursed armor')
+shopModule:addSellableItem({'swamplair armor'},         39014, 2000000,     'swamplair armor')
+shopModule:addSellableItem({"spellweaver's robe"},      11355, 1500000,     "spellweaver's robe")
+shopModule:addSellableItem({'gladiator armor'},         38851, 2000000,     'gladiator armor')
+shopModule:addSellableItem({'lost dragon mail'},        38822, 2300000,     'lost dragon mail')
+shopModule:addSellableItem({'florest scale mail'},      39097, 2300000,     'florest scale mail')
+shopModule:addSellableItem({'magic fur armor'},         38762, 2300000,     'magic fur armor')
+shopModule:addSellableItem({'venom scale robe'},        38849, 2300000,     'venom scale robe')
+shopModule:addSellableItem({'phoenix armor'},          	38848, 2300000,     'phoenix armor')
+shopModule:addSellableItem({'demoniac robe'},          	38857, 2500000,     'demoniac robe')
+shopModule:addSellableItem({'coat robe'},          		38841, 2500000,     'coat robe')
+shopModule:addSellableItem({'blacksmith armor'},        39060, 2500000,     'blacksmith armor')
+shopModule:addSellableItem({'darkness scale mail'},     38854, 3000000,     'darkness scale mail')
+shopModule:addSellableItem({'shadow armor'},			38852, 3000000,     'shadow armor')
+shopModule:addSellableItem({'enchanted armor'},         38763, 3500000,     'enchanted armor')
+shopModule:addSellableItem({'darkness golden armor'},   38847, 4000000,     'darkness golden armor')
+shopModule:addSellableItem({"naz'gul scale mail"},      38981, 5000000,     "naz'gul scale mail")
+shopModule:addSellableItem({'soul armor'},          	39118, 6000000,     'soul armor')
+shopModule:addSellableItem({'merlian robe'},            38859, 6000000,     'merlian robe')
+shopModule:addSellableItem({'legendary armor'},         38843, 7000000,     'legendary armor')
+
+---------------------------------------- Legs ----------------------------------------
+shopModule:addSellableItem({'under legs'},	         39011, 500000,    'under legs')
+shopModule:addSellableItem({'magic plate legs'},     38881, 500000,    'magic plate legs')
+shopModule:addSellableItem({'elven legs'},     	     2507,  700000,    'elven legs')
+shopModule:addSellableItem({'gladiator legs'},       38883, 1000000,   'gladiator legs')
+shopModule:addSellableItem({'magic fur legs'},       38948, 1300000,   'magic fur legs')
+shopModule:addSellableItem({'blacksmith legs'},      38955, 1300000,   'blacksmith legs')
+shopModule:addSellableItem({'venom scale legs'},     38768, 1300000,   'venom scale legs')
+shopModule:addSellableItem({'phoenix legs'},	     38769, 1300000,   'phoenix legs')
+shopModule:addSellableItem({'demoniac legs'},	     38971, 1500000,   'demoniac legs')
+shopModule:addSellableItem({'darkness scale legs'},  39047, 1500000,   'darkness scale legs')
+shopModule:addSellableItem({'enchanted legs'},	     38766, 1500000,   'enchanted legs')
+shopModule:addSellableItem({'darkness golden legs'}, 38764, 2000000,   'darkness golden legs')
+shopModule:addSellableItem({"naz'gul scale legs"},   38983, 3000000,   "naz'gul scale legs")
+shopModule:addSellableItem({'soul legs'},            38885, 4000000,   'soul legs')
+shopModule:addSellableItem({'merlian legs'},         38882, 5000000,   'merlian legs')
+shopModule:addSellableItem({'legendary legs'},       38888, 6000000,   'legendary legs')
+
+---------------------------------------- Boots ----------------------------------------
+
+shopModule:addSellableItem({'shyne boots'},             38747,  250000,    'shyne boots')
+shopModule:addSellableItem({'soft boots'},          	6132,  300000,     'soft boots')
+shopModule:addSellableItem({'guardian boots'},          39493, 500000,     'guardian boots')
+shopModule:addSellableItem({'firewalker boots'},        9933,  700000,     'firewalker boots')
+shopModule:addSellableItem({'venom scale boots'},       39515, 700000,     'venom scale boots')
+shopModule:addSellableItem({'blacksmith boots'},        39057, 700000,     'blacksmith boots')
+shopModule:addSellableItem({'darkness golden boots'},   38770, 1000000,    'darkness golden boots')
+shopModule:addSellableItem({'general boots'},          	38903, 2000000,    'general boots')
+shopModule:addSellableItem({'naz gul scale boots'},     38983, 2500000,    'naz gul scale boots')
+
+---------------------------------------- shields ---------------------------------------- 
+
+shopModule:addSellableItem({'plasma shield'},          	2542 , 200000,     'plasma shield')
+shopModule:addSellableItem({'great shield'},          	2522 , 300000,     'great shield')
+shopModule:addSellableItem({'blessed shield'},          2523 , 400000,     'blessed shield')
+shopModule:addSellableItem({'mind shield'},          	38878, 500000,     'mind shield')
+shopModule:addSellableItem({'darkness shield'},         38875, 700000,     'darkness shield')
+shopModule:addSellableItem({'horned shield'},          	38869, 800000,     'horned shield')
+shopModule:addSellableItem({'toguro shield'},          38872,  1000000,    'toguro shield')
+shopModule:addSellableItem({'phoenix shield'},          2539,  1000000,    'phoenix shield')
+shopModule:addSellableItem({'venom scale shield'},      38871, 1000000,    'venom scale shield')
+shopModule:addSellableItem({'blacksmith shield'},       39000, 1300000,    'blacksmith shield')
+shopModule:addSellableItem({'balrog shield'},         	38876, 1300000,    'balrog shield')
+shopModule:addSellableItem({'shadow shield'},          	38868, 1500000,    'shadow shield')
+shopModule:addSellableItem({'demoniac book'},	    	38705, 4000000,    'demoniac book')
+shopModule:addSellableItem({'second shield'},         	39078, 4000000,    'second shield')
+shopModule:addSellableItem({'third shield'},         	39079, 4000000,    'third shield')
+shopModule:addSellableItem({'first shield'},			38867, 4000000,    'first shield')
+shopModule:addSellableItem({'angelic shield'},     		38879, 6000000,    'angelic shield')
+shopModule:addSellableItem({'skulldeath shield'},    	38877, 6000000,    'skulldeath shield')
+
+---------------------------------------- wands ---------------------------------------- 
+shopModule:addSellableItem({'arcane wand'},          	2453, 100000,       'arcane wand')
+shopModule:addSellableItem({'mind wand'},          		7426, 500000,       'mind wand')
+shopModule:addSellableItem({'venom wand'},          	38861, 1500000,     'venom wand')
+shopModule:addSellableItem({'phoenix wand'},          	38860, 1700000,     'phoenix wand')
+shopModule:addSellableItem({'persefone staff'},       	38866, 3000000,     'persefone staff')
+shopModule:addSellableItem({'magic plague wand'},       38999, 4000000,     'magic plague wand')
+shopModule:addSellableItem({'merlian staff'},          	38864, 6000000,     'merlian staff')
+
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

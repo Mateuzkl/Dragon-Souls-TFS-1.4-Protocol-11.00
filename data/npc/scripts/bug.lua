@@ -17,7 +17,10 @@ function onCreatureDisappear(cid)
     if cid == target then
         target = 0
         attacking = false
-        Creature(getNpcId()):setTarget(nil)
+        local npc = Npc()
+    if npc then
+        npc:setTarget(nil)
+    end
         following = false
     end
 end
@@ -31,12 +34,15 @@ function onThink()
     if following == true and target > 0 then
         local targetCreature = Creature(target)
         if targetCreature then
-            Creature(getNpcId()):moveToPosition(targetCreature:getPosition())
+            local npc = Npc()
+        if npc then
+            npc:moveToPosition(targetCreature:getPosition())
+        end
         end
     end
     if attacking == true and target > 0 then
         local targetCreature = Creature(target)
-        local npc = Creature(getNpcId())
+        local npc = Npc()
         if targetCreature then
             local dist = npc:getPosition():getDistance(targetCreature:getPosition())
             if dist <= 1 then
@@ -67,7 +73,10 @@ local function creatureSayCallback(cid, msgType, msg)
         following = false
         attacking = false
         target = 0
-        Creature(getNpcId()):setTarget(nil)
+        local npc = Npc()
+        if npc then
+            npc:setTarget(nil)
+        end
         npcHandler:say('Ok, I will wait here.', cid)
     end
     

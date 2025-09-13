@@ -1,4 +1,4 @@
-<npc name="Ulabad" script="fluids.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Ulabad" script="fluids.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="146" head="95" body="45" legs="21" feet="96" addons="0"/>
 	<parameters>

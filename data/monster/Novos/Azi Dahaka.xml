@@ -68,8 +68,8 @@
 	    <item id="11757" countmax="1" chance="600"/> <!-- flame magic hat -->
         <item id="11758" countmax="1" chance="600"/> <!-- flame magic robe -->
 		<item id="11929" countmax="1" chance="700"/> <!-- flame magic shield -->
-        <item id="12152" countmax="1" chance="800"/> <!-- magma axe -->
-        <item id="12060" countmax="1" chance="800"/> <!-- alabarda of fire -->
+        <item id="38808" countmax="1" chance="800"/> <!-- magma axe -->
+        <item id="38793" countmax="1" chance="800"/> <!-- alabarda of fire -->
 		<item id="12022" countmax="1" chance="800"/> <!-- flame sword -->
         <item id="12180" countmax="1" chance="800"/> <!-- magic fire axe -->
 		<item id="11984" countmax="1" chance="700"/> <!-- flame magic staff -->

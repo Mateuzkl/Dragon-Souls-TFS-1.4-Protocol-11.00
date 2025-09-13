@@ -12,7 +12,7 @@ function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgTyp
 
 local lastRandomTalk = 0
 
-function onThink()                          
+function onThink()
     npcHandler:onThink()
     
     if not npcHandler:isFocused() then
@@ -21,11 +21,11 @@ function onThink()
             lastRandomTalk = currentTime
             local randsay = math.random(1, 500)
             if randsay == 1 then
-                npcHandler:say('Hmm...There is something strange about this place.')
+                selfSay('Hmm...There is something strange about this place.')
             elseif randsay == 250 then
-                npcHandler:say('Huh?...I think i heard something over there!')
+                selfSay('Huh?...I think i heard something over there!')
             elseif randsay == 500 then
-                npcHandler:say('My fire sword is burning my hand!')
+                selfSay('My fire sword is burning my hand!')
             end
         end
     end
@@ -53,11 +53,11 @@ local function creatureSayCallback(cid, msgType, msg)
         elseif msgcontains(msg, 'oi') then
             local randsay = math.random(1, 4)
             if randsay == 1 then
-                npcHandler:say('N�o posso falar com voce agora.', cid)
+                npcHandler:say('Não posso falar com você agora.', cid)
             elseif randsay == 2 then
-                npcHandler:say('Voce viu orcs?', cid)
+                npcHandler:say('Você viu orcs?', cid)
             elseif randsay == 3 then
-                npcHandler:say('Crianca sem educacao!', cid)
+                npcHandler:say('Criança sem educação!', cid)
             elseif randsay == 4 then
                 npcHandler:say('Salve o Rei Denethor!', cid)
             end
@@ -66,7 +66,7 @@ local function creatureSayCallback(cid, msgType, msg)
             npcHandler:say('Hey! Watch your mouth!', cid)
             return true
         elseif msgcontains(msg, 'fdp') then
-            npcHandler:say('Ei! Olha a educacao!', cid)
+            npcHandler:say('Ei! Olha a educação!', cid)
             return true
         end
         return false

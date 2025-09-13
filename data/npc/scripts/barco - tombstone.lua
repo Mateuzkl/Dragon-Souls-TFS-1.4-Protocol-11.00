@@ -21,86 +21,104 @@ local function creatureSayCallback(cid, msgType, msg)
     end
     
     local player = Player(cid)
-    local pos = Position(540, 456, 5)
+    if not player then
+        return false
+    end
     
-    if msgcontains(msg, 'carlin') then
+    local pos = Position(540, 456, 5)
+    local topic = npcHandler.topic[cid] or topicList.NONE
+    local msgLower = msg:lower()
+    
+    if msgcontains(msgLower, 'carlin') then
         npcHandler:say('Do you wish to travel to Carlin for 200 gold coins?', cid)
         npcHandler.topic[cid] = topicList.CARLIN
-    elseif msgcontains(msg, 'tirith') then
+        
+    elseif msgcontains(msgLower, 'tirith') or msgcontains(msgLower, 'minas') then
         npcHandler:say('Do you wish to travel to Minas Tirith for 400 gold coins?', cid)
         npcHandler.topic[cid] = topicList.TIRITH
-    elseif msgcontains(msg, 'edron') then
+        
+    elseif msgcontains(msgLower, 'edron') then
         npcHandler:say('Do you wish to travel to Edron for 400 gold coins?', cid)
         npcHandler.topic[cid] = topicList.EDRON
-    elseif msgcontains(msg, 'bree') then
+        
+    elseif msgcontains(msgLower, 'bree') then
         npcHandler:say('Do you wish to travel to Bree for 500 gold coins?', cid)
         npcHandler.topic[cid] = topicList.BREE
-    elseif npcHandler.topic[cid] == topicList.CARLIN and msgcontains(msg, 'yes') then
-        if player:isPremium() then
-            if player:removeMoney(200) then
-                player:teleportTo(Position(151, 356, 6))
-                Game.createItem(2152, 2, pos)
-                npcHandler.topic[cid] = topicList.NONE
+        
+    elseif msgcontains(msgLower, 'yes') then
+        if topic == topicList.CARLIN then
+            if player:isPremium() then
+                if player:removeTotalMoney(200) then
+                    npcHandler:say('Have a safe trip to Carlin!', cid)
+                    player:teleportTo(Position(151, 356, 6))
+                    Position(151, 356, 6):sendMagicEffect(CONST_ME_TELEPORT)
+                    Game.createItem(2152, 2, pos)
+                else
+                    npcHandler:say('Sorry, you need 200 gold coins.', cid)
+                end
             else
-                npcHandler:say('Sorry, you don\'t have this money.', cid)
-                npcHandler.topic[cid] = topicList.NONE
+                npcHandler:say('Sorry, only premium players can travel.', cid)
             end
-        else
-            npcHandler:say('Sorry, only premium players can travel with me.', cid)
             npcHandler.topic[cid] = topicList.NONE
-        end
-    elseif npcHandler.topic[cid] == topicList.TIRITH and msgcontains(msg, 'yes') then
-        if player:isPremium() then
-            if player:removeMoney(400) then
+            
+        elseif topic == topicList.TIRITH then
+            if player:isPremium() and player:removeTotalMoney(400) then
+                npcHandler:say('Have a safe trip to Minas Tirith!', cid)
                 player:teleportTo(Position(476, 293, 6))
-                npcHandler.topic[cid] = topicList.NONE
+                Position(476, 293, 6):sendMagicEffect(CONST_ME_TELEPORT)
             else
-                npcHandler:say('Sorry, you don\'t have this money.', cid)
-                npcHandler.topic[cid] = topicList.NONE
+                npcHandler:say('Sorry, you need 400 gold coins and premium account.', cid)
             end
-        else
-            npcHandler:say('Sorry, only premium players can travel with me.', cid)
             npcHandler.topic[cid] = topicList.NONE
-        end
-    elseif npcHandler.topic[cid] == topicList.EDRON and msgcontains(msg, 'yes') then
-        if player:isPremium() then
-            if player:removeMoney(400) then
+            
+        elseif topic == topicList.EDRON then
+            if player:isPremium() and player:removeTotalMoney(400) then
+                npcHandler:say('Have a safe trip to Edron!', cid)
                 player:teleportTo(Position(736, 795, 6))
-                npcHandler.topic[cid] = topicList.NONE
+                Position(736, 795, 6):sendMagicEffect(CONST_ME_TELEPORT)
             else
-                npcHandler:say('Sorry, you don\'t have this money.', cid)
-                npcHandler.topic[cid] = topicList.NONE
+                npcHandler:say('Sorry, you need 400 gold coins and premium account.', cid)
             end
-        else
-            npcHandler:say('Sorry, only premium players can travel with me.', cid)
             npcHandler.topic[cid] = topicList.NONE
-        end
-    elseif npcHandler.topic[cid] == topicList.BREE and msgcontains(msg, 'yes') then
-        if player:isPremium() then
-            if player:removeMoney(500) then
+            
+        elseif topic == topicList.BREE then
+            if player:isPremium() and player:removeTotalMoney(500) then
+                npcHandler:say('Have a safe trip to Bree!', cid)
                 player:teleportTo(Position(818, 2030, 6))
-                npcHandler.topic[cid] = topicList.NONE
+                Position(818, 2030, 6):sendMagicEffect(CONST_ME_TELEPORT)
             else
-                npcHandler:say('Sorry, you don\'t have this money.', cid)
-                npcHandler.topic[cid] = topicList.NONE
+                npcHandler:say('Sorry, you need 500 gold coins and premium account.', cid)
             end
-        else
-            npcHandler:say('Sorry, only premium players can travel with me.', cid)
             npcHandler.topic[cid] = topicList.NONE
+        else
+            npcHandler:say('What are you agreeing to?', cid)
         end
-    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] > topicList.NONE then
-        npcHandler:say('I wouldn\'t go there either.', cid)
+        
+    elseif msgcontains(msgLower, 'no') and topic > topicList.NONE then
+        npcHandler:say('Maybe another time then.', cid)
         npcHandler.topic[cid] = topicList.NONE
     end
     
     return true
 end
 
--- Keywords
+local function onAddFocus(cid)
+    npcHandler.topic[cid] = topicList.NONE
+end
+
+local function onReleaseFocus(cid)
+    npcHandler.topic[cid] = nil
+end
+
+npcHandler:setCallback(CALLBACK_ONADDFOCUS, onAddFocus)
+npcHandler:setCallback(CALLBACK_ONRELEASEFOCUS, onReleaseFocus)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+
 keywordHandler:addKeyword({'destination'}, StdModule.say, {
     npcHandler = npcHandler, 
     onlyFocus = true, 
-    text = 'I can take you to Edron, Carlin and Minas Tirith for just a small fee.'
+    text = 'I can take you to Carlin, Edron, Minas Tirith and Bree.'
 })
 
 keywordHandler:addKeyword({'job'}, StdModule.say, {
@@ -109,23 +127,8 @@ keywordHandler:addKeyword({'job'}, StdModule.say, {
     text = 'I am the Captain of this ship.'
 })
 
-keywordHandler:addKeyword({'mission'}, StdModule.say, {
-    npcHandler = npcHandler, 
-    onlyFocus = true, 
-    text = 'Since i get busted by pirates, i never get involved in quests again.'
-})
-
-keywordHandler:addKeyword({'quest'}, StdModule.say, {
-    npcHandler = npcHandler, 
-    onlyFocus = true, 
-    text = 'Since i get busted by pirates, i never get involved in quests again.'
-})
-
 keywordHandler:addKeyword({'offer'}, StdModule.say, {
     npcHandler = npcHandler, 
     onlyFocus = true, 
-    text = 'I can take you to Edron, Carlin, Minas Tirith and Bree for just a small fee.'
+    text = 'I can take you to Carlin for 200gp, Edron and Minas Tirith for 400gp each, and Bree for 500gp.'
 })
-
-npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
-npcHandler:addModule(FocusModule:new())

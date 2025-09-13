@@ -1,4 +1,4 @@
-<npc name="Raverion" script="mino quest carlin.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Raverion" script="mino quest carlin.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look typeex="0" head="0" body="70" legs="57" feet="114" addons="0"/>
 	<parameters>

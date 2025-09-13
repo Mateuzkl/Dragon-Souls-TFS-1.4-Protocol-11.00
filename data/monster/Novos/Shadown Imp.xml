@@ -65,9 +65,9 @@
         <item id="11763" chance="700"/> <!-- shadown helmet  -->
         <item id="11764" chance="700"/> <!-- shadown cloak -->
         <item id="11899" chance="700"/> <!-- Shadown shield -->
-        <item id="12106" chance="700"/> <!-- hammer of thor  -->
-		<item id="12148" chance="700"/> <!-- mithril axe  -->
-        <item id="12149" chance="700"/> <!-- skullz axe -->
+        <item id="39560" chance="700"/> <!-- axe of thor  -->
+		<item id="38812" chance="700"/> <!-- mithril axe  -->
+        <item id="38811" chance="700"/> <!-- skullz axe -->
 		<item id="11234" chance="700"/> <!-- guardian boots  -->
       </inside>
     </item>

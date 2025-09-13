@@ -1,85 +1,62 @@
-focus = 0
-talk_start = 0
-target = 0
-talk_state = 0
-following = false
-attacking = false
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
 
+local topicList = {
+    NONE = 0,
+    READY_CONFIRM = 1
+}
+
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    local topic = npcHandler.topic[cid] or topicList.NONE
+    local msgLower = msg:lower()
+    
+    if msgcontains(msgLower, 'ja') then
+        npcHandler:say('Oh! k√ºhlen, wenn Sie Sagen im bereit ich Sie zum folgenden Raum schicken.', cid)
+        npcHandler.topic[cid] = topicList.READY_CONFIRM
+        
+    elseif topic == topicList.READY_CONFIRM and msgcontains(msgLower, 'im bereit') then
+        npcHandler:say('Bis sp√§ter!', cid)
+        player:teleportTo(Position(439, 244, 14))
+        Position(439, 244, 14):sendMagicEffect(CONST_ME_TELEPORT)
+        npcHandler.topic[cid] = topicList.NONE
+        npcHandler:releaseFocus(cid)
+        
+    elseif msgcontains(msgLower, 'wiedersehen') then
+        npcHandler:say('Auf Wiedersehen!', cid)
+        npcHandler:releaseFocus(cid)
+    end
+    
+    return true
 end
 
-
-function onCreatureAppear(creature)
-
+local function onAddFocus(cid)
+    npcHandler.topic[cid] = topicList.NONE
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+local function onReleaseFocus(cid)
+    npcHandler.topic[cid] = nil
 end
 
+npcHandler:setMessage(MESSAGE_GREET, 'Hallo, kennen Sie Gespr√§ch Deutschland?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Auf Wiedersehen!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Auf Wiedersehen!')
 
-function onCreatureTurn(creature)
-
-end
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
- 		selfSay('Hallo, kennen Sie Gespr‰ch Deutschland?')
- 		selfLook(cid)
-		focus = cid
- 		talk_start = os.clock()
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Traurig, spreche ich mit Ihnen in einer Minute.')  	elseif focus == cid then
-		talk_start = os.clock()
-
-	if msgcontains(msg, 'ja') then
-			selfSay('Oh! k¸hlen, wenn Sie Sagen im bereit ich Sie zum folgenden Raum schicken.')
-			talk_state = 1
-
-		elseif talk_state == 1 then
-			if msgcontains(msg, 'im bereit') then
-					selfSay('Bis sp‰ter!')
-					selfSay('/send ' .. creatureGetName(cid) .. ', 439 244 14')
- 			end
-			talk_state = 0
-
-  		elseif msgcontains(msg, 'wiedersehen')  and getDistanceToCreature(cid) < 4 then
-  			selfSay('Auf Wiedersehen! ')
-  			focus = 0
-  			talk_start = 0
-  		end
-  	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('Auf Wiedersehen!')
-  		end
-  			focus = 0
-  	end
-	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Auf Wiedersehen!')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_ONADDFOCUS, onAddFocus)
+npcHandler:setCallback(CALLBACK_ONRELEASEFOCUS, onReleaseFocus)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

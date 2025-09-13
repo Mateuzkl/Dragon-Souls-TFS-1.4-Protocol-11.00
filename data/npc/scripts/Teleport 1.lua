@@ -1,96 +1,56 @@
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
+function onThink()                          npcHandler:onThink()                        end
 
-local focus = 0
-local talk_start = 0
-local target = 0
-local days = 0
-
-function onThingMove(creature, thing, oldpos, oldstackpos)
-
+local function creatureSayCallback(cid, msgType, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if msgcontains(msg, 'anoriel') then
+        local storage = player:getStorageValue(6040)
+        local vocation = player:getVocation():getId()
+        
+        if storage == -1 then
+            if vocation < 9 then
+                npcHandler:say('Then go talk with him!', cid)
+                player:teleportTo(Position(461, 254, 13))
+                Position(461, 254, 13):sendMagicEffect(CONST_ME_TELEPORT)
+                npcHandler:releaseFocus(cid)
+            else
+                npcHandler:say('You can not enter on this temple again, go away Semi-Deus!', cid)
+            end
+        else
+            npcHandler:say('You can not enter on this temple again, go away!', cid)
+        end
+    end
+    
+    return true
 end
 
-
-function onCreatureAppear(creature)
+local function onAddFocus(cid)
+    -- Player gained focus
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+local function onReleaseFocus(cid)
+    -- Player lost focus
 end
 
+npcHandler:setMessage(MESSAGE_GREET, 'Who invited you to enter on temple of Anoriel mortal?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Get out |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Get out!')
 
-function onCreatureTurn(creature)
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-		selfSay('Who invited you to enter on temple of Anoriel mortal?')
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Wait your turn ' .. creatureGetName(cid) .. '!')
-
-
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-
-	if msgcontains(msg, 'anoriel') then
-		if getPlayerStorageValue(cid,6040) == -1 then
-		if getPlayerVocation(cid) < 9 then
-			selfSay('Then go talk whit him!')
-			selfSay('/send ' .. creatureGetName(cid) .. ', 461 254 13')
-			focus = 0
-			talk_start = 0
-			else
-			selfSay('You can not enter on this temple again, go away Semi-Deus!')
-			end
-			else
-			selfSay('You can not enter on this temple again, go away!')
-			end
-
-  	elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 4 then
-  		selfSay('Get out ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-end
-end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('Get out.')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Get out.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_ONADDFOCUS, onAddFocus)
+npcHandler:setCallback(CALLBACK_ONRELEASEFOCUS, onReleaseFocus)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

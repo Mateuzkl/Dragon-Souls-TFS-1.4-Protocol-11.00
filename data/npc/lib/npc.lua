@@ -137,7 +137,7 @@ end
 
 function doPlayerBuyItemContainer(cid, containerid, itemid, count, cost, charges)
 	local player = Player(cid)
-	if not player:removeMoney(cost) then
+	if not player:removeTotalMoney(cost) then
 		return false
 	end
 

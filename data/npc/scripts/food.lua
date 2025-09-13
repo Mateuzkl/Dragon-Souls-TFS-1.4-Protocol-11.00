@@ -11,7 +11,7 @@ local shopModule = ShopModule:new()
 npcHandler:addModule(shopModule)
 
 shopModule:addSellableItem({'brown bread'}, 2689, 5, 'brown bread')
-shopModule:addSellableItem({'meat'}, 2300, 10, 'meat')
+shopModule:addSellableItem({'meat'}, 2666, 10, 'meat')
 shopModule:addSellableItem({'ham'}, 2675, 15, 'ham')
 shopModule:addSellableItem({'carrot'}, 3976, 2, 'carrot')
 shopModule:addSellableItem({'apple'}, 2674, 3, 'apple')

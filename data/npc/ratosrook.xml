@@ -1,4 +1,4 @@
-<npc name="Glovian" script="ratosrook.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Glovian" script="ratosrook.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="130" head="38" body="42" legs="23" feet="115" addons="0"/>
 </npc>

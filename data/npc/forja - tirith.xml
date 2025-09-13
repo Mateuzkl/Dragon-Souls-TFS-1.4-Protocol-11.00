@@ -1,4 +1,4 @@
-<npc name="Blacksmith" script="forja.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Blacksmith" script="forja.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="160" head="56" body="95" legs="57" feet="94" addons="3"/>
 	<parameters>

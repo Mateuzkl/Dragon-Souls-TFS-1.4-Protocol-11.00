@@ -1,4 +1,4 @@
-<npc name="Trono do rei" script="testeg.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Trono do rei" script="testeg.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="75" head="22" body="33" legs="44" feet="55" corpse="3128"/>
 </npc>

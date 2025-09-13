@@ -1,4 +1,4 @@
-<npc name="Miner isk'bar" script="mining guild.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Miner isk'bar" script="mining guild.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="160" head="0" body="60" legs="80" feet="120" addons="0"/>
 

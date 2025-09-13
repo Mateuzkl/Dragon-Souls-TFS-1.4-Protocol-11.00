@@ -1,4 +1,4 @@
-<npc name="Isolda" script="aols.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Isolda" script="aols.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="140" head="38" body="50" legs="79" feet="66" corpse="3128" addons="0"/>
 	<parameters>

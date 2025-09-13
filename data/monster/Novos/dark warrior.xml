@@ -59,10 +59,10 @@
           <item id="11609" chance="500"/> <!-- magic dark legs -->
 		  <item id="11814" chance="500"/> <!-- Shadow Cloak -->
 		  <item id="12105" chance="600"/> <!-- death dragon hammer -->
-		  <item id="12005" chance="600"/> <!-- four blades -->
+		  <item id="38779" chance="600"/> <!-- four blades -->
 		  <item id="11234" chance="700"/> <!-- guardian boots -->
 		  <item id="12228" chance="600"/> <!-- darkness crossbow -->
-		  <item id="12147" chance="600"/> <!-- dragonslayer axe -->
+		  <item id="39015" chance="600"/> <!-- dragonslayer axe -->
       </inside>
     </item>
 	<item id="11835" chance="700"/> <!-- magic dark legs -->

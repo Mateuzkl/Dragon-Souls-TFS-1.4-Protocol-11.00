@@ -1,4 +1,4 @@
-<npc name="Captain Whitebear" script="barco - bree.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Captain Whitebear" script="barco - bree.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="132" head="19" body="117" legs="118" feet="115" addons="1"/>
 	<parameters>

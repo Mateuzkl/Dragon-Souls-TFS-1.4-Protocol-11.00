@@ -1,4 +1,4 @@
-<npc name="Anna Beas" script="mail.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Anna Beas" script="mail.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="136" head="95" body="101" legs="100" feet="58" corpse="3128"/>
 	<parameters>

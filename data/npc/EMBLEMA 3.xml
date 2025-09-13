@@ -1,4 +1,4 @@
-<npc name="Narzan" script="emblema 3.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Narzan" script="emblema 3.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="20" max="150"/>
 	<look type="134" head="79" body="19" legs="76" feet="115" addons="2"/>
 

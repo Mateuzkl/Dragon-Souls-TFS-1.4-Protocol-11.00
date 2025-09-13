@@ -1,4 +1,4 @@
-<npc name="Baltar" script="bk hero quest.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Baltar" script="bk hero quest.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="131" head="95" body="95" legs="95" feet="95" addons="3"/>
 

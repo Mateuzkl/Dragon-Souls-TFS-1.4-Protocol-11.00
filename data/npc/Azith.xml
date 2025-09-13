@@ -1,4 +1,4 @@
-<npc name="Azith" script="traveller.lua" autowalk="0" speed="0" floorchange="0">
+<npc name="Azith" script="traveller.lua" walkinterval="0" speed="0" floorchange="0">
 	<health now="150" max="150"/>
 	<look type="143" head="95" body="96" legs="114" feet="115" addons="3" corpse="3128"/>
 	<parameters>
@@ -61,8 +61,8 @@ helical sword,13540,5000000;
 greatsmith hammer,13512,5000000;
 shadow armor,13581,5000000;
 darkness shield,13556,5000000;
-adamantium axe,13501,7000000;
-angelic hammer,13517,7000000;
+adamantium axe,38796,7000000;
+angelic hammer,38788,7000000;
 darkness sword,13545,7000000;
 magic golden boots,2646,7000000;
 assassin legs,13598,7000000;
@@ -72,9 +72,9 @@ elven sword,13539,8500000;
 celestial crossbow,13530,8500000;
 frozzen shield,13562,18500000;
 magic golden shield,13575,12500000;
-divine sword,13544,10000000;
+divine sword,39357,10000000;
 hammer of thor,13514,10000000;
-dragonslayer axe,13504,10000000;
+dragonslayer axe,39015,10000000;
 naz'gul scale legs,13599,10000000;
 naz'gul bone shield,13576,10000000;
 assassin armor,13589,10000000;
@@ -95,22 +95,22 @@ hammer of hercules,13518,15000000;
 merlian robe,13593,20000000;
 merlian legs,13603,20000000;
 cold 64,13533,20000000;
-soul legs,13600,10000000;
+soul legs,38885,10000000;
 merlian hat,13557,20000000;
 bloodhunter axe,13511,20000000;
-god's hammer,13522,20000000;
+god's hammer,38801,20000000;
 god's light sword,13538,20000000;
-soul helmet,13559,20000000;
-soul armor,13586,20000000;
+soul helmet,38874,20000000;
+soul armor,38850,20000000;
 magic skin boots,13561,8000000;
 saruman wand,13523,20000000;
-legendary legs,13605,25000000;
+legendary legs,38888,25000000;
 morgun axe,13508,30000000;
 sauron hammer,13528,30000000;
-spirit of belkor,13541,30000000;
-legendary armor,13594,30000000;
-legendary helmet,13560,30000000;
-peacemaker,13532,30000000;
+spirit of belkor,38798,30000000;
+legendary armor,38843,30000000;
+legendary helmet,38840,30000000;
+peacemaker,38781,30000000;
 flying gillotine,13535,30000000;
 legendary shield,13569,30000000;" />
 	</parameters>

@@ -1,4 +1,4 @@
-<npc name="Jagura" script="fluids.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Jagura" script="fluids.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="37" head="78" body="58" legs="119" feet="116" corpse="3128"/>
 	<parameters>

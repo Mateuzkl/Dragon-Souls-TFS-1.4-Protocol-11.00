@@ -1,4 +1,4 @@
-<npc name="Fartun" script="manga.lua" autowalk="10" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Fartun" script="manga.lua" walkinterval="10" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="128" head="39" body="98" legs="117" feet="115" corpse="3128" addons="0"/>
 	<parameters>

@@ -1,4 +1,4 @@
-<npc name="Ellenah" script="food.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Ellenah" script="food.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="136" head="45" body="30" legs="70" feet="50" corpse="3128"/>
 	<parameters>

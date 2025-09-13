@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<npc name="PROMOTE" script="promote.lua" access="3"  autowalk="25">
+<npc name="PROMOTE" script="promote.lua" access="3"  walkinterval="25">
 	<health now="1" max="1"/>
 	<look type="129" head="68" body="86" legs="114" feet="58" corpse="3128"/>
 </npc>

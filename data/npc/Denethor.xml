@@ -1,4 +1,4 @@
-<npc name="Regent Denethor" script="rei tirith.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Regent Denethor" script="rei tirith.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 <look type="132" head="57" body="76" legs="76" feet="58" addons="1"/>
 	<parameters>

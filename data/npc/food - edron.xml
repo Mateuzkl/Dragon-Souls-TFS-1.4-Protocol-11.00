@@ -1,4 +1,4 @@
-<npc name="Bonifacius" script="food.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Bonifacius" script="food.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="128" head="58" body="86" legs="58" feet="114" corpse="3128"/>
 	<parameters>

@@ -80,51 +80,53 @@ function creatureSayCallback(cid, type, msg)
     end
     
     local missionProgress = player:getStorageValue(SKILL_CONFIG.missionStorage)
+    local msgLower = msg:lower()
+    local topic = npcHandler.topic[cid] or 0
     
-    if msgcontains(msg, 'job') then
-        selfSay('I am a gladiator, lost in the wonders of this world!', cid)
+    if msgcontains(msgLower, 'job') then
+        npcHandler:say('I am a gladiator, lost in the wonders of this world!', cid)
         
-    elseif msgcontains(msg, 'offer') then
-        selfSay('Aceita uma "missao" ou deseja "trocar" algo?', cid)
+    elseif msgcontains(msgLower, 'offer') then
+        npcHandler:say('Aceita uma "missao" ou deseja "trocar" algo?', cid)
         
-    elseif msgcontains(msg, 'knowledge') then
-        selfSay('I have been on long trips and quests! One more dangerous than the other, now I am just traveling and wondering the world beauties!', cid)
+    elseif msgcontains(msgLower, 'knowledge') then
+        npcHandler:say('I have been on long trips and quests! One more dangerous than the other, now I am just traveling and wondering the world beauties!', cid)
         
-    elseif msgcontains(msg, 'missao') then
+    elseif msgcontains(msgLower, 'missao') then
         if missionProgress == -1 then
-            selfSay('Se você me conseguir 10 small emeralds posso lhe conseguir alguns atributos extras, o resto é com você.', cid)
-            player:setStorageValue(SKILL_CONFIG.missionStorage, 1)
+            npcHandler:say('Se você me conseguir 10 small emeralds posso lhe conseguir alguns atributos extras, aceita a missão?', cid)
+            npcHandler.topic[cid] = 10  -- Tópico especial para aceitar missão
             
         elseif missionProgress == 1 and player:getItemCount(2149) >= 10 then
-            selfSay('Como prometido.', cid)
+            npcHandler:say('Como prometido.', cid)
             player:removeItem(2149, 10)
             giveVocationRewards(player, 10, 10)
             player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
             player:setStorageValue(SKILL_CONFIG.missionStorage, 2)
             
         elseif missionProgress == 2 and player:getItemCount(2150) >= 10 then
-            selfSay('Como prometido.', cid)
+            npcHandler:say('Como prometido.', cid)
             player:removeItem(2150, 10)
             giveVocationRewards(player, 20, 20)
             player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
             player:setStorageValue(SKILL_CONFIG.missionStorage, 3)
             
         elseif missionProgress == 3 and player:getItemCount(2146) >= 10 then
-            selfSay('Como prometido.', cid)
+            npcHandler:say('Como prometido.', cid)
             player:removeItem(2146, 10)
             giveVocationRewards(player, 30, 30)
             player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
             player:setStorageValue(SKILL_CONFIG.missionStorage, 4)
             
         elseif missionProgress == 4 and player:getItemCount(2147) >= 10 then
-            selfSay('Como prometido.', cid)
+            npcHandler:say('Como prometido.', cid)
             player:removeItem(2147, 10)
             giveVocationRewards(player, 40, 40)
             player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
             player:setStorageValue(SKILL_CONFIG.missionStorage, 5)
             
         elseif missionProgress == 5 and player:getItemCount(2145) >= 10 then
-            selfSay('Como prometido.', cid)
+            npcHandler:say('Como prometido.', cid)
             player:removeItem(2145, 10)
             giveVocationRewards(player, 50, 50)
             player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
@@ -133,48 +135,69 @@ function creatureSayCallback(cid, type, msg)
         else
             local gemNames = {'small emerald', 'small amethyst', 'small sapphire', 'small ruby', 'small diamond'}
             local currentStep = math.max(1, math.min(missionProgress, 5))
-            selfSay(string.format('Se você me conseguir 10 %ss posso lhe conseguir alguns atributos extras, o resto é com você.', gemNames[currentStep]), cid)
+            npcHandler:say(string.format('Traga-me 10 %ss e eu te darei atributos extras.', gemNames[currentStep]), cid)
         end
         
-    elseif msgcontains(msg, 'trocar') then
-        selfSay('Troco big emerald, violet gem, blue gem, big ruby e yellow gem pelos devidos atributos!', cid)
+    elseif msgcontains(msgLower, 'trocar') then
+        npcHandler:say('Troco big emerald, violet gem, blue gem, big ruby e yellow gem pelos devidos atributos!', cid)
         
-    elseif msgcontains(msg, 'big emerald') then
-        selfSay('Aceita trocar big emerald por 10% de life e mana?', cid)
+    elseif msgcontains(msgLower, 'big emerald') then
+        npcHandler:say('Aceita trocar big emerald por 10% de life e mana?', cid)
         npcHandler.topic[cid] = 1
         
-    elseif msgcontains(msg, 'violet gem') then
-        selfSay('Aceita trocar violet gem por 20% de life e mana?', cid)
+    elseif msgcontains(msgLower, 'violet gem') then
+        npcHandler:say('Aceita trocar violet gem por 20% de life e mana?', cid)
         npcHandler.topic[cid] = 2
         
-    elseif msgcontains(msg, 'blue gem') then
-        selfSay('Aceita trocar blue gem por 30% de life e mana?', cid)
+    elseif msgcontains(msgLower, 'blue gem') then
+        npcHandler:say('Aceita trocar blue gem por 30% de life e mana?', cid)
         npcHandler.topic[cid] = 3
         
-    elseif msgcontains(msg, 'big ruby') then
-        selfSay('Aceita trocar big ruby por 40% de life e mana?', cid)
+    elseif msgcontains(msgLower, 'big ruby') then
+        npcHandler:say('Aceita trocar big ruby por 40% de life e mana?', cid)
         npcHandler.topic[cid] = 4
         
-    elseif msgcontains(msg, 'yellow gem') then
-        selfSay('Aceita trocar yellow gem por 50% de life e mana?', cid)
+    elseif msgcontains(msgLower, 'yellow gem') then
+        npcHandler:say('Aceita trocar yellow gem por 50% de life e mana?', cid)
         npcHandler.topic[cid] = 5
         
-    elseif msgcontains(msg, 'yes') and npcHandler.topic[cid] >= 1 and npcHandler.topic[cid] <= 5 then
-        local gemData = SKILL_CONFIG.tradeGems[npcHandler.topic[cid]]
-        if tradeGemForHpMp(player, gemData.id, gemData.bonus) then
-            selfSay('Muito obrigado!', cid)
-        else
-            selfSay('Você não tem este item!', cid)
+    elseif msgcontains(msgLower, 'yes') then
+        if topic == 10 then  -- Aceitar missão
+            npcHandler:say('Ótimo! Traga-me 10 small emeralds primeiro.', cid)
+            player:setStorageValue(SKILL_CONFIG.missionStorage, 1)
+            npcHandler.topic[cid] = 0
+            
+        elseif topic >= 1 and topic <= 5 then  -- Trocar gemas
+            local gemData = SKILL_CONFIG.tradeGems[topic]
+            if tradeGemForHpMp(player, gemData.id, gemData.bonus) then
+                npcHandler:say('Muito obrigado!', cid)
+            else
+                npcHandler:say('Você não tem este item!', cid)
+            end
+            npcHandler.topic[cid] = 0
         end
-        npcHandler.topic[cid] = 0
         
-    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] >= 1 then
-        selfSay('Ok then.', cid)
+    elseif msgcontains(msgLower, 'no') and topic > 0 then
+        npcHandler:say('Ok então.', cid)
         npcHandler.topic[cid] = 0
     end
     
     return true
 end
 
+local function onAddFocus(cid)
+    npcHandler.topic[cid] = 0
+end
+
+local function onReleaseFocus(cid)
+    npcHandler.topic[cid] = nil
+end
+
+npcHandler:setMessage(MESSAGE_GREET, 'Hey! Aceita uma \'missao\' ou deseja \'trocar\' algo?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Goodbye, warrior!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Come back when you need my services!')
+
+npcHandler:setCallback(CALLBACK_ONADDFOCUS, onAddFocus)
+npcHandler:setCallback(CALLBACK_ONRELEASEFOCUS, onReleaseFocus)
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

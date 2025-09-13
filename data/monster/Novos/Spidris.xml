@@ -51,10 +51,10 @@
     <item id="11540" countmax="1" chance="60000">
       <inside>
 		<item id="12108" countmax="1" chance="700"/> <!-- caribian hammer -->
-        <item id="12063" countmax="1" chance="700"/> <!-- helical sword -->
+        <item id="39033" countmax="1" chance="700"/> <!-- helical sword -->
 		<item id="12183" countmax="1" chance="700"/> <!-- havok's axe -->
-		<item id="12023" countmax="1" chance="700"/> <!-- sword of teseu -->
-        <item id="12177" countmax="1" chance="700"/> <!-- Rose shield -->
+		<item id="38792" countmax="1" chance="700"/> <!-- sword of teseu -->
+        <item id="2527" countmax="1" chance="700"/> <!-- Rose shield -->
         <item id="11818" countmax="1" chance="700"/> <!-- overseer armor -->
 		<item id="11114" countmax="1" chance="700"/> <!-- overseer boots -->
 		<item id="2522" countmax="1" chance="700"/> <!-- great shield  -->

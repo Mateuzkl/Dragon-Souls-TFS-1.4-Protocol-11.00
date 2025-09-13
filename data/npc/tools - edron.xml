@@ -1,4 +1,4 @@
-<npc name="Beatrice" script="tools.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Beatrice" script="tools.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 <look type="136" head="113" body="31" legs="50" feet="58" corpse="3128"/>
 	<parameters>

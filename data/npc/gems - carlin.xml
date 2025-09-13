@@ -1,4 +1,4 @@
-<npc name="Camile" script="gems.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Camile" script="gems.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="140" head="49" body="37" legs="85" feet="25" corpse="3128"/>
 	<parameters>

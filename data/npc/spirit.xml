@@ -1,4 +1,4 @@
-<npc name="Spirit" script="spirit.lua" autowalk="100" speed="300" floorchange="0">
+<npc name="Spirit" script="spirit.lua" walkinterval="100" speed="300" floorchange="0">
 	<health now="150" max="150"/>
 	<look typeex="0" head="95" body="96" legs="114" feet="115" addons="3" corpse="3128"/>
 </npc>

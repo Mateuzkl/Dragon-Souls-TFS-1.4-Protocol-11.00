@@ -1,4 +1,4 @@
-<npc name="Bibliotecaria" script="biblioteca.lua" autowalk="10" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Bibliotecaria" script="biblioteca.lua" walkinterval="10" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="141" head="2" body="0" legs="76" feet="39" addons="0"/>
 </npc>

@@ -1,4 +1,4 @@
-<npc  name="Bruien" script="bows.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc  name="Bruien" script="bows.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="129" head="58" body="76" legs="114" feet="58" corpse="3128"/>
 	<parameters>

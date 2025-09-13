@@ -1,3 +1,25 @@
+function Player.removeTotalMoney(self, amount)
+	local moneyCount = self:getMoney()
+	local bankCount = self:getBankBalance()
+	if amount <= moneyCount then
+		self:removeMoney(amount)
+		return true
+	elseif amount <= (moneyCount + bankCount) then
+		if moneyCount ~= 0 then
+			self:removeMoney(moneyCount)
+			local remains = amount - moneyCount
+			self:setBankBalance(bankCount - remains)
+			self:sendTextMessage(MESSAGE_INFO_DESCR, ("Paid %d from inventory and %d gold coins from bank account.\nYour account balance is now:\n-%d gold coins-"):format(moneyCount, amount - moneyCount, self:getBankBalance()))
+			return true
+		else
+			self:setBankBalance(bankCount - amount)
+			self:sendTextMessage(MESSAGE_INFO_DESCR, ("Paid %d gold coins from bank account.\nYour account balance is now:\n-%d gold coins-"):format(amount, self:getBankBalance()))
+			return true
+		end
+	end
+	return false
+end
+
 function Player.allowMovement(self, allow)
 	return self:setStorageValue(STORAGE.blockMovementStorage, allow and -1 or 1)
 end

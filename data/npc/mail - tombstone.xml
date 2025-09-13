@@ -1,4 +1,4 @@
-<npc name="Berlinda" script="mail.lua"  autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Berlinda" script="mail.lua"  walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="33" head="78" body="56" legs="75" feet="114" corpse="3128"/>
 	<parameters>

@@ -1,4 +1,4 @@
-<npc name="David" script="furnitures.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="David" script="furnitures.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="129" head="68" body="86" legs="114" feet="58" corpse="3128"/>
 	<parameters>

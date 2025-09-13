@@ -1,4 +1,4 @@
-<npc name="Moriar" script="moriar.lua" autowalk="5" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Moriar" script="moriar.lua" walkinterval="5" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="251" head="0" body="77" legs="77" feet="77" corpse="3128" addons="2"/>
 	<parameters>

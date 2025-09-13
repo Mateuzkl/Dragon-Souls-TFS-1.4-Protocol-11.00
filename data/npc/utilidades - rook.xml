@@ -1,4 +1,4 @@
-<npc name="Ferona" script="utilitariorook.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Ferona" script="utilitariorook.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="140" head="3" body="78" legs="78" feet="0" corpse="3128"/>
 	<parameters>

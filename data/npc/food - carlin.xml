@@ -1,4 +1,4 @@
-<npc name="Amelis" script="food.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Amelis" script="food.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="136" head="10" body="90" legs="70" feet="50" corpse="3128"/>
 	<parameters>

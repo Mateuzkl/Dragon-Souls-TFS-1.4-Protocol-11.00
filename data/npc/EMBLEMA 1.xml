@@ -1,4 +1,4 @@
-<npc name="Mercier Cobran" script="emblema 1.lua" autowalk="0" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Mercier Cobran" script="emblema 1.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="132" head="0" body="68" legs="95" feet="95" corpse="3128" addons="0"/>
 	<parameters>

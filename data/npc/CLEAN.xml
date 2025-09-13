@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-     <npc name="Clean" script="clean.lua" access="3" lookdir="2" autowalk="25">
+     <npc name="Clean" script="clean.lua" access="3" lookdir="2" walkinterval="25">
      <mana now="800" max="800"/>
      <health now="200" max="200"/>
      <look type="134" head="78" body="88" legs="0" feet="88"/>

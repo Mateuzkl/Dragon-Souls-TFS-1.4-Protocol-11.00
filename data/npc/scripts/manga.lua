@@ -4,83 +4,158 @@ NpcSystem.parseParameters(npcHandler)
 
 function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
 function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
-function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onCreatureSay(cid, msgType, msg)   npcHandler:onCreatureSay(cid, msgType, msg) end
 function onThink()                          npcHandler:onThink()                        end
 
-local QUEST_CONFIG = {
-    promoStorage = 30002
+local topicList = {
+    NONE = 0,
+    LEARN_COOKING_EN = 1,
+    LEARN_COOKING_PT = 2,
+    WHEAT_CHECK_EN = 3,
+    WHEAT_CHECK_PT = 4,
+    FLOUR_CHECK_EN = 5,
+    FLOUR_CHECK_PT = 6
 }
 
-function creatureSayCallback(cid, type, msg)
+local function creatureSayCallback(cid, msgType, msg)
     if not npcHandler:isFocused(cid) then
+        if msgcontains(msg, 'oi') then
+            local player = Player(cid)
+            if not player then return false end
+            local cook = player:getStorageValue(30006)
+            local pao = player:getStorageValue(2689)
+            
+            npcHandler:addFocus(cid)
+            
+            if pao == -1 then
+                npcHandler:say('Ola ' .. player:getName() .. '! Sou a cozinheira chefe da cidade, gostaria de aprender a cozinhar?', cid)
+                npcHandler.topic[cid] = topicList.LEARN_COOKING_PT
+            elseif cook == 2 then
+                npcHandler:say('Ola denovo ' .. player:getName() .. '! No momento ando muito ocupada, desculpe mas nossa aula ficara para outro dia, ok?', cid)
+                npcHandler:releaseFocus(cid)
+            elseif pao == 1 then
+                npcHandler:say('Ola ' .. player:getName() .. '! Conseguiu oque lhe pedi?', cid)
+                npcHandler.topic[cid] = topicList.WHEAT_CHECK_PT
+            elseif pao == 2 then
+                npcHandler:say('Ola ' .. player:getName() .. '! Conseguiu o flour?', cid)
+                npcHandler.topic[cid] = topicList.FLOUR_CHECK_PT
+            elseif pao == 3 then
+                npcHandler:say('Ainda não conseguiu fazer o pão ' .. player:getName() .. '?', cid)
+                npcHandler:releaseFocus(cid)
+            end
+            return true
+            
+        elseif msgcontains(msg, 'done') then
+            local player = Player(cid)
+            if not player then return false end
+            local pao = player:getStorageValue(2689)
+            
+            if pao == 3 then
+                npcHandler:addFocus(cid)
+                npcHandler:say('Congratulations ' .. player:getName() .. '! You have done the first part of your training! Come back when you wana do the second lesson!', cid)
+                player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+                player:setStorageValue(30006, 2)
+                player:setStorageValue(2689, 4)
+                npcHandler:releaseFocus(cid)
+            end
+            return true
+        end
         return false
     end
     
     local player = Player(cid)
-    if not player then
-        return false
-    end
+    if not player then return false end
+    local topic = npcHandler.topic[cid] or topicList.NONE
+    local msgLower = msg:lower()
     
-    local promo = player:getStorageValue(QUEST_CONFIG.promoStorage)
-    
-    if msgcontains(msg, 'job') then
-        selfSay('I am a seller of exotic fruits!', cid)
+    if topic == topicList.LEARN_COOKING_EN and msgcontains(msgLower, 'yes') then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Nova quest adicionada 'Aprendendo a cozinhar!'.")
+        npcHandler:say('Well lets begin! Our first lesson is simple, i need you to bring "wheat", that can be obtained using a "scythe" in a "wheat filed", so then, lets do it!', cid)
+        player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+        player:setStorageValue(2689, 1)
+        player:setStorageValue(30006, 1)
+        npcHandler:releaseFocus(cid)
         
-    elseif msgcontains(msg, 'offer') then
-        selfSay('Hmm... Would you like to try my exotic fruits?', cid)
+    elseif topic == topicList.LEARN_COOKING_PT and msgcontains(msgLower, 'sim') then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Nova quest adicionada 'Aprendendo a cozinhar!'.")
+        npcHandler:say('Bom então vamo la! Nossa primeira aula é simples, vou precisar que voce me traga "wheat", pode ser conseguido, usando uma "scythe" em um "wheat filed", pois então, mãos a obra!', cid)
+        player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+        player:setStorageValue(2689, 1)
+        player:setStorageValue(30006, 1)
+        npcHandler:releaseFocus(cid)
         
-    elseif msgcontains(msg, 'sell') then
-        selfSay('I am not a merchant!', cid)
+    elseif topic == topicList.WHEAT_CHECK_PT and msgcontains(msgLower, 'sim') then
+        if player:getItemCount(2694) >= 1 then
+            npcHandler:say('Mas que otimo! Agora é simples, voce precisa transformar o "wheat" em "flour", usando uma "mill", mãos a obra!', cid)
+            player:setStorageValue(2689, 2)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+            npcHandler:releaseFocus(cid)
+        else
+            npcHandler:say('Mas aonde esta o "wheat"?!', cid)
+            npcHandler:releaseFocus(cid)
+        end
         
-    elseif msgcontains(msg, 'buy') then
-        selfSay('Nothing for sale right now!', cid)
+    elseif topic == topicList.WHEAT_CHECK_EN and msgcontains(msgLower, 'yes') then
+        if player:getItemCount(2694) >= 1 then
+            npcHandler:say('Great! Now its simple, you need to trasform "wheat" in "flour", using a "mill", lets do it!', cid)
+            player:setStorageValue(2689, 2)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+            npcHandler:releaseFocus(cid)
+        else
+            npcHandler:say('But where is the "wheat"?!', cid)
+            npcHandler:releaseFocus(cid)
+        end
         
-    elseif msgcontains(msg, 'quest') then
-        selfSay('I don\'t share my quests with anyone!', cid)
+    elseif topic == topicList.FLOUR_CHECK_PT and msgcontains(msgLower, 'sim') then
+        if player:getItemCount(2692) >= 1 then
+            npcHandler:say('Excelente! Nosso ultimo passo! Adicione agua ao "flour", para fazer a "dough", depois coloque nesse forno aqui e voila!', cid)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+            player:setStorageValue(2689, 3)
+            npcHandler:releaseFocus(cid)
+        else
+            npcHandler:say('Mas aonde esta o "flour"?!', cid)
+            npcHandler:releaseFocus(cid)
+        end
         
-    elseif msgcontains(msg, 'mission') then
-        selfSay('Not now, Jatu is a good assistant!', cid)
+    elseif topic == topicList.FLOUR_CHECK_EN and msgcontains(msgLower, 'yes') then
+        if player:getItemCount(2692) >= 1 then
+            npcHandler:say('Excelent! Our last step! Add water to the "flour", to do the "dough", then put in this oven here and voila!', cid)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+            player:setStorageValue(2689, 3)
+            npcHandler:releaseFocus(cid)
+        else
+            npcHandler:say('But where is the "flour"?!', cid)
+            npcHandler:releaseFocus(cid)
+        end
         
-    elseif msgcontains(msg, 'orc place') then
-        selfSay('Oh! Want to know where the orc place is? I\'m busy now to show, ask my assistant Jatu, he will show you.', cid)
+    elseif msgcontains(msgLower, 'no') and topic > topicList.NONE then
+        npcHandler:say('Ok than.', cid)
+        npcHandler.topic[cid] = topicList.NONE
+        npcHandler:releaseFocus(cid)
         
-    elseif msgcontains(msg, 'jatu') then
-        selfSay('Jatu is my trustworthy assistant. He knows many places around here and can guide travelers.', cid)
+    elseif msgcontains(msgLower, 'hi') then
+        npcHandler:say('Hmm, I am already talking to you!', cid)
         
-    elseif msgcontains(msg, 'fruits') then
-        selfSay('I have the most exotic fruits from distant lands! Each one has unique flavors you\'ve never tasted before.', cid)
-        
-    elseif msgcontains(msg, 'exotic') then
-        selfSay('These fruits come from the far corners of the world. Some say they have magical properties!', cid)
-        
-    elseif msgcontains(msg, 'assistant') then
-        selfSay('Yes, Jatu has been helping me for years. He\'s very knowledgeable about the surrounding areas.', cid)
-        
-    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] >= 1 then
-        selfSay('Ok then.', cid)
-        npcHandler.topic[cid] = 0
+    elseif msgcontains(msgLower, 'oi') then
+        npcHandler:say('Hmm, ja estou falando com voce!', cid)
     end
     
     return true
 end
 
-function onGreet(cid)
-    local player = Player(cid)
-    if player then
-        selfSay('Welcome, ' .. player:getName() .. '! I have the finest exotic fruits in all the land!', cid)
-    end
-    return true
+local function onAddFocus(cid)
+    npcHandler.topic[cid] = topicList.NONE
 end
 
-function onFarewell(cid)
-    local player = Player(cid)
-    if player then
-        selfSay('Come back anytime for fresh exotic fruits, ' .. player:getName() .. '!', cid)
-    end
-    return true
+local function onReleaseFocus(cid)
+    npcHandler.topic[cid] = nil
 end
 
+npcHandler:setMessage(MESSAGE_GREET, 'Hello |PLAYERNAME|! I am the master cooker of the town, wana learn to cook?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'Good bye, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'Good bye then.')
+
+npcHandler:setCallback(CALLBACK_ONADDFOCUS, onAddFocus)
+npcHandler:setCallback(CALLBACK_ONRELEASEFOCUS, onReleaseFocus)
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
-npcHandler:setCallback(CALLBACK_GREET, onGreet)
-npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
 npcHandler:addModule(FocusModule:new())

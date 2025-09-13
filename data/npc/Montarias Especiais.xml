@@ -1,4 +1,4 @@
-<npc name="Cavalaria" script="Montarias Especiais.lua" autowalk="5" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Cavalaria" script="Montarias Especiais.lua" walkinterval="5" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="130" head="0" body="58" legs="95" feet="114" corpse="3128" addons="0"/>
 	<parameters>

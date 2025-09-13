@@ -1,4 +1,4 @@
-<npc name="Malak" script="runes.lua" autowalk="25" floorchange="0" access="5" level="1" maglevel="1">
+<npc name="Malak" script="runes.lua" walkinterval="25" floorchange="0" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="130" head="132" body="116" legs="116" feet="76" corpse="2212"/>
 	<parameters>

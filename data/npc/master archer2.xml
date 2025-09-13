@@ -1,4 +1,4 @@
-<npc name="Mentora Aleria" script="marcher2.lua" autowalk="0" floorchange="1" access="5" level="1" maglevel="1">
+<npc name="Mentora Aleria" script="marcher2.lua" walkinterval="0" floorchange="1" access="5" level="1" maglevel="1">
 	<health now="150" max="150"/>
 	<look type="137" head="79" body="116" legs="132" feet="115" addons="3" corpse="3128"/>
 </npc>
