@@ -1,115 +1,120 @@
-local internalCustomerQueue = {}
-local keywordHandler = KeywordHandler:new({root = {}})
-local npcHandler = ShopNpcHandler:new({})
-local customerQueue = CustomerQueue:new({customers = internalCustomerQueue, handler = npcHandler})
-npcHandler:init(customerQueue, keywordHandler)
-npcHandler.walkDistance = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
+
 local voc = 0
 
--- OTServ event handling functions start
-function onThingMove(creature, thing, oldpos, oldstackpos)     npcHandler:onThingMove(creature, thing, oldpos, oldstackpos) end
-function onCreatureAppear(creature)                             npcHandler:onCreatureAppear(creature) end
-function onCreatureDisappear(id)                                 npcHandler:onCreatureDisappear(id) end
-function onCreatureTurn(creature)                                 npcHandler:onCreatureTurn(creature) end
-function onCreatureSay(cid, type, msg)                         npcHandler:onCreatureSay(cid, type, msg) end
-function onCreatureChangeOutfit(creature)                         npcHandler:onCreatureChangeOutfit(creature) end
-function onThink()                                             npcHandler:onThink() end
--- OTServ event handling functions end
-
--- Keyword handling functions start
-function sayMessage(cid, message, keywords, parameters)     return npcHandler:defaultMessageHandler(cid, message, keywords, parameters) end
-
-function greet(cid, message, keywords, parameters)
-    -- We do not want to use the default "Welcome to my shop" thingie for this npc, so we'll just make this ourselves!
-    if npcHandler.focus == cid then
-        selfSay('I am already talking to you.')
-        npcHandler.talkStart = os.clock()
-    elseif npcHandler.focus > 0 or not(npcHandler.queue:isEmpty()) then
-        selfSay('Please, ' .. creatureGetName(cid) .. '. Wait for your turn!.')
-        if(not npcHandler.queue:isInQueue(cid)) then
-            npcHandler.queue:pushBack(cid)
-        end
-    elseif(npcHandler.focus == 0) and (npcHandler.queue:isEmpty()) then
-        selfSay(creatureGetName(cid) .. '! Are you prepared you face your destiny?')
-        npcHandler.focus = cid
-        voc = 0
-        npcHandler.talkStart = os.clock()
-    end
-    
-    return true
-end
-
-function farewell(cid, message, keywords, parameters)         return npcHandler:defaultFarewellHandler(cid, message, keywords, parameters) end
--- Keyword handling functions end
-
-
-function confirmAction(cid, message, keywords, parameters)
-    if(cid ~= npcHandler.focus) then
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
         return false
     end
-    
-    if(keywords[1] == 'yes') then
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    local talk_state = npcHandler.topic[cid] or 0
+
+    if msgcontains(msg, 'sorcerer') then
+        selfSay('Are you sure that you wish to become a sorcerer? This decision is irreversible!', cid)
+        npcHandler.topic[cid] = 1
         
-        if(getPlayerLevel(cid) < 8) then
-            selfSay('You are not yet worthy. Come back when you are ready!')
+    elseif msgcontains(msg, 'druid') then
+        selfSay('Are you sure that you wish to become a druid? This decision is irreversible!', cid)
+        npcHandler.topic[cid] = 2
+        
+    elseif msgcontains(msg, 'paladin') then
+        selfSay('Are you sure that you wish to become a paladin? This decision is irreversible!', cid)
+        npcHandler.topic[cid] = 3
+        
+    elseif msgcontains(msg, 'knight') then
+        selfSay('Are you sure that you wish to become a knight? This decision is irreversible!', cid)
+        npcHandler.topic[cid] = 4
+
+    elseif msgcontains(msg, 'yes') then
+        if talk_state >= 1 and talk_state <= 4 then
+            if player:getLevel() < 8 then
+                selfSay('You are not yet worthy. Come back when you are ready!', cid)
+                npcHandler:resetNpc()
+                npcHandler.topic[cid] = 0
+                return true
+            end
+            
+            if player:getVocation():getId() ~= 0 then
+                selfSay('You already have a vocation!', cid)
+                npcHandler:resetNpc()
+                npcHandler.topic[cid] = 0
+                return true
+            end
+            
+            local vocationNames = {
+                [1] = "sorcerer",
+                [2] = "druid", 
+                [3] = "paladin",
+                [4] = "knight"
+            }
+            
+            player:setVocation(Vocation(talk_state))
+            player:setTown(Town(1)) -- Set town if needed
+            player:teleportTo(Position(438, 504, 8))
+            player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+            
+            selfSay('Congratulations! You are now a ' .. vocationNames[talk_state] .. '!', cid)
+            npcHandler.topic[cid] = 0
+        else
+            selfSay('What do you want to confirm?', cid)
+        end
+
+    elseif msgcontains(msg, 'no') then
+        if talk_state >= 1 and talk_state <= 4 then
+            selfSay('Allright then. What vocation do you wish to become? A sorcerer, druid, paladin or knight?', cid)
+            npcHandler.topic[cid] = 0
+        else
+            selfSay('Then come back when you are ready!', cid)
             npcHandler:resetNpc()
-            voc = 0
-            return true
+            npcHandler.topic[cid] = 0
         end
-        
-        if(voc == 0) then
-            selfSay('Allright then. What vocation do you wish to become? A sorcerer, druid, paladin or knight?')
+
+    elseif msgcontains(msg, 'vocation') or msgcontains(msg, 'job') then
+        if player:getVocation():getId() == 0 then
+            selfSay('What vocation do you wish to become? A sorcerer, druid, paladin or knight?', cid)
         else
-            doPlayerSetVocation(npcHandler.focus,voc)
-            local pos = { x=438, y=504, z=8 }
-            doPlayerSetMasterPos(npcHandler.focus,pos)
-            doTeleportThing(npcHandler.focus,pos)
-            voc = 0
+            selfSay('You already have a vocation!', cid)
         end
-        
-    elseif(keywords[1] == 'no') then
-        
-        if(voc == 0) then
-            selfSay('Then come back when you are ready!')
-            npcHandler.focus = 0
-              voc = 0
-              if not(queue[1] == nil) then
-                  greetNextCostumer(queue)
-              end
-        else
-            selfSay('Allright then. What vocation do you wish to become? A sorcerer, druid, paladin or knight?')
-            voc = 0
-        end
-        
     end
-    
+
     return true
 end
 
-function selectVocation(cid, message, keywords, parameters)
-    if(cid ~= npcHandler.focus) then
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
         return false
     end
     
-    selfSay('Are you sure that you wish to become a ' .. keywords[1] .. '? This decition is irreversible!')
-    voc = parameters.voc
-    
+    selfSay(player:getName() .. '! Are you prepared to face your destiny?', cid)
+    npcHandler.topic[cid] = 0
     return true
-    
 end
 
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Farewell, ' .. player:getName() .. '!', cid)
+    npcHandler.topic[cid] = 0
+    return true
+end
 
-keywordHandler:addKeyword({'sorcerer'}, selectVocation, {voc = 1})
-keywordHandler:addKeyword({'druid'}, selectVocation, {voc = 2})
-keywordHandler:addKeyword({'paladin'}, selectVocation, {voc = 3})
-keywordHandler:addKeyword({'knight'}, selectVocation, {voc = 4})
-
--- Confirm sell/buy keywords
-keywordHandler:addKeyword({'yes'}, confirmAction)
-keywordHandler:addKeyword({'no'}, confirmAction)
-
-keywordHandler:addKeyword({'hi'}, greet, nil)
-keywordHandler:addKeyword({'hello'}, greet, nil)
-keywordHandler:addKeyword({'hey'}, greet, nil)
-keywordHandler:addKeyword({'bye'}, farewell, nil)
-keywordHandler:addKeyword({'farewell'}, farewell, nil)
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

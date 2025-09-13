@@ -1,130 +1,132 @@
-focus = 0
-talk_start = 0
-target = 0
-following = false
-attacking = false
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
+-- Shop Module for equipment
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
+
+-- Weapons
+shopModule:addBuyableItem({'katana'}, 2412, 20, 1, 'katana')
+shopModule:addBuyableItem({'mace'}, 2398, 20, 1, 'mace')  
+shopModule:addBuyableItem({'hatchet'}, 2388, 20, 1, 'hatchet')
+
+-- Armor
+shopModule:addBuyableItem({'studded armor'}, 2484, 30, 1, 'studded armor')
+shopModule:addBuyableItem({'chain armor'}, 2464, 90, 1, 'chain armor')
+shopModule:addBuyableItem({'brass armor'}, 2465, 300, 1, 'brass armor')
+
+-- Helmets
+shopModule:addBuyableItem({'brass helmet'}, 2460, 20, 1, 'brass helmet')
+shopModule:addBuyableItem({'leather helmet'}, 2461, 5, 1, 'leather helmet')
+
+-- Shields
+shopModule:addBuyableItem({'brass shield'}, 2511, 15, 1, 'brass shield')
+shopModule:addBuyableItem({'copper shield'}, 2530, 50, 1, 'copper shield')
+
+-- Legs
+shopModule:addBuyableItem({'leather legs'}, 2649, 8, 1, 'leather legs')
+shopModule:addBuyableItem({'studded legs'}, 2468, 20, 1, 'studded legs')
+
+-- Boots
+shopModule:addBuyableItem({'leather boots'}, 2643, 5, 1, 'leather boots')
+
+-- Other
+shopModule:addBuyableItem({'torch'}, 2050, 2, 1, 'torch')
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    if msgcontains(msg, 'job') then
+        selfSay('I am a merchant! I sell basic equipment for new adventurers.', cid)
+    elseif msgcontains(msg, 'offer') or msgcontains(msg, 'trade') then
+        selfSay('I sell weapons, armor, helmets, shields, legs, boots and torches. Just tell me what you want to buy!', cid)
+    elseif msgcontains(msg, 'weapon') then
+        selfSay('I have katana (20gp), mace (20gp) and hatchet (20gp).', cid)
+    elseif msgcontains(msg, 'armor') then
+        selfSay('I sell studded armor (30gp), chain armor (90gp) and brass armor (300gp).', cid)
+    elseif msgcontains(msg, 'helmet') then
+        selfSay('I have leather helmet (5gp) and brass helmet (20gp).', cid)
+    elseif msgcontains(msg, 'shield') then
+        selfSay('I sell brass shield (15gp) and copper shield (50gp).', cid)
+    elseif msgcontains(msg, 'legs') then
+        selfSay('I have leather legs (8gp) and studded legs (20gp).', cid)
+    elseif msgcontains(msg, 'boots') then
+        selfSay('I sell leather boots for 5gp.', cid)
+    elseif msgcontains(msg, 'help') then
+        selfSay('I sell basic equipment. Say "offer" to see all items or ask about specific categories like "weapon", "armor", etc.', cid)
+    end
+
+    return true
 end
 
-
-function onCreatureAppear(creature)
-
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Hello, ' .. player:getName() .. '! I sell Katana(20gp), Mace(20gp), Hatchet(20gp), Studded Armor(30gp), Chain Armor(90gp), Brass Armor(300gp), Brass Helmet(20gp), Leather Helmet(5gp), Brass Shield(15gp), Copper Shield(50gp), Leather Legs(8gp), Studded Legs(20gp), Leather Boots(5gp), Torch(2gp).', cid)
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          selfLook(cid)
-	focus = 0
-          talk_start = 0
-  	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Good bye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
-
-function onCreatureTurn(creature)
-
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hello, ' .. creatureGetName(cid) .. '! I sell Katana(20gp), Mace(20gp), Hatchet(20gp), Studded Armor(30gp), Chain Armor(90gp), Brass Armor(300gp), Brass Helmet(20gp), Leather Helmet(5gp), Brass Shield(15gp), Copper Shield(50gp),Leather Legs(8gp), Studded Legs(20gp), Leather Boots(5gp), Torch(2gp).')
-  		focus = cid
-  		talk_start = os.clock()
-
-  	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
- 	elseif focus == cid then
- 		talk_start = os.clock()
-
- 		if msgcontains(msg, 'hatchet') then
- 			buy(cid,2388,1,20)
- 		elseif msgcontains(msg, 'katana') then
- 			buy(cid,2412,1,20)
- 		elseif msgcontains(msg, 'mace') then
- 			buy(cid,2398,1,20)
- 		elseif msgcontains(msg, 'studded armor') then
- 			buy(cid,2484,1,30)
- 		elseif msgcontains(msg, 'chain armor') then
- 			buy(cid,2464,1,90)
- 		elseif msgcontains(msg, 'brass armor') then
- 			buy(cid,2465,1,300)
- 		elseif msgcontains(msg, 'leather boots') then
- 			buy(cid,2643,1,5)
- 		elseif msgcontains(msg, 'brass helmet') then
- 			buy(cid,2460,1,20)
- 		elseif msgcontains(msg, 'leather helmet') then
- 			buy(cid,2461,1,5)
- 		elseif msgcontains(msg, 'brass shield') then
- 			buy(cid,2511,1,15)
- 		elseif msgcontains(msg, 'copper shield') then
- 			buy(cid,2530,1,50)
- 		elseif msgcontains(msg, 'torch') then
- 			buy(cid,2050,1,2)
- 		elseif msgcontains(msg, 'leather legs') then
- 			buy(cid,2649,1,8)
- 		elseif msgcontains(msg, 'studded legs') then
- 			buy(cid,2468,1,20)
-
- 		elseif string.find(msg, '(%a*)bye(%a*)') and getDistanceToCreature(cid) < 4 then
- 			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
- 			focus = 0
- 			talk_start = 0
- 		end
- 	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
+-- Custom onThink for random movement
 function onThink()
-if (os.clock() - talk_start) > 30 then
-if focus > 0 then
-selfSay('Next Please...')
+    npcHandler:onThink()
+    
+    -- Random movement when not focused on any player
+    if not npcHandler:isFocused() then
+        local position = Npc():getPosition()
+        local randmove = math.random(1, 20)
+        local newPos = Position(position.x, position.y, position.z)
+        
+        if randmove == 1 then
+            newPos.x = newPos.x + 1
+        elseif randmove == 2 then
+            newPos.x = newPos.x - 1
+        elseif randmove == 3 then
+            newPos.y = newPos.y + 1
+        elseif randmove == 4 then
+            newPos.y = newPos.y - 1
+        end
+        
+        -- Only move if it's a different position and valid
+        if randmove <= 4 then
+            local tile = Tile(newPos)
+            if tile and not tile:hasFlag(TILESTATE_BLOCKSOLID) then
+                Npc():moveTo(newPos)
+            end
+        end
+    end
 end
-focus = 0
-end
-if focus ~= 0 then
-if getDistanceToCreature(focus) > 5 then
-selfSay('Good bye then.')
-focus = 0
-end
-end
-if focus == 0 then
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,20)
-if randmove == 1 then
-nx = cx + 1
-end
-if randmove == 2 then
-nx = cx - 1
-end
-if randmove == 3 then
-ny = cy + 1
-end
-if randmove == 4 then
-ny = cy - 1
-end
-if randmove >= 5 then
-nx = cx
-ny = cy
-end
-moveToPosition(nx, ny, cz)
---summons = 30
---summons2 = 30
-end
-end 
+
+-- Keywords for equipment categories
+keywordHandler:addKeyword({'equipment'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell basic equipment for adventurers!'})
+keywordHandler:addKeyword({'price'}, StdModule.say, {npcHandler = npcHandler, text = 'Ask me about specific items to know their prices.'})
+
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

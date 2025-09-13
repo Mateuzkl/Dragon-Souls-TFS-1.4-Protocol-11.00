@@ -1,134 +1,119 @@
-focus = 0
- talk_start = 0
- target = 0
- following = false
- attacking = false
- ox = 204
-  oy = 100
-  oz = 7
-  max = 7
- 
- function onThingMove(creature, thing, oldpos, oldstackpos)
- 
- end
- 
- 
- function onCreatureAppear(creature)
- 
- end
- 
- 
- function onCreatureDisappear(cid, pos)
- if focus == cid then
- selfSay('Good bye then.')
- focus = 0
- talk_start = 0
- end
- end
- 
- function onCreatureTurn(creature)
- end
- function msgcontains(txt, str)
- return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
- end
- 
- function onCreatureSay(cid, type, msg)
- msg = string.lower(msg)
- 
-   	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-		selfSay('Hello ' .. creatureGetName(cid) .. '! I\'m one of Marine Sisters, we selling parcels and letters in all cities.')
- 		focus = cid
- 		selfLook(cid)
-		talk_start = os.clock()
-	end
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-   	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-		 selfSay('Ola ' .. creatureGetName(cid) .. '! Sou uma das Marine Sisters, Estamos vendendo parcels e letters em todas as cidades.')
- 		focus = cid
- 		selfLook(cid)
- 		talk_start = os.clock()
-	end
- 
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-  	end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
-  	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Desculpe, ' .. creatureGetName(cid) .. '! Falo com voce em um minuto.')
-  	end
- 
-  	if msgcontains(msg, 'letter') and focus == cid then
-		buy(cid,2597,1,10)
-  		talk_start = os.clock()
-  	end
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
 
-  	if msgcontains(msg, 'parcel') and focus == cid then
-		 buy(cid,2595,1,15)
-		 buy(cid,2599,1,0)
-  		talk_start = os.clock()
-  	end
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-  	if msgcontains(msg, 'label') and focus == cid then
-		 buy(cid,2599,1,0)
-  		talk_start = os.clock()
-  	end 
+    if msgcontains(msg, 'letter') then
+        if player:removeTotalMoney(10) then
+            player:addItem(2597, 1)
+            selfSay('Here is your letter!', cid)
+        else
+            selfSay('You do not have enough money!', cid)
+        end
 
- 
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Goodbye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Tchau, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  end
- 
- 
- function onCreatureChangeOutfit(creature)
- 
- end
- 
- 
- function onThink() 
-if focus == 0 then
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,20)
-if randmove == 1 then
-nx = cx + 1
-end
-if randmove == 2 then
-nx = cx - 1
-end
-if randmove == 3 then
-ny = cy + 1
-end
-if randmove == 4 then
-ny = cy - 1
-end
-if randmove >= 5 then
-nx = cx
-ny = cy
-end
-moveToPosition(nx, ny, cz)
+    elseif msgcontains(msg, 'parcel') then
+        if player:removeTotalMoney(15) then
+            player:addItem(2595, 1)
+            player:addItem(2599, 1) -- label
+            selfSay('Here is your parcel with label!', cid)
+        else
+            selfSay('You do not have enough money!', cid)
+        end
+
+    elseif msgcontains(msg, 'label') then
+        player:addItem(2599, 1)
+        selfSay('Here is your label!', cid)
+
+    elseif msgcontains(msg, 'offer') or msgcontains(msg, 'trade') then
+        selfSay('I sell letters for 10 gold and parcels for 15 gold.', cid)
+
+    elseif msgcontains(msg, 'job') then
+        selfSay('I am one of Marine Sisters, we sell parcels and letters in all cities.', cid)
+
+    elseif msgcontains(msg, 'help') then
+        selfSay('You can buy letters, parcels and labels from me.', cid)
+    end
+
+    return true
 end
 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Adeus.')
-  			focus = 0
-  		end
-	end
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    -- Check language preference or use both
+    local msg = string.lower(player:getName())
+    if msgcontains(msg, 'oi') then
+        selfSay('Ola ' .. player:getName() .. '! Sou uma das Marine Sisters, Estamos vendendo parcels e letters em todas as cidades.', cid)
+    else
+        selfSay('Hello ' .. player:getName() .. '! I\'m one of Marine Sisters, we selling parcels and letters in all cities.', cid)
+    end
+    
+    return true
 end
- 
+
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Goodbye, ' .. player:getName() .. '!', cid)
+    return true
+end
+
+-- Custom onThink for random movement
+function onThink()
+    npcHandler:onThink()
+    
+    -- Random movement when not focused on any player
+    if not npcHandler:isFocused() then
+        local position = Npc():getPosition()
+        local randmove = math.random(1, 20)
+        local newPos = Position(position.x, position.y, position.z)
+        
+        if randmove == 1 then
+            newPos.x = newPos.x + 1
+        elseif randmove == 2 then
+            newPos.x = newPos.x - 1
+        elseif randmove == 3 then
+            newPos.y = newPos.y + 1
+        elseif randmove == 4 then
+            newPos.y = newPos.y - 1
+        end
+        
+        -- Only move if it's a different position and valid
+        if randmove <= 4 then
+            local tile = Tile(newPos)
+            if tile and not tile:hasFlag(TILESTATE_BLOCKSOLID) then
+                Npc():moveTo(newPos)
+            end
+        end
+    end
+end
+
+-- Keywords for bilingual support
+keywordHandler:addKeyword({'carta'}, StdModule.say, {npcHandler = npcHandler, text = 'Cartas custam 10 gold pieces.'})
+keywordHandler:addKeyword({'encomenda'}, StdModule.say, {npcHandler = npcHandler, text = 'Encomendas custam 15 gold pieces.'})
+keywordHandler:addKeyword({'etiqueta'}, StdModule.say, {npcHandler = npcHandler, text = 'Aqui esta sua etiqueta!'})
+
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

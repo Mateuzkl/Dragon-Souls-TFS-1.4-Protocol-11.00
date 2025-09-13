@@ -1,206 +1,155 @@
-focus = 0
- talk_start = 0
- target = 0
- following = false
- attacking = false
- 
- function onThingMove(creature, thing, oldpos, oldstackpos)
- 
- end
- 
- 
- function onCreatureAppear(creature)
- 
- end
- 
- 
- function onCreatureDisappear(cid, pos)
-   	if focus == cid then
-           selfSay('Good bye then.')
-           focus = 0
-           talk_start = 0
-   	end
- end
- 
- 
- function onCreatureTurn(creature)
- 
- end
- function msgcontains(txt, str)
-   	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
- end
- 
- 
- function onCreatureSay(cid, type, msg)
-   	msg = string.lower(msg)
- 
-   	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		if getPlayerVocation(cid) == 2 then
-  			selfSay('Hello ' .. creatureGetName(cid) .. '! What spell do you want to learn?')
-  			focus = cid
-  			talk_start = os.clock()
-  		else
-  			selfSay('Sorry, I sell spells for druids.')
-  		end
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-   	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		if getPlayerVocation(cid) == 2 then
-  			selfSay('Ola ' .. creatureGetName(cid) .. '! Que magia iria apreder hoje?')
-  			focus = cid
-  			talk_start = os.clock()
-  		else
-  			selfSay('Desculpe , so druidas autorizados.')
-  		end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-  	end
+-- Modern spell learning function
+function learnSpell(cid, spellName, price)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-  	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Desculpe, ' .. creatureGetName(cid) .. '! Falo com voce em um minuto.')
-  	end	
+    if player:hasLearnedSpell(spellName) then
+        selfSay('You already know this spell.', cid)
+        return false
+    end
 
-		if msgcontains(msg, 'light healing')) and focus == cid then
-   			learnSpell(cid,'exura',170)
-  		talk_start = os.clock()
-  	end	
-		if msgcontains(msg, 'create food')) and focus == cid then
-   			learnSpell(cid,'exevo pan',150)
-  		talk_start = os.clock()
-  	end
-		if msgcontains(msg, 'force strike')) and focus == cid then
-   			learnSpell(cid,'exori mort',600)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'heavy magic missle')) and focus == cid then
-   			learnSpell(cid,'adori gran',600)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'energy strike')) and focus == cid then
-   			learnSpell(cid,'exori mort',800)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'flame strike')) and focus == cid then
-   			learnSpell(cid,'exori flam',800)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'magic shield')) and focus == cid then
-   			learnSpell(cid,'utamo vita',450)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'intense healing rune')) and focus == cid then
-   			learnSpell(cid,'adura gran',600)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'intense healing')) and focus == cid then
-   			learnSpell(cid,'exura gran',350)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'heal friend')) and focus == cid then
-   			learnSpell(cid,'exura sio',800)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'strong haste')) and focus == cid then
-   			learnSpell(cid,'utani gran hur',1300)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'haste')) and focus == cid then
-   			learnSpell(cid,'utani hur',600)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'great fireball')) and focus == cid then
-   			learnSpell(cid,'adori gran flam',1200)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'ultimate healing rune')) and focus == cid then
-   			learnSpell(cid,'adura vita',1500)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'ultimate healing')) and focus == cid then
-   			learnSpell(cid,'exura vita',1000)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'explosion')) and focus == cid then
-   			learnSpell(cid,'adevo mas hur',1800)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'mass healing')) and focus == cid then
-   			learnSpell(cid,'exevo gran mas res',2200)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'poison storm')) and focus == cid then
-   			learnSpell(cid,'exevo gran mas pox',3400)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'ultimate light')) and focus == cid then
-  			learnSpell(cid,'utevo vis lux',1600)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'greater light')) and focus == cid then
-  			learnSpell(cid,'utevo gran lux',500)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'light')) and focus == cid then
-  			learnSpell(cid,'utevo lux',100)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'invisible')) and focus == cid then
-  			learnSpell(cid,'utana vid',1000)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'summon')) and focus == cid then
-  			learnSpell(cid,'utevo res',2000)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'find person')) and focus == cid then
-  			learnSpell(cid,'exiva',80)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'magic rope')) and focus == cid then
-  			learnSpell(cid,'exani tera',200)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'levitate')) and focus == cid then
-  			learnSpell(cid,'exani hur',500)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'antidote')) and focus == cid then
-  			learnSpell(cid,'exana pox',150)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'wild growth')) and focus == cid then
-  			learnSpell(cid,'exani tera',2000)
-  		talk_start = os.clock()
-  	end
- 
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Goodbye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Tchau, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  end
- 
-  function onCreatureChangeOutfit(creature)
- 
- end
- 
- 
- function onThink()
-   	if (os.clock() - talk_start) > 30 then
-   		if focus > 0 then
-   			selfSay('Next Please...')
-   		end
-   			focus = 0
-   	end
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Good bye then.')
-  			focus = 0
-  		end
-  	end
- end
+    if player:removeTotalMoney(price) then
+        player:learnSpell(spellName)
+        selfSay('You have learned a new spell!', cid)
+        player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+        return true
+    else
+        selfSay('You do not have enough money.', cid)
+        return false
+    end
+end
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    -- Healing Spells
+    if msgcontains(msg, 'light healing') then
+        learnSpell(cid, 'exura', 170)
+    elseif msgcontains(msg, 'intense healing') then
+        learnSpell(cid, 'exura gran', 350)
+    elseif msgcontains(msg, 'ultimate healing') then
+        learnSpell(cid, 'exura vita', 1000)
+    elseif msgcontains(msg, 'heal friend') then
+        learnSpell(cid, 'exura sio', 800)
+    elseif msgcontains(msg, 'mass healing') then
+        learnSpell(cid, 'exevo gran mas res', 2200)
+
+    -- Attack Spells
+    elseif msgcontains(msg, 'force strike') then
+        learnSpell(cid, 'exori mort', 600)
+    elseif msgcontains(msg, 'energy strike') then
+        learnSpell(cid, 'exori mort', 800)
+    elseif msgcontains(msg, 'flame strike') then
+        learnSpell(cid, 'exori flam', 800)
+    elseif msgcontains(msg, 'heavy magic missile') then
+        learnSpell(cid, 'adori gran', 600)
+    elseif msgcontains(msg, 'great fireball') then
+        learnSpell(cid, 'adori gran flam', 1200)
+    elseif msgcontains(msg, 'explosion') then
+        learnSpell(cid, 'adevo mas hur', 1800)
+    elseif msgcontains(msg, 'poison storm') then
+        learnSpell(cid, 'exevo gran mas pox', 3400)
+
+    -- Rune Spells
+    elseif msgcontains(msg, 'intense healing rune') then
+        learnSpell(cid, 'adura gran', 600)
+    elseif msgcontains(msg, 'ultimate healing rune') then
+        learnSpell(cid, 'adura vita', 1500)
+
+    -- Utility Spells
+    elseif msgcontains(msg, 'create food') then
+        learnSpell(cid, 'exevo pan', 150)
+    elseif msgcontains(msg, 'magic shield') then
+        learnSpell(cid, 'utamo vita', 450)
+    elseif msgcontains(msg, 'haste') and not msgcontains(msg, 'strong') then
+        learnSpell(cid, 'utani hur', 600)
+    elseif msgcontains(msg, 'strong haste') then
+        learnSpell(cid, 'utani gran hur', 1300)
+    elseif msgcontains(msg, 'light') and not msgcontains(msg, 'greater') and not msgcontains(msg, 'ultimate') then
+        learnSpell(cid, 'utevo lux', 100)
+    elseif msgcontains(msg, 'greater light') then
+        learnSpell(cid, 'utevo gran lux', 500)
+    elseif msgcontains(msg, 'ultimate light') then
+        learnSpell(cid, 'utevo vis lux', 1600)
+    elseif msgcontains(msg, 'invisible') then
+        learnSpell(cid, 'utana vid', 1000)
+    elseif msgcontains(msg, 'summon') then
+        learnSpell(cid, 'utevo res', 2000)
+    elseif msgcontains(msg, 'find person') then
+        learnSpell(cid, 'exiva', 80)
+    elseif msgcontains(msg, 'magic rope') then
+        learnSpell(cid, 'exani tera', 200)
+    elseif msgcontains(msg, 'levitate') then
+        learnSpell(cid, 'exani hur', 500)
+    elseif msgcontains(msg, 'antidote') then
+        learnSpell(cid, 'exana pox', 150)
+    elseif msgcontains(msg, 'wild growth') then
+        learnSpell(cid, 'exani tera', 2000)
+
+    elseif msgcontains(msg, 'spells') or msgcontains(msg, 'offer') then
+        selfSay('I teach healing spells, attack spells, runes, and utility spells for druids. Just tell me which spell you want to learn!', cid)
+    elseif msgcontains(msg, 'job') then
+        selfSay('I am a spell teacher for druids. I can teach you many powerful spells!', cid)
+    elseif msgcontains(msg, 'help') then
+        selfSay('I teach spells to druids only. Say the name of a spell to learn it, or say "spells" to hear about what I teach.', cid)
+    end
+
+    return true
+end
+
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    local vocation = player:getVocation():getId()
+    
+    -- Check if player is druid (vocation 2 or promoted 6)
+    if vocation == 2 or vocation == 6 then
+        selfSay('Hello ' .. player:getName() .. '! What spell do you want to learn?', cid)
+        return true
+    else
+        selfSay('Sorry, I sell spells for druids only.', cid)
+        return false
+    end
+end
+
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Goodbye, ' .. player:getName() .. '!', cid)
+    return true
+end
+
+-- Keywords for spell categories
+keywordHandler:addKeyword({'healing'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I teach light healing, intense healing, ultimate healing, heal friend, and mass healing.'})
+keywordHandler:addKeyword({'attack'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I teach force strike, energy strike, flame strike, heavy magic missile, great fireball, explosion, and poison storm.'})
+keywordHandler:addKeyword({'rune'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I teach intense healing rune and ultimate healing rune.'})
+keywordHandler:addKeyword({'utility'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I teach many utility spells like haste, light, invisible, summon, find person, magic rope, levitate, antidote, and wild growth.'})
+
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

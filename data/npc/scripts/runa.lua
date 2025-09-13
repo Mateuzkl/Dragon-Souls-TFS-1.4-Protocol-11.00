@@ -1,262 +1,145 @@
-focus = 0
-  talk_start = 0
-  target = 0
-  following = false
-  attacking = false
-  ox = 135
-  oy = 54
-  oz = 7
-  max = 20
-  function onThingMove(creature, thing, oldpos, oldstackpos)
- 
-  end
- 
- 
-  function onCreatureAppear(creature)
- 
-  end
- 
- 
-  function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Thau-thau.')
-          focus = 0
-          talk_start = 0
-  	end
-  end
- 
- 
-  function onCreatureTurn(creature)
- 
-  end
- 
-  function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-  end
- 
- 
-  function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
- 
-  	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hello ' .. creatureGetName(cid) .. '! I sell all runes , just say their names.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-  	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Ola ' .. creatureGetName(cid) .. '! Eu vendo todas as runas basta vc saber o nome delas.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
- 
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-  	end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
-  	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Desculpe, ' .. creatureGetName(cid) .. '! Ja falo com voce.')
-  	end
- 
-  	if msgcontains(msg, 'light magic missile') and focus == cid then
-  		buy(cid,2287,1,200)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'poison field') and focus == cid then
-  		buy(cid,2285,1,300)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'fire field') and focus == cid then
-  		buy(cid,2301,1,500)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'heavy magic missile') and focus == cid then
-  		buy(cid,2311,1,600)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'intense healing rune') and focus == cid then
-  		buy(cid,2265,1,600)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'antidote rune') and focus == cid then
-  		buy(cid,2266,1,600)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'fireball') and focus == cid then
-  		buy(cid,2302,1,800)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'energy field') and focus == cid then
-  		buy(cid,2277,1,700)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'destroy field') and focus == cid then
-  		buy(cid,2261,1,350)
-  		talk_start = os.clock()
- 
-  	end 	
- 	
- 	if msgcontains(msg, 'fireball') and focus == cid then
-  		buy(cid,2302,1,800)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'envenenom') and focus == cid then
-  		buy(cid,2292,1,1000)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'animate dead') and focus == cid then
-  		buy(cid,2316,1,1200)
-  		talk_start = os.clock()
-  	end
- 
- 	if msgcontains(msg, 'desintegrate') and focus == cid then
-  		buy(cid,2310,1,900)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'poison bomb') and focus == cid then
-  		buy(cid,2286,1,1000)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'great fireball') and focus == cid then
-  		buy(cid,2304,1,1200)
-  		talk_start = os.clock()
-  	end
- 
- 	if msgcontains(msg, 'fire bomb') and focus == cid then
-  		buy(cid,2305,1,1500)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'convince creature') and focus == cid then
-  		buy(cid,2290,1,1300)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'poison wall') and focus == cid then
-  		buy(cid,2289,1,1600)
-  		talk_start = os.clock()
-  	end
- 
- 	if msgcontains(msg, 'ultimate healing rune') and focus == cid then
-  		buy(cid,2273,1,1500)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'chameleon') and focus == cid then
-  		buy(cid,2291,1,1800)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'explosion') and focus == cid then
-  		buy(cid,2313,1,1800)
-  		talk_start = os.clock()
-  	end
- 
- 	if msgcontains(msg, 'soul fire') and focus == cid then
-  		buy(cid,2308,1,1800)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'fire wall') and focus == cid then
-  		buy(cid,2303,1,2000)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'magic wall') and focus == cid then
-  		buy(cid,2293,1,2100)
-  		talk_start = os.clock()
-  	end
- 
- 	if msgcontains(msg, 'energy bomb') and focus == cid then
-  		buy(cid,2262,1,2300)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'energy wall') and focus == cid then
-  		buy(cid,2279,1,2500)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'sudden death') and focus == cid then
-  		buy(cid,2268,1,3000)
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'paralyze') and focus == cid then
-  		buy(cid,2278,1,19000)
-  		talk_start = os.clock()
-  	end
- 
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Goodbye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Thau, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  end
- 
- 
-  function onCreatureChangeOutfit(creature)
- 
-  end
- 
- 
- function onThink() 
-if focus == 0 then
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,20)
-if randmove == 1 then
-nx = cx + 1
-end
-if randmove == 2 then
-nx = cx - 1
-end
-if randmove == 3 then
-ny = cy + 1
-end
-if randmove == 4 then
-ny = cy - 1
-end
-if randmove >= 5 then
-nx = cx
-ny = cy
-end
-moveToPosition(nx, ny, cz)
-end
-end 
+-- Shop Module for runes
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Adeus.')
-  			focus = 0
-  		end
-	end
+-- Attack Runes
+shopModule:addBuyableItem({'light magic missile'}, 2287, 200, 1, 'light magic missile rune')
+shopModule:addBuyableItem({'heavy magic missile'}, 2311, 600, 1, 'heavy magic missile rune')
+shopModule:addBuyableItem({'fireball'}, 2302, 800, 1, 'fireball rune')
+shopModule:addBuyableItem({'great fireball'}, 2304, 1200, 1, 'great fireball rune')
+shopModule:addBuyableItem({'explosion'}, 2313, 1800, 1, 'explosion rune')
+shopModule:addBuyableItem({'sudden death'}, 2268, 3000, 1, 'sudden death rune')
+shopModule:addBuyableItem({'soul fire'}, 2308, 1800, 1, 'soulfire rune')
 
- 
+-- Field Runes
+shopModule:addBuyableItem({'poison field'}, 2285, 300, 1, 'poison field rune')
+shopModule:addBuyableItem({'fire field'}, 2301, 500, 1, 'fire field rune')
+shopModule:addBuyableItem({'energy field'}, 2277, 700, 1, 'energy field rune')
+
+-- Wall Runes
+shopModule:addBuyableItem({'poison wall'}, 2289, 1600, 1, 'poison wall rune')
+shopModule:addBuyableItem({'fire wall'}, 2303, 2000, 1, 'fire wall rune')
+shopModule:addBuyableItem({'energy wall'}, 2279, 2500, 1, 'energy wall rune')
+shopModule:addBuyableItem({'magic wall'}, 2293, 2100, 1, 'magic wall rune')
+
+-- Bomb Runes
+shopModule:addBuyableItem({'poison bomb'}, 2286, 1000, 1, 'poison bomb rune')
+shopModule:addBuyableItem({'fire bomb'}, 2305, 1500, 1, 'fire bomb rune')
+shopModule:addBuyableItem({'energy bomb'}, 2262, 2300, 1, 'energy bomb rune')
+
+-- Healing Runes
+shopModule:addBuyableItem({'intense healing rune'}, 2265, 600, 1, 'intense healing rune')
+shopModule:addBuyableItem({'ultimate healing rune'}, 2273, 1500, 1, 'ultimate healing rune')
+
+-- Support Runes
+shopModule:addBuyableItem({'antidote rune'}, 2266, 600, 1, 'antidote rune')
+shopModule:addBuyableItem({'destroy field'}, 2261, 350, 1, 'destroy field rune')
+shopModule:addBuyableItem({'animate dead'}, 2316, 1200, 1, 'animate dead rune')
+shopModule:addBuyableItem({'convince creature'}, 2290, 1300, 1, 'convince creature rune')
+shopModule:addBuyableItem({'chameleon'}, 2291, 1800, 1, 'chameleon rune')
+shopModule:addBuyableItem({'desintegrate'}, 2310, 900, 1, 'desintegrate rune')
+shopModule:addBuyableItem({'paralyze'}, 2278, 19000, 1, 'paralyze rune')
+shopModule:addBuyableItem({'envenenom'}, 2292, 1000, 1, 'envenom rune')
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    if msgcontains(msg, 'job') then
+        selfSay('I am a rune merchant! I sell all kinds of runes for mages and sorcerers.', cid)
+    elseif msgcontains(msg, 'offer') or msgcontains(msg, 'runes') then
+        selfSay('I sell all runes! Attack runes, field runes, wall runes, bomb runes, healing runes and support runes. Just say the name of the rune you want!', cid)
+    elseif msgcontains(msg, 'attack') then
+        selfSay('I sell light magic missile (200gp), heavy magic missile (600gp), fireball (800gp), great fireball (1200gp), explosion (1800gp), soul fire (1800gp) and sudden death (3000gp).', cid)
+    elseif msgcontains(msg, 'field') then
+        selfSay('I have poison field (300gp), fire field (500gp) and energy field (700gp).', cid)
+    elseif msgcontains(msg, 'wall') then
+        selfSay('I sell poison wall (1600gp), fire wall (2000gp), energy wall (2500gp) and magic wall (2100gp).', cid)
+    elseif msgcontains(msg, 'bomb') then
+        selfSay('I have poison bomb (1000gp), fire bomb (1500gp) and energy bomb (2300gp).', cid)
+    elseif msgcontains(msg, 'healing') then
+        selfSay('I sell intense healing rune (600gp) and ultimate healing rune (1500gp).', cid)
+    elseif msgcontains(msg, 'support') then
+        selfSay('I have antidote rune (600gp), destroy field (350gp), animate dead (1200gp), convince creature (1300gp), chameleon (1800gp), desintegrate (900gp), paralyze (19000gp) and envenom (1000gp).', cid)
+    elseif msgcontains(msg, 'help') then
+        selfSay('I sell all types of runes! Say "offer" to see categories or just tell me the name of the rune you want to buy.', cid)
+    end
+
+    return true
+end
+
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    -- Check if greeting was in Portuguese or English
+    selfSay('Hello ' .. player:getName() .. '! I sell all runes, just say their names.', cid)
+    return true
+end
+
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Goodbye, ' .. player:getName() .. '!', cid)
+    return true
+end
+
+-- Custom onThink for random movement
+function onThink()
+    npcHandler:onThink()
+    
+    -- Random movement when not focused on any player
+    if not npcHandler:isFocused() then
+        local position = Npc():getPosition()
+        local randmove = math.random(1, 20)
+        local newPos = Position(position.x, position.y, position.z)
+        
+        if randmove == 1 then
+            newPos.x = newPos.x + 1
+        elseif randmove == 2 then
+            newPos.x = newPos.x - 1
+        elseif randmove == 3 then
+            newPos.y = newPos.y + 1
+        elseif randmove == 4 then
+            newPos.y = newPos.y - 1
+        end
+        
+        -- Only move if it's a different position and valid
+        if randmove <= 4 then
+            local tile = Tile(newPos)
+            if tile and not tile:hasFlag(TILESTATE_BLOCKSOLID) then
+                Npc():moveTo(newPos)
+            end
+        end
+    end
+end
+
+-- Keywords for bilingual support
+keywordHandler:addKeyword({'runas'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu vendo todas as runas! Basta dizer o nome da runa que deseja.'})
+keywordHandler:addKeyword({'oferta'}, StdModule.say, {npcHandler = npcHandler, text = 'Vendo runas de ataque, campo, parede, bomba, cura e suporte!'})
+keywordHandler:addKeyword({'trabalho'}, StdModule.say, {npcHandler = npcHandler, text = 'Sou um comerciante de runas!'})
+
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

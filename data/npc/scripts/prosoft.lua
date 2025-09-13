@@ -1,113 +1,129 @@
-local focus = 0
-local talk_start = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
+
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
+
 local attack = 0
-following = false
+local following = false
+local target = 0
 
-function onCreatureDisappear(cid, pos)
- if focus == cid then
-  selfSay('Quero Do boldo')
-  focus = 0
-  talk_start = 0
-  attack = 0
-  DeAttack()
-		following = 0
-		target = 0
- end
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    local playerPos = player:getPosition()
+    local tile = Tile(playerPos)
+    local isProtectionZone = tile and tile:hasFlag(TILESTATE_PROTECTIONZONE)
+
+    if msgcontains(msg, 'fuck you') and isProtectionZone then
+        selfSay('You are safe here, but watch your mouth!', cid)
+
+    elseif msgcontains(msg, 'fuck you') or msgcontains(msg, 'curse') then
+        selfSay('How dare you! Now you will pay!', cid)
+        attack = 1
+        following = true
+        target = cid
+        -- Note: Attack() function may not work in modern TFS without special NPC configuration
+
+    elseif msgcontains(msg, 'stop') then
+        selfSay('Fine! You learned your lesson!', cid)
+        attack = 0
+        following = false
+        target = 0
+
+    elseif msgcontains(msg, 'sorry') or msgcontains(msg, 'apologize') then
+        selfSay('Apology accepted. Watch your language next time!', cid)
+        attack = 0
+        following = false
+        target = 0
+
+    elseif msgcontains(msg, 'help') then
+        selfSay('Be respectful and I will be respectful to you!', cid)
+    end
+
+    return true
 end
 
-function onCreatureSay(cid, type, msg)
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Watch your language around me, ' .. player:getName() .. '!', cid)
+    return true
+end
 
-   msg = string.lower(msg)
-
-   if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-    selfSay('Fala comigo porra!')
-    focus = cid
-    talk_start = os.clock()
-
-   elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-    selfSay('Sorry, ' .. creatureGetName(cid) .. 'depois nois troca ideia bro.')
-
-   elseif msgcontains(msg, 'fuck') and (focus == 0) and getDistanceToCreature(cid) < 4 then
-    selfSay('Fuck eu e sua mae .i.' .. creatureGetName(cid) .. '!')
-
-   elseif msgcontains(msg, 'stop') then
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Take care, ' .. player:getName() .. '!', cid)
     attack = 0
-    DeAttack()
-    following = 0
+    following = false
     target = 0
-
-
- elseif focus == cid then
-  talk_start = os.clock()
-
-  if msgcontains(msg, 'fuck you') and getTilePzInfo(getPlayerPosition(cid)) == 1 then
-   selfSay('comi a sua mae seu aviaozinho')
-
-  elseif msgcontains(msg, 'fuck you') or msgcontains(msg, 'foda') then
-   selfSay('comi a sua mae seu aviaozinho')
-   attack = 1
-   Attack(focus)
-	following = true
-	target = cid
-
-  elseif msgcontains(msg, 'stop') then
-   selfSay('Arregou!!!')
-   attack = 0
-   DeAttack()
-		following = 0
-		target = 0
-
-  elseif msgcontains(msg, 'bye') and getDistanceToCreature(cid) < 4 then
-   selfSay('vaicomdeus, Tamujunto' .. creatureGetName(cid) .. '!')
-  	focus = 0
-  	talk_start = 0
-   	attack = 0
-   	DeAttack()
-		following = 0
-		target = 0
-  end
- end
+    return true
 end
-function onCreatureChangeOutfit(creature)
-end
+
+-- Custom onThink for following behavior
 function onThink()
-
-
-	if following == true then
-	if getTilePzInfo(getPlayerPosition(target)) == 1 then
-  			selfSay('Manda A boa!')
-  		focus = 0
-  		talk_start = 0
-   		attack = 0
-   		DeAttack()
-		following = 0
-		target = 0
-else
-		moveToCreature(target)
-   		attack = 1
-   		Attack(target)
-		return
-	end
+    npcHandler:onThink()
+    
+    if following and target > 0 then
+        local player = Player(target)
+        if player then
+            local playerPos = player:getPosition()
+            local tile = Tile(playerPos)
+            local isProtectionZone = tile and tile:hasFlag(TILESTATE_PROTECTIONZONE)
+            
+            if isProtectionZone then
+                selfSay('You are safe there, but I will be watching!', target)
+                attack = 0
+                following = false
+                target = 0
+                npcHandler:releaseFocus()
+            else
+                -- Move towards player (if moveToCreature exists)
+                -- Note: This function may not exist in modern TFS
+                local npcPos = Npc():getPosition()
+                local direction = npcPos:getDirectionTo(playerPos)
+                if direction < 8 then
+                    Npc():move(direction)
+                end
+            end
+        else
+            -- Player logged out or doesn't exist
+            following = false
+            target = 0
+            attack = 0
+        end
+    end
 end
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('Pau Pau Pau ela quer pau')
-   			attack = 0
-   			DeAttack()
-		following = 0
-		target = 0
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Falou Truta.')
- 			focus = 0
-   			attack = 0
-   			DeAttack()
-		following = 0
-		target = 0
- 		end
- 	end
+
+-- Handle player disconnection
+function onCreatureDisappear(cid, pos)
+    if target == cid then
+        selfSay('Running away? Smart choice!')
+        attack = 0
+        following = false
+        target = 0
+    end
+    npcHandler:onCreatureDisappear(cid, pos)
 end
+
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

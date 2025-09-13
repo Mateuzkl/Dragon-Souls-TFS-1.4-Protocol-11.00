@@ -1,155 +1,145 @@
-focus = 0
- talk_start = 0
- target = 0
- following = false
- attacking = false
- function onThingMove(creature, thing, oldpos, oldstackpos)
- 
- end
- 
- 
- function onCreatureAppear(creature)
- 
- end
- 
- 
- function onCreatureDisappear(cid, pos)
-   	if focus == cid then
-           selfSay('Good bye then.')
-           focus = 0
-           talk_start = 0
-   	end
- end
- 
- 
- function onCreatureTurn(creature)
- 
- endfunction msgcontains(txt, str)
-   	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
- end
- 
- 
- function onCreatureSay(cid, type, msg)
-   	msg = string.lower(msg)
+local keywordHandler = KeywordHandler:new()
+local npcHandler     = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-   	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Hello ' .. creatureGetName(cid) .. '! I am the master miner fo the town,i can sell tell you all about it just say MORE.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
+-- Callbacks
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
+----------------------------------------------------------------
+-- Configurações
+----------------------------------------------------------------
+local WANDER_CHANCE       = 20      -- 1-4 move, 5-20 idle
+local MAX_IDLE_TIME       = 30      -- s
+local MAX_FOCUS_DISTANCE  = 5       -- tiles
+local PICK_ID             = 2553
+local PICK_COST           = 50
 
-   	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Ola ' .. creatureGetName(cid) .. '! Eu sou o minerador chefe da regiao, posso te contar tudo sobre minerar e so dizer MAIS.')
-  		focus = cid
- 		selfLook(cid)
-  		talk_start = os.clock()
-  	end
- 
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-  	end
+----------------------------------------------------------------
+-- Conversação
+----------------------------------------------------------------
+local function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
 
-  	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Desculpe, ' .. creatureGetName(cid) .. '! Falo com voce em um minuto.')
-  	end
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-       	 if msgcontains(msg, 'more') and focus == cid then
-  		selfSay('Using a pick on sertain types of stalagmites you can extract some rocks or maybe a jewel! But first you need a pick , to buy one just say PICK')
-  		talk_start = os.clock()
-  	end
+    msg = msg:lower()
 
-       	 if msgcontains(msg, 'mais') and focus == cid then
-  		selfSay('Usando uma pick em certos tipos de rochas voce pode extrais algumas pedras ou entao uma joia! Mas primeiro voce precisa de uma pick , diga PICK para comprar')
-  		talk_start = os.clock()
-  	end
+    -- Informações de mineração
+    if msg == 'more' then
+        selfSay('Using a pick on certain stalagmites you can extract some rocks or maybe a jewel! First you need a pick – just say PICK to buy one.', cid)
 
-       	 if msgcontains(msg, 'golem') and focus == cid then
-  		selfSay('Humpf!')
-  		talk_start = os.clock()
-  	end
+    elseif msg == 'mais' then
+        selfSay('Usando uma picareta em certos tipos de rocha você pode extrair algumas pedras ou até uma joia! Primeiro, diga PICK para comprar a picareta.', cid)
 
-       	 if msgcontains(msg, 'rocks') and focus == cid then
-  		selfSay('Rocks are useless , but you may concentrate in JEWELS')
-  		talk_start = os.clock()
-  	end
+    elseif msg == 'golem' then
+        selfSay('Humpf!', cid)
 
-       	 if msgcontains(msg, 'jewels') and focus == cid then
-  		selfSay('You can obtains jewels if you persist in mining , they can make some money!')
-  		talk_start = os.clock()
-  	end
+    elseif msg == 'rocks' then
+        selfSay('Rocks are useless; concentrate on JEWELS.', cid)
 
-       	 if msgcontains(msg, 'pedras') and focus == cid then
-  		selfSay('Pedras sao inuteis , voce deve se concentrar em JOIAS')
-  		talk_start = os.clock()
-  	end
+    elseif msg == 'jewels' then
+        selfSay('Persist in mining – jewels can make good money!', cid)
 
-       	 if msgcontains(msg, 'joias') and focus == cid then
-  		selfSay('Voce obtem joias minerando duro, elas podem valer algum dinheiro!')
-  		talk_start = os.clock()
-  	end
- 
-  	if msgcontains(msg, 'pick') and focus == cid then
- 		buy(cid,2553,1,50)
-  		talk_start = os.clock()
-  	end
- 
-  	if string.find(msg, '(%a*)bye(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Goodbye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  	if string.find(msg, '(%a*)tchau(%a*)') and focus == cid and getDistanceToCreature(cid) < 4 then
-  		selfSay('Tchau, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  	end
-  end
- 
- 
- function onCreatureChangeOutfit(creature)
- 
- end
- 
- 
- function onThink() 
-if focus == 0 then
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,20)
-if randmove == 1 then
-nx = cx + 1
-end
-if randmove == 2 then
-nx = cx - 1
-end
-if randmove == 3 then
-ny = cy + 1
-end
-if randmove == 4 then
-ny = cy - 1
-end
-if randmove >= 5 then
-nx = cx
-ny = cy
-end
-moveToPosition(nx, ny, cz)
+    elseif msg == 'pedras' then
+        selfSay('Pedras são inúteis; concentre-se em JOIAS.', cid)
+
+    elseif msg == 'joias' then
+        selfSay('Você obtém joias minerando duro; elas podem valer dinheiro!', cid)
+
+    -- Compra da picareta
+    elseif msg == 'pick' then
+        npcHandler:say(string.format('A pick costs %d gold. Do you want to buy one?', PICK_COST), cid)
+        npcHandler.topic[cid] = 1
+
+    elseif msg == 'yes' and npcHandler.topic[cid] == 1 then
+        if player:removeMoney(PICK_COST) then
+            player:addItem(PICK_ID, 1)
+            selfSay('Here is your pick. Happy mining!', cid)
+        else
+            selfSay('You don\'t have enough money.', cid)
+        end
+        npcHandler.topic[cid] = 0
+
+    elseif msg == 'no' and npcHandler.topic[cid] == 1 then
+        selfSay('Maybe next time.', cid)
+        npcHandler.topic[cid] = 0
+    end
+    return true
 end
 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Adeus.')
-  			focus = 0
-  		end
-	end
+----------------------------------------------------------------
+-- Saudação e despedida
+----------------------------------------------------------------
+local function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return true
+    end
+
+    if npcHandler:getDistanceToCreature(cid) <= 4 then
+        selfSay('Hello ' .. player:getName() .. '! I am the master miner of the town. Say MORE to learn.', cid)
+        npcHandler.focus      = cid
+        npcHandler.topic[cid] = 0
+        npcHandler.talkStart  = os.time()
+    end
+    return true
 end
- 
+
+local function onFarewell(cid)
+    local player = Player(cid)
+    if player then
+        selfSay('Goodbye, ' .. player:getName() .. '!', cid)
+    end
+    return true
+end
+
+----------------------------------------------------------------
+-- Movimento aleatório e timeout
+----------------------------------------------------------------
+local function randomWalk()
+    local pos       = getCreaturePosition(getNpcCid())
+    local nx, ny, z = pos.x, pos.y, pos.z
+    local r         = math.random(WANDER_CHANCE)
+
+    if     r == 1 then nx = nx + 1
+    elseif r == 2 then nx = nx - 1
+    elseif r == 3 then ny = ny + 1
+    elseif r == 4 then ny = ny - 1
+    end
+    doMoveCreature(getNpcCid(), {x = nx, y = ny, z = z})
+end
+
+local function onThinkInternal()
+    if npcHandler.focus == 0 then
+        randomWalk()
+    else
+        local focused = Player(npcHandler.focus)
+        if (not focused) or (focused:getDistance(getNpcCid()) > MAX_FOCUS_DISTANCE) then
+            selfSay('Adeus.', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        elseif os.time() - (npcHandler.talkStart or 0) > MAX_IDLE_TIME then
+            selfSay('Next please!', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        end
+    end
+    npcHandler:onThink()
+end
+
+----------------------------------------------------------------
+-- Registro de callbacks
+----------------------------------------------------------------
+npcHandler:setCallback(CALLBACK_GREET,              onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL,           onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT,    creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
+
+-- Override da função onThink padrão
+function onThink() onThinkInternal() end

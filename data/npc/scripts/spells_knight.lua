@@ -1,136 +1,116 @@
-focus = 0
- talk_start = 0
- target = 0
- following = false
- attacking = false
- 
- function onThingMove(creature, thing, oldpos, oldstackpos)
- 
- end
- 
- 
- function onCreatureAppear(creature)
- 
- end
- 
- 
- function onCreatureDisappear(cid, pos)
-   	if focus == cid then
-           selfSay('Good bye then.')
-           focus = 0
-           talk_start = 0
-   	end
- end
- 
- 
- function onCreatureTurn(creature)
- 
- end
- function msgcontains(txt, str)
-   	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
- end
- 
- 
- function onCreatureSay(cid, type, msg)
-   	msg = string.lower(msg)
- 
-   	if ((string.find(msg, '(%a*)hi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		if getPlayerVocation(cid) == 4 then
-  			selfSay('Hello ' .. creatureGetName(cid) .. '! What spell do you want to learn?')
-  			focus = cid
-  			talk_start = os.clock()
-  		else
-  			selfSay('Sorry, I sell spells for knights.')
-  		end
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-   	if ((string.find(msg, '(%a*)oi(%a*)')) and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-  		if getPlayerVocation(cid) == 4 then
-  			selfSay('Ola ' .. creatureGetName(cid) .. '! Que magia voce quer aprender?')
-  			focus = cid
-  			talk_start = os.clock()
-  		else
-  			selfSay('Desculpe , So vendo magia a nobres guerreiros.')
-  		end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
-  	if string.find(msg, '(%a*)hi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-  	end
+-- Modern spell learning function
+function learnSpell(cid, spellName, price)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-  	if string.find(msg, '(%a*)oi(%a*)') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Desculpe, ' .. creatureGetName(cid) .. '! Falo com voce em um minuto.')
-  	end
-	
-		if msgcontains(msg, 'light healing') and focus == cid then
-   			learnSpell(cid,'exura',170)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'haste') and focus == cid then
-   			learnSpell(cid,'utani hur',600)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'berserk') and focus == cid then
-   			learnSpell(cid,'exori',2500)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'greater light') and focus == cid then
-  			learnSpell(cid,'utevo gran lux',500)
-  		talk_start = os.clock()
-  	end
-  		if msgcontains(msg, 'light') and focus == cid then
-  			learnSpell(cid,'utevo lux',100)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'find person') and focus == cid then
-  			learnSpell(cid,'exiva',80)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'magic rope') and focus == cid then
-  			learnSpell(cid,'exani tera',200)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'levitate') and focus == cid then
-  			learnSpell(cid,'exani hur',500)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'antidote') and focus == cid then
-  			learnSpell(cid,'exana pox',150)
-  		talk_start = os.clock()
-  	end
- 		if msgcontains(msg, 'challenge') and focus == cid then
-  			learnSpell(cid,'exeta res',2000)
-  		talk_start = os.clock()
-  	end
+    if player:hasLearnedSpell(spellName) then
+        selfSay('You already know this spell.', cid)
+        return false
+    end
 
-   		if string.find(msg, '(%a*)bye(%a*)')  and getDistanceToCreature(cid) < 4 then
-   			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-   			focus = 0
-   			talk_start = 0
-   		end
-   		if string.find(msg, '(%a*)tchau(%a*)')  and getDistanceToCreature(cid) < 4 then
-   			selfSay('Adeus, ' .. creatureGetName(cid) .. '!')
-   			focus = 0
-   			talk_start = 0
-   		end
-   	end
- end
- 
- 
- function onCreatureChangeOutfit(creature)
- 
- end
- 
- 
- function onThink()
-   	if (os.clock() - talk_start) > 30 then
-   		if focus > 0 then
-   			selfSay('Next Please...')
-   		end
-   			focus = 0
-   	end
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Good bye then.')
-  			focus = 0
-  		end
-  	end
- end
+    if player:removeTotalMoney(price) then
+        player:learnSpell(spellName)
+        selfSay('You have learned a new spell!', cid)
+        player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+        return true
+    else
+        selfSay('You do not have enough money.', cid)
+        return false
+    end
+end
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    -- Knight Spells
+    if msgcontains(msg, 'light healing') then
+        learnSpell(cid, 'exura', 170)
+    elseif msgcontains(msg, 'haste') then
+        learnSpell(cid, 'utani hur', 600)
+    elseif msgcontains(msg, 'berserk') then
+        learnSpell(cid, 'exori', 2500)
+    elseif msgcontains(msg, 'challenge') then
+        learnSpell(cid, 'exeta res', 2000)
+
+    -- Light Spells
+    elseif msgcontains(msg, 'greater light') then
+        learnSpell(cid, 'utevo gran lux', 500)
+    elseif msgcontains(msg, 'light') and not msgcontains(msg, 'greater') then
+        learnSpell(cid, 'utevo lux', 100)
+
+    -- Utility Spells
+    elseif msgcontains(msg, 'find person') then
+        learnSpell(cid, 'exiva', 80)
+    elseif msgcontains(msg, 'magic rope') then
+        learnSpell(cid, 'exani tera', 200)
+    elseif msgcontains(msg, 'levitate') then
+        learnSpell(cid, 'exani hur', 500)
+    elseif msgcontains(msg, 'antidote') then
+        learnSpell(cid, 'exana pox', 150)
+
+    elseif msgcontains(msg, 'spells') or msgcontains(msg, 'offer') then
+        selfSay('I teach spells for knights: light healing, haste, berserk, challenge, light spells, and utility spells. Just tell me which spell you want to learn!', cid)
+    elseif msgcontains(msg, 'job') then
+        selfSay('I am a spell teacher for knights. I can teach you combat and utility spells!', cid)
+    elseif msgcontains(msg, 'help') then
+        selfSay('I teach spells to knights only. Say the name of a spell to learn it, or say "spells" to hear about what I teach.', cid)
+    end
+
+    return true
+end
+
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    local vocation = player:getVocation():getId()
+    
+    -- Check if player is knight (vocation 4 or promoted 8)
+    if vocation == 4 or vocation == 8 then
+        selfSay('Hello ' .. player:getName() .. '! What spell do you want to learn?', cid)
+        return true
+    else
+        selfSay('Sorry, I sell spells for knights only.', cid)
+        return false
+    end
+end
+
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Goodbye, ' .. player:getName() .. '!', cid)
+    return true
+end
+
+-- Keywords for spell categories
+keywordHandler:addKeyword({'combat'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I teach light healing, haste, berserk, and challenge spells for knights.'})
+keywordHandler:addKeyword({'utility'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I teach find person, magic rope, levitate, antidote, and light spells.'})
+keywordHandler:addKeyword({'knight'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I only teach spells to noble knights and elite knights.'})
+
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

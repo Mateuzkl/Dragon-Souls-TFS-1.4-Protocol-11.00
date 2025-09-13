@@ -1,117 +1,102 @@
+local keywordHandler = KeywordHandler:new()
+local npcHandler     = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+----------------------------------------------------------------
+-- Callbacks
+----------------------------------------------------------------
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
-local focus = 0
-local talk_start = 0
-local target = 0
-local days = 0
+local STORAGE_KEY = 30003       -- -1 = never met; 1 = ring given; 2 = told about drawer
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+----------------------------------------------------------------
+-- Conversation
+----------------------------------------------------------------
+local function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
 
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    local storage  = player:getStorageValue(STORAGE_KEY)
+    local topic    = npcHandler.topic[cid] or 0
+    msg = msg:lower()
+
+    if msg == 'yes' and topic == 1 and storage == 1 then
+        npcHandler:say('Damn! I got a key from the guards, but I hid it before being busted. Don\'t you have a friend who can help us escape?', cid)
+        npcHandler.topic[cid] = 2
+        return true
+    end
+
+    if msg == 'yes' and topic == 2 and storage == 1 then
+        npcHandler:say('Great! I hid the key inside a drawer. You\'ll need a heavy hammer to break it.', cid)
+        player:setStorageValue(STORAGE_KEY, 2)
+        npcHandler.topic[cid] = 0
+        return true
+    end
+
+    return true
 end
 
+----------------------------------------------------------------
+-- Greeting / Farewell
+----------------------------------------------------------------
+local function onGreet(cid)
+    local player   = Player(cid)
+    local storage  = player:getStorageValue(STORAGE_KEY)
 
-function onCreatureAppear(creature)
+    if storage == -1 then
+        npcHandler:say('Huh? You can see me? Nobody can! Take this ring; it\'ll help you get out. Lost too?', cid)
+        player:addItem(2165, 1)
+        player:sendTextMessage(MESSAGE_INFO_DESCR, 'You receive a stealth ring.')
+        player:setStorageValue(STORAGE_KEY, 1)
+        npcHandler.topic[cid] = 1
+    else
+        npcHandler:say('Back again? Still no friend? I hid the key in a drawer—break it with something heavy.', cid)
+        npcHandler.topic[cid] = 0
+    end
+    npcHandler.talkStart = os.time()
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+local function onFarewell(cid)
+    npcHandler:say('Good bye, ' .. Player(cid):getName() .. '!', cid)
+    return true
 end
 
+----------------------------------------------------------------
+-- Timeout
+----------------------------------------------------------------
+local TIMEOUT = 30
+local MAX_DIST = 5
 
-function onCreatureTurn(creature)
+local function onThinkInternal()
+    if npcHandler.focus ~= 0 then
+        local player = Player(npcHandler.focus)
+        if (not player) or player:getDistance(getNpcCid()) > MAX_DIST then
+            npcHandler:say('Good bye then.', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        elseif os.time() - (npcHandler.talkStart or 0) > TIMEOUT then
+            npcHandler:say('Bye...', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        end
+    end
+    npcHandler:onThink()
 end
 
+----------------------------------------------------------------
+-- Register
+----------------------------------------------------------------
+npcHandler:setCallback(CALLBACK_GREET,              onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL,           onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT,    creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
 
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-			addon = getPlayerStorageValue(cid,30003)
-				if addon == -1 then
-					selfSay('Huh? Can you see me? Nobody can see me! take this ring boy, it will help you get out of here, are you lost too?')
-					doPlayerGiveItem(cid, 2165, 1, 5)
-     			doPlayerSendTextMessage(cid,22,"You receive an stealth ring.")
-  			doSendMagicEffect(getPlayerPosition(cid),12)
-					setPlayerStorageValue(cid,30003,1)
-					talk_state = 1
- 					focus = cid
- 					talk_start = os.clock()
-				else
-					selfSay('Hey, you again? Dont find any friend? I hidden the key inside a drawer, but you have to break it to get the key, some kind of heavy hammer should break the drawer.')
-  					focus = 0
-  					talk_start = 0
-				end
-
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-
-		if msgcontains(msg, 'yes') and talk_state == 1 then
-				addon = getPlayerStorageValue(cid,30003)
-				if addon == 1 then
-						selfSay('Damn! I got a key from the guards, but i hidden it before being busted, dont you have a friend who can help us get out of here?')
-						talk_state = 2
-						else
-						selfSay('What you want?!')
-						talk_state = 0
-					end
-
-
-		elseif msgcontains(msg, 'yes') and talk_state == 2 then
-				addon = getPlayerStorageValue(cid,30003)
-					if addon == 1 then
-						selfSay('Great! I hidden the key inside a drawer, but you have to break it to get the key, some kind of heavy hammer should break the drawer.')
-						setPlayerStorageValue(cid,30003,2)
-						else
-						selfSay('Yes what?!')
-						talk_state = 0
-					end
-
-
-
-  		elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 4 then
-  			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  			focus = 0
-  			talk_start = 0
-  		end
-  	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('Bye...')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+function onThink() onThinkInternal() end

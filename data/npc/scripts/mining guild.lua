@@ -1,200 +1,150 @@
+local keywordHandler = KeywordHandler:new()
+local npcHandler     = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+---------------------------------------------------------------
+-- Callbacks
+---------------------------------------------------------------
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
-local focus = 0
-local talk_start = 0
-local target = 0
-local days = 0
+---------------------------------------------------------------
+-- Config
+---------------------------------------------------------------
+local PICK_ID            = 2553
+local PICK_COST          = 10
+local COAL_ID            = 5880
+local COAL_AMOUNT        = 1
+local REWARD_ID          = 2157      -- crystal coin
+local STORAGE_QUEST      = 893       -- −1 = none, 1 = need coal, 2 = has coal, 3 = finished
+local TIMEOUT            = 30        -- s
+local FOCUS_DISTANCE     = 5         -- tiles
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
-
+---------------------------------------------------------------
+-- Helpers
+---------------------------------------------------------------
+local function hasCoal(player)
+    return player:getItemCount(COAL_ID) >= COAL_AMOUNT
 end
 
+local function npcSay(text, cid) selfSay(text, cid) end
 
-function onCreatureAppear(creature)
+---------------------------------------------------------------
+-- Dialogue
+---------------------------------------------------------------
+local function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player  = Player(cid)
+    local storage = player:getStorageValue(STORAGE_QUEST)
+    msg = msg:lower()
+
+    -- Basic info ---------------------------------------------
+    if msg == 'offer' then
+        npcSay('I can sell you a pick so you can start working! Need HELP about mining?', cid)
+
+    elseif msg == 'help' then
+        npcSay('Use a pick on stalagmites or iron walls. Iron walls are in Minas Tirith and need mining 35 to break.', cid)
+
+    elseif msg == 'nugget' then
+        npcSay('Nuggets are the base for forging weapons. Visit the Smithing Guild for details.', cid)
+
+    elseif msg == 'tirith' then
+        npcSay('The master mining and smithing city – premium only.', cid)
+
+    -- Buy pick -----------------------------------------------
+    elseif msg == 'pick' then
+        npcSay('A pick costs 10 gold. Do you want to buy one?', cid)
+        npcHandler.topic[cid] = 1
+
+    elseif msg == 'yes' and npcHandler.topic[cid] == 1 then
+        if player:removeMoney(PICK_COST) then
+            player:addItem(PICK_ID, 1)
+            npcSay('Here is your pick. Happy mining!', cid)
+        else
+            npcSay('You don\'t have enough money.', cid)
+        end
+        npcHandler.topic[cid] = 0
+
+    elseif msg == 'no' and npcHandler.topic[cid] == 1 then
+        npcSay('Maybe next time.', cid)
+        npcHandler.topic[cid] = 0
+
+    -- Quest chain --------------------------------------------
+    elseif msg == 'quest' then
+        if storage == -1 then                                -- first time
+            npcSay('As a novice I have an easy task: bring me 1 Coal Ore.', cid)
+            npcSay('Coal is rare, but you can mine it here in the guild with mining 35.', cid)
+            player:setStorageValue(STORAGE_QUEST, 1)
+
+        elseif storage == 1 then                             -- reminder
+            npcSay('Use your pick on Coal Rocks until you find some coal.', cid)
+
+        elseif storage == 2 then                             -- ready to deliver
+            npcSay('Did you bring me the Coal I asked?', cid)
+            npcHandler.topic[cid] = 2
+        else                                                 -- finished
+            npcSay('No more quests for now. Go train.', cid)
+        end
+
+    elseif msg == 'yes' and npcHandler.topic[cid] == 2 then
+        if hasCoal(player) then
+            player:removeItem(COAL_ID, COAL_AMOUNT)
+            player:addItem(REWARD_ID, 1)
+            npcSay('Great job! Take this reward and come back later for more tasks.', cid)
+            player:setStorageValue(STORAGE_QUEST, 3)
+        else
+            npcSay('You still don\'t have the coal. Keep mining!', cid)
+        end
+        npcHandler.topic[cid] = 0
+    elseif msg == 'no' and npcHandler.topic[cid] == 2 then
+        npcSay('Come back when you have the coal.', cid)
+        npcHandler.topic[cid] = 0
+    end
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+---------------------------------------------------------------
+-- Greeting / Farewell
+---------------------------------------------------------------
+local function onGreet(cid)
+    npcSay('Hey there, ' .. Player(cid):getName() .. '! New miners arrive every day – say OFFER or QUEST.', cid)
+    npcHandler.talkStart = os.time()
+    return true
 end
 
-
-function onCreatureTurn(creature)
+local function onFarewell(cid)
+    npcSay('Good bye, ' .. Player(cid):getName() .. '!', cid)
+    return true
 end
 
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
+---------------------------------------------------------------
+-- Timeout handling
+---------------------------------------------------------------
+local function onThinkInternal()
+    if npcHandler.focus ~= 0 then
+        local player = Player(npcHandler.focus)
+        if not player or player:getDistance(getNpcCid()) > FOCUS_DISTANCE then
+            npcSay('Good bye then. Continue training!', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        elseif os.time() - (npcHandler.talkStart or 0) > TIMEOUT then
+            npcSay('See you later. Continue training!', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        end
+    end
+    npcHandler:onThink()
 end
 
+---------------------------------------------------------------
+-- Register
+---------------------------------------------------------------
+npcHandler:setCallback(CALLBACK_GREET,              onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL,           onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT,    creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
 
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-	pirate = getPlayerStorageValue(cid,893)
-	golds = getPlayerItemCount(cid,1294) * 50
-	stones = getPlayerItemCount(cid,1294)
-
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-		selfSay('Hey there! ' .. creatureGetName(cid) .. '! Newcomers arrive every day in our mining guild!')
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-
-	if msgcontains(msg, 'offer') then
-		selfSay('I can sell you a pick to you get in work! If you wanna know more about mining ask for HELP.')
-
-	elseif msgcontains(msg, 'nugget') then
-		selfSay('Nuggets are used as base to forge weapons! Ask for more info in the Smithing Guild.')
-
-	elseif msgcontains(msg, 'buy') then
-		selfSay('I sell pick.')
-
-	elseif msgcontains(msg, 'help') then
-		selfSay('Just use you pick in the stalagmites or in iron walls!')
-		selfSay('Iron walls are only found in Minas Tirith, you can train mining skills(!habilidades) on it, and find iron nuggets!')
-
-	elseif msgcontains(msg, 'nugget') then
-		selfSay('Nuggets are used as base to forge weapons! Ask for more info in the Smithing Guild.')
-
-	elseif msgcontains(msg, 'tirith') then
-		selfSay('The master mining and smithing city, only avaible to premium users.')
-
-	elseif msgcontains(msg, 'mission') then
-		selfSay('I prefer quests.')
-
-	elseif msgcontains(msg, 'task') then
-		selfSay('I used to ask for quests.')
-
-	elseif msgcontains(msg, 'mission') and quest == 3 then
-		selfSay('No more quest by now. Go train.')
-
-	elseif msgcontains(msg, 'task') and quest == 3 then
-		selfSay('No more quest by now. Go train.')
-
-	elseif msgcontains(msg, 'pick') then
-		selfSay('It will be only 10gold, accept?')
-		talk_state = 1
-
-	elseif msgcontains(msg, 'quest') and quest == 3 then
-		selfSay('No more quest by now. Go train.')
-
-
-
--- novice
-
-	elseif msgcontains(msg, 'quest') and quest == -1 then
-		selfSay('Hmm... As you are a novice I will give you an easy task.')
-		selfSay('I need you to bring me a Coal Ore.')
-		selfSay('Coal is used to make fire! Its very dificult to find, but here in the Guild you can access if you have mining level:35.')
-		setPlayerStorageValue(cid,893,1)
-		
-
-	elseif msgcontains(msg, 'quest') and quest == 1 then
-		selfSay('You have to use your pick in the Coal Rocks untill you find some coal!')
-		talk_state = 0
-
-	elseif msgcontains(msg, 'quest') and quest == 2 then
-		selfSay('Did you bring me the Coal i asked you?')
-		talk_state = 11
-
-		elseif msgcontains(msg, 'yes') and talk_state == 11 then
-			if getPlayerItemCount(cid,5880) >= 5 then
-				doPlayerTakeItem(cid,5880,1)
-				selfSay('Oh, good job. Take this and come back when you want another task.')
-				doPlayerAddItem(cid,2157,1)
-				setPlayerStorageValue(cid,893,3)
-				talk_state = 0
-				else
-				selfSay('Use your pick in the locked stone areas here in the Guild, to find Coal.')
-				end
-
-
--- novice fim
-
-
-
-
-
-  	elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 4 then
-  		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-
-	elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 50) then
-		selfSay('Ok than.')
-		talk_state = 0
-
--- states
-
-	elseif talk_state == 1 then
-		if msgcontains(msg, 'yes') then
-		if pay(cid,10) then
-		selfSay('It\'s here!')
-		doPlayerAddItem(cid,2553,1)
-		talk_state = 0
-		else
-		selfSay('Friend, you don\'t have this money.')
-		talk_state = 0
- 		end
-	end
-
-	elseif talk_state == 5 then
-		if msgcontains(msg, 'yes') then
-		if pay(cid,5) then
-		selfSay('It\'s here!')
-		doPlayerAddItem(cid,3942,6)
-		talk_state = 0
-		else
-		selfSay('Friend, you don\'t have this money.')
-		talk_state = 0
- 		end
-	end
-
-end
-end
-end
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-
-if focus == 0 then
-randsay = math.random(1,100)
-if randsay == 1 then
- selfSay('Hicks!') 
-end
-if randsay == 50 then
- selfSay('Hicks!') 
-end
-end
-
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('See you later. Continue Training!')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then. Continue Training!')
- 			focus = 0
- 		end
- 	end
-end
+function onThink() onThinkInternal() end

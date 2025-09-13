@@ -3,97 +3,106 @@
 -------------------------------- Script made by teh_pwnage ---------------------------------
 --------------- Special thanks to: mokerhamer, Xidaozu and Jiddo, deaths'life --------------
 ------------------------------- Thanks also to everyone else -------------------------------
------------------------------- NPC based on Evolutions V0.7.7 ------------------------------
+------------------------------ Converted for TFS 1.x ------------------------------
 --------------------------------------------------------------------------------------------
 
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
 
--- OTServ event handling functions start
-function onCreatureAppear(cid)				npcHandler:onCreatureAppear(cid) end
-function onCreatureDisappear(cid) 			npcHandler:onCreatureDisappear(cid) end
-function onCreatureSay(cid, type, msg) 	npcHandler:onCreatureSay(cid, type, msg) end
-function onThink() 						npcHandler:onThink() end
-
-
--- OTServ event handling functions end
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
 function creatureSayCallback(cid, type, msg)
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	if(npcHandler.focus ~= cid) then
-		return false
-	end
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
 
-		preco = getPlayerStorageValue(cid,60000)*500*getPlayerStorageValue(cid,60000)*getPlayerStorageValue(cid,60010)
-		
-	
-		if msgcontains(msg, 'job') then
-			selfSay('I am the owner of this PetShop.')
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-		elseif msgcontains(msg, 'offer') then
-			selfSay('I can revive your pet.')
+    local talk_state = npcHandler.topic[cid] or 0
+    local petStorage = player:getStorageValue(60000)
+    local petLevel = player:getStorageValue(60010)
+    
+    -- Calculate pet revival price
+    local preco = 0
+    if petStorage >= 1 and petLevel >= 1 then
+        preco = petStorage * 500 * petStorage * petLevel
+    end
 
-		elseif msgcontains(msg, 'sell') then
-			selfSay('Sell What?')
+    if msgcontains(msg, 'job') then
+        selfSay('I am the owner of this PetShop.', cid)
 
-		elseif msgcontains(msg, 'buy') then
-			selfSay('Sorry but I do not sell those.')
+    elseif msgcontains(msg, 'offer') then
+        selfSay('I can revive your pet.', cid)
 
-		elseif msgcontains(msg, 'quest') then
-			selfSay('I am not geting involved in quests anymore!')
+    elseif msgcontains(msg, 'sell') then
+        selfSay('Sell What?', cid)
 
-		elseif msgcontains(msg, 'mission') then
-			selfSay('I am not geting involved in missions anymore!')
+    elseif msgcontains(msg, 'buy') then
+        selfSay('Sorry but I do not sell those.', cid)
 
--- addon (busca)
+    elseif msgcontains(msg, 'quest') then
+        selfSay('I am not getting involved in quests anymore!', cid)
 
-		elseif msgcontains(msg, 'revive') then
-		if getPlayerStorageValue(cid,60000) >= 1 then
-			selfSay('Want revive your pet for ' .. preco .. ' gps?')
-			talk_state = 500
-		else
-			selfSay('You dont have any pet.')
-			talk_state = 0
-		end
+    elseif msgcontains(msg, 'mission') then
+        selfSay('I am not getting involved in missions anymore!', cid)
 
-	elseif talk_state == 500 then
-	if msgcontains(msg, 'yes') then
-	if getPlayerStorageValue(cid,60000) >= 1 then
-	if getPlayerStorageValue(cid,60011) == 2 then
-        if isPremium(cid) then
-	if pay(cid,preco) then
-		selfSay('live again!')
-		doPlayerSendTextMessage(cid,22,"Voce reviveu seu pet.")
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		setPlayerStorageValue(cid,60005,1)
-		setPlayerStorageValue(cid,60003,0)
-		setPlayerStorageValue(cid,60011,1)
-		talk_state = 0
-		else
-		selfSay('Sorry, but you dont have this monney!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but only can revive pets of premium accounts.')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but your pet is alive!')
-		talk_state = 0
-		end
-		else
-		selfSay('Sorry, but you dont have an pet!')
-		talk_state = 0
-		end
-end
------------------------------------------------- confirm no ------------------------------------------------
-		elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 34) then
-			selfSay('Ok than.')
-			talk_state = 0
-		end
-	-- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
-	return true
+    elseif msgcontains(msg, 'revive') then
+        if petStorage >= 1 then
+            selfSay('Want revive your pet for ' .. preco .. ' gps?', cid)
+            npcHandler.topic[cid] = 500
+        else
+            selfSay('You dont have any pet.', cid)
+            npcHandler.topic[cid] = 0
+        end
+
+    elseif talk_state == 500 then
+        if msgcontains(msg, 'yes') then
+            if petStorage >= 1 then
+                if player:getStorageValue(60011) == 2 then
+                    if player:isPremium() then
+                        if player:removeTotalMoney(preco) then
+                            selfSay('Live again!', cid)
+                            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce reviveu seu pet.")
+                            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+                            player:setStorageValue(60005, 1)
+                            player:setStorageValue(60003, 0)
+                            player:setStorageValue(60011, 1)
+                            npcHandler.topic[cid] = 0
+                        else
+                            selfSay('Sorry, but you dont have this money!', cid)
+                            npcHandler.topic[cid] = 0
+                        end
+                    else
+                        selfSay('Sorry, but only can revive pets of premium accounts.', cid)
+                        npcHandler.topic[cid] = 0
+                    end
+                else
+                    selfSay('Sorry, but your pet is alive!', cid)
+                    npcHandler.topic[cid] = 0
+                end
+            else
+                selfSay('Sorry, but you dont have a pet!', cid)
+                npcHandler.topic[cid] = 0
+            end
+
+        elseif msgcontains(msg, 'no') then
+            selfSay('Ok then.', cid)
+            npcHandler.topic[cid] = 0
+        end
+
+    elseif msgcontains(msg, 'no') and (talk_state >= 1 and talk_state <= 34) then
+        selfSay('Ok then.', cid)
+        npcHandler.topic[cid] = 0
+    end
+
+    return true
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)

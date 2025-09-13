@@ -1,96 +1,95 @@
-local focus = 0
-local talk_start = 0
-local target = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler     = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+---- callback bridge ----------------------------------------------------
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
+---- config -------------------------------------------------------------
+local PROMO_VOC   = 4                      -- Knight
+local DEST_POS    = {x = 121, y = 311, z = 7}
+local TOWN_ID     = 2                      -- Carlin
+local STORAGE_ID  = 1002                  -- promo flag
+local MAX_DIST    = 2
+local TIMEOUT     = 120
+
+---- main conversation --------------------------------------------------
+local function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player  = Player(cid)
+    if not player then
+        return false
+    end
+
+    msg = msg:lower()
+
+    if msg == 'yes' and player:getVocation():getId() == 0 then
+        npcHandler:say('Good luck in the real world, Knight!', cid)
+        player:sendTextMessage(MESSAGE_INFO_DESCR, 'You are now a Knight!')
+        player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+        player:addHealth(185)
+        player:setVocation(Vocation(PROMO_VOC))
+        player:setTown(Town(TOWN_ID))
+        player:setStorageValue(STORAGE_ID, 2)
+        player:teleportTo(Position(DEST_POS))
+        Position(DEST_POS):sendMagicEffect(CONST_ME_TELEPORT)
+        npcHandler:releaseFocus(cid)
+
+    elseif msg == 'no' then
+        npcHandler:say('Ok then... you decide.', cid)
+        npcHandler:releaseFocus(cid)
+    end
+    return true
 end
 
+---- greeting / farewell ------------------------------------------------
+local function onGreet(cid)
+    local player = Player(cid)
+    if not player then return true end
 
-function onCreatureAppear(creature)
-
+    if npcHandler:getDistanceToCreature(cid) <= MAX_DIST then
+        npcHandler:say(
+            'Hmm, congratulations ' .. player:getName() .. '! You passed the test! ' ..
+            'Go to Calona in Carlin and say you are a "novice"—she will help you. ' ..
+            'So... are you ready to become a Knight?', cid)
+        npcHandler.talkStart = os.time()
+    else
+        npcHandler:say('Come closer if you wish to speak.', cid)
+    end
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+local function onFarewell(cid)
+    npcHandler:say('Good bye, come back when you are ready, ' .. Player(cid):getName() .. '!', cid)
+    return true
 end
 
-
-function onCreatureTurn(creature)
-
+---- timeout / distance check ------------------------------------------
+local function onThinkInternal()
+    if npcHandler.focus ~= 0 then
+        local player = Player(npcHandler.focus)
+        if (not player) or player:getDistance(getNpcCid()) > MAX_DIST then
+            npcHandler:say('Good bye then.', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        elseif os.time() - (npcHandler.talkStart or 0) > TIMEOUT then
+            npcHandler:say('Next please!', npcHandler.focus)
+            npcHandler:releaseFocus(npcHandler.focus)
+        end
+    end
+    npcHandler:onThink()
 end
 
+---- register callbacks -------------------------------------------------
+npcHandler:setCallback(CALLBACK_GREET,              onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL,           onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT,    creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
 
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 2 then
- 		selfSay('Hmm, congratulations ' .. creatureGetName(cid) .. '! You pass on the test!')
-		selfSay('Go to Calona on Carlin, and say you are a "novice", her will help you, so... You are ready to become a Knight?')
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 2 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-	if msgcontains(msg, 'yes') and getPlayerVocation(cid) == 0 then
-		selfSay('Good luck on real world Knight!')
-		doPlayerSendTextMessage(cid,19,"You are now a Knight!")
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		doPlayerAddHealth(cid,185)
-		doPlayerSetVocation(cid, 4)
-		doPlayerSetTown(cid,2)
-		setPlayerStorageValue(cid,1002,2)
-		travel(cid, 121, 311, 7)
-  		focus = 0
-		talk_state = 0
-
-	elseif msgcontains(msg, 'no') then
-		selfSay('Ok then... You decide.')
-  		focus = 0
-		talk_state = 0
-
-
-  	elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 2 then
-  		selfSay('Good bye, back here when you ready ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  		end
-  	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 120 then
-  		if focus > 0 then
-  			selfSay('Next Please...')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 2 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+---- override default onThink
+function onThink() onThinkInternal() end

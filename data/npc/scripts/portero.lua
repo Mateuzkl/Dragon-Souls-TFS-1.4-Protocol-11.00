@@ -1,96 +1,68 @@
-focus = 0
- talk_start = 0
- target = 0
- following = false
- attacking = false
- talk_state = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
 
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    if msgcontains(msg, 'yes') then
+        selfSay('Let\'s go!', cid)
+        player:teleportTo(Position(449, 272, 7))
+        player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+        npcHandler:releaseFocus()
+
+    elseif msgcontains(msg, 'no') then
+        selfSay('Ok then... bye!', cid)
+        npcHandler:releaseFocus()
+
+    elseif msgcontains(msg, 'tirith') or msgcontains(msg, 'city') then
+        selfSay('I can take you inside Tirith, want come in?', cid)
+
+    elseif msgcontains(msg, 'help') then
+        selfSay('I can transport premium players to Tirith city.', cid)
+    end
+
+    return true
 end
 
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-function onCreatureAppear(creature)
-
+    if player:isPremium() then
+        selfSay('Hello ' .. player:getName() .. '! I can take you inside Tirith, want come in?', cid)
+        return true
+    else
+        selfSay('Sorry, only premium players can go in the city.', cid)
+        return false
+    end
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Good bye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
-
-function onCreatureTurn(creature)
-
-endfunction msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
-		if isPremmium(cid) then
-			selfSay('Hello ' .. creatureGetName(cid) .. '! I can take you inside Tirith , want come in?')
-			focus = cid
- 			selfLook(cid)
-			talk_start = os.clock()
-		else
-			selfSay('Sorry, only premium players can go in the city.')
-			focus = 0
-			talk_start = 0
-		end
-
-  	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-		if msgcontains(msg, 'yes') then
-				selfSay('Let\'s go!')
-				selfSay('/send ' .. creatureGetName(cid) .. ', 449 272 7')
-				focus = 0
-				talk_start = 0
-			else
-				selfSay('Ok then... bye!')
-				focus = 0
-				talk_start = 0
-			end
-
-		elseif msgcontains(msg, 'bye') and getDistanceToCreature(cid) < 4 then
-			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-			focus = 0
-			talk_start = 0
-		end
-	end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
- function onThink() 
- if (os.clock() - talk_start) > 30 then 
- if focus > 0 then 
- selfSay('Next please!') 
- talkcount = 0
- end 
- focus = 0 
- itemid = 0
- talk_start = 0 
- end 
-  	if focus ~= 0 then
-  		if getDistanceToCreature(focus) > 5 then
-  			selfSay('Good bye then.')
-  			focus = 0
-  		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

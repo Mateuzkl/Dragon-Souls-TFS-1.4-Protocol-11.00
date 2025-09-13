@@ -1,133 +1,123 @@
-local focus = 0
-local talk_start = 0
-local target = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
+local DRUID_CONFIG = {
+    trainingArea = {x = 264, y = 179, z = 8},
+    maxDistance = 2,
+    timeout = 120
+}
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if npcHandler:getDistanceToCreature(cid) > DRUID_CONFIG.maxDistance then
+        selfSay('Come closer to me!', cid)
+        return true
+    end
+    
+    if msgcontains(msg, 'test') then
+        selfSay('Nice choice, pure soul. Where are you from, Brazil or foreigner?', cid)
+        npcHandler.topic[cid] = 1
+        
+    elseif npcHandler.topic[cid] == 1 then
+        if msgcontains(msg, 'brazil') or msgcontains(msg, 'brasil') then
+            selfSay('Que ótimo! Vamos ao treinamento.', cid)
+            selfSay('Druids(Druidas), sua força provém da elevação do espírito e o contato com os elementos, suas magias são focadas em cura e domínio de elementos, mas seu corpo e sua constituição são fracos.', cid)
+            selfSay('E então... Vamos ao teste?', cid)
+            npcHandler.topic[cid] = 2
+        else
+            selfSay('Hmm, I never traveled there, but... Let\'s start the training!', cid)
+            selfSay('Druids, their strength is gained by spirit elevation and contact with elements, their magic is focused on healing and element domain, but their body and constitution are weak.', cid)
+            selfSay('So, let\'s go to the test... Ready?', cid)
+            npcHandler.topic[cid] = 4
+        end
+        
+    elseif npcHandler.topic[cid] == 2 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('Seu teste consiste no convívio na natureza e a paciência que isso nos traz.', cid)
+            selfSay('Meu jardim provém de frutos que a natureza pode nos oferecer, quero que traga para mim, 100 Blueberry colhidos na hora, e pacientemente.', cid)
+            selfSay('Vamos?', cid)
+            npcHandler.topic[cid] = 3
+        end
+        
+    elseif npcHandler.topic[cid] == 4 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('What you will need to do is!', cid)
+            selfSay('My garden has fruits that nature can provide, I want you to bring me 100 fresh Blueberries, be patient!', cid)
+            selfSay('Ready?', cid)
+            npcHandler.topic[cid] = 5
+        end
+        
+    elseif npcHandler.topic[cid] == 3 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('Lhe aguardo no final, e lembre-se, paciência é uma virtude.', cid)
+            player:teleportTo(Position(DRUID_CONFIG.trainingArea))
+            Position(DRUID_CONFIG.trainingArea):sendMagicEffect(CONST_ME_TELEPORT)
+        end
+        npcHandler.topic[cid] = 0
+        
+    elseif npcHandler.topic[cid] == 5 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('I will be waiting for you at the end, and remember, patience is a virtue.', cid)
+            player:teleportTo(Position(DRUID_CONFIG.trainingArea))
+            Position(DRUID_CONFIG.trainingArea):sendMagicEffect(CONST_ME_TELEPORT)
+        end
+        npcHandler.topic[cid] = 0
+        
+    elseif msgcontains(msg, 'druid') then
+        selfSay('Druids are masters of nature magic, healing and elemental control. They connect with the spiritual world.', cid)
+        
+    elseif msgcontains(msg, 'nature') then
+        selfSay('Nature provides us with everything we need. Patience and harmony are the keys to understanding its power.', cid)
+        
+    elseif msgcontains(msg, 'blueberry') then
+        selfSay('Blueberries are sacred fruits that test your patience and connection with nature. Gather them carefully.', cid)
+        
+    elseif msgcontains(msg, 'garden') then
+        selfSay('My garden is a sanctuary where nature\'s gifts grow. It will teach you patience and respect for all living things.', cid)
+        
+    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] >= 1 then
+        selfSay('Come back when you are ready for the path of nature.', cid)
+        npcHandler.topic[cid] = 0
+    end
+    
+    return true
 end
 
-
-function onCreatureAppear(creature)
-
+function onGreet(cid)
+    local player = Player(cid)
+    if player then
+        if npcHandler:getDistanceToCreature(cid) <= DRUID_CONFIG.maxDistance then
+            selfSay('Ialas ' .. player:getName() .. '! Are you sure you want to train to be a Pure Druid? So say "test".', cid)
+        else
+            selfSay('Come closer, ' .. player:getName() .. '!', cid)
+        end
+    end
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if player then
+        selfSay('Good bye, ' .. player:getName() .. '!', cid)
+    end
+    return true
 end
 
-
-function onCreatureTurn(creature)
-
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 2 then
- 		selfSay('Ialas ' .. creatureGetName(cid) .. '! Are you sure, want train to be a Pure Druid? So say "test".')
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 2 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-	if msgcontains(msg, 'test') then
-		selfSay('Nice choise pure soul. Where Are you from, Brazil or foreigner?')
-		talk_state = 1
-
--- pais
-
-	elseif talk_state == 1 then
-		if msgcontains(msg, 'brazil') or msgcontains(msg, 'brasil') then
-		selfSay('Que otimo! Vamos ao treinamento.')
-		selfSay('Druids(Druidas), sua for�a provem da eleva��o do espirito e o contato com os elementos, suas magias sao focadas em cura e dominio de elementos, mas seu corpo e sua constitui��o s�o fracos.')
-		selfSay('E ent�o... Vamos ao teste?')
-		talk_state = 2
-else
-		selfSay('Hmm, i never travel to there, but... Lets start the training!')
-		selfSay('Druids, their strengh is gain by the spirit elevation ans contact with elements, their magic are focused in healing and elements domain, but their body and constituicion are weak.')
-		selfSay('So, lets go to test... Ready?')
-		talk_state = 4
-		end
-
--- yes 1
-
-	elseif talk_state == 2 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('Seu teste conciste com o convivio na natureza e a paciencia que isso nos traz.')
-		selfSay('Meu jardin provem de frutos que a natureza pode nos oferecer, quero que traga para mim, 100 Blueberry colhidos na hora, e pacientemente.')
-		selfSay('Vamos?')
-		talk_state = 3
-		end
-
-	elseif talk_state == 4 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('What all you will need do is!')
-		selfSay('My garden have fruits that the nature can provide, i want you to bring me 100 fresh Blueberry, be patient!')
-		selfSay('Ready?')
-		talk_state = 5
-		end
-
--- yes 2 (teleport)
-
-	elseif talk_state == 3 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('Lhe aguardo no final, e lembre-se, paciencia e uma virtude.')
-		travel(cid, 264, 179, 8)
- 		end
-  		focus = 0
-		talk_state = 0
-
-	elseif talk_state == 5 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('I will be waiting you in the end, and remenber, patient is an virtude.')
-		travel(cid, 264, 179, 8)
- 		end
-  		focus = 0
-		talk_state = 0
-
-
-  	elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 5 then
-  		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  		end
-  	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 120 then
-  		if focus > 0 then
-  			selfSay('Next Please...')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:addModule(FocusModule:new())

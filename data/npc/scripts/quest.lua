@@ -1,105 +1,145 @@
-local internalCustomerQueue = {}
-local keywordHandler = KeywordHandler:new({root = {}})
-local npcHandler = ShopNpcHandler:new({})
-local customerQueue = CustomerQueue:new({customers = internalCustomerQueue, handler = npcHandler})
-npcHandler:init(customerQueue, keywordHandler)
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
--- OTServ event handling functions start
-function onThingMove(creature, thing, oldpos, oldstackpos)     npcHandler:onThingMove(creature, thing, oldpos, oldstackpos) end
-function onCreatureAppear(creature)                             npcHandler:onCreatureAppear(creature) end
-function onCreatureDisappear(id)                                 npcHandler:onCreatureDisappear(id) end
-function onCreatureTurn(creature)                                 npcHandler:onCreatureTurn(creature) end
-function onCreatureSay(cid, type, msg)                         npcHandler:onCreatureSay(cid, type, msg) end
-function onCreatureChangeOutfit(creature)                         npcHandler:onCreatureChangeOutfit(creature) end
-function onThink()                                             npcHandler:onThink() end
--- OTServ event handling functions end
+-- Shop Module for basic items
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
 
--- Keyword handling functions start
-function tradeItem(cid, message, keywords, parameters)     return npcHandler:defaultTradeHandler(cid, message, keywords, parameters) end
-function confirmAction(cid, message, keywords, parameters) return npcHandler:defaultConfirmHandler(cid, message, keywords, parameters) end
-function sayMessage(cid, message, keywords, parameters)     return npcHandler:defaultMessageHandler(cid, message, keywords, parameters) end
-function greet(cid, message, keywords, parameters)         return npcHandler:defaultGreetHandler(cid, message, keywords, parameters) end
-function farewell(cid, message, keywords, parameters)         return npcHandler:defaultFarewellHandler(cid, message, keywords, parameters) end
--- Keyword handling functions end
+-- Shop items
+shopModule:addBuyableItem({'rope'}, 2120, 50, 1, 'rope')
+shopModule:addBuyableItem({'shovel'}, 2554, 10, 1, 'shovel')  
+shopModule:addBuyableItem({'torch'}, 2050, 2, 1, 'torch')
+shopModule:addBuyableItem({'machete'}, 2420, 30, 1, 'machete')
+shopModule:addBuyableItem({'scythe'}, 2550, 30, 1, 'scythe')
+shopModule:addBuyableItem({'pick'}, 2553, 20, 1, 'pick')
 
-
--- funcoes extras
-
-function processQuest(cid, message, keywords, parameters)
-    if(cid ~= npcHandler.focus) then
+-- Quest and trading functions
+function processQuest(cid, message, keywords, parameters, node)
+    if not npcHandler:isFocused(cid) then
         return false
     end
     
-    if(keywords[1] == 'quest') then
-        local storageValue = getPlayerStorageValue(npcHandler.focus, parameters.questid)
-	if(storageValue == -1) then
-            selfSay('If you an excencial item for addon , please bring me 15 chiken feathers.')
-	setPlayerStorageValue(npcHandler.focus, parameters.questid, 1)
-            return true
-        end
-        
-	if(storageValue == 1) then
-		if(getPlayerItemCount(npcHandler.focus, 5890) >= 15) then
-	selfSay('I see that you have found the feathers, take this.')
-	  doPlayerRemoveItem(npcHandler.focus, 5890, 15)
-	teste =  doPlayerAddItem(npcHandler.focus, 2366, 1)
-	doSetItemActionId(teste, 1000)
-	setPlayerStorageValue(npcHandler.focus, parameters.questid, 2)
-        else
-	selfSay('I guess you are too busy to find what i need...')
-        end
-        
-   		elseif(storageValue == 2) then
-	selfSay('You already have done my mission.')
-        
+    local player = Player(cid)
+    if not player then
+        return false
     end
     
-   	 return true
-          end
+    local storageValue = player:getStorageValue(parameters.questid)
+    
+    if storageValue == -1 then
+        selfSay('If you need an essential item for addon, please bring me 15 chicken feathers.', cid)
+        player:setStorageValue(parameters.questid, 1)
+        return true
+    elseif storageValue == 1 then
+        if player:getItemCount(5890) >= 15 then
+            selfSay('I see that you have found the feathers, take this.', cid)
+            player:removeItem(5890, 15)
+            local item = player:addItem(2366, 1)
+            if item then
+                item:setActionId(1000)
+            end
+            player:setStorageValue(parameters.questid, 2)
+        else
+            selfSay('I guess you are too busy to find what I need...', cid)
+        end
+    elseif storageValue == 2 then
+        selfSay('You already have done my mission.', cid)
+    end
+    
+    return true
 end
 
-function itemForItem(cid, message, keywords, parameters)
-if(cid ~= npcHandler.focus) then
-return false
+function itemForItem(cid, message, keywords, parameters, node)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if player:getItemCount(parameters.itemtrade) >= parameters.counti then
+        player:removeItem(parameters.itemtrade, parameters.counti)
+        player:addItem(parameters.itemtrade2, parameters.counti2)
+        selfSay('Thanks, take this.', cid)
+    else
+        selfSay('You dont have such item.', cid)
+    end
+    
+    return true
 end
-if(getPlayerItemCount(cid, parameters.itemtrade) >= parameters.counti) then
-doPlayerRemoveItem(cid, parameters.itemtrade, parameters.counti)
-doPlayerAddItem(cid, parameters.itemtrade2, parameters.counti2)
-selfSay('Thanks, take this.')
-else
-selfSay('You dont have such item.')
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if msgcontains(msg, 'quest') then
+        local storageValue = player:getStorageValue(1000)
+        
+        if storageValue == -1 then
+            selfSay('If you need an essential item for addon, please bring me 15 chicken feathers.', cid)
+            player:setStorageValue(1000, 1)
+        elseif storageValue == 1 then
+            if player:getItemCount(5890) >= 15 then
+                selfSay('I see that you have found the feathers, take this.', cid)
+                player:removeItem(5890, 15)
+                local item = player:addItem(2366, 1)
+                if item then
+                    item:setActionId(1000)
+                end
+                player:setStorageValue(1000, 2)
+            else
+                selfSay('I guess you are too busy to find what I need...', cid)
+            end
+        elseif storageValue == 2 then
+            selfSay('You already have done my mission.', cid)
+        end
+        
+    elseif msgcontains(msg, 'trade pick') then
+        if player:getItemCount(2553) >= 1 then
+            player:removeItem(2553, 1)
+            player:addItem(5890, 15)
+            selfSay('Thanks, take these feathers.', cid)
+        else
+            selfSay('You dont have a pick to trade.', cid)
+        end
+        
+    elseif msgcontains(msg, 'job') then
+        selfSay('I sell all kinds of tools.', cid)
+        
+    elseif msgcontains(msg, 'offer') then
+        selfSay('I sell ropes, shovels, torches, picks, machetes and scythes.', cid)
+        
+    elseif msgcontains(msg, 'mission') then
+        selfSay('I cannot help you in that area, son.', cid)
+        
+    elseif msgcontains(msg, 'sell') then
+        selfSay('Why would I need that rubbish?', cid)
+        
+    elseif msgcontains(msg, 'buy') then
+        selfSay('Just tell me what you want to buy.', cid)
+    end
+    
+    return true
 end
-end
 
+-- Keywords for additional responses
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I sell ropes, shovels, torches, picks, machetes and scythes.'})
+keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I sell all kinds of tools.'})
+keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'I cannot help you in that area, son.'})
 
--- funcoes extras end
-
-
--- Keyword structure generation start
-keywordHandler:addKeyword({'rope'},     tradeItem, {itemid = 2120, cost = 50})
-keywordHandler:addKeyword({'shovel'},     tradeItem, {itemid = 2554, cost = 10})
-keywordHandler:addKeyword({'torch'},     tradeItem, {itemid = 2050, cost = 2})
-keywordHandler:addKeyword({'machete'},     tradeItem, {itemid = 2420, cost = 30})
-keywordHandler:addKeyword({'scythe'},     tradeItem, {itemid = 2550, cost = 30})
-
-keywordHandler:addKeyword({'yes'}, confirmAction, nil)
-keywordHandler:addKeyword({'no'}, confirmAction, nil)
-
-
-keywordHandler:addKeyword({'offer'},     sayMessage, {text = 'I sell ropes, shovels, torches, picks, machetes and scythes.', onlyfocus = true})
-keywordHandler:addKeyword({'sell'},     sayMessage, {text = 'Why would I need that rubbish?', onlyfocus = true})
-keywordHandler:addKeyword({'job'},     sayMessage, {text = 'I seel all kinds of tools.', onlyfocus = true})
-keywordHandler:addKeyword({'mission'},sayMessage, {text = 'I cannot help you in that area, son.', onlyfocus = true})
-keywordHandler:addKeyword({'buy'},        sayMessage, {text = 'Sorry but I do not sell those.', onlyfocus = true})
-
-keywordHandler:addKeyword({'quest'}, processQuest, {questid = 1000})
-
-keywordHandler:addKeyword({'trade pick'}, itemForItem, {itemtrade = 2553, counti = 1, itemtrade2 = 5890, counti2 = 15})
-
-keywordHandler:addKeyword({'hi'}, greet, nil)
-keywordHandler:addKeyword({'hello'}, greet, nil)
-keywordHandler:addKeyword({'hey'}, greet, nil)
-keywordHandler:addKeyword({'bye'}, farewell, nil)
-keywordHandler:addKeyword({'farewell'}, farewell, nil)
--- Keyword structure generation end
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

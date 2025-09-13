@@ -1,75 +1,111 @@
-focus = 0
-talk_start = 0
-target = 0
-following = false
-attacking = false
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
+
+-- Voice messages for random broadcasts and raids
+local voices = {
+    {text = "/bc white They are Welcome! This server is running with Neverland 7.6 - Version 1.2"},
+    {text = "/raid mino"},
+    {text = "/raid undead"},
+    {text = "/raid orsha"},
+    {text = "/bc white Download your Neverland version in OTFans!"},
+    {text = "/raid trolls"}
+}
+npcHandler:addModule(VoiceModule:new(voices))
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    -- Bot doesn't have specific conversation logic
+    -- Just responds to basic greetings
+    if msgcontains(msg, 'help') then
+        selfSay('I am a bot made by Gamemasters to help manage the server!', cid)
+    elseif msgcontains(msg, 'job') then
+        selfSay('I manage server broadcasts and raids!', cid)
+    end
+
+    return true
 end
 
-function onCreatureAppear(creature)
-selfSay('Hello young aventurer! I\'m a bot made by Gamemasters.') -- Its greeting sentence,= when something appears
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Hello young adventurer! I\'m a bot made by Gamemasters.', cid)
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Goodbye adventurer!', cid)
+    return true
 end
 
-function onCreatureTurn(creature)
-end
-
-function msgcontains(txt, str)
-end
-
-function onCreatureSay(cid, type, msg)
-end
-
-function onCreatureChangeOutfit(creature)
-end
-
+-- Custom onThink for random movement and messages
 function onThink()
-
-if focus == 0 then -- the move sccript
-cx, cy, cz = selfGetPosition()
-randmove = math.random(1,15)
-	if randmove == 1 then
-	nx = cx + 1
-	end
-	if randmove == 2 then
-	nx = cx - 1
-	end
-	if randmove == 3 then
-	ny = cy + 1
-	end
-	if randmove == 4 then
-	ny = cy - 1
-	end
-	if randmove >= 5 then
-	nx = cx
-	ny = cy
-	end
+    npcHandler:onThink()
+    
+    -- Random movement when not focused on any player
+    if not npcHandler:isFocused() then
+        local position = Npc():getPosition()
+        local randmove = math.random(1, 15)
+        local newPos = Position(position.x, position.y, position.z)
+        
+        if randmove == 1 then
+            newPos.x = newPos.x + 1
+        elseif randmove == 2 then
+            newPos.x = newPos.x - 1
+        elseif randmove == 3 then
+            newPos.y = newPos.y + 1
+        elseif randmove == 4 then
+            newPos.y = newPos.y - 1
+        end
+        
+        -- Only move if it's a different position and valid
+        if randmove <= 4 then
+            local tile = Tile(newPos)
+            if tile and not tile:hasFlag(TILESTATE_BLOCKSOLID) then
+                Npc():moveTo(newPos)
+            end
+        end
+    end
+    
+    -- Random server messages/commands (much less frequent to avoid spam)
+    local randsay = math.random(1, 50000)
+    if randsay == 5 then
+        selfSay('/bc white They are Welcome! This server is running with Neverland 7.6 - Version 1.2')
+    elseif randsay == 10 then
+        selfSay('/raid mino')
+    elseif randsay == 15 then
+        selfSay('/raid undead')
+    elseif randsay == 20 then
+        selfSay('/raid orsha')
+    elseif randsay == 25 then
+        selfSay('/bc white Download your Neverland version in OTFans!')
+    elseif randsay == 30 then
+        selfSay('/raid trolls')
+    end
 end
 
-moveToPosition(nx, ny, cz)
-
-randsay = math.random(1,999999) -- how frecuently your bot will say 
-if randsay == 5 then -- something, you should set it to less than
-                     -- 600 or it will end up crashin your serv 
-selfSay('/bc white They are Welcome! This server is running with Neverland 7.6 - Version 1.2') -- Notice 1
-end
-if randsay == 10 then
-selfSay('/raid mino') -- numbah 2
-end
-if randsay == 15 then
-selfSay('/raid undead') -- just change the other sentences..
-end
-if randsay == 20 then
-selfSay('/raid orsha') -- if u want to add more lines just copy the if..
-end
-if randsay == 25 then
-selfSay('/bc white Download your Neverland version in OTFans!')
-end
-if randsay == 30 then
-selfSay('/raid trolls')
-end
-end
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

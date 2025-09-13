@@ -1,110 +1,91 @@
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
-local focus = 0
-local talk_start = 0
-local target = 0
-local days = 0
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
+    local rat = player:getStorageValue(2467)
+
+    -- This NPC doesn't need complex conversation, just different greetings based on quest state
+    return true
 end
 
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
 
-function onCreatureAppear(creature)
+    local rat = player:getStorageValue(2467)
+    local playerName = player:getName()
+
+    if rat == -1 then
+        -- Start quest
+        selfSay('Help ' .. playerName .. '! My food storage was infested with rats! I cant lose more food!', cid)
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Nova quest adicionada 'Infestacao do armazen!'.")
+        player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+        player:setStorageValue(2467, 1)
+        
+    elseif rat == 1 then
+        -- Quest in progress
+        selfSay('Help ' .. playerName .. '! My food storage was infested with rats! I cant lose more food!', cid)
+        
+    elseif rat == 2 then
+        -- Complete quest and give rewards
+        selfSay('Thanks so much ' .. playerName .. '! Take this to help you!', cid)
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "You receive some oranges, a studded club and a wooden shield.")
+        player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+        player:setStorageValue(2467, 3)
+        player:addItem(2675, 15) -- oranges
+        player:addItem(2448, 1)  -- studded club
+        player:addItem(2512, 1)  -- wooden shield
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Quest 'Infestacao do armazen!' completada.")
+        player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_RED)
+        
+    elseif rat == 3 then
+        -- Quest completed
+        selfSay('Hey you again ' .. playerName .. '!', cid)
+        
+    else
+        -- Default greeting
+        selfSay('Hello ' .. playerName .. '!', cid)
+    end
+    
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Good bye, ' .. player:getName() .. '!', cid)
+    return true
 end
 
+-- Keywords for quest-related dialogue
+keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Please help me with the rat infestation in my storage!'})
+keywordHandler:addKeyword({'rat'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Yes, rats are destroying my food supplies!'})
+keywordHandler:addKeyword({'rats'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'They are everywhere in my storage!'})
+keywordHandler:addKeyword({'help'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'Please kill the rats in my food storage!'})
+keywordHandler:addKeyword({'storage'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'My food storage is behind this building.'})
+keywordHandler:addKeyword({'food'}, StdModule.say, {npcHandler = npcHandler, onlyFocus = true, text = 'The rats are eating all my food supplies!'})
 
-function onCreatureTurn(creature)
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-
-  	msg = string.lower(msg)
-	rat = getPlayerStorageValue(cid,2467)
-	dist = getDistanceToCreature(cid)
-
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and dist < 3 and rat == -1 then
-		selfSay('Help ' .. creatureGetName(cid) .. '! My food storage was infested of rats! I cant loose more food!')
-  		doPlayerSendTextMessage(cid,19,"Nova quest adicionada 'Infestação do armazen!'.")
-		doSendMagicEffect(getPlayerPosition(cid),12)
-  		setPlayerStorageValue(cid,2467,1)
-  		focus = cid
-		talk_start = os.clock()
-
-  	elseif (msgcontains(msg, 'hi') and (focus == 0)) and dist < 3 and rat == 1 then
-		selfSay('Help ' .. creatureGetName(cid) .. '! My food storage was infested of rats! I cant loose more food!')
-  		focus = cid
-		talk_start = os.clock()
-
-  	elseif (msgcontains(msg, 'hi') and (focus == 0)) and dist < 3 and rat == 2 then
-		selfSay('Thanks so much ' .. creatureGetName(cid) .. '! Get that to help you!')
-     		doPlayerSendTextMessage(cid,22,"You receive few oranges, an studded club and an wooden shield.")
-  		doSendMagicEffect(getPlayerPosition(cid),12)
-		setPlayerStorageValue(cid,2467,3)
-   		doPlayerAddItem(cid,2675,15)
-   		doPlayerAddItem(cid,2448,1)
-   		doPlayerAddItem(cid,2512,1)
-  		doPlayerSendTextMessage(cid,19,"Quest 'Infestação do armazen!' completada.")
-		doSendMagicEffect(getPlayerPosition(cid),12)
-  		focus = cid
-		talk_start = os.clock()
-
-  	elseif (msgcontains(msg, 'hi') and (focus == 0)) and dist < 3 and rat == 3 then
-		selfSay('Hey you again ' .. creatureGetName(cid) .. '!')
-  		focus = cid
-		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 3 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-  		focus = cid
-		talk_start = os.clock()
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-
-  	elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 4 then
-  		selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  			focus = 0
-  			talk_start = 0
-
-end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 5 then
-  		if focus > 0 then
-  			selfSay('Thanks.')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

@@ -1,133 +1,120 @@
-local focus = 0
-local talk_start = 0
-local target = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid)            end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid)         end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
+function onThink()                          npcHandler:onThink()                        end
 
+local ARCHER_CONFIG = {
+    trainingArea = {x = 274, y = 186, z = 8},
+    maxDistance = 2,
+    timeout = 120
+}
+
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+    
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    if npcHandler:getDistanceToCreature(cid) > ARCHER_CONFIG.maxDistance then
+        selfSay('Come closer to me!', cid)
+        return true
+    end
+    
+    if msgcontains(msg, 'test') then
+        selfSay('It\'s nice to hear that. Are you from Brazil or are you a foreigner?', cid)
+        npcHandler.topic[cid] = 1
+        
+    elseif npcHandler.topic[cid] == 1 then
+        if msgcontains(msg, 'brazil') or msgcontains(msg, 'brasil') then
+            selfSay('Hmm, conheço bastante a sua língua... Então vamos ao treinamento!', cid)
+            selfSay('Archers(Arqueiros) são ágeis em "melee" mas não provém de grande força, seu principal ataque é o combate à distância, mantém sua força física e mental equilibradas.', cid)
+            selfSay('Então vamos ao teste... Está Pronto Melmë?', cid)
+            npcHandler.topic[cid] = 2
+        else
+            selfSay('Hmm, I never traveled there, but... Let\'s start the training!', cid)
+            selfSay('Archers are quick with "melee" but don\'t provide great strength, their main fighting style is distance combat, they have their physical and mental strength balanced.', cid)
+            selfSay('So, let\'s go to the test... Ready?', cid)
+            npcHandler.topic[cid] = 4
+        end
+        
+    elseif npcHandler.topic[cid] == 2 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('Seu teste fará você usar a cabeça e sua agilidade!', cid)
+            selfSay('Apenas treine um pouco sua mira, no baú há intermináveis spears para o seu treino, mas cuidado, você saberá presenciar o perigo!', cid)
+            selfSay('Pronto Melmë?', cid)
+            npcHandler.topic[cid] = 3
+        end
+        
+    elseif npcHandler.topic[cid] == 4 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('Use your mind and agility!', cid)
+            selfSay('Just train your aim, in the chest there are endless spears for your training, but be careful, you will face danger!', cid)
+            selfSay('Ready?', cid)
+            npcHandler.topic[cid] = 5
+        end
+        
+    elseif npcHandler.topic[cid] == 3 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('Estou lhe esperando do outro lado da sala quando você estiver pronto.', cid)
+            player:teleportTo(Position(ARCHER_CONFIG.trainingArea))
+            Position(ARCHER_CONFIG.trainingArea):sendMagicEffect(CONST_ME_TELEPORT)
+        end
+        npcHandler.topic[cid] = 0
+        
+    elseif npcHandler.topic[cid] == 5 then
+        if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
+            selfSay('Good luck soldier, I will be waiting for you at the finish of this test!', cid)
+            player:teleportTo(Position(ARCHER_CONFIG.trainingArea))
+            Position(ARCHER_CONFIG.trainingArea):sendMagicEffect(CONST_ME_TELEPORT)
+        end
+        npcHandler.topic[cid] = 0
+        
+    elseif msgcontains(msg, 'archer') then
+        selfSay('Archers are masters of ranged combat. They balance physical and mental strength for perfect aim.', cid)
+        
+    elseif msgcontains(msg, 'training') then
+        selfSay('My training will test your mind, agility, and precision. Are you ready for the challenge?', cid)
+        
+    elseif msgcontains(msg, 'spear') then
+        selfSay('Spears are excellent weapons for training distance combat and improving your aim.', cid)
+        
+    elseif msgcontains(msg, 'no') and npcHandler.topic[cid] >= 1 then
+        selfSay('Come back when you are ready for training.', cid)
+        npcHandler.topic[cid] = 0
+    end
+    
+    return true
 end
 
-
-function onCreatureAppear(creature)
-
+function onGreet(cid)
+    local player = Player(cid)
+    if player then
+        if npcHandler:getDistanceToCreature(cid) < ARCHER_CONFIG.maxDistance then
+            selfSay('Melmë ' .. player:getName() .. '! Are you sure you want to train to be a Precise Archer? So say "test".', cid)
+        else
+            selfSay('Come closer, ' .. player:getName() .. '!', cid)
+        end
+    end
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if player then
+        selfSay('Good bye Melmë, ' .. player:getName() .. '!', cid)
+    end
+    return true
 end
 
-
-function onCreatureTurn(creature)
-
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 2 then
- 		selfSay('Melm� ' .. creatureGetName(cid) .. '! Are you sure, want train to be a Precise Archer? So say "test".')
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 2 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-	if msgcontains(msg, 'test') then
-		selfSay('Its nice hear that. Are you from Brazil or foreigner?')
-		talk_state = 1
-
--- pais
-
-	elseif talk_state == 1 then
-		if msgcontains(msg, 'brazil') or msgcontains(msg, 'brasil') then
-		selfSay('Hmm, conhe�o bastante a sua lingua... Ent�o vamos ao treinamento!')
-		selfSay('Archers(Arqueiros) s�o ageis em "melee" mas n�o provem de grande for�a, seu principal ataque e o combate a distancia, mantem sua for�a fisica e mental equilibradas.')
-		selfSay('Ent�o vamos ao teste... Esta Pronto Melm�?')
-		talk_state = 2
-else
-		selfSay('Hmm, i never travel to there, but... Lets start the training!')
-		selfSay('Archers are quickly with "melee" but dont provide greath strength, their main fighting style is the distance combat, they have their fisic and mental strenght balanced.')
-		selfSay('So, lets go to test... Ready?')
-		talk_state = 4
-		end
-
--- yes 1
-
-	elseif talk_state == 2 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('Seu teste fara voce usar a cabe�a e sua agilidade!')
-		selfSay('Apenas treine um pouco sua mira, no bau a interminaveis spears para o seu treino, mais cuidado, voce sabera presenciar o perigo!')
-		selfSay('Pronto Melm�?')
-		talk_state = 3
-		end
-
-	elseif talk_state == 4 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('Use your hand and agility!')
-		selfSay('Just train your aim, in the box are endless spears for your training, but becarefull, you will be in danger!')
-		selfSay('Ready?')
-		talk_state = 5
-		end
-
--- yes 2 (teleport)
-
-	elseif talk_state == 3 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('Estou lhe esperando do outro lado da sala quando voce estiver pronto.')
-		travel(cid, 274, 186, 8)
- 		end
-  		focus = 0
-		talk_state = 0
-
-	elseif talk_state == 5 then
-		if msgcontains(msg, 'yes') or msgcontains(msg, 'sim') then
-		selfSay('Good luck soldier, i will be waiting you on the finish of this test!')
-		travel(cid, 274, 186, 8)
- 		end
-  		focus = 0
-		talk_state = 0
-
-
-  	elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 5 then
-  		selfSay('Good bye Melm�, ' .. creatureGetName(cid) .. '!')
-  		focus = 0
-  		talk_start = 0
-  		end
-  	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 120 then
-  		if focus > 0 then
-  			selfSay('Next Please...')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:addModule(FocusModule:new())

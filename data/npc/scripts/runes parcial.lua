@@ -1,165 +1,141 @@
-local internalCustomerQueue = {}
-local keywordHandler = KeywordHandler:new({root = {}})
-local npcHandler = ShopNpcHandler:new({})
-local customerQueue = CustomerQueue:new({customers = internalCustomerQueue, handler = npcHandler})
-npcHandler:init(customerQueue, keywordHandler)
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
--- OTServ event handling functions start
-function onThingMove(creature, thing, oldpos, oldstackpos)     npcHandler:onThingMove(creature, thing, oldpos, oldstackpos) end
-function onCreatureAppear(creature)                             npcHandler:onCreatureAppear(creature) end
-function onCreatureDisappear(id)                                 npcHandler:onCreatureDisappear(id) end
-function onCreatureTurn(creature)                                 npcHandler:onCreatureTurn(creature) end
-function onCreatureSay(cid, type, msg)                         npcHandler:onCreatureSay(cid, type, msg) end
-function onCreatureChangeOutfit(creature)                         npcHandler:onCreatureChangeOutfit(creature) end
-function onThink()                                             npcHandler:onThink() end
--- OTServ event handling functions end
+-- Shop Module for regular items
+local shopModule = ShopModule:new()
+npcHandler:addModule(shopModule)
 
--- Keyword handling functions start
-function tradeItem(cid, message, keywords, parameters)     return npcHandler:defaultTradeHandler(cid, message, keywords, parameters) end
-function sayMessage(cid, message, keywords, parameters)     return npcHandler:defaultMessageHandler(cid, message, keywords, parameters) end
+-- Regular runes
+shopModule:addBuyableItem({'ultimate healing', 'uh'}, 2273, 175, 1, 'ultimate healing rune')
+shopModule:addBuyableItem({'sudden death', 'sd'}, 2268, 325, 1, 'sudden death rune')
+shopModule:addBuyableItem({'great fireball', 'gfb'}, 2304, 90, 3, 'great fireball rune')
+shopModule:addBuyableItem({'explosion', 'xpl', 'explo'}, 2313, 85, 3, 'explosion rune')
+shopModule:addBuyableItem({'heavy magic missile', 'hmm'}, 2311, 25, 5, 'heavy magic missile rune')
 
+-- Other items
+shopModule:addBuyableItem({'light wand', 'lightwand'}, 2163, 500, 1, 'magic light wand')
+shopModule:addBuyableItem({'mana fluid', 'manafluid'}, 2006, 100, 7, 'mana fluid')
+shopModule:addBuyableItem({'life fluid', 'lifefluid'}, 2006, 80, 10, 'life fluid')
+shopModule:addBuyableItem({'blank', 'rune'}, 2260, 10, 1, 'blank rune')
 
--- greet diferente
-function greet(cid, message, keywords, parameters)
-    if npcHandler.focus == cid then
-        selfSay('I am already talking to you.')
-        npcHandler.talkStart = os.clock()
-    elseif npcHandler.focus > 0 or not(npcHandler.queue:isEmpty()) then
-        selfSay('Please, ' .. creatureGetName(cid) .. '. I will talk to you in one minute!.')
-        if(not npcHandler.queue:isInQueue(cid)) then
-            npcHandler.queue:pushBack(cid)
-        end
-    elseif(npcHandler.focus == 0) and (npcHandler.queue:isEmpty()) then
-        selfSay(' Hello ' .. creatureGetName(cid) .. '! Welcome to my rune shop!')
-        npcHandler.focus = cid
-        voc = 0
-        npcHandler.talkStart = os.clock()
-    end
-    
-    return true
-end
-
-
-
-
-
-
-
-
-function confirmAction(cid, message, keywords, parameters)
-    if npcHandler.focus ~= cid then
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
         return false
     end
-    if(keywords[1] == 'yes') then
-        if(npcHandler.talkState == TALKSTATE_SELL_ITEM) then
-            npcHandler.talkState = TALKSTATE_NONE
-            local ret = doPlayerSellItem(npcHandler.focus, npcHandler.itemid, npcHandler.stackable, npcHandler.count, npcHandler.cost)
-            if(ret == LUA_NO_ERROR) then
-		selfSay('Thank you.')
-            else
-                selfSay('You do not have that item.')
-            end
-        elseif(npcHandler.talkState == TALKSTATE_BUY_ITEM) then
-            npcHandler.talkState = TALKSTATE_NONE
-            local ret = 0
-            if(npcHandler.charges == nil or npcHandler.charges <= 1) then
-                ret = doPlayerBuyItem(npcHandler.focus, npcHandler.itemid, npcHandler.stackable, npcHandler.count, npcHandler.cost)
-            else
-                ret = doPlayerBuyRune(npcHandler.focus, npcHandler.itemid, npcHandler.count, npcHandler.charges, npcHandler.cost)
-            end
-            if(ret == LUA_NO_ERROR) then
-                if(npcHandler.itemid == 1988) then
-			ret = doPlayerBuyRune(npcHandler.focus, 2311, 20, 5, 0)
 
-			if(ret == LUA_NO_ERROR) then
-				selfSay('Here you go.')
-			end
-		else
-			selfSay('Here you go.')
-		end
-            elseif(ret == LUA_NO_ERROR) then
-	      if(npcHandler.itemid == 2001) then
-			ret = doPlayerBuyRune(npcHandler.focus, 2313, 20, 3, 0)
-
-			if(ret == LUA_NO_ERROR) then
-				selfSay('Here you go.')
-			end
-		else
-			selfSay('Here you go.')
-		end
-            else
-                selfSay('You do not have enough money.')
-            end
-        end
-    elseif(keywords[1] == 'no') then
-        if(npcHandler.talkState == TALKSTATE_SELL_ITEM) then
-            selfSay('I wouldnt sell that either.')
-              npcHandler.talkState = TALKSTATE_NONE
-          elseif(npcHandler.talkState == TALKSTATE_BUY_ITEM) then
-              selfSay('Too expensive you think?')
-              npcHandler.talkState = TALKSTATE_NONE
-          end
+    local player = Player(cid)
+    if not player then
+        return false
     end
-    
+
+    local talk_state = npcHandler.topic[cid] or 0
+
+    -- Special backpack deals
+    if msgcontains(msg, 'bp of hmms') then
+        selfSay('Do you want to buy a backpack of heavy magic missiles for 25 gold coins?', cid)
+        npcHandler.topic[cid] = 1
+
+    elseif msgcontains(msg, 'bp of explosions') then
+        selfSay('Do you want to buy a backpack of explosions for 25 gold coins?', cid)
+        npcHandler.topic[cid] = 2
+
+    elseif msgcontains(msg, 'yes') and talk_state == 1 then
+        if player:removeMoney(25) then
+            local backpack = player:addItem(1988, 1) -- backpack
+            if backpack then
+                -- Add 20 heavy magic missile runes with 5 charges each
+                for i = 1, 20 do
+                    local rune = backpack:addItem(2311, 5)
+                    if not rune then
+                        player:addItem(2311, 5) -- Add to player if backpack is full
+                    end
+                end
+                selfSay('Here you go.', cid)
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+            end
+        else
+            selfSay('You do not have enough money.', cid)
+        end
+        npcHandler.topic[cid] = 0
+
+    elseif msgcontains(msg, 'yes') and talk_state == 2 then
+        if player:removeMoney(25) then
+            local backpack = player:addItem(2001, 1) -- bag
+            if backpack then
+                -- Add 20 explosion runes with 3 charges each
+                for i = 1, 20 do
+                    local rune = backpack:addItem(2313, 3)
+                    if not rune then
+                        player:addItem(2313, 3) -- Add to player if bag is full
+                    end
+                end
+                selfSay('Here you go.', cid)
+                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+            end
+        else
+            selfSay('You do not have enough money.', cid)
+        end
+        npcHandler.topic[cid] = 0
+
+    elseif msgcontains(msg, 'no') and (talk_state == 1 or talk_state == 2) then
+        selfSay('Too expensive you think?', cid)
+        npcHandler.topic[cid] = 0
+
+    elseif msgcontains(msg, 'job') then
+        selfSay('I am the shopkeeper of this magic shop.', cid)
+
+    elseif msgcontains(msg, 'offer') then
+        selfSay('I offer several kinds of magical runes and other magical items.', cid)
+
+    elseif msgcontains(msg, 'sell') then
+        selfSay('I am not buying anything.', cid)
+
+    elseif msgcontains(msg, 'quest') then
+        selfSay('A quest is nothing I want to be involved in.', cid)
+
+    elseif msgcontains(msg, 'mission') then
+        selfSay('I cannot help you in that area, son.', cid)
+
+    elseif msgcontains(msg, 'help') then
+        selfSay('I sell runes and magical items. Say "offer" to see what I have, or try abbreviations like "sd", "uh", "gfb".', cid)
+    end
+
     return true
 end
 
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Hello ' .. player:getName() .. '! Welcome to my rune shop!', cid)
+    npcHandler.topic[cid] = 0
+    return true
+end
 
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Good bye, ' .. player:getName() .. '!', cid)
+    npcHandler.topic[cid] = 0
+    return true
+end
 
+-- Keywords for additional functionality
+keywordHandler:addKeyword({'backpack'}, StdModule.say, {npcHandler = npcHandler, text = 'I sell special backpacks with runes! Ask about "bp of hmms" or "bp of explosions".'})
+keywordHandler:addKeyword({'special'}, StdModule.say, {npcHandler = npcHandler, text = 'I have special deals on backpacks filled with runes!'})
 
-
-
-
-
-
-
-
-function farewell(cid, message, keywords, parameters)         return npcHandler:defaultFarewellHandler(cid, message, keywords, parameters) end
--- Keyword handling functions end
-
--- Buy item keywords
-keywordHandler:addKeyword({'bp of hmms'},     tradeItem, {itemid = 1988, cost = 25, realname = "backpack of heavy magic missiles"})
-keywordHandler:addKeyword({'bp of explosions'},     tradeItem, {itemid = 2001, cost = 25, realname = "backpack of explosions"})
-keywordHandler:addKeyword({'ultimate healing'},     tradeItem, {itemid = 2273, cost = 175, charges = 1, realname = "ultimate healing rune"})
-keywordHandler:addKeyword({'sudden death'},     tradeItem, {itemid = 2268, cost = 325, charges = 1, realname = "sudden death rune"})
-keywordHandler:addKeyword({'great fireball'},     tradeItem, {itemid = 2304, cost = 90, charges = 3, realname = "great fireball rune"})
-keywordHandler:addKeyword({'explosion'},     tradeItem, {itemid = 2313, cost = 85, charges = 3, realname = "explosion rune"})
-keywordHandler:addKeyword({'light wand'},     tradeItem, {itemid = 2163, cost = 500, realname = "magic light wand"})
-keywordHandler:addKeyword({'lightwand'},     tradeItem, {itemid = 2163, cost = 500, realname = "magic light wand"})
-keywordHandler:addKeyword({'mana fluid'},     tradeItem, {itemid = 2006, cost = 100, charges = 7})
-keywordHandler:addKeyword({'manafluid'},     tradeItem, {itemid = 2006, cost = 100, charges = 7})
-keywordHandler:addKeyword({'life fluid'},     tradeItem, {itemid = 2006, cost = 80, charges = 10})
-keywordHandler:addKeyword({'lifefluid'},     tradeItem, {itemid = 2006, cost = 80, charges = 10})
-keywordHandler:addKeyword({'life fluid'},     tradeItem, {itemid = 2006, cost = 80, charges = 10})
-keywordHandler:addKeyword({'lifefluid'},     tradeItem, {itemid = 2006, cost = 80, charges = 10})
-keywordHandler:addKeyword({'blank'},     tradeItem, {itemid = 2260, cost = 10, realname = "blank rune"})
-
-keywordHandler:addKeyword({'xpl'},     tradeItem, {itemid = 2313, cost = 85, charges = 3, realname = "explosion rune"})
-keywordHandler:addKeyword({'explo'},     tradeItem, {itemid = 2313, cost = 85, charges = 3, realname = "explosion rune"})
-keywordHandler:addKeyword({'gfb'},     tradeItem, {itemid = 2304, cost = 90, charges = 3, realname = "great fireball rune"})
-keywordHandler:addKeyword({'sd'},     tradeItem, {itemid = 2268, cost = 325, charges = 1, realname = "sudden death rune"})
-keywordHandler:addKeyword({'uh'},     tradeItem, {itemid = 2273, cost = 175, charges = 1, realname = "ultimate healing rune"})
-keywordHandler:addKeyword({'hmm'},     tradeItem, {itemid = 2311, cost = 25, charges = 5, realname = "heavy magic missile rune"})
-keywordHandler:addKeyword({'rune'},     tradeItem, {itemid = 2260, cost = 20, realname = "blank rune"})
-
-
-
--- Confirm sell/buy keywords
-keywordHandler:addKeyword({'yes'}, confirmAction)
-keywordHandler:addKeyword({'no'}, confirmAction)
-
--- General message keywords
-keywordHandler:addKeyword({'offer'},     sayMessage, {text = 'I offer several kinds of magical runes and other magical items.'})
-keywordHandler:addKeyword({'sell'},     sayMessage, {text = 'I am not buing anything.'})
-keywordHandler:addKeyword({'job'},     sayMessage, {text = 'I am the shopkeeper of this magic shop.'})
-keywordHandler:addKeyword({'quest'},     sayMessage, {text = 'A quest is nothing I want to be involved in.'})
-keywordHandler:addKeyword({'mission'},    sayMessage, {text = 'I cannot help you in that area, son.'})
-keywordHandler:addKeyword({'buy'},        sayMessage, {text = 'I cannot sell that.'})
-
-
-keywordHandler:addKeyword({'hi'}, greet, nil)
-keywordHandler:addKeyword({'hello'}, greet, nil)
-keywordHandler:addKeyword({'hey'}, greet, nil)
-keywordHandler:addKeyword({'bye'}, farewell, nil)
-keywordHandler:addKeyword({'farewell'}, farewell, nil)
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())

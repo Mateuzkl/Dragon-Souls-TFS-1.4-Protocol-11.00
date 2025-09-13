@@ -1,118 +1,101 @@
-local focus = 0
-local talk_start = 0
-local target = 0
-local days = 0
+local keywordHandler = KeywordHandler:new()
+local npcHandler = NpcHandler:new(keywordHandler)
+NpcSystem.parseParameters(npcHandler)
 
-function onThingMove(creature, thing, oldpos, oldstackpos)
+function onCreatureAppear(cid)              npcHandler:onCreatureAppear(cid) end
+function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) end
+function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg) end
+function onThink()                          npcHandler:onThink() end
 
+function creatureSayCallback(cid, type, msg)
+    if not npcHandler:isFocused(cid) then
+        return false
+    end
+
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+
+    local talk_state = npcHandler.topic[cid] or 0
+
+    if msgcontains(msg, 'promotion') or msgcontains(msg, 'promote') then
+        if player:getVocation():getId() > 4 then
+            selfSay('Sorry, you are already promoted.', cid)
+            npcHandler.topic[cid] = 0
+        elseif player:getLevel() < 20 then
+            selfSay('Sorry, you need level 20 to buy promotion.', cid)
+            npcHandler.topic[cid] = 0
+        elseif not player:isPremium() then
+            selfSay('Sorry, you must be premium to buy promotion.', cid)
+            npcHandler.topic[cid] = 0
+        else
+            selfSay('Do you want to buy promotion for 20k?', cid)
+            npcHandler.topic[cid] = 1
+        end
+
+    elseif msgcontains(msg, 'premium') or msgcontains(msg, 'premmy') then
+        selfSay('Do you want to buy 7 days of premium for 7k?', cid)
+        npcHandler.topic[cid] = 2
+
+    elseif msgcontains(msg, 'yes') and talk_state == 1 then
+        if player:removeTotalMoney(20000) then
+            local currentVocation = player:getVocation():getId()
+            player:setVocation(Vocation(currentVocation + 4))
+            selfSay('You are now promoted!', cid)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_BLUE)
+        else
+            selfSay('Sorry, you do not have enough money.', cid)
+        end
+        npcHandler.topic[cid] = 0
+
+    elseif msgcontains(msg, 'yes') and talk_state == 2 then
+        if player:removeTotalMoney(7000) then
+            player:addPremiumDays(7)
+            selfSay('You have 7 days of premium more!', cid)
+            player:getPosition():sendMagicEffect(CONST_ME_FIREWORK_YELLOW)
+        else
+            selfSay('Sorry, you do not have enough money.', cid)
+        end
+        npcHandler.topic[cid] = 0
+
+    elseif msgcontains(msg, 'no') and (talk_state == 1 or talk_state == 2) then
+        selfSay('Maybe another time then.', cid)
+        npcHandler.topic[cid] = 0
+
+    elseif msgcontains(msg, 'job') then
+        selfSay('I sell premium accounts and promotions for adventurers.', cid)
+
+    elseif msgcontains(msg, 'help') then
+        selfSay('I can sell you premium time or promote your character if you meet the requirements.', cid)
+    end
+
+    return true
 end
 
-
-function onCreatureAppear(creature)
-
+function onGreet(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Hello ' .. player:getName() .. '! I sell premiums and promotions.', cid)
+    npcHandler.topic[cid] = 0
+    return true
 end
 
-
-function onCreatureDisappear(cid, pos)
-  	if focus == cid then
-          selfSay('Good bye then.')
-          focus = 0
-          talk_start = 0
-  	end
+function onFarewell(cid)
+    local player = Player(cid)
+    if not player then
+        return false
+    end
+    
+    selfSay('Good bye, ' .. player:getName() .. '!', cid)
+    npcHandler.topic[cid] = 0
+    return true
 end
 
-
-function onCreatureTurn(creature)
-
-end
-
-
-function msgcontains(txt, str)
-  	return (string.find(txt, str) and not string.find(txt, '(%w+)' .. str) and not string.find(txt, str .. '(%w+)'))
-end
-
-
-function onCreatureSay(cid, type, msg)
-  	msg = string.lower(msg)
-
-  	if (msgcontains(msg, 'hi') and (focus == 0)) and getDistanceToCreature(cid) < 4 then
- 		selfSay('Hello ' .. creatureGetName(cid) .. '! I sell premiums and promotions.')
- 		focus = cid
- 		talk_start = os.clock()
-
-	elseif msgcontains(msg, 'hi') and (focus ~= cid) and getDistanceToCreature(cid) < 4 then
-  		selfSay('Sorry, ' .. creatureGetName(cid) .. '! I talk to you in a minute.')
-
-  	elseif focus == cid then
-		talk_start = os.clock()
-
-		if msgcontains(msg, 'promotion') or msgcontains(msg, 'promote') then
- 			if getPlayerVocation(cid) > 4 then
- 				selfSay('Sorry, you are already promoted.')
- 				talk_state = 0
- 			elseif getPlayerLevel(cid) < 20 then
-				selfSay('Sorry, you need level 20 to buy promotion.')
-				talk_state = 0
-			elseif not isPremium(cid) then
-				selfSay('Sorry, you must be premium to buy promotion.')
-				talk_state = 0
-			else
-				selfSay('Do you want to buy promotion for 20k?')
-				talk_state = 1
-			end
-
-		elseif msgcontains(msg, 'premium') or msgcontains(msg, 'premmy') then
-			selfSay('Do you want to buy 7 days of premium for 7k?')
-			talk_state = 2
-
-		elseif talk_state == 1 then
-			if msgcontains(msg, 'yes') then
-				if pay(cid,20000) then
-					doPlayerSetVocation(cid, getPlayerVocation(cid)+4)
-					selfSay('You are now promoted!')
-				else
-					selfSay('Sorry, you do not have enough money.')
-				end
- 			end
-			talk_state = 0
-
-		elseif talk_state == 2 then
-			if msgcontains(msg, 'yes') then
-				if pay(cid,7000) then
-					selfSay('/premium '.. creatureGetName(cid) ..', 7')
-					selfSay('You have 7 days of premium more!')
-				else
-					selfSay('Sorry, you do not have enough money.')
-				end
-			end
-			talk_state = 0
-
-  		elseif msgcontains(msg, 'bye')  and getDistanceToCreature(cid) < 4 then
-  			selfSay('Good bye, ' .. creatureGetName(cid) .. '!')
-  			focus = 0
-  			talk_start = 0
-  		end
-  	end
-end
-
-
-function onCreatureChangeOutfit(creature)
-
-end
-
-
-function onThink()
-	doNpcSetCreatureFocus(focus)
-  	if (os.clock() - talk_start) > 30 then
-  		if focus > 0 then
-  			selfSay('Next Please...')
-  		end
-  			focus = 0
-  	end
- 	if focus ~= 0 then
- 		if getDistanceToCreature(focus) > 5 then
- 			selfSay('Good bye then.')
- 			focus = 0
- 		end
- 	end
-end
+npcHandler:setCallback(CALLBACK_GREET, onGreet)
+npcHandler:setCallback(CALLBACK_FAREWELL, onFarewell)
+npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
+npcHandler:addModule(FocusModule:new())
