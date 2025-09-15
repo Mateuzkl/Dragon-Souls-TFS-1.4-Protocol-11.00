@@ -12,8 +12,38 @@ combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 local condition = Condition(CONDITION_PARALYZE)
 condition:setParameter(CONDITION_PARAM_TICKS, 6000)
 condition:setFormula(-0.9, 0, -0.9, 0)
-
 combatDist:addCondition(condition)
+
+local condition2 = Condition(CONDITION_OUTFIT)
+condition2:setParameter(CONDITION_PARAM_TICKS, 3000)
+condition2:setOutfit({lookTypeEx = 7303})
+
+local function freezeTimer(creature, pos, count)
+    if count >= 1 and Creature(creature) then
+        local spectators = Game.getSpectators(pos, false, false, 13, 13, 7, 7)
+        if #spectators > 0 then
+            for _, spectator in pairs(spectators) do
+                if spectator:isPlayer() then
+                    spectator:sendTextMessage(MESSAGE_HEALED, nil, pos, count, TEXTCOLOR_ORANGE)
+                end
+            end
+        end
+        addEvent(freezeTimer, 1000, creature, pos, count - 1)
+    end
+end
+
+local function unfreeze(targetId, pos)
+    local target = Player(targetId)
+    if target then
+        pos:sendDistanceEffect(Position(pos.x+1, pos.y+1, pos.z), 29)
+        pos:sendDistanceEffect(Position(pos.x+1, pos.y-1, pos.z), 29)
+        pos:sendDistanceEffect(Position(pos.x-1, pos.y-1, pos.z), 29)
+        pos:sendDistanceEffect(Position(pos.x-1, pos.y+1, pos.z), 29)
+        target:say("UNFROZEN", TALKTYPE_MONSTER_SAY)
+        pos:sendMagicEffect(44)
+        target:setMovementBlocked(false)
+    end
+end
 
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
@@ -28,26 +58,29 @@ function onCastSpell(creature, variant)
         return false
     end
     
-    local targetOutfit = target:getOutfit()
-    local frozenOutfit = {
-        lookType = targetOutfit.lookType,
-        lookHead = 88,
-        lookBody = 88,
-        lookLegs = 88,
-        lookFeet = 88,
-        lookAddons = targetOutfit.lookAddons
-    }
-    
-    target:setOutfit(frozenOutfit, 6000)
+    local pos = target:getPosition()
     
     if target:isPlayer() then
-        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você está congelado!')
+        local freezeChance = math.random(1, 100)
+        if freezeChance <= 70 then
+            Position(pos.x+1, pos.y+1, pos.z):sendDistanceEffect(pos, 29)
+            Position(pos.x+1, pos.y-1, pos.z):sendDistanceEffect(pos, 29)
+            Position(pos.x-1, pos.y-1, pos.z):sendDistanceEffect(pos, 29)
+            Position(pos.x-1, pos.y+1, pos.z):sendDistanceEffect(pos, 29)
+            
+            target:addCondition(condition2)
+            target:say("FROZEN", TALKTYPE_MONSTER_SAY)
+            target:setMovementBlocked(true)
+            
+            addEvent(freezeTimer, 1000, target.uid, target:getPosition(), 3000 / 1000)
+            addEvent(unfreeze, 3000, target.uid, target:getPosition())
+        else
+            Game.sendAnimatedText("Resisted!", target:getPosition(), 215)
+        end
     end
     
-    target:addCondition(condition)
-    
-    local targetVariant = Variant(target:getPosition())
-    combatDist:execute(creature, targetVariant)
+    pos:sendMagicEffect(44)
+    combatDist:execute(creature, Variant(target:getPosition()))
     
     player:say("Adori Gran Frigo", TALKTYPE_MONSTER_SAY)
     
