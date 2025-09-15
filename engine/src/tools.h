@@ -27,6 +27,8 @@
 #include "const.h"
 #include "enums.h"
 
+class Player;
+
 void printXMLError(const std::string& where, const std::string& fileName, const pugi::xml_parse_result& result);
 
 std::string transformToSHA1(const std::string& input);

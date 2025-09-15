@@ -15,16 +15,6 @@ condition:setParameter(CONDITION_PARAM_SPEED, -220)
 condition:setFormula(-0.7, 0, -0.7, 0)
 combatDist:addCondition(condition)
 
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Adori Frigo')
-    end
-end
-
-local exhausted_seconds = 7
-local exhausted_storagevalue = 9636
-
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
     if not player then
@@ -65,9 +55,6 @@ function onCastSpell(creature, variant)
     if math.random(1, 1) == 1 then
         player:say("Adori Frigo!", TALKTYPE_MONSTER_SAY)
     end
-    
-    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
     
     return combat:execute(creature, variant)
 end

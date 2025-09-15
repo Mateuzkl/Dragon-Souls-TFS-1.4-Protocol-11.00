@@ -21,6 +21,7 @@
 
 #include "tools.h"
 #include "configmanager.h"
+#include "player.h"
 
 extern ConfigManager g_config;
 
@@ -1208,6 +1209,9 @@ const char* getReturnMessage(ReturnValue value)
 
 		case RETURNVALUE_YOUAREEXHAUSTED:
 			return "You are exhausted.";
+
+		case RETURNVALUE_YOURMSGCOOLDWN:
+			return "voce nao esta pronto cooldown";
 
 		case RETURNVALUE_CANONLYUSETHISRUNEONCREATURES:
 			return "You can only use this rune on creatures.";

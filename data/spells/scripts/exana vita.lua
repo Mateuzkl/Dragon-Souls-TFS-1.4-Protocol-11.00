@@ -13,7 +13,7 @@ combat3:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
 local combat4 = Combat()
 combat4:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
-combat4:setParameter(COMBAT_PARAM_DISPEL, CONDITION_EMO)
+combat4:setParameter(COMBAT_PARAM_DISPEL, CONDITION_BLEEDING)
 
 local combat5 = Combat()
 combat5:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
@@ -21,7 +21,7 @@ combat5:setParameter(COMBAT_PARAM_DISPEL, CONDITION_ENERGY)
 
 local combat6 = Combat()
 combat6:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
-combat6:setParameter(COMBAT_PARAM_DISPEL, CONDITION_REGEN)
+combat6:setParameter(COMBAT_PARAM_DISPEL, CONDITION_REGENERATION)
 
 local combat8 = Combat()
 combat8:setParameter(COMBAT_PARAM_AGGRESSIVE, false)

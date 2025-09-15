@@ -250,6 +250,12 @@ class Spell : public BaseSpell
 		void setGroupCooldown(uint32_t cd) {
 			groupCooldown = cd;
 		}
+		bool getShowCooldownMessage() const {
+			return showCooldownMessage;
+		}
+		void setShowCooldownMessage(bool v) {
+			showCooldownMessage = v;
+		}
 
 		int32_t getRange() const {
 			return range;
@@ -339,6 +345,7 @@ class Spell : public BaseSpell
 		bool learnable = false;
 		bool enabled = true;
 		bool premium = false;
+		bool showCooldownMessage = false;
 
 
 	private:

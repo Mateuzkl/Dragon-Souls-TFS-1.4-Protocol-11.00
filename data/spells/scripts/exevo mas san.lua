@@ -13,24 +13,9 @@ local area = createCombatArea({
 
 combat:setArea(area)
 
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exevo Mas San')
-    end
-end
-
-local exhausted_seconds = 5
-local exhausted_storagevalue = 45625
-
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
     if not player then
-        return false
-    end
-    
-    if os.time() < player:getStorageValue(exhausted_storagevalue) then
-        player:sendCancelMessage('O Cooldown não está pronto.')
         return false
     end
     
@@ -40,9 +25,6 @@ function onCastSpell(creature, variant)
     elseif rand == 2 then
         player:say("Feel the power of light!", TALKTYPE_MONSTER_SAY)
     end
-    
-    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
     
     return combat:execute(creature, variant)
 end

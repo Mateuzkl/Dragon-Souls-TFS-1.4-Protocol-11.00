@@ -7,7 +7,7 @@ condition:setParameter(CONDITION_PARAM_SPEED, -300)
 
 combat:addCondition(condition)
 
-local exhaust = Condition(CONDITION_FROZEN)
+local exhaust = Condition(CONDITION_EXHAUST)
 exhaust:setParameter(CONDITION_PARAM_TICKS, 10000)
 
 local area = createCombatArea({

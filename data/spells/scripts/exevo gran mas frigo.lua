@@ -68,7 +68,7 @@ function onTargetCreature(creature, target)
     
     local rand = math.random(1, 5)
     if target:isPlayer() then
-        target:getPosition():sendAnimatedText("Frozzen!", TEXTCOLOR_TEAL)
+        target:getPosition():sendAnimatedText("Frozen!", TEXTCOLOR_TEAL)
         if rand == 5 or rand == 4 then
             if player and rand == 4 then
                 target:getPosition():sendMagicEffect(24)
@@ -78,7 +78,7 @@ function onTargetCreature(creature, target)
             end
         end
     else
-        target:getPosition():sendAnimatedText("Frozzen!", TEXTCOLOR_TEAL)
+        target:getPosition():sendAnimatedText("Frozen!", TEXTCOLOR_TEAL)
     end
 end
 
@@ -87,24 +87,9 @@ combat2:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 combat3:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 combat4:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exevo Gran Mas Frigo')
-    end
-end
-
-local exhausted_seconds = 35
-local exhausted_storagevalue = 6347
-
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
     if not player then
-        return false
-    end
-    
-    if os.time() < player:getStorageValue(exhausted_storagevalue) then
-        player:sendCancelMessage('O Cooldown não está pronto.')
         return false
     end
     
@@ -142,8 +127,6 @@ function onCastSpell(creature, variant)
     end
     
     addEvent(spell1, 750, creatureId)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
-    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
     
     return combat1:execute(creature, variant)
 end

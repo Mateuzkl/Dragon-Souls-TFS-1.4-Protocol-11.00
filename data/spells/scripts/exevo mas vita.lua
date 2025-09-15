@@ -12,24 +12,9 @@ combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
 combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
 combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exevo Mas Vita')
-    end
-end
-
-local exhausted_seconds = 12
-local exhausted_storagevalue = 6346
-
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
     if not player then
-        return false
-    end
-    
-    if os.time() < player:getStorageValue(exhausted_storagevalue) then
-        player:sendCancelMessage('O Cooldown não está pronto.')
         return false
     end
     
@@ -53,21 +38,23 @@ function onCastSpell(creature, variant)
     local targetOutfit = target:getOutfit()
     local panicOutfit = {
         lookType = targetOutfit.lookType,
-        lookHead = 9,
-        lookBody = 9,
-        lookLegs = 9,
-        lookFeet = 9,
+        lookHead = 82,
+        lookBody = 82,
+        lookLegs = 82,
+        lookFeet = 82,
         lookAddons = targetOutfit.lookAddons
     }
     
     target:setOutfit(panicOutfit, 3000)
     
     if target:isPlayer() then
-        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você está em pânico.')
+        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você está em pânico!')
     end
     
     target:addCondition(drunk)
-    combatDist:execute(creature, Variant(target:getId()))
+    
+    local targetVariant = Variant(target:getPosition())
+    combatDist:execute(creature, targetVariant)
     
     local targetId = target:getId()
     local rand = math.random(1, 2)
@@ -77,15 +64,11 @@ function onCastSpell(creature, variant)
         player:say("Exevo Mas Vita!", TALKTYPE_MONSTER_SAY)
     end
     
-    -- Schedule damage effects
     addEvent(damageEffect, 1000, targetId, 81)
     addEvent(damageEffect, 1500, targetId, 82)
     addEvent(damageEffect, 2000, targetId, 81)
     addEvent(damageEffect, 2500, targetId, 81)
     addEvent(damageEffect, 3000, targetId, 81)
-    
-    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
     
     return combat:execute(creature, variant)
 end

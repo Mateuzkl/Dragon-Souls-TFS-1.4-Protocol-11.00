@@ -51,24 +51,9 @@ combat2:setArea(area)
 combat3:setArea(area)
 combat4:setArea(area)
 
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exeta Gran Mas Frigo.')
-    end
-end
-
-local exhausted_seconds = 30
-local exhausted_storagevalue = 6445
-
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
     if not player then
-        return false
-    end
-    
-    if os.time() < player:getStorageValue(exhausted_storagevalue) then
-        player:sendCancelMessage('O Cooldown não está pronto.')
         return false
     end
     
@@ -106,8 +91,6 @@ function onCastSpell(creature, variant)
     end
     
     addEvent(spell1, 700, creatureId)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
-    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
     
     return combat1:execute(creature, variant)
 end

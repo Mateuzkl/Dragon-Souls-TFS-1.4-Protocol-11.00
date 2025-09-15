@@ -15,16 +15,6 @@ condition:addDamage(8, 1000, -5000, -5000)
 
 combatDist:addCondition(condition)
 
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exana res mas drain')
-    end
-end
-
-local exhausted_seconds = 15
-local exhausted_storagevalue = 9369
-
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
     if not player then
@@ -74,9 +64,6 @@ function onCastSpell(creature, variant)
     if math.random(1, 1) == 1 then
         player:say("Exana Res Mas Drain", TALKTYPE_MONSTER_SAY)
     end
-    
-    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
     
     return combat:execute(creature, variant)
 end

@@ -22,24 +22,9 @@ local area = createCombatArea({
 combat1:setArea(area)
 combat2:setArea(area)
 
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exori Gran Tera')
-    end
-end
-
-local exhausted_seconds = 20
-local exhausted_storagevalue = 4234
-
 function onCastSpell(creature, variant)
     local player = creature:getPlayer()
     if not player then
-        return false
-    end
-    
-    if os.time() < player:getStorageValue(exhausted_storagevalue) then
-        player:sendCancelMessage('O Cooldown não está pronto.')
         return false
     end
     
@@ -49,9 +34,6 @@ function onCastSpell(creature, variant)
     elseif rand == 2 then
         player:say("Where do you think you're going?", TALKTYPE_MONSTER_SAY)
     end
-    
-    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
     
     return combat1:execute(creature, variant)
 end

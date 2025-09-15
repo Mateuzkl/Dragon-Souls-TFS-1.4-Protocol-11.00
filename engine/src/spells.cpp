@@ -534,6 +534,21 @@ bool Spell::configureSpell(const pugi::xml_node& node)
 		cooldown = pugi::cast<uint32_t>(attr.value());
 	}
 
+	// Normalize cooldown units: treat small values as seconds → milliseconds
+	if (cooldown > 0 && cooldown < 50) {
+		cooldown *= 1000;
+	}
+	if (groupCooldown > 0 && groupCooldown < 50) {
+		groupCooldown *= 1000;
+	}
+	if (secondaryGroupCooldown > 0 && secondaryGroupCooldown < 50) {
+		secondaryGroupCooldown *= 1000;
+	}
+
+	if ((attr = node.attribute("cooldownmsg")) || (attr = node.attribute("cooldownmessage"))) {
+		showCooldownMessage = attr.as_bool();
+	}
+
 	if ((attr = node.attribute("premium")) || (attr = node.attribute("prem"))) {
 		premium = attr.as_bool();
 	}
@@ -638,7 +653,30 @@ bool Spell::playerSpellCheck(Player* player) const
 	}
 
 	if (player->hasCondition(CONDITION_SPELLGROUPCOOLDOWN, group) || player->hasCondition(CONDITION_SPELLCOOLDOWN, spellId) || (secondaryGroup != SPELLGROUP_NONE && player->hasCondition(CONDITION_SPELLGROUPCOOLDOWN, secondaryGroup))) {
-		player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		if (getShowCooldownMessage()) {
+			uint32_t remaining = 0;
+			if (Condition* c = player->getCondition(CONDITION_SPELLCOOLDOWN, CONDITIONID_DEFAULT, spellId)) {
+				int64_t diff = c->getEndTime() - OTSYS_TIME();
+				remaining = diff > 0 ? static_cast<uint32_t>(diff) : 0;
+			} else if (secondaryGroup != SPELLGROUP_NONE) {
+				if (Condition* cg2 = player->getCondition(CONDITION_SPELLGROUPCOOLDOWN, CONDITIONID_DEFAULT, secondaryGroup)) {
+					int64_t diff = cg2->getEndTime() - OTSYS_TIME();
+					remaining = diff > 0 ? static_cast<uint32_t>(diff) : 0;
+				}
+			}
+			if (remaining == 0) {
+				if (Condition* cg = player->getCondition(CONDITION_SPELLGROUPCOOLDOWN, CONDITIONID_DEFAULT, group)) {
+					int64_t diff = cg->getEndTime() - OTSYS_TIME();
+					remaining = diff > 0 ? static_cast<uint32_t>(diff) : 0;
+				}
+			}
+			uint32_t secs = (remaining + 999) / 1000;
+			std::ostringstream ss;
+			ss << "voce nao esta pronto cooldown (" << secs << "s)";
+			player->sendCancelMessage(ss.str());
+		} else {
+			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		}
 
 		if (isInstant()) {
 			g_game.addMagicEffect(player->getPosition(), CONST_ME_POFF);

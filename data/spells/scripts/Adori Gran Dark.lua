@@ -9,23 +9,13 @@ combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
 combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
 combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
-local condition = Condition(CONDITION_EMO)
-condition:addDamage(1, 1000, -5, -5)
-condition:addDamage(1, 1000, -5, -5)
-condition:addDamage(1, 1000, -4, -4)
-condition:addDamage(1, 1000, -3, -3)
-condition:addDamage(1, 1000, -2, -2)
-condition:addDamage(1, 1000, -1, -1)
-condition:addDamage(1, 1000, -25000, -25000)
+local condition = Condition(CONDITION_BLEEDING)
+condition:setParameter(CONDITION_PARAM_TICKS, 6000)
+condition:setParameter(CONDITION_PARAM_PERIODICDAMAGE, -5)
+condition:setParameter(CONDITION_PARAM_STARTDAMAGE, -25)
+condition:setParameter(CONDITION_PARAM_TICKINTERVAL, 1000)
 
 combatDist:addCondition(condition)
-
-local function Cooldown(playerId)
-    local player = Player(playerId)
-    if player then
-        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Adori Gran Dark')
-    end
-end
 
 local exhausted_seconds = 45
 local exhausted_storagevalue = 9389
@@ -36,8 +26,9 @@ function onCastSpell(creature, variant)
         return false
     end
     
-    if os.time() < player:getStorageValue(exhausted_storagevalue) then
-        player:sendCancelMessage('O Cooldown não está pronto.')
+    if player:getStorageValue(exhausted_storagevalue) > os.time() then
+        player:sendCancelMessage('You are exhausted.')
+        player:getPosition():sendMagicEffect(CONST_ME_POFF)
         return false
     end
     
@@ -45,6 +36,11 @@ function onCastSpell(creature, variant)
     if not target then
         player:sendCancelMessage('Select your target.')
         creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+        return false
+    end
+    
+    if not player:getPosition():isSightClear(target:getPosition()) then
+        player:sendCancelMessage('You cannot see your target.')
         return false
     end
     
@@ -60,29 +56,20 @@ function onCastSpell(creature, variant)
             lookAddons = targetOutfit.lookAddons
         }
         target:setOutfit(cursedOutfit, 3000)
-        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você está condenado.')
-    else
-        local monsterOutfit = {
-            lookType = targetOutfit.lookType,
-            lookHead = targetOutfit.lookHead,
-            lookBody = targetOutfit.lookBody,
-            lookLegs = targetOutfit.lookLegs,
-            lookFeet = targetOutfit.lookFeet,
-            lookAddons = targetOutfit.lookAddons
-        }
-        target:setOutfit(monsterOutfit, 3000)
+        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você está amaldiçoado!')
     end
     
     target:addCondition(condition)
-    combatDist:execute(creature, Variant(target:getId()))
     
-    local rand = math.random(1, 2)
-    if rand == 1 or rand == 2 then
+    local targetVariant = Variant(target:getPosition())
+    combatDist:execute(creature, targetVariant)
+    
+    local rand = math.random(1, 4)
+    if rand <= 2 then
         player:say("Adori Gran Dark", TALKTYPE_MONSTER_SAY)
     end
     
     player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
-    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
     
     return combat:execute(creature, variant)
 end

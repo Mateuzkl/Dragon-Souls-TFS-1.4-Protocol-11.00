@@ -21,8 +21,10 @@
 
 #include "condition.h"
 #include "game.h"
+#include "spells.h"
 
 extern Game g_game;
+extern Spells* g_spells;
 
 bool Condition::setParam(ConditionParam_t param, int32_t value)
 {
@@ -196,6 +198,7 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_INFIGHT:
 		case CONDITION_DRUNK:
 		case CONDITION_EXHAUST:
+		case CONDITION_EXHAUSTED:
 		case CONDITION_EXHAUST_COMBAT:
 		case CONDITION_EXHAUST_HEAL:
 		case CONDITION_MUTED:
@@ -1823,6 +1826,25 @@ bool ConditionSpellCooldown::startCondition(Creature* creature)
 		}
 	}
 	return true;
+}
+
+void ConditionSpellCooldown::endCondition(Creature* creature)
+{
+    if (subId != 0) {
+        Player* player = creature->getPlayer();
+        if (player) {
+            // When per-spell cooldown ends, optionally send a CD message if configured
+            Spells* spells = g_spells;
+            if (spells) {
+                if (InstantSpell* instant = spells->getInstantSpellById(subId)) {
+                    if (instant->getShowCooldownMessage()) {
+                        std::string msg = std::string("CD: ") + instant->getWords();
+                        player->sendTextMessage(MESSAGE_STATUS_WARNING, msg);
+                    }
+                }
+            }
+        }
+    }
 }
 
 void ConditionSpellGroupCooldown::addCondition(Creature* creature, const Condition* addCondition)
