@@ -21,11 +21,6 @@ function onCastSpell(creature, variant)
         return false
     end
     
-    if os.time() < player:getStorageValue(exhausted_storagevalue) then
-        player:sendCancelMessage('O Cooldown não está pronto.')
-        return false
-    end
-    
     local target = creature:getTarget()
     if not target then
         player:sendCancelMessage('Select your target.')
