@@ -1,11 +1,12 @@
-# 🐉 Dragon Souls - TFS 1.4 Protocol 11.00
+# 🐉 Dragon Souls RPG v1.0 - TFS 1.4 Protocol 11.00
 
-**Dragon Souls** é um servidor de Tibia baseado no universo de **O Senhor dos Anéis**, desenvolvido sobre a engine **TFS 1.4** com **protocolo 11.00**. O projeto combina a nostalgia do Tibia clássico 7.92 com a performance e estabilidade das engines modernas.
+**Dragon Souls RPG v1.0** é um servidor de Tibia baseado no universo de **O Senhor dos Anéis**, desenvolvido sobre a engine **TFS 1.4** com **protocolo 11.00**. O projeto combina a nostalgia do Tibia clássico 7.92 com a performance e estabilidade das engines modernas.
 
 ## 📋 Índice
 
 - [Características](#-características)
 - [Funcionalidades Implementadas](#️-funcionalidades-implementadas)
+- [Sistema de Cooldown Avançado](#-sistema-de-cooldown-avançado)
 - [Requisitos do Sistema](#-requisitos-do-sistema)
 - [Instalação](#-instalação)
 - [Configuração](#️-configuração)
@@ -34,6 +35,7 @@
 - **Hastega System** - Aumento de velocidade de ataque
 - **Sistema de Stun** - Paralisia temporária em combate
 - **Reset System** - Sistema de reset de personagem
+- **Sistema de Cooldown Avançado** - Mensagens automáticas de cooldown
 - **Combate balanceado** - Baseado no Tibia 7.92
 
 ### ✅ Sistemas de Gameplay
@@ -49,6 +51,54 @@
 - **Logs detalhados** para debugging
 - **API REST** para integração web
 - **Sistema de eventos** automatizados
+
+## 🔮 Sistema de Cooldown Avançado
+
+O Dragon Souls implementa um sistema completo de cooldown para magias com mensagens automáticas personalizadas.
+
+### 📋 Configuração XML
+
+Para configurar uma magia com cooldown de 7 segundos e mensagens ativadas:
+
+```xml
+<instant name="Glaciate" 
+         words="adori frigo" 
+         spellid="201" 
+         exhaustion="7" 
+         cooldownmsg="1" 
+         script="adori frigo.lua">
+    <vocation id="1"/><vocation id="5"/>
+</instant>
+```
+
+### 🎯 Atributos Principais
+
+| Atributo | Descrição | Valores |
+|----------|-----------|---------|
+| `exhaustion` | Tempo de cooldown | `< 50` = segundos<br>`≥ 50` = milissegundos |
+| `cooldownmsg` | Ativa mensagem de CD | `0` = Desativado<br>`1` = Ativado |
+| `spellid` | ID único da magia | Número único |
+
+### 💬 Mensagens Automáticas
+
+- **Quando o cooldown termina:** `CD: Nome da Magia`
+- **Quando tenta usar em cooldown:** `voce nao esta pronto cooldown (Xs)`
+
+### ⚙️ Lógica de Conversão
+
+```cpp
+// Valores menores que 50: tratados como segundos
+if (exhaustion < 50) {
+    exhaustion = exhaustion * 1000; // Converte para milissegundos
+}
+```
+
+**Exemplos:**
+- `exhaustion="7"` = 7 segundos
+- `exhaustion="100"` = 100 milissegundos (0.1 segundo)
+- `exhaustion="7000"` = 7000 milissegundos (7 segundos)
+
+---
 
 ## 💻 Requisitos do Sistema
 
