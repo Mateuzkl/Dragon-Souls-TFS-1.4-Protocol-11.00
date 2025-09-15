@@ -1,22 +1,22 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_DRAWBLOOD)
-setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -0, -2000, -0, -2000)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_DRAWBLOOD)
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, 0, -2000, 0, -2000)
 
-local condition = createConditionObject(CONDITION_EMO)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 10, 1000, -2000)
-setCombatCondition(combat, condition)
+local condition = Condition(CONDITION_BLEEDING)
+condition:setParameter(CONDITION_PARAM_DELAYED, true)
+condition:addDamage(10, 1000, -2000, -2000)
 
-local arr = {
-{1, 1, 1},
-{1, 2, 1},
-{1, 1, 1}
-}
+combat:addCondition(condition)
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+local area = createCombatArea({
+    {1, 1, 1},
+    {1, 2, 1},
+    {1, 1, 1}
+})
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+combat:setArea(area)
+
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

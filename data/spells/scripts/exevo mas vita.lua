@@ -1,120 +1,91 @@
-local combatDist = createCombatObject()
-setCombatParam(combatDist, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combatDist, COMBAT_PARAM_EFFECT, 81)
-setCombatParam(combatDist, COMBAT_PARAM_DISTANCEEFFECT, 39)
-setCombatFormula(combatDist, COMBAT_FORMULA_LEVELMAGIC, -7.7, 0, -10.9, 0)
+local combatDist = Combat()
+combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combatDist:setParameter(COMBAT_PARAM_EFFECT, 81)
+combatDist:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 39)
+combatDist:setFormula(COMBAT_FORMULA_LEVELMAGIC, -7.7, 0, -10.9, 0)
 
-local drunk = createConditionObject(CONDITION_DRUNK)
-setConditionParam(drunk, CONDITION_PARAM_TICKS, 15000)
+local drunk = Condition(CONDITION_DRUNK)
+drunk:setParameter(CONDITION_PARAM_TICKS, 15000)
 
-local combat= createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
-local function Cooldown(cid)
-if isPlayer(cid) == TRUE then
-doPlayerSendTextMessage(cid,MESSAGE_STATUS_WARNING,'CD: Exevo Mas Vita')
-end
-end
-
-local exhausted_seconds = 12 -- Segundos que o Player Poderá castar a spell novamente
-local exhausted_storagevalue = 6346 -- Storage Value do Cool Down
-
-
-function onCastSpell(cid, var)
-rand = math.random(2000,4000)
-rand2 = math.random(2000,4000)
-rand3 = math.random(2000,4000)
-rand4 = math.random(2000,4000)
-
-
-         function frozzen(target)
-               doSendMagicEffect(getThingPos(target), 81)   
-	doPlayerAddHealth(target,-rand)
-	doSendAnimatedText(getThingPos(target),-rand4, TEXTCOLOR_RED)
-	end
-        function frozzen2(target)
-               doSendMagicEffect(getThingPos(target), 82)   
-	doPlayerAddHealth(target,-rand)
-	doSendAnimatedText(getThingPos(target),-rand2, TEXTCOLOR_RED)
-	end
-      function frozzen3(target)
-               doSendMagicEffect(getThingPos(target), 81)   
-	doPlayerAddHealth(target,-rand)
-	doSendAnimatedText(getThingPos(target),-rand3, TEXTCOLOR_RED)
-	end
-      function frozzen4(target)
-               doSendMagicEffect(getThingPos(target), 81)   
-	doPlayerAddHealth(target,-rand)
-	doSendAnimatedText(getThingPos(target),-rand3, TEXTCOLOR_RED)
-	end
-      function frozzen5(target)
-               doSendMagicEffect(getThingPos(target), 81)   
-	doPlayerAddHealth(target,-rand)
-	doSendAnimatedText(getThingPos(target),-rand4, TEXTCOLOR_RED)
-	end
-       
-
-if(os.time() < getPlayerStorageValue(cid, exhausted_storagevalue)) then
-doPlayerSendCancel(cid,'O Cooldown não está pronto.')
-return TRUE
+local function Cooldown(playerId)
+    local player = Player(playerId)
+    if player then
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exevo Mas Vita')
+    end
 end
 
-if(target == 1) then
-doPlayerSendCancel(cid,'Select your target.')
-doSendMagicEffect(getCreaturePosition(cid), 2)
-return TRUE
-end
-local target = getCreatureTarget(cid)
+local exhausted_seconds = 12
+local exhausted_storagevalue = 6346
 
-if(target ~= 0 and isPlayer(target) == 1) then
-local congelado = { lookType = getCreatureOutfit(target).lookType,lookHead = 9, lookBody = 9, lookLegs = 9, lookFeet = 9, lookAddons = getCreatureOutfit(target).lookAddons} 
-doSetCreatureOutfit(target, congelado, 3000)
-setPlayerStorageValue(target, exhausted_storagevalue, os.time() + exhausted_seconds)
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doPlayerSendTextMessage(target,20,'Voce está em panico.')
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doCombat(cid, combatDist, numberToVariant(target))
-else
-local monstro = { lookType = getCreatureOutfit(target).lookType,lookHead = getCreatureOutfit(target).lookHead, lookBody = getCreatureOutfit(target).lookBody, lookLegs = getCreatureOutfit(target).lookLegs, lookFeet = getCreatureOutfit(target).lookFeet, lookAddons = getCreatureOutfit(target).lookAddons} 
-doSetCreatureOutfit(target, monstro, 3000)
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doCombat(cid, combatDist, numberToVariant(target))
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if not player then
+        return false
+    end
+    
+    if os.time() < player:getStorageValue(exhausted_storagevalue) then
+        player:sendCancelMessage('O Cooldown não está pronto.')
+        return false
+    end
+    
+    local target = creature:getTarget()
+    if not target then
+        player:sendCancelMessage('Select your target.')
+        creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+        return false
+    end
+    
+    local function damageEffect(targetId, effectId)
+        local target = Creature(targetId)
+        if target then
+            local damage = math.random(2000, 4000)
+            target:getPosition():sendMagicEffect(effectId)
+            target:addHealth(-damage)
+            target:getPosition():sendAnimatedText(-damage, TEXTCOLOR_RED)
+        end
+    end
+    
+    local targetOutfit = target:getOutfit()
+    local panicOutfit = {
+        lookType = targetOutfit.lookType,
+        lookHead = 9,
+        lookBody = 9,
+        lookLegs = 9,
+        lookFeet = 9,
+        lookAddons = targetOutfit.lookAddons
+    }
+    
+    target:setOutfit(panicOutfit, 3000)
+    
+    if target:isPlayer() then
+        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você está em pânico.')
+    end
+    
+    target:addCondition(drunk)
+    combatDist:execute(creature, Variant(target:getId()))
+    
+    local targetId = target:getId()
+    local rand = math.random(1, 2)
+    if rand == 1 then
+        player:say("Exevo Mas Vita", TALKTYPE_MONSTER_SAY)
+    elseif rand == 2 then
+        player:say("Exevo Mas Vita!", TALKTYPE_MONSTER_SAY)
+    end
+    
+    -- Schedule damage effects
+    addEvent(damageEffect, 1000, targetId, 81)
+    addEvent(damageEffect, 1500, targetId, 82)
+    addEvent(damageEffect, 2000, targetId, 81)
+    addEvent(damageEffect, 2500, targetId, 81)
+    addEvent(damageEffect, 3000, targetId, 81)
+    
+    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
+    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
+    
+    return combat:execute(creature, variant)
 end
-
-	rand = math.random(1,2)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Exevo Mas Vita",16)
-      addEvent(Cooldown, 1*12000,cid)
-  addEvent(frozzen, 1*1000, target)
-         addEvent(frozzen2, 1.5*1000, target)
-  addEvent(frozzen3, 2*1000, target)
-addEvent(frozzen4, 2.5*1000, target)
-addEvent(frozzen5, 3*1000, target)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Exevo Mas Vita!",16)
-      addEvent(Cooldown, 1*12000,cid)
-  addEvent(frozzen, 1*1000, target)
-         addEvent(frozzen2, 1.5*1000, target)
-  addEvent(frozzen3, 2*1000, target)
-addEvent(frozzen4, 2.5*1000, target)
-addEvent(frozzen5, 3*1000, target)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-else
-      addEvent(Cooldown, 1*12000,cid)
-  addEvent(frozzen, 1*1000, target)
-         addEvent(frozzen2, 1.5*1000, target)
-         addEvent(frozzen3, 2*1000, target)
-addEvent(frozzen4, 2.5*1000, target)
-addEvent(frozzen5, 3*1000, target)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-end
-end
-
-
-      

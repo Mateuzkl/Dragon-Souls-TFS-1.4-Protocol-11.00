@@ -1,78 +1,76 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, 32)
-setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -13.7, 0, -19.9, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, 32)
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -13.7, 0, -19.9, 0)
 
-local condition = createConditionObject(CONDITION_PARALYZE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 6000)
-setConditionParam(condition, CONDITION_PARAM_SPEED, -220)
-setConditionFormula(condition, -0.8, 0, -0.8, 0)
-setCombatCondition(combat, condition)
+local condition = Condition(CONDITION_PARALYZE)
+condition:setParameter(CONDITION_PARAM_TICKS, 6000)
+condition:setParameter(CONDITION_PARAM_SPEED, -220)
+condition:setFormula(-0.8, 0, -0.8, 0)
 
-local exhaust = createConditionObject(CONDITION_EXHAUSTED)
-setConditionParam(exhaust, CONDITION_PARAM_TICKS, 6000)
+combat:addCondition(condition)
 
-local arr = {
-{0, 1, 1, 1, 0},
-{1, 1, 1, 1, 1},
-{1, 1, 3, 1, 1},
-{1, 1, 1, 1, 1},
-{0, 1, 1, 1, 0}
-}
+local exhaust = Condition(CONDITION_EXHAUSTED)
+exhaust:setParameter(CONDITION_PARAM_TICKS, 6000)
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+local area = createCombatArea({
+    {0, 1, 1, 1, 0},
+    {1, 1, 1, 1, 1},
+    {1, 1, 3, 1, 1},
+    {1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 0}
+})
 
+combat:setArea(area)
 
-function onTargetCreature(cid, target)
+local exhausted_seconds = 35
+local exhausted_storagevalue = 9261
 
-  
- if isPlayer(target) == 1 then
-   rand = math.random(1,5)
-   if rand == 1 then
-     doSendAnimatedText(getThingPos(cid),"Silence!",215)
-   doTargetCombatCondition(0, cid, exhaust, CONST_ME_NONE)
-  setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
- setPlayerStorageValue(cid, exhausted_storagevalue1, os.time() + exhausted_seconds1)
-   else
-     doSendAnimatedText(getThingPos(target),"Silence!",215)
-   doTargetCombatCondition(0, target, exhaust, CONST_ME_NONE)
-  setPlayerStorageValue(target, exhausted_storagevalue, os.time() + exhausted_seconds)
- setPlayerStorageValue(target, exhausted_storagevalue1, os.time() + exhausted_seconds1)
-   end
-   end
- end
-
-setCombatCallback(combat, CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
-
-local function Cooldown(cid)
-if isPlayer(cid) == TRUE then
-doPlayerSendTextMessage(cid,MESSAGE_STATUS_WARNING,'CD: Exevo Gran Mas Time Ultime')
-end
+function onTargetCreature(creature, target)
+    local targetPlayer = target:getPlayer()
+    if targetPlayer then
+        local rand = math.random(1, 5)
+        if rand == 1 then
+            creature:getPosition():sendAnimatedText("Silence!", 215)
+            creature:addCondition(exhaust)
+            creature:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
+        else
+            target:getPosition():sendAnimatedText("Silence!", 215)
+            target:addCondition(exhaust)
+            targetPlayer:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
+        end
+    end
 end
 
-local exhausted_seconds = 35 -- Segundos que o Player Poderá castar a spell novamente
-local exhausted_storagevalue = 9261 -- Storage Value do Cool Down
+combat:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-function onCastSpell(cid, var)
-if(os.time() < getPlayerStorageValue(cid, exhausted_storagevalue)) then
-doPlayerSendCancel(cid,'O Cooldown não está pronto.')
-return TRUE
+local function Cooldown(playerId)
+    local player = Player(playerId)
+    if player then
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exevo Gran Mas Time Ultime')
+    end
 end
-rand = math.random(1,50)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Stop Time!",16)
-      addEvent(Cooldown, 1*55000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Stop Bitch!",16)
-      addEvent(Cooldown, 1*55000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-else
-      addEvent(Cooldown, 1*55000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-end
+
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if not player then
+        return false
+    end
+    
+    if os.time() < player:getStorageValue(exhausted_storagevalue) then
+        player:sendCancelMessage('O Cooldown não está pronto.')
+        return false
+    end
+    
+    local rand = math.random(1, 50)
+    if rand == 1 then
+        player:say("Stop Time!", TALKTYPE_MONSTER_SAY)
+    elseif rand == 2 then
+        player:say("Stop Bitch!", TALKTYPE_MONSTER_SAY)
+    end
+    
+    addEvent(Cooldown, 55000, player:getId())
+    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
+    
+    return combat:execute(creature, variant)
 end

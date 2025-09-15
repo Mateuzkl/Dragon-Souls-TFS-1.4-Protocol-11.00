@@ -1,32 +1,29 @@
-area = {
-{0, 1, 0},
-{2, 0, 3},
-{0, 4, 0}
-}
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_EARTH)
 
-    attackType = ATTACK_NONE
-    needDirection = true
-    areaEffect = NM_ME_MAGIC_ENERGIE
-    animationEffect = NM_ANI_NONE
+function onTargetTile(creature, position)
+    local tile = Tile(position)
+    if tile then
+        local topThing = tile:getTopVisibleThing(creature)
+        if not topThing or not topThing:isItem() or topThing:getType():isMoveable() then
+            local item = Game.createItem(Game.getWorldType() == WORLD_TYPE_NO_PVP and ITEM_WILDGROWTH_SAFE or ITEM_WILDGROWTH, 1, position)
+            if item then
+                item:setAttribute(ITEM_ATTRIBUTE_DURATION, 60000)
+            end
+        end
+    end
+end
 
-    hitEffect = NM_ME_NONE
-    damageEffect = NM_ME_MAGIC_ENERGIE
-    animationColor = GREEN
-    offensive = false
-    drawblood = false
-minDmg = 0
-maxDmg = 0
+combat:setCallback(CALLBACK_PARAM_TARGETTILE, "onTargetTile")
 
-WildGrowthObject = MagicDamageObject(attackType, animationEffect, hitEffect, damageEffect, animationColor, offensive, drawblood, 0, 0)
-SubWildGrowthObject1 = MagicDamageObject(attackType, NM_ANI_NONE, NM_ME_NONE, damageEffect, animationColor, offensive, drawblood, minDmg, maxDmg)
-SubWildGrowthObject2 = MagicDamageObject(attackType, NM_ANI_NONE, NM_ME_NONE, damageEffect, animationColor, offensive, drawblood, 0, 0)
+local area = createCombatArea({
+    {0, 1, 0},
+    {2, 0, 3},
+    {0, 4, 0}
+})
 
-function onCast(cid, creaturePos, level, maglv, var)
-centerpos = {x=creaturePos.x, y=creaturePos.y, z=creaturePos.z}
+combat:setArea(area)
 
-return doAreaGroundMagic(cid, centerpos, needDirection, areaEffect, area, WildGrowthObject:ordered(),
-	0, 1, SubWildGrowthObject1:ordered(),
-	5000, 5, SubWildGrowthObject2:ordered(),
-	2, 60000, 1499, 1)
-
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

@@ -1,75 +1,74 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_POISON)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_POISON)
 
-local combat2 = createCombatObject()
-setCombatParam(combat2, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat2, COMBAT_PARAM_DISPEL, CONDITION_FIRE)
+local combat2 = Combat()
+combat2:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat2:setParameter(COMBAT_PARAM_DISPEL, CONDITION_FIRE)
 
-local combat3 = createCombatObject()
-setCombatParam(combat3, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat3, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+local combat3 = Combat()
+combat3:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat3:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
-local combat4 = createCombatObject()
-setCombatParam(combat4, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat4, COMBAT_PARAM_DISPEL, CONDITION_EMO)
+local combat4 = Combat()
+combat4:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat4:setParameter(COMBAT_PARAM_DISPEL, CONDITION_EMO)
 
-local combat5 = createCombatObject()
-setCombatParam(combat5, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat5, COMBAT_PARAM_DISPEL, CONDITION_ENERGY)
+local combat5 = Combat()
+combat5:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat5:setParameter(COMBAT_PARAM_DISPEL, CONDITION_ENERGY)
 
-local combat6 = createCombatObject()
-setCombatParam(combat6, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat6, COMBAT_PARAM_DISPEL, CONDITION_REGEN)
+local combat6 = Combat()
+combat6:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat6:setParameter(COMBAT_PARAM_DISPEL, CONDITION_REGEN)
 
-local combat8 = createCombatObject()
-setCombatParam(combat8, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat8, COMBAT_PARAM_DISPEL, CONDITION_INVISIBLE)
+local combat8 = Combat()
+combat8:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat8:setParameter(COMBAT_PARAM_DISPEL, CONDITION_INVISIBLE)
 
-local combat9 = createCombatObject()
-setCombatParam(combat9, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat9, COMBAT_PARAM_DISPEL, CONDITION_LIGHT)
+local combat9 = Combat()
+combat9:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat9:setParameter(COMBAT_PARAM_DISPEL, CONDITION_LIGHT)
 
-local combat10 = createCombatObject()
-setCombatParam(combat10, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat10, COMBAT_PARAM_DISPEL, CONDITION_FROZZEN)
+local combat10 = Combat()
+combat10:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat10:setParameter(COMBAT_PARAM_DISPEL, CONDITION_FROZZEN)
 
-local combat11 = createCombatObject()
-setCombatParam(combat11, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat11, COMBAT_PARAM_DISPEL, CONDITION_DROWN)
+local combat11 = Combat()
+combat11:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat11:setParameter(COMBAT_PARAM_DISPEL, CONDITION_DROWN)
 
-local combat12 = createCombatObject()
-setCombatParam(combat12, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat12, COMBAT_PARAM_DISPEL, CONDITION_DRUNK)
+local combat12 = Combat()
+combat12:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat12:setParameter(COMBAT_PARAM_DISPEL, CONDITION_DRUNK)
 
+function onTargetCreature(creature, target)
+    local targetPlayer = target:getPlayer()
+    if targetPlayer then
+        local amuletSlot = target:getSlotItem(CONST_SLOT_NECKLACE)
+        local ringSlot = target:getSlotItem(CONST_SLOT_RING)
+        
+        if (amuletSlot and amuletSlot:getId() == 2204) or (ringSlot and ringSlot:getId() == 13502) then
+            target:getPosition():sendAnimatedText("Dispel!", 215)
+        else
+            combat10:execute(target, Variant(target:getId()))
+            combat6:execute(target, Variant(target:getId()))
+            target:getPosition():sendAnimatedText("Dispel!", 215)
+        end
+    end
+end
 
-function onTargetCreature(cid, target)
-   
- if isPlayer(target) == 1 then
+combat:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-if getPlayerSlotItem(target, 9).itemid == 2204 or getPlayerSlotItem(target, 10).itemid == 13502 then
-     doSendAnimatedText(getThingPos(target),"Dispel!",215)
-   else
-	doCombat(target, combat10, numberToVariant(target))
-	doCombat(target, combat6, numberToVariant(target))
-     doSendAnimatedText(getThingPos(target),"Dispel!",215)
-   end
-
-   end
- end
-
-setCombatCallback(combat, CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
-
-
-function onCastSpell(cid, var)
-	doCombat(cid, combat2, var)
-	doCombat(cid, combat3, var)
-	doCombat(cid, combat4, var)
-	doCombat(cid, combat5, var)
-	doCombat(cid, combat8, var)
-	doCombat(cid, combat9, var)
-	doCombat(cid, combat11, var)
-	doCombat(cid, combat12, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+    combat2:execute(creature, variant)
+    combat3:execute(creature, variant)
+    combat4:execute(creature, variant)
+    combat5:execute(creature, variant)
+    combat8:execute(creature, variant)
+    combat9:execute(creature, variant)
+    combat11:execute(creature, variant)
+    combat12:execute(creature, variant)
+    return combat:execute(creature, variant)
 end

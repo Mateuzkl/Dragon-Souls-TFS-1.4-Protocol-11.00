@@ -1,27 +1,27 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, 0.6, -30, 0.9, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, 0.6, -30, 0.9, 0)
 
-local condition = createConditionObject(CONDITION_ENERGY)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 120, 1000, 250)
-setCombatCondition(combat, condition)
+local condition = Condition(CONDITION_ENERGY)
+condition:setParameter(CONDITION_PARAM_DELAYED, true)
+condition:addDamage(120, 1000, 250, 250)
 
+combat:addCondition(condition)
 
-function onCastSpell(cid, var)
-	rand = math.random(1,50)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"From the death to life!",16)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Feel the life on Gaya!",16)
-	return doCombat(cid, combat, var)
-	elseif rand == 3 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"The light on the darkness!",16)
-	return doCombat(cid, combat, var)
-else
-	return doCombat(cid, combat, var)
-end
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if player then
+        local rand = math.random(1, 50)
+        if rand == 1 then
+            player:say("From the death to life!", TALKTYPE_MONSTER_SAY)
+        elseif rand == 2 then
+            player:say("Feel the life on Gaya!", TALKTYPE_MONSTER_SAY)
+        elseif rand == 3 then
+            player:say("The light on the darkness!", TALKTYPE_MONSTER_SAY)
+        end
+    end
+    
+    return combat:execute(creature, variant)
 end

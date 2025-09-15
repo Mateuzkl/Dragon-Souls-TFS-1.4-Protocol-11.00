@@ -1,21 +1,19 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ENERGYHIT)
-setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -1.3, -30, -1.7, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_ENERGYHIT)
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -1.3, -30, -1.7, 0)
 
-local arr = {
-{0, 1, 0},
-{0, 1, 0},
-{0, 1, 0},
-{0, 1, 0},
-{0, 1, 0},
-{0, 3, 0},
-}
+local area = createCombatArea({
+    {0, 1, 0},
+    {0, 1, 0},
+    {0, 1, 0},
+    {0, 1, 0},
+    {0, 1, 0},
+    {0, 3, 0}
+})
 
-local area = createCombatArea(arr)
+combat:setArea(area)
 
-setCombatArea(combat, area)
-
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

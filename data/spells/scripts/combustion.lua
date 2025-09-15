@@ -1,15 +1,16 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_FIREAREA)
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_FIRE)
-setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -1.3, -30, -1.7, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_FIREAREA)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_FIRE)
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -1.3, -30, -1.7, 0)
 
-local condition = createConditionObject(CONDITION_FIRE)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 5, 3000, -25)
-addDamageCondition(condition, 1, 5000, -40)
-setCombatCondition(combat, condition)
+local condition = Condition(CONDITION_FIRE)
+condition:setParameter(CONDITION_PARAM_DELAYED, true)
+condition:addDamage(5, 3000, -25, -25)
+condition:addDamage(1, 5000, -40, -40)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+combat:addCondition(condition)
+
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

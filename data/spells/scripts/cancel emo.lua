@@ -1,8 +1,8 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_EMO)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_EMO)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

@@ -1,25 +1,29 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, 14)
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, 14)
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
 
-local exhaust = createConditionObject(CONDITION_EXHAUSTED)
-setConditionParam(exhaust, CONDITION_PARAM_TICKS, 5000)
+local exhaust = Condition(CONDITION_EXHAUSTED)
+exhaust:setParameter(CONDITION_PARAM_TICKS, 5000)
 
-
-function onCastSpell(cid, var)
-   	doTargetCombatCondition(0, cid, exhaust, CONST_ME_NONE)
-     	doSendAnimatedText(getThingPos(cid),"Power Up!",215)
-	setPlayerStorageValue(cid,7001,1)
-
- if getPlayerStorageValue(cid,7000) == 900 then
-	setPlayerStorageValue(cid,7000,getPlayerStorageValue(cid,7000)+1)
- 	doPlayerSay(cid,'Concentração Level Up!',16)
- 	doPlayerSendTextMessage(cid,20,'Sua concentração agora está level 2.')
- end
-
- if getPlayerStorageValue(cid,7000) < 998 then
-	setPlayerStorageValue(cid,7000,getPlayerStorageValue(cid,7000)+1)
- end
-
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if not player then
+        return false
+    end
+    
+    creature:addCondition(exhaust)
+    creature:getPosition():sendAnimatedText("Power Up!", 215)
+    player:setStorageValue(7001, 1)
+    
+    if player:getStorageValue(7000) == 900 then
+        player:setStorageValue(7000, player:getStorageValue(7000) + 1)
+        player:say('Concentração Level Up!', TALKTYPE_MONSTER_SAY)
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Sua concentração agora está level 2.')
+    end
+    
+    if player:getStorageValue(7000) < 998 then
+        player:setStorageValue(7000, player:getStorageValue(7000) + 1)
+    end
+    
+    return combat:execute(creature, variant)
 end

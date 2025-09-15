@@ -1,16 +1,15 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
-setCombatParam(combat, COMBAT_PARAM_CREATEITEM, 1497)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
+combat:setParameter(COMBAT_PARAM_CREATEITEM, 1497)
 
-local arr = {
-{1, 1, 1},
-{1, 2, 1},
-{1, 1, 1}
-}
+local area = createCombatArea({
+    {1, 1, 1},
+    {1, 2, 1},
+    {1, 1, 1}
+})
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

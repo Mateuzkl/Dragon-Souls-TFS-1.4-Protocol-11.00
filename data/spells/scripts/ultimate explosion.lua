@@ -1,40 +1,38 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_EXPLOSIONAREA)
-setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -2.2, -30, -3.0, -30)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_EXPLOSIONAREA)
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -2.2, -30, -3.0, -30)
 
-arr = {
-{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
-{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-{1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1},
-{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
-{0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
-{0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
-{0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-}
+local area = createCombatArea({
+    {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+    {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
+    {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+    {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+    {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+    {1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+    {0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},
+    {0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+    {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0}
+})
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
-function onCastSpell(cid, var)
-	rand = math.random(1,50)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Come on! I got more for you!",16)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Feel the power of darkness!",16)
-	return doCombat(cid, combat, var)
-	elseif rand == 3 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"You can't run of your death!",16)
-	return doCombat(cid, combat, var)
-	elseif rand == 4 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"FLAME OF HELL!!!",16)
-	return doCombat(cid, combat, var)
-else
-	return doCombat(cid, combat, var)
-end
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if player then
+        local rand = math.random(1, 50)
+        if rand == 1 then
+            player:say("Come on! I got more for you!", TALKTYPE_MONSTER_SAY)
+        elseif rand == 2 then
+            player:say("Feel the power of darkness!", TALKTYPE_MONSTER_SAY)
+        elseif rand == 3 then
+            player:say("You can't run of your death!", TALKTYPE_MONSTER_SAY)
+        elseif rand == 4 then
+            player:say("FLAME OF HELL!!!", TALKTYPE_MONSTER_SAY)
+        end
+    end
+    
+    return combat:execute(creature, variant)
 end

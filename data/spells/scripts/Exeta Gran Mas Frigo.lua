@@ -1,144 +1,113 @@
-local combat1 = createCombatObject()
-setCombatParam(combat1, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat1, COMBAT_PARAM_EFFECT, 56)
-setCombatFormula(combat1, COMBAT_FORMULA_LEVELMAGIC, -2.50, -40, -3.25, 0)
+local combat1 = Combat()
+combat1:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat1:setParameter(COMBAT_PARAM_EFFECT, 56)
+combat1:setFormula(COMBAT_FORMULA_LEVELMAGIC, -2.50, -40, -3.25, 0)
 
-local condition = createConditionObject(CONDITION_PARALYZE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 6000)
-setConditionFormula(condition, -0.7, -0, -0.7, -0)
+local condition1 = Condition(CONDITION_PARALYZE)
+condition1:setParameter(CONDITION_PARAM_TICKS, 6000)
+condition1:setFormula(-0.7, 0, -0.7, 0)
+combat1:addCondition(condition1)
 
-setCombatCondition(combat1, condition)
+local combat2 = Combat()
+combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat2:setParameter(COMBAT_PARAM_EFFECT, 56)
+combat2:setFormula(COMBAT_FORMULA_LEVELMAGIC, -2.50, -40, -3.25, 0)
 
-local combat2 = createCombatObject()
-setCombatParam(combat2, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat2, COMBAT_PARAM_EFFECT, 56)
-setCombatFormula(combat2, COMBAT_FORMULA_LEVELMAGIC, -2.50, -40, -3.25, 0)
+local condition2 = Condition(CONDITION_PARALYZE)
+condition2:setParameter(CONDITION_PARAM_TICKS, 6000)
+condition2:setFormula(-0.7, 0, -0.7, 0)
+combat2:addCondition(condition2)
 
-local condition = createConditionObject(CONDITION_PARALYZE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 6000)
-setConditionFormula(condition, -0.7, -0, -0.7, -0)
+local combat3 = Combat()
+combat3:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat3:setParameter(COMBAT_PARAM_EFFECT, 56)
+combat3:setFormula(COMBAT_FORMULA_LEVELMAGIC, -2.50, -40, -3.25, 0)
 
-setCombatCondition(combat2, condition)
+local condition3 = Condition(CONDITION_PARALYZE)
+condition3:setParameter(CONDITION_PARAM_TICKS, 6000)
+condition3:setFormula(-0.7, 0, -0.7, 0)
+combat3:addCondition(condition3)
 
-local combat3 = createCombatObject()
-setCombatParam(combat3, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat3, COMBAT_PARAM_EFFECT, 56)
-setCombatFormula(combat3, COMBAT_FORMULA_LEVELMAGIC, -2.50, -40, -3.25, 0)
+local combat4 = Combat()
+combat4:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat4:setParameter(COMBAT_PARAM_EFFECT, 56)
+combat4:setFormula(COMBAT_FORMULA_LEVELMAGIC, -3.50, -50, -3.25, 0)
 
-local condition = createConditionObject(CONDITION_PARALYZE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 6000)
-setConditionFormula(condition, -0.7, -0, -0.7, -0)
+local condition4 = Condition(CONDITION_PARALYZE)
+condition4:setParameter(CONDITION_PARAM_TICKS, 6000)
+condition4:setFormula(-0.7, 0, -0.7, 0)
+combat4:addCondition(condition4)
 
-setCombatCondition(combat3, condition)
+local area = createCombatArea({
+    {0, 1, 1, 1, 0},
+    {1, 1, 1, 1, 1},
+    {1, 1, 2, 1, 1},
+    {1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 0}
+})
 
-local combat4 = createCombatObject()
-setCombatParam(combat4, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat4, COMBAT_PARAM_EFFECT, 56)
-setCombatFormula(combat4, COMBAT_FORMULA_LEVELMAGIC, -3.50, -50, -3.25, 0)
+combat1:setArea(area)
+combat2:setArea(area)
+combat3:setArea(area)
+combat4:setArea(area)
 
-local condition = createConditionObject(CONDITION_PARALYZE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 6000)
-setConditionFormula(condition, -0.7, -0, -0.7, -0)
-setCombatCondition(combat4, condition)
-
-
-arr1 = {
-{0, 1, 1, 1, 0},
-{1, 1, 1, 1, 1},
-{1, 1, 2, 1, 1},
-{1, 1, 1, 1, 1},
-{0, 1, 1, 1, 0},
-}
-
-
-
-arr2 = {
-{0, 1, 1, 1, 0},
-{1, 1, 1, 1, 1},
-{1, 1, 2, 1, 1},
-{1, 1, 1, 1, 1},
-{0, 1, 1, 1, 0},
-}
-
-arr3 = {
-{0, 1, 1, 1, 0},
-{1, 1, 1, 1, 1},
-{1, 1, 2, 1, 1},
-{1, 1, 1, 1, 1},
-{0, 1, 1, 1, 0},
-}
-
-arr4 = {
-{0, 1, 1, 1, 0},
-{1, 1, 1, 1, 1},
-{1, 1, 2, 1, 1},
-{1, 1, 1, 1, 1},
-{0, 1, 1, 1, 0},
-}
-
-local area1 = createCombatArea(arr1)
-local area2 = createCombatArea(arr2)
-local area3 = createCombatArea(arr3)
-local area4 = createCombatArea(arr4)
-setCombatArea(combat1, area1)
-setCombatArea(combat2, area2)
-setCombatArea(combat3, area3)
-setCombatArea(combat4, area4)
-
-local function onCastSpell1(parameters)
-doCombat(parameters.cid, parameters.combat1, parameters.var)
+local function Cooldown(playerId)
+    local player = Player(playerId)
+    if player then
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exeta Gran Mas Frigo.')
+    end
 end
 
-local function onCastSpell2(parameters)
-doCombat(parameters.cid, parameters.combat2, parameters.var)
+local exhausted_seconds = 30
+local exhausted_storagevalue = 6445
+
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if not player then
+        return false
+    end
+    
+    if os.time() < player:getStorageValue(exhausted_storagevalue) then
+        player:sendCancelMessage('O Cooldown não está pronto.')
+        return false
+    end
+    
+    local creatureId = creature:getId()
+    
+    local function spell4(creatureId)
+        local creature = Creature(creatureId)
+        if creature then
+            return combat4:execute(creature, variant)
+        end
+    end
+    
+    local function spell3(creatureId)
+        local creature = Creature(creatureId)
+        if creature then
+            addEvent(spell4, 350, creatureId)
+            return combat3:execute(creature, variant)
+        end
+    end
+    
+    local function spell2(creatureId)
+        local creature = Creature(creatureId)
+        if creature then
+            addEvent(spell3, 350, creatureId)
+            return combat2:execute(creature, variant)
+        end
+    end
+    
+    local function spell1(creatureId)
+        local creature = Creature(creatureId)
+        if creature then
+            addEvent(spell2, 350, creatureId)
+            return combat1:execute(creature, variant)
+        end
+    end
+    
+    addEvent(spell1, 700, creatureId)
+    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
+    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
+    
+    return combat1:execute(creature, variant)
 end
-
-local function onCastSpell3(parameters)
-doCombat(parameters.cid, parameters.combat3, parameters.var)
-end
-
-local function onCastSpell4(parameters)
-doCombat(parameters.cid, parameters.combat4, parameters.var)
-end
-
-
-
-local function Cooldown(cid)
-if isPlayer(cid) == TRUE then
-doPlayerSendTextMessage(cid,MESSAGE_STATUS_WARNING,'CD: Exeta Gran Mas Frigo.')
-end
-end
-
-local exhausted_seconds = 30 -- Segundos que o Player Poderá castar a spell novamente
-local exhausted_storagevalue = 6445 -- Storage Value do Cool Down
-
-function onCastSpell(cid, var)
-if(os.time() < getPlayerStorageValue(cid, exhausted_storagevalue)) then
-doPlayerSendCancel(cid,'O Cooldown não está pronto.')
-return TRUE
-end
-         
-                        local function spell4(cid)
-               return doCombat(cid, combat4, var)
-         end
-         local function spell3(cid)
-               addEvent(spell4, 1 * 350, cid)
-               return doCombat(cid, combat2, var)
-         end
-local function spell3(cid)
-               return doCombat(cid, combat3, var)
-         end
-         local function spell2(cid)
-               addEvent(spell3, 1 * 350, cid)
-               return doCombat(cid, combat2, var)
-         end
-         local function spell1(cid)
-               addEvent(spell2, 1 * 350, cid)
-               return doCombat(cid, combat1, var)
-         end
-         addEvent(spell1, 1 * 700, cid)
- addEvent(Cooldown, 1*30000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-return doCombat(cid, combat1, var)
-end
-

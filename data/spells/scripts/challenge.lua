@@ -1,32 +1,32 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
 
-local arr = {
-{0, 1, 1, 1, 0},
-{1, 1, 1, 1, 1},
-{1, 1, 3, 1, 1},
-{1, 1, 1, 1, 1},
-{0, 1, 1, 1, 0}
-}
+local area = createCombatArea({
+    {0, 1, 1, 1, 0},
+    {1, 1, 1, 1, 1},
+    {1, 1, 3, 1, 1},
+    {1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 0}
+})
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
-function onTargetCreature(cid, target)
-	doChallengeCreature(cid, target)
+function onTargetCreature(creature, target)
+    creature:challengeTarget(target)
 end
 
-setCombatCallback(combat, CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
+combat:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-function onCastSpell(cid, var)
-	rand = math.random(1,50)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"HEY YOU!!!",16)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Come on baby!",16)
-	return doCombat(cid, combat, var)
-else
-	return doCombat(cid, combat, var)
-end
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if player then
+        local rand = math.random(1, 50)
+        if rand == 1 then
+            player:say("HEY YOU!!!", TALKTYPE_MONSTER_SAY)
+        elseif rand == 2 then
+            player:say("Come on baby!", TALKTYPE_MONSTER_SAY)
+        end
+    end
+    
+    return combat:execute(creature, variant)
 end

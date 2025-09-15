@@ -1,11 +1,12 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
 
-local condition = createConditionObject(CONDITION_FIRE)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 20, 2000, -10)
-setCombatCondition(combat, condition)
+local condition = Condition(CONDITION_FIRE)
+condition:setParameter(CONDITION_PARAM_DELAYED, true)
+condition:addDamage(20, 2000, -10, -10)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+combat:addCondition(condition)
+
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

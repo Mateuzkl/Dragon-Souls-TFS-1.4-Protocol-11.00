@@ -1,23 +1,22 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
 
-local condition = createConditionObject(CONDITION_INVISIBLE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 120000)
-setCombatCondition(combat, condition)
+local condition = Condition(CONDITION_INVISIBLE)
+condition:setParameter(CONDITION_PARAM_TICKS, 120000)
 
---local area = createCombatArea( { {1, 1, 1}, {1, 3, 1}, {1, 1, 1} } )
---setCombatArea(combat, area)
+combat:addCondition(condition)
 
-function onCastSpell(cid, var)
-	rand = math.random(1,50)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Can see me now?",16)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"You can't attack, what you can't see!",16)
-	return doCombat(cid, combat, var)
-else
-	return doCombat(cid, combat, var)
-end
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if player then
+        local rand = math.random(1, 50)
+        if rand == 1 then
+            player:say("Can see me now?", TALKTYPE_MONSTER_SAY)
+        elseif rand == 2 then
+            player:say("You can't attack, what you can't see!", TALKTYPE_MONSTER_SAY)
+        end
+    end
+    
+    return combat:execute(creature, variant)
 end

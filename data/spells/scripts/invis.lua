@@ -1,14 +1,12 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
 
-local condition = createConditionObject(CONDITION_INVISIBLE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 5000)
-setCombatCondition(combat, condition)
+local condition = Condition(CONDITION_INVISIBLE)
+condition:setParameter(CONDITION_PARAM_TICKS, 5000)
 
---local area = createCombatArea( { {1, 1, 1}, {1, 3, 1}, {1, 1, 1} } )
---setCombatArea(combat, area)
+combat:addCondition(condition)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

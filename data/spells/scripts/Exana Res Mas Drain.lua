@@ -1,71 +1,82 @@
-local combatDist = createCombatObject()
-setCombatParam(combatDist, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combatDist, COMBAT_PARAM_EFFECT, 59)
-setCombatFormula(combatDist, COMBAT_FORMULA_LEVELMAGIC, -13.7, 0, -19.9, 0)
-setCombatParam(combatDist, COMBAT_PARAM_DISTANCEEFFECT, 55)
+local combatDist = Combat()
+combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combatDist:setParameter(COMBAT_PARAM_EFFECT, 59)
+combatDist:setFormula(COMBAT_FORMULA_LEVELMAGIC, -13.7, 0, -19.9, 0)
+combatDist:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 55)
 
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
-local condition = createConditionObject(CONDITION_DROWN)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 8, 1000, -5000)
-setCombatCondition(combatDist, condition)
+local condition = Condition(CONDITION_DROWN)
+condition:setParameter(CONDITION_PARAM_DELAYED, true)
+condition:addDamage(8, 1000, -5000, -5000)
 
-local combat= createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+combatDist:addCondition(condition)
 
-local function Cooldown(cid)
-if isPlayer(cid) == TRUE then
-doPlayerSendTextMessage(cid,MESSAGE_STATUS_WARNING,'CD: Exana res mas drain')
-end
-end
-
-local exhausted_seconds = 15 -- Segundos que o Player Poderá castar a spell novamente
-local exhausted_storagevalue = 9369 -- Storage Value do Cool Down
-
-function onCastSpell(cid, var)
-if(os.time() < getPlayerStorageValue(cid, exhausted_storagevalue)) then
-doPlayerSendCancel(cid,'O Cooldown não está pronto.')
-return TRUE
+local function Cooldown(playerId)
+    local player = Player(playerId)
+    if player then
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Exana res mas drain')
+    end
 end
 
-if(target == 1) then
-doPlayerSendCancel(cid,'Select your target.')
-doSendMagicEffect(getCreaturePosition(cid), 2)
-return TRUE
-end
-local target = getCreatureTarget(cid)
+local exhausted_seconds = 15
+local exhausted_storagevalue = 9369
 
-if(target ~= 0 and isPlayer(target) == 1) then
-local congelado = { lookType = getCreatureOutfit(target).lookType,lookHead = 9, lookBody = 9, lookLegs = 9, lookFeet = 9, lookAddons = getCreatureOutfit(target).lookAddons} 
-doSetCreatureOutfit(target, congelado, 3000)
-setPlayerStorageValue(target, exhausted_storagevalue, os.time() + exhausted_seconds)
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doPlayerSendTextMessage(target,20,'Voce está sendo drenado.')
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doCombat(cid, combatDist, numberToVariant(target))
-else
-local monstro = { lookType = getCreatureOutfit(target).lookType,lookHead = getCreatureOutfit(target).lookHead, lookBody = getCreatureOutfit(target).lookBody, lookLegs = getCreatureOutfit(target).lookLegs, lookFeet = getCreatureOutfit(target).lookFeet, lookAddons = getCreatureOutfit(target).lookAddons} 
-doSetCreatureOutfit(target, monstro, 3000)
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doCombat(cid, combatDist, numberToVariant(target))
-end
-
-	rand = math.random(1,1)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Exana Res Mas Drain",16)
-      addEvent(Cooldown, 1*15000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Exana Res Mas Drain",16)
-      addEvent(Cooldown, 1*15000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-else
-      addEvent(Cooldown, 1*15000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-end
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if not player then
+        return false
+    end
+    
+    if os.time() < player:getStorageValue(exhausted_storagevalue) then
+        player:sendCancelMessage('O Cooldown não está pronto.')
+        return false
+    end
+    
+    local target = creature:getTarget()
+    if not target then
+        player:sendCancelMessage('Select your target.')
+        creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+        return false
+    end
+    
+    local targetOutfit = target:getOutfit()
+    
+    if target:isPlayer() then
+        local drainedOutfit = {
+            lookType = targetOutfit.lookType,
+            lookHead = 9,
+            lookBody = 9,
+            lookLegs = 9,
+            lookFeet = 9,
+            lookAddons = targetOutfit.lookAddons
+        }
+        target:setOutfit(drainedOutfit, 3000)
+        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você está sendo drenado.')
+    else
+        local monsterOutfit = {
+            lookType = targetOutfit.lookType,
+            lookHead = targetOutfit.lookHead,
+            lookBody = targetOutfit.lookBody,
+            lookLegs = targetOutfit.lookLegs,
+            lookFeet = targetOutfit.lookFeet,
+            lookAddons = targetOutfit.lookAddons
+        }
+        target:setOutfit(monsterOutfit, 3000)
+    end
+    
+    target:addCondition(condition)
+    combatDist:execute(creature, Variant(target:getId()))
+    
+    if math.random(1, 1) == 1 then
+        player:say("Exana Res Mas Drain", TALKTYPE_MONSTER_SAY)
+    end
+    
+    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
+    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
+    
+    return combat:execute(creature, variant)
 end

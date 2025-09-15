@@ -1,78 +1,64 @@
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, 60)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, 60)
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
+function onTargetCreature(creature, target)
+    if creature:isPlayer() and target:isPlayer() then
+        local rand = math.random(1, 1)
+        if rand == 1 then
+            creature:getPosition():sendAnimatedText("Drain!", 160)
+            creature:addMana(creature:getMana() / 4 * 3)
+            creature:getPosition():sendMagicEffect(59)
+            
+            target:getPosition():sendAnimatedText("Drain!", 160)
+            target:addHealth(-target:getHealth() / 4 * 3)
+        end
+    end
+end
 
+combat:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-function onTargetCreature(cid, target)
-   
- if isPlayer(cid) == 1 and isPlayer(target) == 1 then
-   rand = math.random(1,1)
-   if getPlayerMaxMana(target) == getPlayerMaxMana(target) then
-   if rand == 1 then
-     doSendAnimatedText(getThingPos(cid),"Drain!",160)
-     doPlayerAddMana(cid,getPlayerMana(cid)/4*3)
-     doSendMagicEffect(getPlayerPosition(cid),59)
+local function Cooldown(playerId)
+    local player = Player(playerId)
+    if player then
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'CD: Gravita')
+    end
+end
+
+local exhausted_seconds = 15
+local exhausted_storagevalue = 3459
+
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if not player then
+        return false
+    end
     
-     doSendAnimatedText(getThingPos(target),"Drain!",160)
-     doCreatureAddHealth(target,-getPlayerHealth(target)/4*3)
-   end
-end  
-end
-end
-setCombatCallback(combat, CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
-
-local function Cooldown(cid)
-if isPlayer(cid) == TRUE then
-doPlayerSendTextMessage(cid,MESSAGE_STATUS_WARNING,'CD: Gravita')
-end
-end
-
-local exhausted_seconds = 15 -- Segundos que o Player Poderá castar a spell novamente
-local exhausted_storagevalue = 3459 -- Storage Value do Cool Down
-
-function onCastSpell(cid, var)
-if(os.time() < getPlayerStorageValue(cid, exhausted_storagevalue)) then
-doPlayerSendCancel(cid,'O Cooldown não está pronto.')
-return TRUE
-end
-
-if(target == 0) then
-doPlayerSendCancel(cid,'Select your target.')
-doSendMagicEffect(getCreaturePosition(cid), 2)
-return TRUE
-end
-local target = getCreatureTarget(cid)
-
-if(target ~= 0 and isPlayer(target) == 1) then
-local congelado = { lookType = getCreatureOutfit(target).lookType,lookHead = getCreatureOutfit(target).Head, lookBody = getCreatureOutfit(target).lookBody, lookLegs = getCreatureOutfit(target).lookLegs, lookFeet = getCreatureOutfit(target).lookFeet, lookAddons = getCreatureOutfit(target).lookAddons} 
-doSetCreatureOutfit(target, congelado, 3000)
-setPlayerStorageValue(target, exhausted_storagevalue, os.time() + exhausted_seconds)
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doPlayerSendTextMessage(target,20,'Voce foi drenado.')
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doCombat(cid, combatDist, numberToVariant(target))
-else
-local monstro = { lookType = getCreatureOutfit(target).lookType,lookHead = getCreatureOutfit(target).Head, lookBody = getCreatureOutfit(target).lookBody, lookLegs = getCreatureOutfit(target).lookLegs, lookFeet = getCreatureOutfit(target).lookFeet, lookAddons = getCreatureOutfit(target).lookAddons} 
-doSetCreatureOutfit(target, monstro, 3000)
-doTargetCombatCondition(0, target, condition, CONST_ME_NONE)
-doCombat(cid, combatDist, numberToVariant(target))
-end
-
-	rand = math.random(1,1)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Gravita",16)
-      addEvent(Cooldown, 1*15000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-	elseif rand == 2 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Gravita",16)
-      addEvent(Cooldown, 1*15000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-else
-      addEvent(Cooldown, 1*15000,cid)
-         setPlayerStorageValue(cid, exhausted_storagevalue, os.time() + exhausted_seconds)
-	return doCombat(cid, combat, var)
-end
+    if os.time() < player:getStorageValue(exhausted_storagevalue) then
+        player:sendCancelMessage('O Cooldown não está pronto.')
+        return false
+    end
+    
+    local target = creature:getTarget()
+    if not target then
+        player:sendCancelMessage('Select your target.')
+        creature:getPosition():sendMagicEffect(CONST_ME_POFF)
+        return false
+    end
+    
+    local targetOutfit = target:getOutfit()
+    target:setOutfit(targetOutfit, 3000)
+    
+    if target:isPlayer() then
+        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você foi drenado.')
+    end
+    
+    if math.random(1, 1) == 1 then
+        player:say("Gravita", TALKTYPE_MONSTER_SAY)
+    end
+    
+    player:setStorageValue(exhausted_storagevalue, os.time() + exhausted_seconds)
+    addEvent(Cooldown, exhausted_seconds * 1000, player:getId())
+    
+    return combat:execute(creature, variant)
 end

@@ -1,25 +1,26 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HEALING)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_TARGETCASTERORTOPMOST, 1)
-setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, 0)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_HEALING)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_TARGETCASTERORTOPMOST, true)
+combat:setParameter(COMBAT_PARAM_AGGRESSIVE, false)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_PARALYZE)
 
-function onGetFormulaValues(cid, level, maglevel)
-	min = (level * 2 + maglevel * 3) * 0.9
-	max = (level * 2 + maglevel * 3) * 1.2
-		
-	return min, max
+function onGetFormulaValues(player, level, maglevel)
+    local min = (level * 2 + maglevel * 3) * 0.9
+    local max = (level * 2 + maglevel * 3) * 1.2
+    return min, max
 end
 
-setCombatCallback(combat, CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
+combat:setCallback(CALLBACK_PARAM_LEVELMAGICVALUE, "onGetFormulaValues")
 
-function onCastSpell(cid, var)
-	rand = math.random(1,50)
-	if rand == 1 and isPlayer(cid) == 1 then
- 	doPlayerSay(cid,"Aaaah...",16)
-	return doCombat(cid, combat, var)
-else
-	return doCombat(cid, combat, var)
-end
+function onCastSpell(creature, variant)
+    local player = creature:getPlayer()
+    if player then
+        local rand = math.random(1, 50)
+        if rand == 1 then
+            player:say("Aaaah...", TALKTYPE_MONSTER_SAY)
+        end
+    end
+    
+    return combat:execute(creature, variant)
 end

@@ -1,20 +1,19 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
-setCombatParam(combat, COMBAT_PARAM_DISPEL, CONDITION_INVISIBLE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_RED)
+combat:setParameter(COMBAT_PARAM_DISPEL, CONDITION_INVISIBLE)
 
-local arr = {
-{0, 0, 1, 1, 1, 0, 0},
-{0, 1, 1, 1, 1, 1, 0},
-{1, 1, 1, 1, 1, 1, 1},
-{1, 1, 1, 3, 1, 1, 1},
-{1, 1, 1, 1, 1, 1, 1},
-{0, 1, 1, 1, 1, 1, 0},
-{0, 0, 1, 1, 1, 0, 0}
-}
+local area = createCombatArea({
+    {0, 0, 1, 1, 1, 0, 0},
+    {0, 1, 1, 1, 1, 1, 0},
+    {1, 1, 1, 1, 1, 1, 1},
+    {1, 1, 1, 3, 1, 1, 1},
+    {1, 1, 1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 1, 1, 0},
+    {0, 0, 1, 1, 1, 0, 0}
+})
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end
