@@ -82,6 +82,21 @@
 	<!-- Item comentado (desabilitado) -->
 	<!--<action itemid="2550" script="792/Quests/Quest Tirith/Valan/Scythe.lua"/>-->
 
+		------------ Quest Bree ----------
+	<action uniqueid="5100" script="792/Quests/Quest Bree/Bramum/Experience.lua"/>
+	<action uniqueid="5200" script="792/Quests/Quest Bree/Canudis/Experience.lua"/>
+	<action uniqueid="5300" script="792/Quests/Quest Bree/Morgun/Experience.lua"/>
+	<action itemid="2718" script="792/Quests/Quest Bree/Mordor/Troll.lua"/>
+	<action itemid="7242" script="792/Quests/Quest Bree/Mordor/Life Crystal.lua"/>
+
+
+	------------ Tools ----------
+	<action itemid="38944" script="792/Outhers/Teleporte-pos.lua"/>
+	<action itemid="2148" script="other/change_gold.lua" />
+	<action itemid="2152" script="other/change_gold.lua" />
+	<action itemid="2160" script="other/change_gold.lua" />
+	<action itemid="38915" script="other/change_gold.lua" />
+
 
 	<!-- Enchanting -->
 	<action fromid="2146" toid="2147" script="other/enchanting.lua" />
@@ -101,11 +116,6 @@
 
 	<!-- Market -->
 	<action itemid="14405" function="market" />
-
-	<!-- Quests -->
-	<action itemid="1740" script="quests/quests.lua" />
-	<action fromid="1747" toid="1749" script="quests/quests.lua" />
-	<action uniqueid="30015" script="quests/annihilator.lua" />
 
 	<!-- Tools -->
 	<action itemid="2120" script="tools/rope.lua" />
@@ -139,6 +149,7 @@
 	
 
 	<!-- Food -->
+	<action itemid="1378" script="other/basin.lua" />
 	<action itemid="2362" script="other/food.lua" />
 	<action fromid="2666" toid="2691" script="other/food.lua" />
 	<action fromid="2695" toid="2696" script="other/food.lua" />
@@ -212,25 +223,30 @@
 	<action itemid="20255" script="other/construction_kits.lua" />
 	<action itemid="20257" script="other/construction_kits.lua" />
 
-	<!-- Fluids -->
-	<action itemid="1775" script="other/fluids.lua" />
-	<action fromid="2005" toid="2009" script="other/fluids.lua" />
-	<action fromid="2011" toid="2015" script="other/fluids.lua" />
-	<action itemid="2023" script="other/fluids.lua" />
-	<action fromid="2031" toid="2034" script="other/fluids.lua" />
-	<action fromid="2574" toid="2577" script="other/fluids.lua" />
-	<action itemid="5553" script="other/fluids.lua" />
-
-	<!-- Potions -->
-	<action itemid="6558" script="other/potions.lua" />
-	<action fromid="7439" toid="7440" script="other/potions.lua" />
-	<action itemid="7443" script="other/potions.lua" />
-	<action fromid="7588" toid="7591" script="other/potions.lua" />
-	<action itemid="7618" script="other/potions.lua" />
-	<action itemid="7620" script="other/potions.lua" />
-	<action fromid="8472" toid="8474" script="other/potions.lua" />
-	<action itemid="8704" script="other/potions.lua" />
-	<action fromid="26029" toid="26031" script="other/potions.lua" />
+	----------------------RP-------------------
+	<action itemid="38898" script="792/Fluids/largemana.lua"/>
+	<action itemid="6568" script="792/Fluids/largemanas.lua"/>
+	<action itemid="38943" script="792/Fluids/Blood of Gods.lua"/>
+	<action itemid="38896" script="792/Fluids/Elixir of Experience Small.lua"/>
+	<action itemid="2006" script="792/Fluids/fluids.lua"/>
+	<action itemid="2034" script="792/Fluids/fluids.lua"/>
+	<action itemid="2574" script="792/Fluids/fluids.lua"/>
+	<action itemid="2575" script="792/Fluids/fluids.lua"/>
+	<action itemid="2576" script="792/Fluids/fluids.lua"/>
+	<action itemid="2577" script="792/Fluids/fluids.lua"/>
+	<action itemid="2005" script="792/Fluids/fluids.lua"/>
+	<action itemid="2007" script="792/Fluids/fluids.lua"/>
+	<action itemid="2008" script="792/Fluids/fluids.lua"/>
+	<action itemid="2009" script="792/Fluids/fluids.lua"/>
+	<action itemid="2011" script="792/Fluids/fluids.lua"/>
+	<action itemid="2012" script="792/Fluids/fluids.lua"/>
+	<action itemid="2013" script="792/Fluids/fluids.lua"/>
+	<action itemid="2014" script="792/Fluids/fluids.lua"/>
+	<action itemid="2015" script="792/Fluids/fluids.lua"/>
+	<action itemid="2023" script="792/Fluids/fluids.lua"/>
+	<action itemid="2031" script="792/Fluids/fluids.lua"/>
+	<action itemid="2032" script="792/Fluids/fluids.lua"/>
+	<action itemid="2033" script="792/Fluids/fluids.lua"/>
 
 	<!-- Other -->
 	<action itemid="430" script="other/teleport.lua" />
@@ -247,9 +263,6 @@
 	<action itemid="2095" script="other/bird_cage.lua" />
 	<action itemid="2099" script="other/water_pipe.lua" />
 	<action itemid="2114" script="other/piggy_bank.lua" />
-	<action itemid="2148" script="other/change_gold.lua" />
-	<action itemid="2152" script="other/change_gold.lua" />
-	<action itemid="2160" script="other/change_gold.lua" />
 	<!--<action fromid="2376" toid="2404" script="other/destroy.lua" />-->
 	<!--<action fromid="2406" toid="2415" script="other/destroy.lua" />-->
 	<action fromid="2417" toid="2419" script="other/destroy.lua" />

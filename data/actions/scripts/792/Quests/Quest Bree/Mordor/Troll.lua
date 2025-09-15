@@ -1,9 +1,11 @@
-function onUse(cid, item, frompos, item2, topos)
-
-if item.actionid == 100 then
-doTeleportThing(cid,{x=997, y=1796, z=7})
-doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-doSendMagicEffect(topos,10)
-doSendMagicEffect(getPlayerPosition(cid),10)
-end
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    if item:getActionId() == 100 then
+        player:teleportTo(Position(997, 1796, 7))
+        
+        Game.sendAnimatedText("Cleck!", toPosition, TEXTCOLOR_ORANGE)
+        toPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
+        player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+    end
+    
+    return true
 end

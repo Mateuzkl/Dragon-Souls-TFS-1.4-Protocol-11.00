@@ -541,6 +541,7 @@ enum item_t : uint16_t {
 	ITEM_GOLD_COIN = 2148,
 	ITEM_PLATINUM_COIN = 2152,
 	ITEM_CRYSTAL_COIN = 2160,
+	ITEM_RUBY_COIN = 38915,
 
 	ITEM_REWARD_CONTAINER = 21518,
 	ITEM_REWARD_CHEST = 21584,
@@ -704,7 +705,7 @@ enum GameFeature {
 	GameDiagonalAnimatedText = 34,
 	GameLoginPending = 35,
 	GameNewSpeedLaw = 36,
-	GameForceFirstAutoWalkStep = 37,
+	GameForceFirstwalkintervalStep = 37,
 	GameMinimapRemove = 38,
 	GameDoubleShopSellAmount = 39,
 	GameContainerPagination = 40,

@@ -484,7 +484,7 @@ void Npc::doMoveTo(const Position& target)
 {
 	std::forward_list<Direction> listDir;
 	if (getPathTo(target, listDir, 1, 1, true, true)) {
-		startAutoWalk(listDir);
+		startwalkinterval(listDir);
 	}
 }
 

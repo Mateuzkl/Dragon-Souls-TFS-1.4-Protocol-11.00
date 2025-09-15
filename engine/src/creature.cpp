@@ -247,7 +247,7 @@ bool Creature::getNextStep(Direction& dir, uint32_t&)
 	return true;
 }
 
-void Creature::startAutoWalk(const std::forward_list<Direction>& listDir)
+void Creature::startwalkinterval(const std::forward_list<Direction>& listDir)
 {
 	listWalkDir = listDir;
 
@@ -973,7 +973,7 @@ void Creature::goToFollowCreature()
 					listWalkDir.clear();
 					if (getPathTo(followCreature->getPosition(), listWalkDir, fpp)) {
 						hasFollowPath = true;
-						startAutoWalk(listWalkDir);
+						startwalkinterval(listWalkDir);
 					} else {
 						hasFollowPath = false;
 					}
@@ -986,13 +986,13 @@ void Creature::goToFollowCreature()
 				listWalkDir.push_front(dir);
 
 				hasFollowPath = true;
-				startAutoWalk(listWalkDir);
+				startwalkinterval(listWalkDir);
 			}
 		} else {
 			listWalkDir.clear();
 			if (getPathTo(followCreature->getPosition(), listWalkDir, fpp)) {
 				hasFollowPath = true;
-				startAutoWalk(listWalkDir);
+				startwalkinterval(listWalkDir);
 			} else {
 				hasFollowPath = false;
 			}

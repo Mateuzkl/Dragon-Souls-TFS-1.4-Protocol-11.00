@@ -202,7 +202,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void onRecvFirstMessage(NetworkMessage& msg) final;
 
 		//Parse methods
-		void parseAutoWalk(NetworkMessage& msg);
+		void parsewalkinterval(NetworkMessage& msg);
 		void parseSetOutfit(NetworkMessage& msg);
 		void parseSay(NetworkMessage& msg);
 		void parseLookAt(NetworkMessage& msg);

@@ -1,23 +1,28 @@
--- Exhausted Settings --
-local exhausted_seconds = 1
-local exhausted_storagevalue = 9893
-local large_mana_fluid = 13690
--- Exhausted Settings END --
+local EXHAUSTED_SECONDS = 1
+local EXHAUSTED_STORAGE = 9893
+local LARGE_MANA_FLUID = 13690
 
-function onUse(cid, item, frompos, item2, topos)
-min = (5*getPlayerMaxMana(cid)/100 +250)
-max = (5*getPlayerMaxMana(cid)/100 +305)
-if (exhaust(cid, 1000, 1) > 0) then -------- storage = 9893
-mana = math.random(min,max)
-doPlayerAddMana(cid,mana)
-doSendAnimatedText(getPlayerPosition(cid), "Aaaahh..",TEXTCOLOR_ORANGE)
-doSendMagicEffect(getCreaturePosition(cid), 12)
-if item.type > 1 then
-doChangeTypeItem(item.uid,item.type-1)
-else
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    if os.time() < player:getStorageValue(EXHAUSTED_STORAGE) then
+        player:sendCancelMessage("VocÃª nÃ£o pode usar este objeto.")
+        return true
+    end
+    
+    local maxMana = player:getMaxMana()
+    local minMana = math.floor(5 * maxMana / 100) + 250
+    local maxManaGain = math.floor(5 * maxMana / 100) + 305
+    local manaGain = math.random(minMana, maxManaGain)
+    
+    player:addMana(manaGain)
+    Game.sendAnimatedText("Aaaahh..", player:getPosition(), TEXTCOLOR_ORANGE)
+    player:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
+    player:setStorageValue(EXHAUSTED_STORAGE, os.time() + EXHAUSTED_SECONDS)
+    
+    if item:getCount() > 1 then
+        item:remove(1)
+    else
+        item:remove()
+    end
+    
+    return true
 end
-else
- doPlayerSendCancel(cid,"Você não pode usar este objeto.")
-end
- return 1
-   end

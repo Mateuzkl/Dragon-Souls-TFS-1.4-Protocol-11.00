@@ -585,12 +585,12 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x1E: addGameTask(&Game::playerReceivePing, player->getID()); break;
 		case 0x2A: parseBestiaryTracker(msg); break;
 		case 0x32: parseExtendedOpcode(msg); break; //otclient extended opcode
-		case 0x64: parseAutoWalk(msg); break;
+		case 0x64: parsewalkinterval(msg); break;
 		case 0x65: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTH); break;
 		case 0x66: addGameTask(&Game::playerMove, player->getID(), DIRECTION_EAST); break;
 		case 0x67: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTH); break;
 		case 0x68: addGameTask(&Game::playerMove, player->getID(), DIRECTION_WEST); break;
-		case 0x69: addGameTask(&Game::playerStopAutoWalk, player->getID()); break;
+		case 0x69: addGameTask(&Game::playerStopwalkinterval, player->getID()); break;
 		case 0x6A: addGameTask(&Game::playerMove, player->getID(), DIRECTION_NORTHEAST); break;
 		case 0x6B: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTHEAST); break;
 		case 0x6C: addGameTask(&Game::playerMove, player->getID(), DIRECTION_SOUTHWEST); break;
@@ -747,7 +747,7 @@ void ProtocolGame::parseOpenPrivateChannel(NetworkMessage& msg)
 	addGameTask(&Game::playerOpenPrivateChannel, player->getID(), receiver);
 }
 
-void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
+void ProtocolGame::parsewalkinterval(NetworkMessage& msg)
 {
 	uint8_t numdirs = msg.getByte();
 	if (numdirs == 0 || (msg.getBufferPosition() + numdirs) != (msg.getLength() + 8)) {
@@ -776,7 +776,7 @@ void ProtocolGame::parseAutoWalk(NetworkMessage& msg)
 		return;
 	}
 
-	addGameTask(&Game::playerAutoWalk, player->getID(), path);
+	addGameTask(&Game::playerwalkinterval, player->getID(), path);
 }
 
 void ProtocolGame::parseSetOutfit(NetworkMessage& msg)

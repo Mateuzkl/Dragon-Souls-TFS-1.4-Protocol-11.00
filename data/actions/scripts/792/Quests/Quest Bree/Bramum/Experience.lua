@@ -1,24 +1,27 @@
-local condition = createConditionObject(CONDITION_ENERGY)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 0, 0, 0)
+local condition = Condition(CONDITION_ENERGY)
+condition:setParameter(CONDITION_PARAM_DELAYED, 1)
 
-function onUse(cid, item, frompos, item2, topos)
-
-queststatus = getPlayerStorageValue(cid,5100)
-EXP = math.random(1000000,2000000)
-PlayerLevel = getPlayerLevel(cid)
-
-if PlayerLevel > 49 then
-if queststatus == -1 then
-doPlayerAddExp(cid,EXP)
-doTargetCombatCondition(0, cid, condition, CONST_ME_MAGIC_RED)
-doPlayerSendTextMessage(cid,20,'Você recebeu ' .. EXP .. ' de experiência.')
-doSendAnimatedText(getPlayerPosition(cid),EXP, 179)
-setPlayerStorageValue(cid,5100,1)
-else
-doPlayerSendTextMessage(cid,22,"It is empty.")
-end
-else
-doPlayerSendTextMessage(cid,20,'Desculpe, você não tem nível suficiente.')
-end
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local questStatus = player:getStorageValue(5100)
+    local expGain = math.random(1000000, 2000000)
+    local playerLevel = player:getLevel()
+    
+    if playerLevel > 49 then
+        if questStatus == -1 then
+            player:addExperience(expGain)
+            player:addCondition(condition)
+            player:getPosition():sendMagicEffect(CONST_ME_MAGIC_RED)
+            
+            player:sendTextMessage(MESSAGE_STATUS_WARNING, 'Você recebeu ' .. expGain .. ' de experiência.')
+            Game.sendAnimatedText(tostring(expGain), player:getPosition(), TEXTCOLOR_WHITE)
+            
+            player:setStorageValue(5100, 1)
+        else
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "It is empty.")
+        end
+    else
+        player:sendTextMessage(MESSAGE_STATUS_WARNING, 'Desculpe, você não tem nível suficiente.')
+    end
+    
+    return true
 end

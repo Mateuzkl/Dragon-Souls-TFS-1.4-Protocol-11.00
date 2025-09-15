@@ -21913,7 +21913,7 @@
 	</item>
 <item id="38944" name="teleport" plural="teleports">
 	<attribute key="weight" value="100" />
-	<attribute key="description" value="is teleport." />
+	<attribute key="description" value="Usado para teleportar-se de uma cidade a outra."/>
 </item>
 	<item id="38943" article="a" name="blood of god's" plural="blood of god's">
 		<attribute key="description" value="Um Extreme frasco contendo o sangue dos Deuses."/>
