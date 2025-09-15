@@ -1,24 +1,37 @@
-function onUse(cid, item, frompos, item2, topos)
-piece1pos = {x=71, y=307, z=7, stackpos=1}
-rockpos = {x=71, y=307, z=7, stackpos=1}
-piece2pos = {x=70, y=307, z=7, stackpos=1}
-rockpos2 = {x=70, y=307, z=7, stackpos=1}
-
-getpiece1 = getThingfromPos(piece1pos)
-getpiece2 = getThingfromPos(piece2pos)
-
-if item.uid == 10009 and item.itemid == 1945 and getpiece1.itemid == 1544 and getpiece2.itemid == 1544 then
-doRemoveItem(getpiece1.uid,1)
-doRemoveItem(getpiece2.uid,1)
-doPlayerSendTextMessage(cid,22,"get hear on something open.")
-doTransformItem(item.uid,item.itemid+1)
-elseif item.uid == 10009 and item.itemid == 1946 then
-doCreateItem(1544,1,rockpos)
-doCreateItem(1544,1,rockpos2)
-doPlayerSendTextMessage(cid,22,"get hear on something close.")
-doTransformItem(item.uid,item.itemid-1)
-else
-doPlayerSendTextMessage(cid,22,"Sorry, not possible.")
-end
-return 1
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local piece1pos = Position(71, 307, 7)
+    local piece2pos = Position(70, 307, 7)
+    
+    if item:getUniqueId() ~= 10009 then
+        return false
+    end
+    
+    if item:getId() == 1945 then
+        local tile1 = Tile(piece1pos)
+        local tile2 = Tile(piece2pos)
+        
+        if not tile1 or not tile2 then
+            return true
+        end
+        
+        local piece1 = tile1:getItemById(1544)
+        local piece2 = tile2:getItemById(1544)
+        
+        if piece1 and piece2 then
+            piece1:remove()
+            piece2:remove()
+            item:transform(1946)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "get hear on something open.")
+        end
+        
+    elseif item:getId() == 1946 then
+        Game.createItem(1544, 1, piece1pos)
+        Game.createItem(1544, 1, piece2pos)
+        item:transform(1945)
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "get hear on something close.")
+    else
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "Sorry, not possible.")
+    end
+    
+    return true
 end

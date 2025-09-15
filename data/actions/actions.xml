@@ -1,5 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
+	<!-- 792 -->
+	<action itemid="8189" script="792/arcwand.lua"/>
+	<action itemid="4849" script="792/flour.lua"/>
+	<action itemid="2739" script="792/wheat.lua"/>
+	<action itemid="13693" script="792/elixir.lua"/>
+
+	------------ Quest Carlin ----------
+	<action uniqueid="10009" script="792/Quests/Quest Carlin/GH-Carlin.lua"/>
+
+	------------ Quest Anihi ----------
+	<action uniqueid="5006" script="792/Quests/Quest Edron/Anihi/Anihi Quest.lua"/>
+	<action uniqueid="5007" script="792/Quests/Quest Edron/Anihi/Anihi Quest.lua"/>
+	<action uniqueid="5008" script="792/Quests/Quest Edron/Anihi/Anihi Quest.lua"/>
+	<action uniqueid="5009" script="792/Quests/Quest Edron/Anihi/Anihi Quest.lua"/>
+	<action uniqueid="7000" script="792/Quests/Quest Edron/Anihi/Anihi Switch.lua"/>
+
+	------------ Quest DH Quest ----------
+	<action uniqueid="5561" script="792/Quests/Quest Edron/DH/DH Quest.lua"/>
+	<action uniqueid="6016" script="792/Quests/Quest Edron/DH/DH Quest.lua"/>
+	<action uniqueid="5005" script="792/Quests/Quest Edron/DH/DH Quest.lua"/>
+	<action uniqueid="6547" script="792/Quests/Quest Edron/DH/DH-Lever.lua"/>
+	<action uniqueid="6546" script="792/Quests/Quest Edron/DH/DH-Lever2.lua"/>
+
+	------------ Quest POI ----------
+	<action actionid="105" script="792/Quests/Quest Edron/POI/Switch POI 1.lua"/>
+	<action actionid="106" script="792/Quests/Quest Edron/POI/Switch POI 2.lua"/>
+	<action actionid="107" script="792/Quests/Quest Edron/POI/Switch POI 3.lua"/>
+	<action actionid="108" script="792/Quests/Quest Edron/POI/Switch POI 4.lua"/>
+	<action actionid="109" script="792/Quests/Quest Edron/POI/Switch POI 5.lua"/>
+	<action actionid="110" script="792/Quests/Quest Edron/POI/Switch POI 6.lua"/>
+	<action actionid="111" script="792/Quests/Quest Edron/POI/Switch POI 7.lua"/>
+	<action actionid="112" script="792/Quests/Quest Edron/POI/Switch POI 8.lua"/>
+	<action actionid="113" script="792/Quests/Quest Edron/POI/Switch POI 9.lua"/>
+	<action uniqueid="5803" script="792/Quests/Quest Edron/POI/Quest POI.lua"/>
+	<action uniqueid="5903" script="792/Quests/Quest Edron/POI/Quest POI.lua"/>
+	<action uniqueid="6528" script="792/Quests/Quest Edron/POI/Quest POI.lua"/>
+
+
+	------------ Quest VALAN ----------
+	<!-- 1º - Primeiro acesso à quest -->
+	<action uniqueid="60023" script="792/Quests/Quest Tirith/Valan/Open Room.lua"/>
+
+	<!-- 2º - Life Crystal -->
+	<action itemid="4851" script="792/Quests/Quest Tirith/Valan/Life Crystal.lua"/>
+
+	<!-- 3º - Saída do templo -->
+	<action itemid="1729" script="792/Quests/Quest Tirith/Valan/Pendulum Clock.lua"/>
+
+	<!-- Teleport Stone -->
+	<action itemid="1359" script="792/telepstone.lua"/>
+
+	<!-- Ferramentas e itens de quebra -->
+	<action itemid="4874" script="792/Quests/Quest Tirith/Valan/Pick Valan.lua"/>
+	<action itemid="2091" script="792/Quests/Quest Tirith/Valan/war_hammer.lua"/>
+	<action itemid="2391" script="792/Quests/Quest Tirith/Valan/war_hammer2.lua"/>
+	<action itemid="2447" script="792/Quests/Quest Tirith/Valan/twin_axe.lua"/>
+
+	<!-- Itens de luz -->
+	<action itemid="2064" script="792/Quests/Quest Tirith/Valan/table_lamp.lua"/>
+	<action itemid="2065" script="792/Quests/Quest Tirith/Valan/table_lamp.lua"/>
+
+	<!-- Chaves e cristais -->
+	<action uniqueid="7573" script="792/Quests/Quest Tirith/Valan/crystal_key.lua"/>
+	<action actionid="4506" script="792/Quests/Quest Tirith/Valan/golden_key.lua"/>
+	<action itemid="2090" script="792/Quests/Quest Tirith/Valan/door_crystal.lua"/>
+
+	<!-- Quest principais -->
+	<action itemid="2071" script="792/Quests/Quest Tirith/Valan/Lyre Guardian.lua"/>
+	<action itemid="2412" script="792/Quests/Quest Tirith/Valan/Katana_Valan.lua"/>
+
+	<!-- Spirit Of Valan -->
+	<action itemid="2361" script="792/Quests/Quest Tirith/Valan/Spirit Of Valan.lua"/>
+	<action uniqueid="2361" script="792/Quests/Quest Tirith/Valan/Spirit Of Valan Quest.lua"/>
+
+	<!-- Sistemas especiais -->
+	<action uniqueid="32233" script="792/Valan/Leve.lua"/>
+	<action uniqueid="6036" script="792/Quests/Quest Tirith/Valan/Colors Tomes.lua"/>
+	<action uniqueid="6037" script="792/Quests/Quest Tirith/Valan/Corpes Valan.lua"/>
+
+	<!-- Item comentado (desabilitado) -->
+	<!--<action itemid="2550" script="792/Quests/Quest Tirith/Valan/Scythe.lua"/>-->
+
+
 	<!-- Enchanting -->
 	<action fromid="2146" toid="2147" script="other/enchanting.lua" />
 	<action fromid="2149" toid="2150" script="other/enchanting.lua" />
@@ -15,10 +98,6 @@
 	<!-- Daily Reward System -->
 	<action fromid="29021" toid="29024" script="other/dailyRewardShrine.lua"/>
 	<action fromid="29089" toid="29090" script="other/dailyRewardShrine.lua"/>
-
-
-    <!-- Exercise Training System -->
-
 
 	<!-- Market -->
 	<action itemid="14405" function="market" />
@@ -57,6 +136,7 @@
 	<action itemid="11401" script="other/decayto.lua" />
 	<action fromid="25545" toid="25546" script="other/decayto.lua" />
 	<action fromid="26098" toid="26099" script="other/decayto.lua" />
+	
 
 	<!-- Food -->
 	<action itemid="2362" script="other/food.lua" />
@@ -100,7 +180,7 @@
 	<action itemid="26201" script="other/food.lua" />
 
 	<!-- Music -->
-	<action fromid="2070" toid="2085" script="other/music.lua" />
+		<!--<action fromid="2070" toid="2085" script="other/music.lua" />-->
 	<action itemid="2332" script="other/music.lua" />
 	<action itemid="2364" script="other/music.lua" />
 	<action fromid="2367" toid="2373" script="other/music.lua" />
@@ -170,11 +250,11 @@
 	<action itemid="2148" script="other/change_gold.lua" />
 	<action itemid="2152" script="other/change_gold.lua" />
 	<action itemid="2160" script="other/change_gold.lua" />
-	<action fromid="2376" toid="2404" script="other/destroy.lua" />
-	<action fromid="2406" toid="2415" script="other/destroy.lua" />
+	<!--<action fromid="2376" toid="2404" script="other/destroy.lua" />-->
+	<!--<action fromid="2406" toid="2415" script="other/destroy.lua" />-->
 	<action fromid="2417" toid="2419" script="other/destroy.lua" />
 	<action fromid="2421" toid="2441" script="other/destroy.lua" />
-	<action fromid="2443" toid="2453" script="other/destroy.lua" />
+	<!--<action fromid="2443" toid="2453" script="other/destroy.lua" />-->
 	<action itemid="2579" script="other/trap.lua" />
 	<action itemid="2692" script="other/create_bread.lua" />
 	<action itemid="2694" script="other/create_bread.lua" />

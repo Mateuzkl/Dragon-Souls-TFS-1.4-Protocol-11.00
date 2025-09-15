@@ -1,19 +1,32 @@
-function onUse(cid, item, frompos, item2, topos)
-piece1pos = {x=645, y=639, z=11, stackpos=1}
-rockpos = {x=645, y=639, z=11, stackpos=1}
-rockpos2 = {x=689, y=622, z=12, stackpos=1}
-getpiece1 = getThingfromPos(piece1pos)
-
-if item.actionid == 112 and item.itemid == 1945 and getpiece1.itemid == 1354 then
-doRemoveItem(getpiece1.uid,1)
-doSendMagicEffect(getPlayerPosition(cid),13)
-doPlayerSendTextMessage(cid,22,"get hear on something open.")
-doTransformItem(item.uid,item.itemid+1)
-elseif item.actionid == 112 and item.itemid == 1946 then
-doPlayerSendTextMessage(cid,22,"get hear on something open.")
-doTransformItem(item.uid,item.itemid-0)
-else
-doPlayerSendTextMessage(cid,22,"Sorry, not possible.")
-end
-return 1
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local piece1pos = Position(645, 639, 11)
+    local rockpos = Position(645, 639, 11)
+    local rockpos2 = Position(689, 622, 12)
+    
+    local piece1 = Tile(piece1pos):getTopVisibleThing(player)
+    
+    if item:getActionId() == 112 and item:getId() == 1945 and piece1 and piece1:getId() == 1354 then
+        piece1:remove(1)
+        
+        player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You hear something open.")
+        item:transform(item:getId() + 1)
+        
+        addEvent(function()
+            local currentItem = Tile(item:getPosition()):getItemById(1946)
+            if currentItem then
+                currentItem:transform(1945)
+                currentItem:getPosition():sendMagicEffect(CONST_ME_POFF)
+            end
+        end, 1800000)
+        
+    elseif item:getActionId() == 112 and item:getId() == 1946 then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "You hear something close.")
+        item:transform(1945)
+        
+    else
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Sorry, not possible.")
+    end
+    
+    return true
 end

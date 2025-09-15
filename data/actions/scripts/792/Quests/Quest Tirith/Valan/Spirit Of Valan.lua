@@ -1,40 +1,35 @@
-local condition = createConditionObject(CONDITION_ENERGY)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 0, 0, 0)
+local condition = Condition(CONDITION_ENERGY)
+condition:setParameter(CONDITION_PARAM_DELAYED, 1)
 
-function onUse(cid, item, frompos, item2, topos)
-
-Voc = getPlayerVocation(cid)
-PlayerLevel = getPlayerLevel(cid)
-
-if PlayerLevel == 8 and Voc == 1 then
-doPlayerSetVocation(cid, 9)
-doPlayerSendTextMessage(cid,22,"A força dos Semi-Deuses agora acompanham o nobre Wyzard.")
-doPlayerSendTextMessage(cid,24,"Parabéns, agora você é um valan player")
-doTargetCombatCondition(0, cid, condition, CONST_ME_MAGIC_BLUE)
-doRemoveItem(item.uid,1)
-
-elseif PlayerLevel == 8 and Voc == 2 then
-doPlayerSetVocation(cid, 10)
-doPlayerSendTextMessage(cid,22,"A força dos Semi-Deuses agora acompanham o nobre Cleric.")
-doPlayerSendTextMessage(cid,24,"Parabéns, agora você é um valan player")
-doTargetCombatCondition(0, cid, condition, CONST_ME_MAGIC_BLUE)
-doRemoveItem(item.uid,1)
-
-elseif PlayerLevel == 8 and Voc == 3 then
-doPlayerSetVocation(cid, 11)
-doPlayerSendTextMessage(cid,22,"A força dos Semi-Deuses agora acompanham o nobre Ranger.")
-doPlayerSendTextMessage(cid,24,"Parabéns, agora você é um valan player")
-doTargetCombatCondition(0, cid, condition, CONST_ME_MAGIC_BLUE)
-doRemoveItem(item.uid,1)
-
-elseif PlayerLevel == 8 and Voc == 4 then
-doPlayerSetVocation(cid, 12)
-doPlayerSendTextMessage(cid,22,"A força dos Semi-Deuses agora acompanham o nobre Slayer.")
-doPlayerSendTextMessage(cid,24,"Parabéns, agora você é um valan player")
-doTargetCombatCondition(0, cid, condition, CONST_ME_MAGIC_BLUE)
-doRemoveItem(item.uid,1)
-else
-doPlayerSendTextMessage(cid,22,"Desculpe, você não tem vocação necessária ou nível suficiente.")
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local vocation = player:getVocation():getId()
+    local playerLevel = player:getLevel()
+    
+    if playerLevel == 8 then
+        local promotionMap = {
+            [1] = {vocation = 9, name = "Wyzard"},
+            [2] = {vocation = 10, name = "Cleric"},
+            [3] = {vocation = 11, name = "Ranger"},
+            [4] = {vocation = 12, name = "Slayer"}
+        }
+        
+        local promotion = promotionMap[vocation]
+        if promotion then
+            player:setVocation(Vocation(promotion.vocation))
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "A força dos Semi-Deuses agora acompanham o nobre " .. promotion.name .. ".")
+            player:sendTextMessage(MESSAGE_STATUS_WARNING, "Parabéns, agora você é um valan player")
+            
+            player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+            player:addCondition(condition)
+            
+            item:remove()
+        else
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Desculpe, você não tem vocação necessária ou nível suficiente.")
+        end
+    else
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Desculpe, você não tem vocação necessária ou nível suficiente.")
+    end
+    
+    return true
 end
-end
+

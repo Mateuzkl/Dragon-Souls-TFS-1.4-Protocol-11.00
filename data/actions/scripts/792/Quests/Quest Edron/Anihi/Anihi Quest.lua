@@ -1,57 +1,42 @@
-function onUse(cid, item, frompos, item2, topos)
-
-   	if item.uid == 5008 then
-   		queststatus = getPlayerStorageValue(cid,5008)
-   		if queststatus == -1 then
-   			doPlayerSendTextMessage(cid,22,"You have found Stonecutter Axe.")
-			doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-			doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-			doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-   			setPlayerStorageValue(cid,5008,1)
-   		else
-   			doPlayerSendTextMessage(cid,22,"It is empty.")
-   		end
-   	elseif item.uid == 5007 then
-   		queststatus = getPlayerStorageValue(cid,5007)
-   		if queststatus == -1 then
-   			doPlayerSendTextMessage(cid,22,"You have found Sword of Valor.")
-   			doPlayerAddItem(cid,2400,1)
-			doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-			doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-			doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-   			setPlayerStorageValue(cid,5007,1)
-   		else
-   			doPlayerSendTextMessage(cid,22,"It is empty.")
-   		end
-   	elseif item.uid == 5006 then
-   		queststatus = getPlayerStorageValue(cid,5006)
-   		if queststatus == -1 then
-   			doPlayerSendTextMessage(cid,22,"You have found Poem Scroll.")
-   			doPlayerAddItem(cid,5952,1)
-			doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-			doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-			doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-   			setPlayerStorageValue(cid,5006,1)
-   		else
-   			doPlayerSendTextMessage(cid,22,"It is empty.")
-   		end
-   	elseif item.uid == 5009 then
-   		queststatus = getPlayerStorageValue(cid,5009)
-   		if queststatus == -1 then
-   			doPlayerSendTextMessage(cid,22,"You have found a Present.")
-			container = doPlayerAddItem(cid, 1990, 1)
-			doAddContainerItem(container, 2421, 1)
-			doAddContainerItem(container, 2160, 30)
-			doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-			doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-			doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-   			setPlayerStorageValue(cid,5009,1)
-   		else
-   			doPlayerSendTextMessage(cid,22,"It is empty.")
-   		end
-	else
-		return 0
-   	end
-
-   	return 1
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local questItems = {
+        [5008] = {item = 2431, name = "Stonecutter Axe"},
+        [5007] = {item = 2400, name = "Sword of Valor"},
+        [5006] = {item = 5952, name = "Poem Scroll"},
+        [5009] = {container = 1990, items = {{2421, 1}, {2160, 30}}, name = "a Present"}
+    }
+    
+    local itemData = questItems[item:getUniqueId()]
+    if not itemData then
+        return false
+    end
+    
+    local generalQuestStatus = player:getStorageValue(5000) 
+    if generalQuestStatus ~= -1 then
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "It is empty.")
+        return true
+    end
+    
+    if itemData.container then
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found " .. itemData.name .. ".")
+        local container = player:addItem(itemData.container, 1)
+        if container then
+            for i = 1, #itemData.items do
+                container:addItem(itemData.items[i][1], itemData.items[i][2])
+            end
+        end
+    else
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "You have found " .. itemData.name .. ".")
+        player:addItem(itemData.item, 1)
+    end
+    
+    fromPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
+    player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+    
+    Game.sendAnimatedText("Cleck!", fromPosition, TEXTCOLOR_ORANGE)
+    
+    player:setStorageValue(5000, 1)
+    player:setStorageValue(item:getUniqueId(), 1)
+    
+    return true
 end

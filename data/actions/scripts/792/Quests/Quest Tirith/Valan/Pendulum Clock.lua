@@ -1,7 +1,8 @@
-function onUse(cid, item, frompos, item2, topos)
-
-if item.actionid == 333 then
-doTeleportThing(cid,{x=121, y=311, z=7})
-doSendMagicEffect(getPlayerPosition(cid),50)
-end
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    if item:getActionId() == 333 then
+        player:teleportTo(Position(121, 311, 7))
+        player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
+    end
+    
+    return true
 end

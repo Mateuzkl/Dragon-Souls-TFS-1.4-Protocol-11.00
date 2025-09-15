@@ -1,12 +1,12 @@
-function onUse(cid, item, frompos, item2, topos)
-	if item2.itemid >= 1381 and item2.itemid <= 1384 then
-		if item.type <= 1 then
-			doTransformItem(item.uid, 2692)
-		else
-			doPlayerSendCancel(cid, "Only one by one.")
-		end
-	else 
-		return 0
-	end
-	return 1
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    if target.itemid >= 1381 and target.itemid <= 1384 then
+        if item.type <= 1 then
+            item:transform(2692)
+        else
+            player:sendCancelMessage("Only one by one.")
+        end
+    else 
+        return false
+    end
+    return true
 end

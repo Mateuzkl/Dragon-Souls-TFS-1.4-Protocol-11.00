@@ -1,63 +1,38 @@
-function onUse(cid, item, frompos, item2, topos)
-
-voc = getPlayerVocation(cid)
-queststatus = getPlayerStorageValue(cid,2361)
-
-if voc == 5 then
-if queststatus == -1 then
-doPlayerSendTextMessage(cid,22,"Você recebeu o Espirito de um Valan.")
-local item1 = doPlayerAddItem(cid,2361,1)
-doSetItemSpecialDescription(item1, "Esse item é uma recordação com a vocação Wyzard\'s." .. getPlayerName(cid) .. "  Obrigado pela Valan Quest.")
-doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_LIGHTGREEN)
-doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-doShowTextDialog(cid,2180,"Parabéns ao ter chegado aqui, agora crie um novo jogador e esse spirit of valan no seu novo char level 8 ele ira ser seu novo valan.")
-setPlayerStorageValue(cid,2361,1)
-else
-doPlayerSendTextMessage(cid,22,"Está vazio, você já completou essa missão.")
-end
-elseif voc == 6 then
-if queststatus == -1 then
-doPlayerSendTextMessage(cid,22,"Você recebeu o Espirito de um Valan.")
-local item1 = doPlayerAddItem(cid,2361,1)
-doSetItemSpecialDescription(item1, "Esse item é uma recordação com a vocação Cleric\'s." .. getPlayerName(cid) .. "  Obrigado pela Valan Quest.")
-doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_LIGHTGREEN)
-doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-doShowTextDialog(cid,2180,"Parabéns ao ter chegado aqui, agora crie um novo jogador e esse spirit of valan no seu novo char level 8 ele ira ser seu novo valan.")
-setPlayerStorageValue(cid,2361,1)
-else
-doPlayerSendTextMessage(cid,22,"Está vazio, você já completou essa missão.")
-end
-elseif voc == 7 then
-if queststatus == -1 then
-doPlayerSendTextMessage(cid,22,"Você recebeu o Espirito de um Valan.")
-local item1 = doPlayerAddItem(cid,2361,1)
-doSetItemSpecialDescription(item1, "Esse item é uma recordação com a vocação Ranger\'s." .. getPlayerName(cid) .. "  Obrigado pela Valan Quest.")
-doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_LIGHTGREEN)
-doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-doShowTextDialog(cid,2180,"Parabéns ao ter chegado aqui, agora crie um novo jogador e esse spirit of valan no seu novo char level 8 ele ira ser seu novo valan.")
-setPlayerStorageValue(cid,2361,1)
-else
-doPlayerSendTextMessage(cid,22,"Está vazio, você já completou essa missão.")
-end
-elseif voc == 8 then
-if queststatus == -1 then
-doPlayerSendTextMessage(cid,22,"Você recebeu o Espirito de um Valan.")
-local item1 = doPlayerAddItem(cid,2361,1)
-doSetItemSpecialDescription(item1, "Esse item é uma recordação com a vocação Slayer\'s." .. getPlayerName(cid) .. "  Obrigado pela Valan Quest.")
-doSendMagicEffect(topos,CONST_ME_MAGIC_BLUE)
-doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_LIGHTGREEN)
-doSendMagicEffect(getPlayerPosition(cid),CONST_ME_MAGIC_BLUE)
-doShowTextDialog(cid,2180,"Parabéns ao ter chegado aqui, agora crie um novo jogador e esse spirit of valan no seu novo char level 8 ele ira ser seu novo valan.")
-setPlayerStorageValue(cid,2361,1)
-else
-doPlayerSendTextMessage(cid,22,"Está vazio, você já completou essa missão.")
-end
-else
-doPlayerSendTextMessage(cid,22,"Desculpe, mas você não tem vocação necessária.")
-return 0
-end
-return 1
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local vocation = player:getVocation():getId()
+    local questStatus = player:getStorageValue(2361)
+    
+    local vocationMap = {
+        [5] = "Wyzard's",
+        [6] = "Cleric's", 
+        [7] = "Ranger's",
+        [8] = "Slayer's"
+    }
+    
+    local vocationName = vocationMap[vocation]
+    
+    if vocationName then
+        if questStatus == -1 then
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "VocÃª recebeu o EspÃ­rito de um Valan.")
+            
+            local rewardItem = player:addItem(2361, 1)
+            if rewardItem then
+                rewardItem:setAttribute("description", "Esse item Ã© uma recordaÃ§Ã£o com a vocaÃ§Ã£o " .. vocationName .. " " .. player:getName() .. " Obrigado pela Valan Quest.")
+            end
+            
+            toPosition:sendMagicEffect(CONST_ME_MAGIC_BLUE)
+            Game.sendAnimatedText("Cleck!", toPosition, TEXTCOLOR_LIGHTGREEN)
+            player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+            
+            player:showTextDialog(2180, "ParabÃ©ns ao ter chegado aqui, agora crie um novo jogador e esse spirit of valan no seu novo char level 8 ele irÃ¡ ser seu novo valan.")
+            
+            player:setStorageValue(2361, 1)
+        else
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Desculpe, vocÃª jÃ¡ pegou este item. SÃ³ pode pegar uma vez por jogador.")
+        end
+    else
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Desculpe, mas vocÃª nÃ£o tem vocaÃ§Ã£o necessÃ¡ria.")
+    end
+    
+    return true
 end

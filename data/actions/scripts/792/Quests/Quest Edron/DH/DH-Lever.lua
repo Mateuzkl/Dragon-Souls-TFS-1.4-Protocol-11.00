@@ -1,19 +1,19 @@
-function onUse(cid, item, frompos, item2, topos)
-piece1pos = {x=762, y=689, z=13, stackpos=1}
-rockpos = {x=762, y=689, z=13, stackpos=1}
-rockpos2 = {x=743, y=682, z=13, stackpos=1}
-getpiece1 = getThingfromPos(piece1pos)
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local piece1pos = Position(762, 689, 13)
+    local rockpos = Position(762, 689, 13)
+    local rockpos2 = Position(743, 682, 13)
+    local getpiece1 = Tile(piece1pos):getItemById(1354)
 
-if item.uid == 6547 and item.itemid == 1945 and getpiece1.itemid == 1354 then
-doRemoveItem(getpiece1.uid,1)
-doPlayerSendTextMessage(cid,22,"get hear on something open.")
-doTransformItem(item.uid,item.itemid+1)
-elseif item.uid == 6547 and item.itemid == 1946 then
-doPlayerSendTextMessage(cid,22,"get hear on something close.")
-doCreateItem(1354,1,rockpos)
-doTransformItem(item.uid,item.itemid-1)
-else
-doPlayerSendTextMessage(cid,22,"Sorry, not possible.")
-end
-return 1
+    if item:getUniqueId() == 6547 and item:getId() == 1945 and getpiece1 then
+        getpiece1:remove()
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "get hear on something open.")
+        item:transform(item:getId() + 1)
+    elseif item:getUniqueId() == 6547 and item:getId() == 1946 then
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "get hear on something close.")
+        Game.createItem(1354, 1, rockpos)
+        item:transform(item:getId() - 1)
+    else
+        player:sendTextMessage(MESSAGE_INFO_DESCR, "Sorry, not possible.")
+    end
+    return true
 end
