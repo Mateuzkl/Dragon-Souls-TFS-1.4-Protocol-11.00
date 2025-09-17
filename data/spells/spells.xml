@@ -34,17 +34,6 @@
 <rune name="Magic Prison" id="2272" charges="1" lvl="10" maglv="20" mana="0" soul="0" exhaustion="1" prem="0" enabled="1" allowfaruse="1" script="attack/magic prison.lua"></rune>
 
 <rune name="Polymorph" id="2270" charges="1" lvl="10" maglv="20" mana="0" soul="0" exhaustion="1" prem="0" enabled="1" allowfaruse="1" script="attack/polymorph.lua"></rune>
-
-<rune name="Extreme Ultimate Healing" id="2275" allowfaruse="1" charges="10" lvl="200" maglv="4" exhaustion="1" aggressive="0" needtarget="1" blocktype="solid" script="healing/Extreme Ultimate Healing.lua">
-		<vocation name="Wyzard" showInDescription="0"/>
-		<vocation name="Dark Wyzard" showInDescription="0"/>
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-		<vocation name="Slayer"/>
-	    <vocation name="Dragon Slayer" showInDescription="0"/>
-</rune>	
 	
 <rune name="Extreme Explosion" id="2314" allowfaruse="1" charges="6" lvl="150" maglv="10" exhaustion="800" blocktype="solid" script="attack/extreme explosion.lua">
 		<vocation name="Wyzard" showInDescription="0"/>
@@ -195,7 +184,7 @@
 	</instant>
 											<!-- Cleric -->
 											
-<instant name="Cancelcondition" words="exana vita" aggressive="0" params="1" needtarget="1" lvl="30" maglv="30" mana="250" soul="0" exhaustion="1" prem="1" enabled="1"script="support/exana vita.lua">
+<instant name="Cancelcondition" words="exana vita" aggressive="0" params="1" needtarget="1" lvl="30" maglv="30" mana="250" soul="0" exhaustion="1" prem="1" enabled="1" script="support/exana vita.lua">
 		<vocation name="Cleric"/><vocation name="Elemental Cleric"/>
 </instant>
 
@@ -421,9 +410,6 @@
 <!-- Summon Runes -->
 
 <rune group="support" spellid="12" name="Convince Creature Rune" id="2290" allowfaruse="1" charges="1" level="16" magiclevel="5" cooldown="2000" groupcooldown="2000" needtarget="1" blocktype="solid" script="support/convince_creature.lua" />
-
-
-<rune name="Animate Dead" id="2316" allowfaruse="1" charges="1" lvl="27" maglv="4" exhaustion="1" blocktype="solid" script="summon/animate dead rune.lua"/>
 
 <!-- Support Runes -->
 <rune name="Desintegrate" id="2310" allowfaruse="0" charges="3" lvl="21" maglv="4" exhaustion="1" range="1" script="support/desintegrate rune.lua"/>
@@ -904,24 +890,14 @@
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
-
-
-<instant  name="Extreme Ultimate Healing" words="adura vita dark" lvl="200" manapercent="50" soul="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/Extreme Ultimate Healing.lua">
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
-
-
-
-
+</instant>
 
 <instant group="support" name="Convince Creature Rune" words="adeta sio" level="16" mana="200" soul="3" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/convince_creature_rune.lua">
 		<vocation name="Druid" />
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
+</instant>
 	
 	
 <instant group="support" name="Animate Dead Rune" words="adana mort" level="27" mana="600" soul="5" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/animate_dead_rune.lua">
@@ -933,7 +909,7 @@
 		<vocation name="Dark Wyzard" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
+</instant>
 	
 	
 <instant group="support" name="Chameleon Rune" words="adevo ina" level="27" mana="600" soul="2" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/chameleon_rune.lua">
@@ -941,7 +917,7 @@
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
+</instant>
 
 
 <instant group="support" name="Destroy Field Rune" words="adito grav" level="17" mana="120" soul="2" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/destroy_field_rune.lua">
@@ -957,9 +933,7 @@
 		<vocation name="Royal Archer"/>
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
-	</instant>
-
-
+</instant>
 
 <instant group="support" name="Disintegrate Rune" words="adito tera" level="21" mana="200" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/disintegrate_rune.lua">
 		<vocation name="Sorcerer" />
@@ -974,23 +948,22 @@
 		<vocation name="Royal Archer"/>
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
-	</instant>
-	
+</instant>
 	
 <instant group="support" name="Magic Wall Rune" words="adevo grav tera" level="32" mana="750" soul="5" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/magic_wall_rune.lua">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Wyzard" showInDescription="0"/>
 		<vocation name="Dark Wyzard" showInDescription="0"/>
-	</instant>
+</instant>
 	
-	
+
 <instant group="support" name="Paralyze Rune" words="adana ani" level="54" mana="1400" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/paralyze_rune.lua">
 		<vocation name="Druid" />
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
+</instant>
 	
 	
 	
@@ -999,43 +972,38 @@
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
+</instant>
 	
 	
 	
-	<instant group="support" name="Avalanche Rune" words="adori mas frigo" level="30" mana="530" soul="3" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/avalanche_rune.lua">
+<instant group="support" name="Avalanche Rune" words="adori mas frigo" level="30" mana="530" soul="3" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/avalanche_rune.lua">
 		<vocation name="Druid" />
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
+</instant>
 
-
-	<instant group="support" name="Stone Shower Rune" words="adori mas tera" level="28" mana="430" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/stone_shower_rune.lua">
+<instant group="support" name="Stone Shower Rune" words="adori mas tera" level="28" mana="430" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/stone_shower_rune.lua">
 	<vocation name="Druid" />
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
-	</instant>
+</instant>
 	
-	
-	<instant group="support" name="Thunderstorm Rune" words="adori mas vis" level="28" mana="430" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/thunderstorm_rune.lua">
+
+<instant group="support" name="Thunderstorm Rune" words="adori mas vis" level="28" mana="430" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/thunderstorm_rune.lua">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Wyzard" showInDescription="0"/>
 		<vocation name="Dark Wyzard" showInDescription="0"/>
-	</instant>
+</instant>
 
-
-	<instant group="support" name="Holy Missile Rune" words="adori san" level="27" mana="300" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/holy_missile_rune.lua">
+<instant group="support" name="Holy Missile Rune" words="adori san" level="27" mana="300" soul="3" premium="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/holy_missile_rune.lua">
 		<vocation name="Archer"/>
 		<vocation name="Royal Archer"/>
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
-	</instant>
-
-
-
+</instant>
 
 <instant group="support" name="Blank Rune" words="adori blank" level="20" mana="50" soul="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/blank_rune.lua">
 			<vocation name="Sorcerer" />
@@ -1050,9 +1018,9 @@
 		<vocation name="Royal Archer"/>
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
-	</instant>
+</instant>
 	
-	
+
 <!-- Conjure Spells DEC -->
 <instant group="support" name="Extreme Explosion dec" words="adevo mas hur dark dec" lvl="200" maglv="80" manapercent="50" soul="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Extreme Explosion dec.lua">
 		<vocation name="Wyzard" showInDescription="0"/>

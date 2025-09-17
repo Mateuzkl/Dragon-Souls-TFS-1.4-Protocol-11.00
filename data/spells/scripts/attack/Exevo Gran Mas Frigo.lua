@@ -68,7 +68,7 @@ function onTargetCreature(creature, target)
     end
     
     local rand = math.random(1, 5)
-    Game.sendAnimatedText("Frozen!", target:getPosition(), TEXTCOLOR_TEAL)
+    Game.sendAnimatedText("Frozen!", target:getPosition(), 143)
     
     if target:isPlayer() then
         if rand == 5 or rand == 4 then
@@ -82,7 +82,6 @@ function onTargetCreature(creature, target)
     end
 end
 
--- APENAS UM CALLBACK para evitar warnings
 combat1:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
 function onCastSpell(creature, variant)

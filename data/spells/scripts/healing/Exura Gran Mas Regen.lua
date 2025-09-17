@@ -40,7 +40,7 @@ combat2:setArea(area)
 
 function onTargetCreature(creature, target)
     local rand = math.random(1, 5)
-    Game.sendAnimatedText("Regen!", target:getPosition(), TEXTCOLOR_TEAL)
+    Game.sendAnimatedText("Regen!", target:getPosition(), 143)
     
     if rand == 4 then
         target:getPosition():sendMagicEffect(24)

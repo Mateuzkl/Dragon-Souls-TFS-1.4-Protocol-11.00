@@ -1308,7 +1308,16 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 {
 	pugi::xml_attribute attr;
 	if ((attr = node.attribute("id"))) {
-		lootBlock.id = pugi::cast<int32_t>(attr.value());
+		int32_t id = pugi::cast<int32_t>(attr.value());
+		const ItemType& it = Item::items.getItemType(id);
+
+		if (it.name.empty()) {
+			std::cout << "[Warning - Monsters::loadMonster] Unknown loot item id \"" << id << "\". " << std::endl;
+			return false;
+		}
+
+		lootBlock.id = id;
+
 	} else if ((attr = node.attribute("name"))) {
 		auto name = attr.as_string();
 		auto ids = Item::items.nameToItems.equal_range(asLowerCaseString(name));
@@ -1333,13 +1342,18 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 	}
 
 	if ((attr = node.attribute("countmax"))) {
-		lootBlock.countmax = std::max<int32_t>(1, pugi::cast<int32_t>(attr.value()));
+		int32_t lootCountMax = pugi::cast<int32_t>(attr.value());
+		lootBlock.countmax = std::max<int32_t>(1, lootCountMax);
 	} else {
 		lootBlock.countmax = 1;
 	}
 
 	if ((attr = node.attribute("chance")) || (attr = node.attribute("chance1"))) {
-		lootBlock.chance = std::min<int32_t>(MAX_LOOTCHANCE, pugi::cast<int32_t>(attr.value()));
+		int32_t lootChance = pugi::cast<int32_t>(attr.value());
+		if (lootChance > static_cast<int32_t>(MAX_LOOTCHANCE)) {
+			std::cout << "[Warning - Monsters::loadMonster] Invalid \"chance\" "<< lootChance <<" used for loot, the max is " << MAX_LOOTCHANCE << ". " << std::endl;
+		}
+		lootBlock.chance = std::min<int32_t>(MAX_LOOTCHANCE, lootChance);
 	} else {
 		lootBlock.chance = MAX_LOOTCHANCE;
 	}
@@ -1409,7 +1423,9 @@ bool Monsters::loadLootItem(const pugi::xml_node& node, LootBlock& lootBlock)
 
 void Monsters::loadLootContainer(const pugi::xml_node& node, LootBlock& lBlock)
 {
-	for (auto subNode : node.children()) {
+	// NOTE: <inside> attribute was left for backwards compatibility with pre 1.x TFS versions.
+	// Please don't use it, if you don't have to.
+	for (auto subNode : node.child("inside") ? node.child("inside").children() : node.children()) {
 		LootBlock lootBlock;
 		if (loadLootItem(subNode, lootBlock)) {
 			lBlock.childLoot.emplace_back(std::move(lootBlock));

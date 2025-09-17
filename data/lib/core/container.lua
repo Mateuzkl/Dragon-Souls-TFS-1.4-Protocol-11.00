@@ -19,21 +19,25 @@ function Container.createLootItem(self, item, percent, raid)
 
 	local itemCount = 0
 	local randvalue = getLootRandom()
+	local itemType = ItemType(item.itemId)
+	
 	if randvalue < item.chance * percent then
-		if ItemType(item.itemId):isStackable() then
+		if itemType:isStackable() then
 			itemCount = randvalue % item.maxCount + 1
 		else
 			itemCount = 1
 		end
 	end
 
-	local tmpItem = false
-	if itemCount > 0 then
-		if item.raid and not raid then
-			return false
+	while itemCount > 0 do
+		local count = math.min(100, itemCount)
+		
+		local subType = count
+		if itemType:isFluidContainer() then
+			subType = math.max(0, item.subType)
 		end
-
-		tmpItem = self:addItem(item.itemId, math.min(itemCount, 100))
+		
+		local tmpItem = Game.createItem(item.itemId, subType)
 		if not tmpItem then
 			return false
 		end
@@ -44,6 +48,11 @@ function Container.createLootItem(self, item, percent, raid)
 					tmpItem:remove()
 					return false
 				end
+			end
+
+			if #item.childLoot > 0 and tmpItem:getSize() == 0 then
+				tmpItem:remove()
+				return true
 			end
 		end
 
@@ -59,9 +68,14 @@ function Container.createLootItem(self, item, percent, raid)
 			tmpItem:setText(item.text)
 		end
 
-	end
+		local ret = self:addItemEx(tmpItem)
+		if ret ~= RETURNVALUE_NOERROR then
+			tmpItem:remove()
+		end
 
-	return tmpItem
+		itemCount = itemCount - count
+	end
+	return true
 end
 
 function Container.getLootDescription(self, monsterName, version, bonusPrey, hasCharm)
