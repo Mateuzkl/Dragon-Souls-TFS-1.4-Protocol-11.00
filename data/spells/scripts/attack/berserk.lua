@@ -43,17 +43,17 @@ function onCastSpell(creature, variant)
         combat2 = combat2 
     }
     
-    if player:getStorageValue(7001) == 1 then
-        creature:getPosition():sendAnimatedText("Combo!", 215)
+    local comboChance = math.random(1, 4)
+    if comboChance == 1 then
+        Game.sendAnimatedText("Combo!", creature:getPosition(), 215)
         player:say('Fúria!', TALKTYPE_MONSTER_SAY)
-        
-        player:setStorageValue(7001, 0)
         
         addEvent(combo, 800, parameters)
         addEvent(combo, 1200, parameters)
         addEvent(combo, 1600, parameters)
         
-        if player:getStorageValue(7000) > 900 then
+        local extendedCombo = math.random(1, 2)
+        if extendedCombo == 1 then
             addEvent(combo, 2000, parameters)
             addEvent(combo, 2400, parameters)
         end

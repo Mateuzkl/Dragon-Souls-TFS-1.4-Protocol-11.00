@@ -35,17 +35,7 @@
 
 <rune name="Polymorph" id="2270" charges="1" lvl="10" maglv="20" mana="0" soul="0" exhaustion="1" prem="0" enabled="1" allowfaruse="1" script="attack/polymorph.lua"></rune>
 
-<rune name="Extreme Ultimate Healing" id="2275" allowfaruse="1" charges="10" lvl="200" maglv="4" exhaustion="700" aggressive="0" needtarget="1" blocktype="solid" script="healing/Extreme Ultimate Healing.lua">
-		<vocation name="Wyzard" showInDescription="0"/>
-		<vocation name="Dark Wyzard" showInDescription="0"/>
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-		<vocation name="Slayer"/>
-	    <vocation name="Dragon Slayer" showInDescription="0"/>
-</rune>	
-<rune name="Extreme Ultimate Healing" id="2276" allowfaruse="1" charges="0" lvl="200" maglv="4" exhaustion="500" aggressive="0" needtarget="1" blocktype="solid" script="healing/Extreme Ultimate Healing.lua">
+<rune name="Extreme Ultimate Healing" id="2275" allowfaruse="1" charges="10" lvl="200" maglv="4" exhaustion="1" aggressive="0" needtarget="1" blocktype="solid" script="healing/Extreme Ultimate Healing.lua">
 		<vocation name="Wyzard" showInDescription="0"/>
 		<vocation name="Dark Wyzard" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -136,29 +126,27 @@
 		<vocation name="Royal Archer"/>
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
-</rune>
-														
+</rune>												
 															<!-- Wyzard -->
 
-<instant name="Arcanum Metabolism" words="utani mas hur" lvl="50" maglv="50" manapercent="5" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/Utani Mas Hur.lua">
+<instant name="Arcanum Metabolism" words="utani mas hur" lvl="50" maglv="50" manapercent="5" prem="1" aggressive="0" selftarget="1" exhaustion="8" cooldownmsg="1" needlearn="0" script="support/Utani Mas Hur.lua">
 		<vocation name="Wyzard"/><vocation name="Dark Wyzard"/>
 		<vocation name="Cleric"/><vocation name="Elemental Cleric"/>
 </instant>
-<instant name="Drainage" words="Exevo Gran Mas Cold" lvl="300" needtarget="1" maglv="100" manapercent="0" soul="0" exhaustion="1200" prem="1" enabled="1" script="attack/Exevo Gran Mas Cold.lua">
+
+<instant name="Adori Gran Dark" words="Adori Gran Dark" lvl="400" maglv="130" manapercent="45" soul="0" exhaustion="45" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/Adori Gran Dark.lua">
 		<vocation name="Dark Wyzard"/>
 </instant>
-<instant name="Adori Gran Dark" words="exori gran dark" lvl="300" needtarget="1" maglv="100" manapercent="20" soul="0" exhaustion="500" prem="1" enabled="1" script="attack/Adori Gran Dark.lua">
-		<vocation name="Dark Wyzard"/>
-</instant>
-<instant name="Tides Of Darknes" words="exevo gran mas dark" lvl="200" maglv="100" manapercent="30" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/exevo gran mas dark.lua">
+
+<instant name="Tides Of Darknes" words="exevo gran mas dark" lvl="200" maglv="100" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo gran mas dark.lua">
 		<vocation name="Wyzard"/><vocation name="Dark Wyzard"/>
 </instant>
 													
-<instant name="Glaciate" words="adori frigo" aggressive="1" lvl="100" maglv="70" manapercent="12" soul="0" exhaustion="1000" prem="1" needtarget="1" enabled="1" script="attack/adori frigo.lua">
+<instant name="Glaciate" words="adori frigo" lvl="100" maglv="70" manapercent="10" soul="0" exhaustion="7" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/adori frigo.lua">
 <vocation name="Dark Wyzard" showInDescription="0"/>
 	</instant>
 
-<instant name="Fire Wave" words="exevo flam hur" lvl="18" mana="45" direction="1" exhaustion="700" needlearn="0" script="attack/fire wave.lua">
+<instant name="Fire Wave" words="exevo flam hur" direction="1" lvl="18" maglv="7" mana="80" soul="0" exhaustion="1" prem="0" enabled="1" script="attack/fire wave.lua">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Wyzard" />
@@ -166,7 +154,7 @@
 </instant>
 
 
-<instant name="Energy Beam" words="exevo vis lux" lvl="23" mana="40" direction="1" exhaustion="800" needlearn="0" script="attack/energy beam.lua">
+<instant name="Energy Beam" words="exevo vis lux" direction="1" lvl="20" maglv="10" mana="100" soul="0" exhaustion="1" prem="0" enabled="1" script="attack/energy beam.lua">
 	<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Wyzard" />
@@ -174,19 +162,21 @@
 </instant>
 
 
-<instant name="Great Energy Beam" words="exevo gran vis lux" lvl="29" mana="110" direction="1" exhaustion="800" needlearn="0" script="attack/exevo gran vis lux.lua">
+<instant name="Great Energy Beam" words="exevo gran vis lux" direction="1" lvl="29" maglv="14" mana="200" soul="0" exhaustion="1" prem="0" enabled="1" script="attack/exevo gran vis lux.lua">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Wyzard" />
 		<vocation name="Dark Wyzard" />
 </instant>
 
-<instant name="Energy Wave" words="exevo vis hur" lvl="38" mana="200" direction="1" exhaustion="800" needlearn="0" script="attack/exevo vis hur.lua">
+<instant name="Energy Wave" words="exevo mort hur" aggressive="1" direction="1" lvl="38" maglv="20" mana="250" soul="0" exhaustion="1" prem="0" enabled="1" script="attack/Energy Wave.lua">
 		<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Wyzard" />
 		<vocation name="Dark Wyzard" />
 </instant>
+
+
 <instant name="Rage of the Skies" words="exevo gran mas vis" lvl="45" maglv="40" mana="1200" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/exevo gran mas vis.lua">
 	<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
@@ -194,32 +184,31 @@
 		<vocation name="Dark Wyzard" />
 </instant>
 
-<instant name="Exevo Gran Mas Frigo" words="Exevo Gran Mas Frigo" lvl="350" maglv="120" manapercent="26" soul="0" exhaustion="1000" prem="1" enabled="1" script="attack/Exevo Gran Mas Frigo.lua">
+<instant name="Exevo Gran Mas Frigo" words="Exevo Gran Mas Frigo" lvl="350" maglv="110" manapercent="35" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo Gran Mas Frigo.lua">
 
 <vocation name="Dark Wyzard" showInDescription="0"/>
 	</instant>
 
-<instant name="Exevo Gran Mas Flam" words="Exevo Gran Mas Flam" lvl="250" maglv="110" manapercent="30" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/Exevo Gran Mas Flam.lua">
+<instant name="Exevo Gran Mas Flam" words="Exevo Gran Mas Flam" lvl="250" maglv="110" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo Gran Mas Flam.lua">
 
 <vocation name="Dark Wyzard" showInDescription="0"/>
 	</instant>
 											<!-- Cleric -->
-<instant name="Cancelcondition" words="exana vita" lvl="250" maglv="80" manapercent="20" soul="0" exhaustion="1000" enabled="1" prem="1" aggressive="0" needtarget="1" params="1" needlearn="0" script="support/exana vita.lua">
+											
+<instant name="Cancelcondition" words="exana vita" aggressive="0" params="1" needtarget="1" lvl="30" maglv="30" mana="250" soul="0" exhaustion="1" prem="1" enabled="1"script="support/exana vita.lua">
 		<vocation name="Cleric"/><vocation name="Elemental Cleric"/>
 </instant>
-<instant name="Ultimate Time" words="exevo gran mas time" lvl="200" maglv="70" aggressive="1" manapercent="50" soul="0" exhaustion="1500" prem="1" enabled="1" script="support/exevo gran mas time.lua">
+
+<instant name="Ultimate Time" words="exevo gran mas time" aggressive="0" lvl="300" maglv="100" manapercent="20" soul="0" exhaustion="15" cooldownmsg="1" prem="1" enabled="1" script="support/exevo gran mas time.lua">
 	<vocation name="Cleric"/><vocation name="Elemental Cleric"/>
 </instant>
-<instant name="Regen Arcanum" words="exevo mana regen" lvl="300" maglv="100" soul="50" manapercent="0" prem="1" selftarget="1" aggressive="0" exhaustion="1500" needlearn="0" script="healing/exevo mana regen.lua">
-		<vocation name="Elemental Cleric"/>
-		
-</instant>
+
 
 <instant name="Exana Res Mas Drain" words="exana res mas drain" lvl="350" maglv="110" blockwalls="1" manapercent="50" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/Exana Res Mas Drain.lua">
 		<vocation name="Elemental Cleric"/>
 </instant>
 														
-<instant name="Death Strike" words="exori mort" lvl="12" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="700" needlearn="0" script="attack/death strike.lua">
+<instant name="Death Strike" words="exori mort" lvl="11" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="1" needlearn="0" script="attack/death strike.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -230,7 +219,7 @@
 		<vocation name="Dark Wyzard" showInDescription="0"/>
 </instant>
 
-<instant name="Flame Strike" words="exori flam" lvl="13" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="700" needlearn="0" script="attack/Exori Flam.lua">
+<instant name="Flame Strike" words="exori flam" lvl="12" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="1" needlearn="0" script="attack/Exori Flam.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -241,7 +230,7 @@
 		<vocation name="Dark Wyzard" showInDescription="0"/>
 </instant>
 
-<instant name="Energy Strike" words="exori vis" lvl="14" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="700" needlearn="0" script="attack/exori vis.lua">
+<instant name="Energy Strike" words="exori vis" lvl="13" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="1" needlearn="0" script="attack/exori vis.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -262,7 +251,7 @@
 </instant>
 
 
-<instant name="Ice Strike" words="exori frigo" lvl="15" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="800" needlearn="0" script="attack/exori frigo.lua">
+<instant name="Ice Strike" words="exori frigo" lvl="15" mana="20" prem="1" range="3" casterTargetOrDirection="1" blockwalls="1" exhaustion="1" needlearn="0" script="attack/exori frigo.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -274,22 +263,6 @@
 
 </instant>
 
-
-<instant name="Ice Wave" words="exevo frigo hur" lvl="40" mana="230" direction="1" exhaustion="2000" needlearn="0" script="attack/exevo frigo hur.lua">
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-
-</instant>
-
-
-<instant name="Terra Wave" words="exevo tera hur" lvl="38" mana="210" direction="1" exhaustion="1000" needlearn="0" script="attack/exevo tera hur.lua">
-		<vocation name="Druid"/>
-		<vocation name="Elder Druid" showInDescription="0"/>
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-
-</instant>
-
 <instant name="Poison Storm" words="exevo gran mas pox" lvl="50" maglv="28" mana="600" soul="0" exhaustion="1" prem="0" enabled="1" script="attack/poison storm.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
@@ -298,7 +271,7 @@
 
 </instant>
 
-<instant name="Heal Friend" words="exura sio" lvl="18" manapercent="15" maglv="20" prem="1" aggressive="0" needtarget="1" params="1" exhaustion="1000" needlearn="0" script="healing/Exura Sio.lua">
+<instant name="Heal Friend" words="exura sio" aggressive="0" params="1" needtarget="1" lvl="18" maglv="7" mana="70" soul="0" exhaustion="1" prem="1" enabled="1" script="healing/Exura Sio.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -306,7 +279,7 @@
 </instant>
 
 
-<instant name="Regen" words="exura regen" aggressive="0" params="1" needtarget="1" lvl="50" maglv="30" mana="500" soul="0" exhaustion="1" prem="1" enabled="1" script="healing/exura regen.lua">
+<instant name="Heal Friend Regen" words="exura regen" aggressive="0" params="1" needtarget="1" lvl="50" maglv="30" mana="1" soul="0" exhaustion="1" prem="1" enabled="1" script="healing/exura regen.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -321,13 +294,13 @@
 </instant>
 
 
-<instant name="Vita Regen" words="exura vita regen" aggressive="0" params="1" needtarget="1" lvl="200" maglv="90" mana="1500" soul="0" exhaustion="1" prem="1" enabled="1" script="healing/exura vita regen.lua">
+<instant name="Vita Regen" words="exura vita regen" aggressive="0" params="1" needtarget="1" lvl="200" maglv="90" mana="11" soul="0" exhaustion="1" prem="1" enabled="1" script="healing/exura vita regen.lua">
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
 </instant>
 
 
-<instant name="Mass Regen" words="exura gran mas regen" lvl="200" maglv="7" soul="5" manapercent="30" prem="1" aggressive="0" exhaustion="600" needlearn="0" script="healing/Exura Gran Mas Regen.lua">
+<instant name="Mass Regen" words="exura gran mas regen" aggressive="0" lvl="150" maglv="70" mana="10" soul="0" exhaustion="1" prem="1" enabled="1" script="healing/Exura Gran Mas Regen.lua">
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
 </instant>
@@ -340,7 +313,7 @@
 </instant>
 
 
-<instant name="wild growth" words="exevo grav vita" lvl="24" mana="200" direction="1" exhaustion="1000" needlearn="0" script="support/wild growth rune.lua">
+<instant name="wild growth" words="exevo grav vita" direction="1" blocktype="all" lvl="27" maglv="13" mana="220" soul="0" exhaustion="1" prem="1" enabled="1" script="support/wild growth rune.lua">
 <vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -348,134 +321,71 @@
 </instant>
 
 
-<instant name="exevo gran mas time ultimate" words="exevo gran mas time ultimate" aggressive="0" lvl="400" maglv="140" manapercent="70" soul="50" exhaustion="1" prem="1" enabled="1" script="attack/silence rune2.lua">
+<instant name="exevo gran mas time ultimate" words="exevo gran mas time ultimate" aggressive="0" lvl="400" maglv="140" manapercent="70" soul="50" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/silence rune2.lua">
 		<vocation name="Elemental Cleric" showInDescription="0"/>
 </instant>
 
 														<!-- Ranger -->
-<instant name="Cure Divine" words="exura cure" lvl="150" maglv="20" manapercent="7" prem="1" selftarget="1" aggressive="0" exhaustion="1000" needlearn="0" script="healing/cure.lua">
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-</instant>
-<instant name="exevo tera" words="exevo tera" lvl="250" maglv="25" manapercent="25" soul="0" exhaustion="1" prem="1" blockwalls="1" enabled="1" script="support/exevo tera.lua">
+
+<instant name="exevo tera" words="exevo tera" lvl="250" maglv="25" manapercent="25" soul="0" exhaustion="14" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="support/exevo tera.lua">
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Strike Bean" words="adori gran frigo" lvl="300" maglv="30" manapercent="10" prem="1" range="5" needtarget="1" blockwalls="1" exhaustion="1000" needlearn="0" script="attack/adori gran frigo.lua">
+<instant name="Strike Bean" words="adori gran frigo" lvl="250" maglv="100" manapercent="15" soul="0" exhaustion="20" cooldownmsg="1" blockwalls="1" prem="1" enabled="1" script="attack/adori gran frigo.lua">
 	<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="exevo mas flam" words="exevo mas flam" aggressive="1" lvl="400" maglv="35" manapercent="32" soul="0" needtarget="1" exhaustion="1000" prem="1" enabled="1" script="attack/exevo mas flam.lua">
+<instant name="exevo mas flam" words="exevo mas flam" aggressive="1" lvl="400" maglv="35" manapercent="50" soul="0" needtarget="1" exhaustion="15" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo mas flam.lua">
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Basher Strike" words="exori Basher" lvl="200" maglv="25" manapercent="15" prem="1" range="5" needtarget="1" blockwalls="1" exhaustion="1200" needlearn="0" script="attack/exori Basher.lua">
+<instant name="Divine Caldera" words="exevo mas san" lvl="50" maglv="15" manapercent="10" soul="0" exhaustion="5" cooldownmsg="1" prem="1" enabled="1" script="attack/divine caldera.lua">
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Mas Sharpshooter" words="exevo san" lvl="200" manapercent="20" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/exevo San.lua">
+<instant name="Exevo mas vita" words="Exevo mas vita" aggressive="0" lvl="250" maglv="100" blockwalls="1" manapercent="30" soul="0" exhaustion="12" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo mas vita.lua">
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Divine Speed" words="utani san hur" lvl="50" manapercent="10" maglv="6" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/utani san hur.lua">
-	<vocation name="Ranger"/>
+<instant name="Exevo Pox" words="Exevo Pox" lvl="350" maglv="30" manapercent="25" soul="0" exhaustion="18" cooldownmsg="1" blockwalls="1" prem="1" enabled="1" script="attack/Exevo Pox.lua">
 		<vocation name="Elven Ranger"/>
 </instant>
 
 
-<instant name="Ethereal Spear" words="exori con" lvl="35" manapercent="10" prem="1" range="7" needtarget="1" exhaustion="800" blockwalls="1" needlearn="0" script="attack/Exori Con.lua">
-		<vocation name="Archer"/>
-		<vocation name="Royal Archer"/>
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-</instant>
-
-
-<instant name="Divine Missile" words="exori san" lvl="100" manapercent="10" prem="1" range="7" needtarget="1" needlearn="0" blockwalls="1" exhaustion="800" script="attack/divine missile.lua">
-		<vocation name="Archer"/>
-		<vocation name="Royal Archer"/>
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-</instant>
-
-<instant name="Divine Caldera" words="exevo mas san" lvl="50" mana="230" prem="1" selftarget="1" exhaustion="1200" needlearn="0" script="attack/divine caldera.lua">
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-</instant>
-
-<instant name="Exevo mas vita" words="Exevo mas vita" aggressive="0" lvl="250" maglv="100" blockwalls="1" manapercent="30" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/Exevo mas vita.lua">
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-</instant>
-
-<instant name="Exevo Pox" words="Exevo Pox" lvl="350" maglv="30" manapercent="25" soul="0" exhaustion="1" blockwalls="1" prem="1" enabled="1" script="attack/Exevo Pox.lua">
-		<vocation name="Elven Ranger"/>
-</instant>
-
-
-<instant name="Divine Healing" words="exura san" lvl="35" mana="240" prem="1" selftarget="1" aggressive="0" exhaustion="1000" needlearn="0" script="healing/divine healing.lua">
-		<vocation name="Archer"/>
-		<vocation name="Royal Archer"/>
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-</instant>
-
-<instant name="exevo gran mas shadow" words="exevo gran mas shadow" lvl="400" maglv="35" manapercent="30" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/exevo gran mas shadow.lua">
+<instant name="exevo gran mas shadow" words="exevo gran mas shadow" lvl="400" maglv="35" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo gran mas shadow.lua">
     <vocation name="Elven Ranger"/>
 </instant>
 														<!-- Slayer -->
-<instant name="Acceleration" words="utani res hur" lvl="50" manapercent="20" maglv="6" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/utani res hur.lua">
+														
+
+<instant name="Berserk Strike" words="exori hur" lvl="150" maglv="10" manapercent="30" soul="0" exhaustion="10" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/exori gran hur.lua">
 		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
 </instant>
 
 
-<instant name="Berserk Strike" words="exori hur" lvl="150" manapercent="15" maglv="7" prem="1" range="3" needtarget="1" blockwalls="1" needweapon="1" exhaustion="1000" needlearn="0" script="attack/exori gran hur.lua">
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
-
-
-<instant name="Divine Metabolism" words="exeta mas regen" lvl="300" soul="0" manapercent="20" maglv="10" prem="1" selftarget="1" aggressive="0" exhaustion="1000" needlearn="0" script="healing/Exeta Mas Regen.lua">
+<instant name="Divine Metabolism" words="exeta mas regen" lvl="300" soul="0" manapercent="20" maglv="10" prem="1" selftarget="1" aggressive="0" exhaustion="35" cooldownmsg="1" needlearn="0" script="healing/Exeta Mas Regen.lua">
 		<vocation name="Dragon Slayer"/>
 </instant>
 
 
-<instant name="Mas Blood Rage" words="exevo grav" lvl="250" manapercent="25" maglv="8" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/exevo grav.lua">
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
-
-<instant name="Whirlwind Throw" words="exori gran hur" lvl="15" manapercent="15" prem="1" maglv="4" range="3" needtarget="1" blockwalls="1" needweapon="1" exhaustion="1000" needlearn="0" script="attack/whirlwind throw.lua">
-		<vocation name="Knight"/><vocation name="Elite Knight"/>
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
-
-<instant name="Diceshaker" words="exori min" lvl="22" mana="80" prem="1" needweapon="1" exhaustion="2000" needlearn="0" script="attack/diceshaker.lua">
-		<vocation name="Knight"/><vocation name="Elite Knight"/>
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
-<instant name="Groundshaker" words="exori mas" lvl="35" mana="160" prem="1" needweapon="1" exhaustion="800" needlearn="0" script="attack/Exori Mas.lua">
-		<vocation name="Knight"/><vocation name="Elite Knight"/>
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
 <instant name="Exevo Cut" words="exori bleed" lvl="200" maglv="10" manapercent="60" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/Exori Bleed.lua">
 		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
 </instant>
-<instant name="Berserk" words="exori" lvl="35" maglv="4" manapercent="30" prem="1" needweapon="1" exhaustion="1200" needlearn="0" script="attack/berserk.lua">
+
+
+<instant name="Berserk" words="exori" lvl="35" maglv="5" manapercent="80" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/berserk.lua">
 		<vocation name="Knight"/><vocation name="Elite Knight"/>
 		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
 </instant>
 
-<instant name="Fierce Berserk" words="exori gran" lvl="70" maglv="6" manapercent="60" prem="1" needweapon="1" exhaustion="1500" needlearn="0" script="attack/Exori Gran.lua">
-		<vocation name="Knight"/><vocation name="Elite Knight"/>
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
 
-<instant name="Earthquake" words="exori tera" lvl="150" maglv="8" manapercent="100" soul="0" exhaustion="1000" prem="1" enabled="1" script="attack/exori tera.lua">
+<instant name="Earthquake" words="exori tera" lvl="150" maglv="8" manapercent="100" soul="0" exhaustion="1" prem="1" enabled="1" script="attack/exori tera.lua">
 <vocation name="Slayer"/>
 	<vocation name="Dragon Slayer" showInDescription="0"/>
-	</instant>
+</instant>
 	
 	
 <instant name="Wound Cleansing" words="exana mort" lvl="30" mana="55" prem="1" selftarget="1" aggressive="0" exhaustion="750" needlearn="0" script="healing/wound cleasing.lua">
@@ -484,65 +394,51 @@
 </instant>
 
 
-
-<instant name="Strong Haste" words="utani tempo hur" lvl="30" manapercent="3" maglv="4" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/Utani gran hur.lua">
+<instant name="Challenge" words="exeta res" lvl="20" maglv="4" mana="30" soul="0" exhaustion="1" prem="1" enabled="1" script="support/Exeta Res.lua">
 		<vocation name="Knight"/><vocation name="Elite Knight"/>
 		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
 </instant>
 
-
-<instant name="Challenge" words="exeta res" lvl="20" mana="30" prem="1" aggressive="0" exhaustion="800" needlearn="0" script="support/Exeta Res.lua">
-		<vocation name="Knight"/><vocation name="Elite Knight"/>
+<instant name="Master Challenge" words="exeta mas res" lvl="20" maglv="6" mana="100" soul="0" exhaustion="1" prem="1" enabled="1" script="support/Exeta Mas Res.lua">
 		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
 </instant>
 
-<instant name="Master Challenge" words="exeta mas res" lvl="50" manapercent="10" maglv="5" prem="1" aggressive="0" exhaustion="800" needlearn="0" script="support/Exeta Mas Res.lua">
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
-
-<instant name="Terremoto" words="exori gran tera" lvl="300" manapercent="30" maglv="10" soul="0" prem="0" exhaustion="1000" needlearn="0" script="attack/exori gran tera.lua">
+<instant name="Terremoto" words="exori gran tera" lvl="300" maglv="15" manapercent="40" soul="0" exhaustion="20" cooldownmsg="1" prem="1" enabled="1" script="attack/exori gran tera.lua">
 		<vocation name="Dragon Slayer"/>	
 </instant>
 
-
-<instant name="Dekay Bleed" words="exori drown" lvl="350" maglv="8" manapercent="25" soul="0" exhaustion="1000" prem="1" enabled="1" script="attack/Exori Drown.lua">
-<vocation name="Slayer"/>
-	<vocation name="Dragon Slayer" showInDescription="0"/>
-	</instant>
-
-
 <!-- Healing Runes -->
-<rune name="Antidote Rune" id="2266" allowfaruse="1" charges="1" lvl="15" maglv="0" exhaustion="700" aggressive="0" needtarget="1" blocktype="solid" script="healing/antidote rune.lua"/>
+<rune name="Antidote Rune" id="2266" allowfaruse="1" charges="1" lvl="15" maglv="0" exhaustion="1" aggressive="0" needtarget="1" blocktype="solid" script="healing/antidote rune.lua"/>
 
 
-<!--rune name="Intense Healing Rune" id="12501" allowfaruse="1" charges="0" lvl="8" exhaustion="700" aggressive="0" needtarget="1" blocktype="solid" script="healing/intense healing rune.lua"/-->
+<!--rune name="Intense Healing Rune" id="12501" allowfaruse="1" charges="0" lvl="8" exhaustion="1" aggressive="0" needtarget="1" blocktype="solid" script="healing/intense healing rune.lua"/-->
 
 
-<rune name="Intense Healing Rune" id="2265" allowfaruse="1" charges="1" lvl="15" maglv="1" exhaustion="700" aggressive="0" needtarget="1" blocktype="solid" script="healing/intense healing rune.lua"/>
+<rune name="Intense Healing Rune" id="2265" allowfaruse="1" charges="1" lvl="15" maglv="1" exhaustion="1" aggressive="0" needtarget="1" blocktype="solid" script="healing/intense healing rune.lua"/>
 
 
-<rune name="Ultimate Healing Rune" id="2273" allowfaruse="1" charges="0" lvl="18" maglv="4" exhaustion="700" aggressive="0" needtarget="1" blocktype="solid" script="healing/ultimate healing rune.lua"/>
+<rune name="Ultimate Healing Rune" id="2273" allowfaruse="1" charges="0" lvl="18" maglv="4" exhaustion="1" aggressive="0" needtarget="1" blocktype="solid" script="healing/ultimate healing rune.lua"/>
 <!-- Summon Runes -->
 
 <rune group="support" spellid="12" name="Convince Creature Rune" id="2290" allowfaruse="1" charges="1" level="16" magiclevel="5" cooldown="2000" groupcooldown="2000" needtarget="1" blocktype="solid" script="support/convince_creature.lua" />
 
 
-<rune name="Animate Dead" id="2316" allowfaruse="1" charges="1" lvl="27" maglv="4" exhaustion="500" blocktype="solid" script="summon/animate dead rune.lua"/>
+<rune name="Animate Dead" id="2316" allowfaruse="1" charges="1" lvl="27" maglv="4" exhaustion="1" blocktype="solid" script="summon/animate dead rune.lua"/>
 
 <!-- Support Runes -->
-<rune name="Desintegrate" id="2310" allowfaruse="0" charges="3" lvl="21" maglv="4" exhaustion="700" range="1" script="support/desintegrate rune.lua"/>
+<rune name="Desintegrate" id="2310" allowfaruse="0" charges="3" lvl="21" maglv="4" exhaustion="1" range="1" script="support/desintegrate rune.lua"/>
 
 
-<rune name="Drunk Rune" id="2261" allowfaruse="1" charges="1" lvl="17" maglv="4" exhaustion="700" needtarget="1" blocktype="solid" script="support/drunk rune.lua"/>
+<rune name="Drunk Rune" id="2261" allowfaruse="1" charges="1" lvl="17" maglv="4" exhaustion="1" needtarget="1" blocktype="solid" script="support/drunk rune.lua"/>
 
 
 <rune group="support" spellid="14" name="Chameleon Rune" id="2291" allowfaruse="1" charges="1" level="27" magiclevel="4" cooldown="2000" groupcooldown="2000" aggressive="0" selftarget="1" blocktype="solid" script="support/chameleon.lua" />
 
-<rune name="Magic Wall" id="2293" allowfaruse="1" charges="3" lvl="16" maglv="9" exhaustion="700" blocktype="all" script="support/magic wall rune.lua"/>
+<rune name="Magic Wall" id="2293" allowfaruse="1" charges="3" lvl="16" maglv="9" exhaustion="1" blocktype="all" script="support/magic wall rune.lua"/>
 
 <rune name="Magic Wall" id="2294" allowfaruse="1" charges="3" lvl="16" maglv="9" exhaustion="0" blocktype="all" script="support/magic wall rune.lua"/>
 
-<rune name="Paralyze" id="2278" allowfaruse="1" charges="1" lvl="54" maglv="18" exhaustion="1500" manapercent="45" needtarget="1" blocktype="solid" script="support/paralyze rune.lua">
+<rune name="Paralyze" id="2278" allowfaruse="1" charges="1" lvl="54" maglv="18" exhaustion="11" manapercent="45" needtarget="1" blocktype="solid" script="support/paralyze rune.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -557,16 +453,16 @@
 </instant>
 
 <!-- Healing Spells all vocs -->
-<instant name="Light Healing" words="exura" lvl="9" mana="25" maglv="2" aggressive="0" selftarget="1" exhaustion="750" needlearn="0" script="healing/light healing.lua"/>
+<instant name="Light Healing" words="exura" selftarget="1" aggressive="0" lvl="9" maglv="1" mana="25" soul="0" exhaustion="1" prem="0" enabled="1" script="healing/light healing.lua"/>
 
 
-<instant name="Intense Healing" words="exura gran" lvl="20" maglv="15" mana="70" aggressive="0" selftarget="1" exhaustion="750" needlearn="0" script="healing/exura gran.lua"/>
+<instant name="Intense Healing" words="exura gran" elftarget="1" aggressive="0" lvl="11" maglv="2" mana="40" soul="0" exhaustion="1" prem="0" enabled="1" script="healing/exura gran.lua"/>
 	
 	
-<instant name="Antidote" words="exana pox" lvl="10" mana="30" maglv="2" aggressive="0" selftarget="1" exhaustion="600" needlearn="0" script="healing/antidote.lua"/>
+<instant name="Antidote" words="exana pox" selftarget="1" aggressive="0" lvl="10" maglv="2" mana="30" soul="0" exhaustion="1" prem="0" script="healing/antidote.lua"/>
 
 
-<instant name="Ultimate Healing" words="exura vita" lvl="30" mana="160" aggressive="0" selftarget="1" exhaustion="750" needlearn="0" script="healing/ultimate healing rune.lua"/>
+<instant name="Ultimate Healing" words="exura vita" selftarget="1" aggressive="0" lvl="20" maglv="8" mana="160" soul="0" exhaustion="1" prem="0" enabled="1" script="healing/ultimate healing rune.lua"/>
 	
 
 
@@ -574,17 +470,17 @@
 
 <!--instant name="Ultimate Light" words="light" lvl="14" mana="20" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/light.lua"/-->
 
-<instant name="Light" words="utevo lux" lvl="8" mana="20" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/utevo lux.lua"/>
+<instant name="Light" words="utevo lux" selftarget="1" aggressive="0" lvl="8" maglv="0" mana="20" soul="0" exhaustion="1" prem="0" enabled="1" script="support/utevo lux.lua"/>
 
-<instant name="Find Person" words="exiva" aggressive="0" params="1" lvl="8" maglv="0" mana="20" soul="0" exhaustion="1" prem="0" enabled="1" needlearn="0" script="support/find_person.lua"/>
+<instant name="Find Person" words="exiva" aggressive="0" params="1" lvl="8" maglv="0" mana="20" soul="0" exhaustion="1" prem="0" enabled="1" script="support/find_person.lua"/>
 
 <instant name="Magic Rope" words="exani tera" soul="0" selftarget="1" aggressive="0" lvl="9" maglv="1" exhaustion="1" prem="1" enabled="1" script="support/Exani Tera.lua"/>
 
-	<instant name="Levitate" words="exani hur" needlearn="0" lvl="12" prem="0" mana="50" params="1" script="support/levitate.lua"/>
+	<instant name="Levitate" words="exani hur" params="1" soul="0" exhaustion="1" prem="1" enabled="1" script="support/levitate.lua"/>
 	
-<instant name="Great Light" words="utevo gran lux" lvl="13" mana="60" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/Utevo Gran Lux.lua"/>
+<instant name="Great Light" words="utevo gran lux" selftarget="1" aggressive="0" lvl="13" maglv="3" mana="60" soul="0" exhaustion="1" script="support/Utevo Gran Lux.lua"/>
 
-<instant name="Magic Shield" words="utamo vita" lvl="14" mana="50" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/Utamo Vita.lua">
+<instant name="Magic Shield" words="utamo vita" selftarget="1" aggressive="0" lvl="14" maglv="4" mana="50" soul="0" exhaustion="1" prem="0" enabled="1" script="support/Utamo Vita.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -599,10 +495,10 @@
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Haste" words="utani hur" lvl="14" mana="60" maglv="2" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/Utani Hur.lua"/>
+<instant name="Haste" words="utani hur" selftarget="1" aggressive="0" lvl="14" maglv="4" mana="60" soul="0" exhaustion="1" prem="1" enabled="1" script="support/Utani Hur.lua"/>
 
 
-<instant name="Strong Haste" words="utani gran hur" lvl="30" manapercent="10" maglv="20" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/Utani Gran Hur.lua">
+<instant name="Strong Haste" words="utani gran hur" selftarget="1" aggressive="0" lvl="20" maglv="10" mana="100" soul="0" exhaustion="1" prem="1" enabled="1" script="support/Utani Gran Hur.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -634,7 +530,7 @@
 	</instant>
 	
 	
-<instant name="Ultimate Light" words="utevo vis lux" lvl="26" mana="140" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/utevo vis lux.lua">
+<instant name="Ultimate Light" words="utevo vis lux" selftarget="1" aggressive="0" lvl="26" maglv="12" mana="140" soul="0" exhaustion="1" prem="1" enabled="1" script="support/utevo vis lux.lua">
 		<vocation name="Sorcerer"/> 
 		<vocation name="Master Sorcerer"/>
 		<vocation name="Druid"/>	
@@ -646,7 +542,7 @@
 </instant>
 
 
-<instant name="Cancel Invisibility" words="exana ina" lvl="26" mana="200" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/cancel invisibility.lua">
+<instant name="Cancel Invisibility" words="exana ina" lvl="26" maglv="12" mana="200" soul="0" exhaustion="1" prem="1" enabled="1" script="support/cancel invisibility.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -662,7 +558,7 @@
 </instant>
 
 
-<instant name="Invisibility" words="utana vid" lvl="35" mana="440" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/utana vid.lua">
+<instant name="Invisibility" words="utana vid" selftarget="1" aggressive="0" lvl="35" maglv="14" manapercent="50" soul="0" exhaustion="1" prem="0" enabled="1" script="support/utana vid.lua">
 		<vocation name="Druid"/>
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -678,44 +574,7 @@
 </instant>
 
 
-<!--instant name="Protector" words="utamo reflect" lvl="55" manapercent="20" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="support/utamo reflect.lua">
-
-		<vocation name="4"/><vocation name="8"/><vocation name="12"/><vocation name="16"/>		
-</instant-->
-
-<!--instant name="Exeta god" words="aprision" lvl="300" manapercent="30" needtarget="1" maglv="10" prem="1" aggressive="0" selftarget="0" exhaustion="800" needlearn="0" script="attack/Aprision.lua">
-		<vocation name="10"/>
-</instant-->
-
-<!-- Party Spells -->
-<instant name="Train Party" words="utito mas sio" lvl="32" mana="60" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="party/train.lua">
-		<vocation name="Elite Knight"/>
-		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
-</instant>
-
-
-<instant name="Protect Party" words="utamo mas sio" lvl="32" manapercent="20" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="party/protect.lua">
-		<vocation name="Royal Archer"/>
-		<vocation name="Ranger"/>
-		<vocation name="Elven Ranger"/>
-</instant>
-
-
-<instant name="Heal Party" words="utura mas sio" lvl="32" mana="120" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="party/heal.lua">
-		<vocation name="Elder Druid" showInDescription="0"/>
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-</instant>
-
-
-<instant name="Enchant Party" words="utori mas sio" lvl="32" mana="120" prem="1" aggressive="0" selftarget="1" exhaustion="800" needlearn="0" script="party/enchant.lua">
-		<vocation name="Master Sorcerer" showInDescription="0"/>
-		<vocation name="Wyzard" showInDescription="0"/>
-		<vocation name="Dark Wyzard" showInDescription="0"/>
-</instant>
-
-
-	<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" script="support/summon_creature.lua">
+<instant name="Summon Creature" words="utevo res" needlearn="0" lvl="25" params="1" script="support/summon_creature.lua">
 		<vocation name="Elder Druid" showInDescription="0"/>
 		<vocation name="Druid" showInDescription="0"/>
 		<vocation name="Cleric" showInDescription="0"/>
@@ -726,41 +585,6 @@
 		<vocation name="Dark Wyzard" showInDescription="0"/>
 </instant>
 
-
-<instant name="Summon Urak-Hai Marauder" words="utevo mas marauder" lvl="200"  maglv="40" manapercent="0" soul="20" params="1" exhaustion="2000" needlearn="0" script="summon/angel balrog.lua">
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-		<vocation name="Wyzard" showInDescription="0"/>
-		<vocation name="Dark Wyzard" showInDescription="0"/>
-</instant>
-
-
-<instant name="Summon Cerberus" words="utevo mas cerberus" lvl="300"  maglv="60" manapercent="0" soul="0" params="1" exhaustion="2000" needlearn="0" script="summon/cerberus.lua">
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-		<vocation name="Wyzard" showInDescription="0"/>
-		<vocation name="Dark Wyzard" showInDescription="0"/>
-</instant>
-
-
-<instant name="Summon Ghost Soul" words="utevo mas ghost soul" lvl="400"  maglv="80" manapercent="30" soul="0" params="1" exhaustion="2000" needlearn="0" script="summon/ghost soul.lua">
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-		<vocation name="Dark Wyzard" showInDescription="0"/>
-</instant>
-
-
-<instant name="Summon Shadow Imp" words="utevo mas shadow imp" lvl="500"  maglv="100" manapercent="0" soul="0" params="1" exhaustion="2000" needlearn="0" script="summon/shadow imp.lua">
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-		<vocation name="Dark Wyzard" showInDescription="0"/>
-</instant>
-
-
-<instant name="Undead Legion" words="exana mas mort" lvl="30" mana="500" prem="1" exhaustion="2000" needlearn="0" script="summon/undead legion.lua">
-		<vocation name="Elder Druid" showInDescription="0"/>
-		<vocation name="Druid" showInDescription="0"/>
-		<vocation name="Cleric" showInDescription="0"/>
-		<vocation name="Elemental Cleric" showInDescription="0"/>
-</instant>
 
 <!-- Conjure Spells -->
 <instant  name="Conjure Arrow" words="exevo con" level="13" mana="100" soul="1" premium="0" aggressive="0" selftarget="1" exhaustion="2000" needlearn="0" script="conjuring/conjure_arrow.lua">
@@ -843,7 +667,7 @@
 	</instant>
 	
 	
-<instant group="support" spellid="95" name="Conjure Power Bolt" words="exevo con vis" level="59" mana="700" soul="4" premium="1" aggressive="0" selftarget="1" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/conjure_power_bolt.lua">
+<instant group="support" spellid="95" name="Conjure Power Bolt" words="exevo con vis" level="59" mana="1" soul="4" premium="1" aggressive="0" selftarget="1" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring/conjure_power_bolt.lua">
 		<vocation name="Royal Archer" showInDescription="0"/>
 	<vocation name="Ranger"/>
 	<vocation name="Elven Ranger" showInDescription="0"/>
@@ -1312,7 +1136,7 @@
 		<vocation name="Dark Wyzard" showInDescription="0"/>
 </instant>
 
-<instant name="Heavy Magic Missile dec" words="adori vis dec" lvl="50" mana="3500" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Heavy Magic Missile dec.lua">
+<instant name="Heavy Magic Missile dec" words="adori vis dec" lvl="50" mana="31" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Heavy Magic Missile dec.lua">
 			<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Druid" />
@@ -1364,7 +1188,7 @@
 		<vocation name="Elemental Cleric" showInDescription="0"/>
 	</instant>
 
-<instant name="Explosion dec" words="adevo mas hur dec" lvl="62" mana="5700" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Explosion dec.lua">
+<instant name="Explosion dec" words="adevo mas hur dec" lvl="62" mana="51" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Explosion dec.lua">
 			<vocation name="Sorcerer" />
 		<vocation name="Master Sorcerer" />
 		<vocation name="Druid" />
@@ -1425,7 +1249,7 @@
 		<vocation name="Elemental Cleric" showInDescription="0"/>
 	</instant>
 
-<instant name="Ultimate Healing Rune dec" words="adura vita dec" lvl="48" manapercent="1500" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Ultimate Healing Rune dec.lua">
+<instant name="Ultimate Healing Rune dec" words="adura vita dec" lvl="48" manapercent="11" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Ultimate Healing Rune dec.lua">
 <vocation name="Druid" />
 		<vocation name="Elder Druid" />
 		<vocation name="Cleric" showInDescription="0"/>
@@ -1532,9 +1356,7 @@
 </instant>
 
 
-
-
-<instant name="Holy Missile dec" words="adori san dec" lvl="54" mana="3500" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Holy Missile dec.lua">
+<instant name="Holy Missile dec" words="adori san dec" lvl="54" mana="31" soul="2" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Holy Missile dec.lua">
 		<vocation name="Archer"/>
 		<vocation name="Royal Archer"/>
 		<vocation name="Ranger"/>
@@ -1543,7 +1365,7 @@
 
 
 
-<instant name="Extreme Explosion" words="adevo mas hur dark" lvl="54" mana="3500" soul="0" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Extreme Explosion.lua">
+<instant name="Extreme Explosion" words="adevo mas hur dark" lvl="54" mana="31" soul="0" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Extreme Explosion.lua">
 		<vocation name="Cleric" showInDescription="0"/>
 		<vocation name="Elemental Cleric" showInDescription="0"/>
 		<vocation name="Wyzard" showInDescription="0"/>
@@ -1551,7 +1373,7 @@
 </instant>
 
 
-<instant name="Extreme Sudden Death" words="adori vita dark" lvl="100" mana="4500" soul="0" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Extreme Sudden Death.lua">
+<instant name="Extreme Sudden Death" words="adori vita dark" lvl="100" mana="41" soul="0" prem="1" aggressive="0" cooldown="2000" groupcooldown="2000" needlearn="0" script="conjuring dec/Extreme Sudden Death.lua">
 		<vocation name="Wyzard" showInDescription="0"/>
 		<vocation name="Dark Wyzard" showInDescription="0"/>
 </instant>

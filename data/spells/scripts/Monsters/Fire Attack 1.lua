@@ -15,12 +15,6 @@ local arr = {
 local area = createCombatArea(arr)
 combat:setArea(area)
 
-function onCastSpell(cid, var)
-    if getPlayerStorageValue(cid, 10569) == 1 then
-        doSendAnimatedText(getCreaturePosition(cid), "Silence!", 255)
-        doSendMagicEffect(getCreaturePosition(cid), 110)
-        doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUAREEXHAUSTED)
-        return false
-    end
-    return combat:execute(cid, var)
+function onCastSpell(creature, variant)
+    return combat:execute(creature, variant)
 end

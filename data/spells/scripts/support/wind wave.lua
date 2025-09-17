@@ -1,30 +1,45 @@
---// Requerimento para compatibilidade com as novas versões de OTServer \\
-local mayNotMove = doCreatureSetNoMove
-
-function doPushCreature(pos, target)
-    creature = getThingfromPos({x=target.x, y=target.y, z=target.z, stackpos=253}).uid
-    if target.y < pos.y and target.x == pos.x then
-        newpos = {x=target.x, y=target.y-1, z=target.z}
-    elseif target.y > pos.y and target.x == pos.x then
-        newpos = {x=target.x, y=target.y+1, z=target.z}
-    elseif target.y == pos.y and target.x > pos.x then
-        newpos = {x=target.x+1, y=target.y, z=target.z}
-    elseif target.y == pos.y and target.x < pos.x then
-        newpos = {x=target.x-1, y=target.y, z=target.z}
-    elseif target.y < pos.y and target.x > pos.x then
-        newpos = {x=target.x+1, y=target.y-1, z=target.z}
-    elseif target.y > pos.y and target.x < pos.x then
-        newpos = {x=target.x-1, y=target.y+1, z=target.z}
-    elseif target.y > pos.y and target.x > pos.x then
-        newpos = {x=target.x+1, y=target.y+1, z=target.z}
-    elseif target.y < pos.y and target.x < pos.x then
-        newpos = {x=target.x-1, y=target.y-1, z=target.z}
+function doPushCreature(sourcePos, targetPos)
+    local tile = Tile(targetPos)
+    if not tile then
+        return false
     end
-    if creature > 0 then
-        if queryTileAddThing(creature, newpos) == TRUE then
-            doTeleportThing(creature, newpos, TRUE)
-        end
+    
+    local creature = tile:getTopCreature()
+    if not creature then
+        return false
     end
+    
+    local newpos = {x = targetPos.x, y = targetPos.y, z = targetPos.z}
+    
+    if targetPos.y < sourcePos.y and targetPos.x == sourcePos.x then
+        newpos.y = newpos.y - 1
+    elseif targetPos.y > sourcePos.y and targetPos.x == sourcePos.x then
+        newpos.y = newpos.y + 1
+    elseif targetPos.y == sourcePos.y and targetPos.x > sourcePos.x then
+        newpos.x = newpos.x + 1
+    elseif targetPos.y == sourcePos.y and targetPos.x < sourcePos.x then
+        newpos.x = newpos.x - 1
+    elseif targetPos.y < sourcePos.y and targetPos.x > sourcePos.x then
+        newpos.x = newpos.x + 1
+        newpos.y = newpos.y - 1
+    elseif targetPos.y > sourcePos.y and targetPos.x < sourcePos.x then
+        newpos.x = newpos.x - 1
+        newpos.y = newpos.y + 1
+    elseif targetPos.y > sourcePos.y and targetPos.x > sourcePos.x then
+        newpos.x = newpos.x + 1
+        newpos.y = newpos.y + 1
+    elseif targetPos.y < sourcePos.y and targetPos.x < sourcePos.x then
+        newpos.x = newpos.x - 1
+        newpos.y = newpos.y - 1
+    end
+    
+    local newTile = Tile(newpos)
+    if newTile and newTile:isWalkable() then
+        creature:teleportTo(newpos)
+        return true
+    end
+    
+    return false
 end
 
 local arr = {
@@ -65,30 +80,43 @@ local arr = {
   }
 }
 
-function onTargetCreature(cid, target)
-    doPushCreature(getCreaturePosition(cid), target)
+function onTargetTile(creature, pos)
+    doPushCreature(creature:getPosition(), pos)
 end
 
-combat = {}
+local combat = {}
 for n, v in pairs(arr) do
-    combat[n] = createCombatObject()
-    _G["callback"..n] = onTargetCreature
-    setCombatCallback(combat[n], CALLBACK_PARAM_TARGETTILE, "callback"..n)
-    setCombatParam(combat[n], COMBAT_PARAM_EFFECT, 2)
-    setCombatArea(combat[n], createCombatArea(v))
+    combat[n] = Combat()
+    combat[n]:setCallback(CALLBACK_PARAM_TARGETTILE, "onTargetTile")
+    combat[n]:setParameter(COMBAT_PARAM_EFFECT, 2)
+    combat[n]:setArea(createCombatArea(v))
 end
 
-function onCastSpell(cid, var)
-if getPlayerStorageValue(cid, 10569) == 1 then
-doSendAnimatedText((getCreaturePosition(cid)), "Silence!", 129)
-doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUAREEXHAUSTED)
-return false 
+local function executeSpell(creatureId, combatObj, variant)
+    local creature = Creature(creatureId)
+    if creature then
+        combatObj:execute(creature, variant)
+    end
 end
-    mayNotMove(cid, TRUE)
+
+local function allowMovement(creatureId)
+    local creature = Creature(creatureId)
+    if creature then
+        creature:setMovementBlocked(false)
+    end
+end
+
+function onCastSpell(creature, variant)
+    local creatureId = creature:getId()
+    
+    creature:setMovementBlocked(true)
+    
     for i = 1, #combat do
-        addEvent(doCombat, i*150-150, cid, combat[i], var)
+        addEvent(executeSpell, (i-1)*150, creatureId, combat[i], variant)
         if i == #combat then
-            addEvent(mayNotMove, i*150-150, cid, FALSE)
+            addEvent(allowMovement, (i-1)*150, creatureId)
         end
     end
-end  
+    
+    return true
+end

@@ -10,20 +10,14 @@ local arr = {
 }
 
 local stun = Condition(CONDITION_FIRE)
-stun:setParameter(CONDITION_PARAM_DELAYED, 25)
+stun:setParameter(CONDITION_PARAM_DELAYED, true)
 stun:addDamage(5, 1000, -500)
-combat:addCondition(stun)
+combat:setCondition(stun)
 
 local area = createCombatArea(arr)
 combat:setArea(area)
 
-function onCastSpell(cid, var)
-  if getPlayerStorageValue(cid, 10569) == 1 then
-    doSendAnimatedText(getCreaturePosition(cid), "Socorro!", COLOR_WHITE)
-    doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF)
-    doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUAREEXHAUSTED)
-    return false
-  end
-  doCreatureSay(cid, "Exori!", TALKTYPE_MONSTER)
-  return combat:execute(cid, var)
+function onCastSpell(creature, variant)
+  creature:say("Exori!", TALKTYPE_MONSTER_SAY)
+  return combat:execute(creature, variant)
 end
