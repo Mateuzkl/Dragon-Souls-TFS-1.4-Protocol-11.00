@@ -1,12 +1,12 @@
-local combat = createCombatObject()
+local combat = Combat()
 
-function onTargetCreature(cid, target)
-	outfit = getCreatureOutfit(target)
-	doSetCreatureOutfit(cid, outfit, 10000)
+function onTargetCreature(creature, target)
+	local outfit = target:getOutfit()
+	creature:setOutfit(outfit)
 end
 
 setCombatCallback(combat, CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+function onCastSpell(creature, var)
+	return combat:execute(creature, var)
 end

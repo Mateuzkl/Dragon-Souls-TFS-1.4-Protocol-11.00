@@ -1,8 +1,8 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_BLOCKARMOR, 1)
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ARROW)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat:setParameter(COMBAT_PARAM_BLOCKARMOR, true)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ARROW)
 
 function onCastSpell(cid, var)
-	doCombat(cid, combat, var)
+    return combat:execute(cid, var)
 end

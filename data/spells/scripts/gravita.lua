@@ -1,38 +1,39 @@
-local combat = Combat()
-combat:setParameter(COMBAT_PARAM_EFFECT, 60)
-combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
+local combat = createCombatObject()
+setCombatParam(combat, COMBAT_PARAM_EFFECT, 59)
+setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 
-function onTargetCreature(creature, target)
-    if creature:isPlayer() and target:isPlayer() then
-        creature:getPosition():sendAnimatedText("Drain!", 160)
-        creature:addMana(creature:getMana() / 4 * 3)
-        creature:getPosition():sendMagicEffect(59)
-        
-        target:getPosition():sendAnimatedText("Drain!", 160)
-        target:addHealth(-target:getHealth() / 4 * 3)
-    end
+function onTargetCreature(cid, target)  
+         if isPlayer(cid) and isPlayer(target) then
+            local rand = math.random(1,5)
+            if getCreatureMaxHealth(target) == getCreatureHealth(target) then
+               if rand == 1 then
+                  doSendAnimatedText(getThingPos(cid),"Gravita!",160)
+                  doPlayerAddMana(cid,-5000)
+                  doSendMagicEffect(getPlayerPosition(cid),59)
+                  doSendMagicEffect(getPlayerPosition(target),3)
+               else
+                  doSendAnimatedText(getThingPos(target),"Gravita!",160)
+                  doCreatureAddHealth(target,-getCreatureHealth(target)/2*1)
+               end
+            else
+               doSendAnimatedText(getThingPos(target),"Gravita!",160)
+               doSendAnimatedText(getThingPos(cid),"Gravita!",160)
+               doCreatureAddHealth(target,getCreatureHealth(cid)/4*3)
+               doCreatureAddHealth(cid,-5000)
+            end
+         end
+         if isPlayer(cid) == false and isPlayer(target)then
+            doSendAnimatedText(getThingPos(target),"Gravita!",160)
+            doCreatureAddHealth(target,-getCreatureHealth(target)/1*1)
+         end
 end
+setCombatCallback(combat, CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-combat:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
-
-function onCastSpell(creature, variant)
-    local player = creature:getPlayer()
-    if not player then
-        return false
-    end
-    
-    local target = creature:getTarget()
-    if not target then
-        player:sendCancelMessage('Select your target.')
-        creature:getPosition():sendMagicEffect(CONST_ME_POFF)
-        return false
-    end
-    
-    if target:isPlayer() then
-        target:sendTextMessage(MESSAGE_EVENT_ADVANCE, 'Você foi drenado!')
-    end
-    
-    player:say("Gravita", TALKTYPE_MONSTER_SAY)
-    
-    return combat:execute(creature, variant)
+function onCastSpell(cid, var)
+if getPlayerStorageValue(cid, 10569) == 1 then
+doSendAnimatedText((getCreaturePosition(cid)), "Silence!", 129)
+doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUAREEXHAUSTED)
+return false 
+end
+	return doCombat(cid, combat, var)
 end

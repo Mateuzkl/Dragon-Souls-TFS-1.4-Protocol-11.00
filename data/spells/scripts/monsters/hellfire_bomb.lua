@@ -1,15 +1,16 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_CREATEITEM, 1487)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_CREATEITEM, 1487)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
 
-arr = {
-{1, 1, 1},
-{1, 3, 1},
-{1, 1, 1},
+local arr = {
+    {1, 1, 1},
+    {1, 3, 1},
+    {1, 1, 1},
 }
 
 local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+    return combat:execute(cid, var)
 end

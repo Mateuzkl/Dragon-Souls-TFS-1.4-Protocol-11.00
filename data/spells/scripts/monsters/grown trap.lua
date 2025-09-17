@@ -1,16 +1,36 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
-setCombatParam(combat, COMBAT_PARAM_CREATEITEM, 5396)
+--[[SevuEntertainment(c)]]--
+local recAnimateText = false
+local startSeconds = 30
 
-local arr = {
-{1, 1, 1},
-{1, 2, 1},
-{1, 1, 1}
-}
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_ENERGY)
+combat:setParameter(COMBAT_PARAM_CREATEITEM, ITEM_WILDGROWTH)
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+local area = createCombatArea({
+    {1, 1, 1},
+    {1, 2, 1},
+    {1, 1, 1}
+})
+combat:setArea(area)
 
-function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+local function mwCountDownStart(position, seconds)
+    local spectators = Game.getSpectators(position, false, true, 7, 7, 7, 7)
+    if #spectators > 0 then
+        if not recAnimateText then
+            Creature.say(spectators[1], seconds, TALKTYPE_MONSTER_SAY, false, nil, position)
+        else
+            Player.sendTextMessage(spectators[1], MESSAGE_EXPERIENCE_OTHERS, nil, position, seconds, TEXTCOLOR_MAYABLUE)
+        end
+    end
+    if seconds > 0 then
+        addEvent(mwCountDownStart, 1000, position, seconds -1)
+    end
+end
+
+function onCastSpell(creature, variant, isHotkey)
+    if combat:execute(creature, variant) then
+        mwCountDownStart(variant:getPosition(), startSeconds)
+        return true
+    end
+    return false
 end

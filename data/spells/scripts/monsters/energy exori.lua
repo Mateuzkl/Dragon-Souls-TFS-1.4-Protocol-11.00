@@ -1,25 +1,27 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ENERGYHIT)
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
 
-local condition = createConditionObject(CONDITION_ENERGY)
-setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 1, 3000, -200)
-addDamageCondition(condition, 1, 5000, -100)
-setCombatCondition(combat, condition)
+function getFormulaValues(cid, level, maglevel)
+    local min = -(level * 22) / 10
+    local max = -(level * 38.5) / 10
+    return min, max
+end
+
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -22, -38.5, 1, -1)
 
 local arr = {
-{0, 0, 0, 0, 0},
-{0, 1, 1, 1, 0},
-{0, 1, 2, 1, 0},
-{0, 1, 1, 1, 0},
-{0, 0, 0, 0, 0}
+    {0, 0, 0, 0, 0},
+    {0, 1, 1, 1, 0},
+    {0, 1, 2, 1, 0},
+    {0, 1, 1, 1, 0},
+    {0, 0, 0, 0, 0}
 }
 
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+local area = CombatArea()
+area:setMatrix(arr)
+combat:setArea(area)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+    return combat:execute(cid, var)
 end

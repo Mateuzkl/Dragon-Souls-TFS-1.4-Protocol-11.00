@@ -1,0 +1,18 @@
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, 93)
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 61)
+combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -0.5, -30, -1.1, 0)
+
+local arr = {
+    {0, 1, 0},
+    {1, 3, 1},
+    {0, 1, 0}
+}
+
+local area = createCombatArea(arr)
+combat:setArea(area)
+
+function onCastSpell(cid, var)
+    return combat:execute(cid, var)
+end

@@ -1,6 +1,6 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_LIFEDRAIN)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, 2)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_LIFEDRAIN)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_HITBYPOISON)
 
 local arr = {
 {1, 1, 1},
@@ -9,8 +9,8 @@ local arr = {
 }
 
 local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+return combat:execute(cid, var)
 end

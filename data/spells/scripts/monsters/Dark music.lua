@@ -1,27 +1,27 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_POISONDAMAGE)
-setCombatParam(combat, COMBAT_PARAM_EFFECT, 22)
-local condition = createConditionObject(CONDITION_PARALYZE)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 20000)
-setConditionParam(condition, CONDITION_PARAM_SPEED, -350)
-setConditionFormula(condition, 0, 0, 0, 0)
-setCombatCondition(combat, condition)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_POISONDAMAGE)
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
+local condition = Condition(CONDITION_PARALYZE)
+condition:setParameter(CONDITION_PARAM_TICKS, 20000)
+condition:setParameter(CONDITION_PARAM_SPEED, -350)
+condition:setFormula(0, 0, 0, 0)
+combat:addCondition(condition)
 
 local arr = {
-{1, 1, 1, 1, 1, 1, 1, 1, 1},
-{0, 1, 1, 1, 1, 1, 1, 1, 0},
-{0, 1, 1, 1, 1, 1, 1, 1, 0},
-{0, 0, 1, 1, 1, 1, 1, 0, 0},
-{0, 0, 1, 1, 1, 1, 1, 0, 0},
-{0, 0, 0, 1, 1, 1, 0, 0, 0},
-{0, 0, 0, 1, 1, 1, 0, 0, 0},
-{0, 0, 0, 0, 1, 0, 0, 0, 0},
-{0, 0, 0, 0, 3, 0, 0, 0, 0},
+    {1, 1, 1, 1, 1, 1, 1, 1, 1},
+    {0, 1, 1, 1, 1, 1, 1, 1, 0},
+    {0, 1, 1, 1, 1, 1, 1, 1, 0},
+    {0, 0, 1, 1, 1, 1, 1, 0, 0},
+    {0, 0, 1, 1, 1, 1, 1, 0, 0},
+    {0, 0, 0, 1, 1, 1, 0, 0, 0},
+    {0, 0, 0, 1, 1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 3, 0, 0, 0, 0},
 }
 
 local area = createCombatArea(arr)
-setCombatArea(combat, area)
+combat:setArea(area)
 
 function onCastSpell(cid, var)
-	doCombat(cid, combat, var)
+    return combat:execute(cid, var)
 end

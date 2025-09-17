@@ -1,16 +1,10 @@
-local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_GREEN_RINGS)
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_POISONDAMAGE)
+local combat = Combat()
+combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_GREEN_RINGS)
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_POISONDAMAGE)
 
-local arr = {
- {1, 1, 1},
- {1, 2, 1},
- {1, 1, 1},
-}
-
-local area = createCombatArea(arr)
-setCombatArea(combat, area)
+local area = createCombatArea({{1, 1, 1}, {1, 2, 1}, {1, 1, 1}})
+combat:setArea(area)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+    return combat:execute(cid, var)
 end
