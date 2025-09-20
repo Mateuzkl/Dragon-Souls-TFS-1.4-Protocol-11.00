@@ -1766,6 +1766,14 @@ class Player final : public Creature, public Cylinder
 			lastWalking = OTSYS_TIME() + value;
 		}
 
+		bool isRingReviving() const {
+			return ringReviving;
+		}
+		void setRingReviving(bool value) {
+			ringReviving = value;
+		}
+		bool tryStartRingRevive();
+
 		// Momentum system functions
 		uint32_t getHelmetCooldownReduction() const;
 		void setHelmetCooldownReduction(uint32_t reduction);
@@ -2016,6 +2024,10 @@ class Player final : public Creature, public Cylinder
 		bool logged = false;
 		bool inventoryAbilities[CONST_SLOT_LAST + 1] = {};
 		bool imbuementTrackerWindowOpen = false;
+
+		bool ringReviving = false;
+		bool ignoredByMonsters = false;
+		Item* reviveCorpse = nullptr;
 
 		static uint32_t playerCombatAutoID;
 		static uint32_t playerAutoID;

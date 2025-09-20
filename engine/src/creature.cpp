@@ -22,6 +22,7 @@
 #include "creature.h"
 #include "game.h"
 #include "monster.h"
+#include "player.h"
 #include "configmanager.h"
 #include "scheduler.h"
 
@@ -633,6 +634,12 @@ void Creature::onCreatureMove(Creature* creature, const Tile* newTile, const Pos
 
 void Creature::onDeath()
 {
+	if (Player* player = getPlayer()) {
+		if (player->tryStartRingRevive()) {
+			return;
+		}
+	}
+
 	bool lastHitUnjustified = false;
 	bool mostDamageUnjustified = false;
 	Creature* lastHitCreature = g_game.getCreatureByID(lastHitCreatureId);
@@ -1688,9 +1695,9 @@ bool FrozenPathingConditionCall::operator()(const Position& startPos, const Posi
 
 bool Creature::isInvisible() const
 {
-	return std::find_if(conditions.begin(), conditions.end(), [] (const Condition* condition) {
-		return condition->getType() == CONDITION_INVISIBLE || condition->getType() == CONDITION_REVIVE;
-	}) != conditions.end();
+    return std::find_if(conditions.begin(), conditions.end(), [] (const Condition* condition) {
+        return condition->getType() == CONDITION_INVISIBLE;
+    }) != conditions.end();
 }
 
 bool Creature::getPathTo(const Position& targetPos, std::forward_list<Direction>& dirList, const FindPathParams& fpp) const
