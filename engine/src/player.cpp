@@ -4262,6 +4262,10 @@ bool Player::isImmune(ConditionType_t type) const
 
 bool Player::isAttackable() const
 {
+	if (hasCondition(CONDITION_REVIVE)) {
+		return false;
+	}
+	
 	return !hasFlag(PlayerFlag_CannotBeAttacked);
 }
 

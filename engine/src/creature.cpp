@@ -82,6 +82,11 @@ bool Creature::canSeeCreature(const Creature* creature) const
 	if (!canSeeInvisibility() && creature->isInvisible()) {
 		return false;
 	}
+	
+	if (creature->hasCondition(CONDITION_REVIVE)) {
+		return false;
+	}
+	
 	return true;
 }
 
@@ -1684,7 +1689,7 @@ bool FrozenPathingConditionCall::operator()(const Position& startPos, const Posi
 bool Creature::isInvisible() const
 {
 	return std::find_if(conditions.begin(), conditions.end(), [] (const Condition* condition) {
-		return condition->getType() == CONDITION_INVISIBLE;
+		return condition->getType() == CONDITION_INVISIBLE || condition->getType() == CONDITION_REVIVE;
 	}) != conditions.end();
 }
 

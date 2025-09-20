@@ -628,6 +628,13 @@ bool Monster::isTarget(const Creature* creature) const
 		return false;
 	}
 
+	if (creature->getPlayer()) {
+		const Player* player = creature->getPlayer();
+		if (player->hasCondition(CONDITION_REVIVE) || player->hasFlag(PlayerFlag_IgnoredByMonsters)) {
+			return false;
+		}
+	}
+
 	Creature* thisCreature = const_cast<Creature*>(creature);
 	if (thisCreature->getProtectionCombatStatus() == COMBAT_STATUS_IN_CHECK) {
 		return false;

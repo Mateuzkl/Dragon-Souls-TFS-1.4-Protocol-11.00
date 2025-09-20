@@ -386,6 +386,10 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 
 	if (attacker) {
 		if (targetPlayer) {
+			if (targetPlayer->hasCondition(CONDITION_REVIVE)) {
+				return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
+			}
+			
 			if (targetPlayer->hasFlag(PlayerFlag_CannotBeAttacked)) {
 				return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 			}

@@ -184,7 +184,8 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_SILENCE:
 			return new ConditionSilence(id, type, ticks, buff, subId);
 
-
+		case CONDITION_REVIVE:
+			return new ConditionRevive(id, type, ticks, buff, subId);
 
 		case CONDITION_ATTRIBUTES:
 			return new ConditionAttributes(id, type, ticks, buff, subId);
@@ -1874,6 +1875,21 @@ bool ConditionSpellGroupCooldown::startCondition(Creature* creature)
 		}
 	}
 	return true;
+}
+
+bool ConditionRevive::startCondition(Creature* creature)
+{
+	return Condition::startCondition(creature);
+}
+
+void ConditionRevive::endCondition(Creature* creature)
+{
+	// No special cleanup needed - condition removal is handled automatically
+}
+
+uint32_t ConditionRevive::getIcons() const
+{
+	return ICON_SWORDS;
 }
 
 bool ConditionSilence::startCondition(Creature* creature)

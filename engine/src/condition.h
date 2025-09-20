@@ -470,6 +470,22 @@ protected:
 	uint16_t staminaGain = 1;
 };
 
+class ConditionRevive final : public ConditionGeneric
+{
+public:
+	ConditionRevive(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0) :
+		ConditionGeneric(id, type, ticks, buff, subId) {}
+
+	bool startCondition(Creature* creature) final;
+	void endCondition(Creature* creature) final;
+
+	ConditionRevive* clone() const final {
+		return new ConditionRevive(*this);
+	}
+
+	uint32_t getIcons() const final;
+};
+
 class ConditionSilence final : public ConditionGeneric
 {
 public:
