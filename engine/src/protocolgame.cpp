@@ -1734,7 +1734,14 @@ void ProtocolGame::sendReLoginWindow(uint8_t unfairFightReduction)
 	msg.addByte(0x00);
 	msg.addByte(unfairFightReduction);
 	if (version >= 1120) {
-		msg.addByte(0x00); // use death redemption (boolean)
+
+		bool suppressDeathWindow = false;
+		if (player) {
+			if (const Player* p = player->getPlayer()) {
+				suppressDeathWindow = p->isRingReviving();
+			}
+		}
+		msg.addByte(suppressDeathWindow ? 0x01 : 0x00);
 	}
 	writeToOutputBuffer(msg);
 }

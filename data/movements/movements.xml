@@ -349,6 +349,8 @@
 	<movevent event="DeEquip" itemid="10312" slot="ring" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="10314" slot="ring" level="100" function="onEquipItem" />
 	<movevent event="DeEquip" itemid="10314" slot="ring" function="onDeEquipItem" />
+	<movevent event="Equip" itemid="2354" slot="ring" script="ring_revive.lua" />
+	<movevent event="DeEquip" itemid="2354" slot="ring" script="ring_revive.lua" />
 
 	<!-- Helmets -->
 	<movevent event="Equip" itemid="2323" slot="head" function="onEquipItem">

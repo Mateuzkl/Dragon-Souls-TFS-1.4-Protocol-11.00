@@ -2344,6 +2344,12 @@ uint32_t Player::getIP() const
 
 void Player::death(Creature* lastHitCreature)
 {
+	if (getInventoryItem(CONST_SLOT_RING) && getInventoryItem(CONST_SLOT_RING)->getID() == 2354) {
+		if (tryStartRingRevive()) {
+			return;
+		}
+	}
+
 	loginPosition = town->getTemplePosition();
 
 	if (skillLoss) {
@@ -6368,3 +6374,104 @@ void Player::setHelmetCooldownReduction(uint32_t reduction) {
 	helmetCooldownReduction = reduction;
 }
 
+bool Player::tryStartRingRevive() {
+    if (ringReviving) {
+        return true;
+    }
+
+    static constexpr uint16_t REVIVE_RING_ITEMID = 2354;
+    static constexpr uint32_t RING_COOLDOWN_STORAGE = 900002;
+    static constexpr uint32_t COOLDOWN_TIME = 300;
+    static constexpr uint16_t CORPSE_OUTFIT_ID = 3065;
+
+    uint32_t currentTime = static_cast<uint32_t>(std::time(nullptr));
+    int32_t cooldownEnd = 0;
+    getStorageValue(RING_COOLDOWN_STORAGE, cooldownEnd);
+    
+    if (cooldownEnd > static_cast<int32_t>(currentTime)) {
+        uint32_t remainingTime = cooldownEnd - currentTime;
+        std::ostringstream ss;
+        ss << "Voce deve aguardar " << remainingTime << " segundos para usar o anel novamente.";
+        sendTextMessage(MESSAGE_STATUS_CONSOLE_ORANGE, ss.str());
+        return false;
+    }
+
+    Item* ringItem = getInventoryItem(CONST_SLOT_RING);
+    if (!ringItem || ringItem->getID() != REVIVE_RING_ITEMID) {
+        return false;
+    }
+
+    g_game.internalRemoveItem(ringItem, 1);
+    addStorageValue(900001, static_cast<int32_t>(std::time(nullptr) + 300));
+    addStorageValue(RING_COOLDOWN_STORAGE, static_cast<int32_t>(currentTime + COOLDOWN_TIME));
+
+    ringReviving = true;
+    ignoredByMonsters = true;
+
+    setAttackedCreature(nullptr);
+    onIdleStatus();
+
+    g_game.addCreatureHealth(this);
+
+    Outfit_t originalOutfit = defaultOutfit;
+    Outfit_t corpseOutfit = originalOutfit;
+    corpseOutfit.lookType = CORPSE_OUTFIT_ID;
+    defaultOutfit = corpseOutfit;
+    g_game.internalCreatureChangeOutfit(this, corpseOutfit);
+
+    if (!reviveCorpse) {
+        Item* corpse = Item::CreateItem(3058);
+        if (corpse) {
+            reviveCorpse = corpse;
+            
+            std::ostringstream desc;
+            desc << getName() << " foi revivido pelo Ankh of life. Este corpo permanece como lembranca de sua morte.";
+            corpse->setSpecialDescription(desc.str());
+            
+            g_game.internalAddItem(getTile(), corpse, INDEX_WHEREEVER, FLAG_NOLIMIT);
+        }
+    }
+
+    sendTextMessage(MESSAGE_STATUS_CONSOLE_ORANGE, "Voce sera revivido em 15 segundos.");
+    g_game.addMagicEffect(getPosition(), CONST_ME_SOUND_RED);
+
+    if (!hasCondition(CONDITION_REVIVE)) {
+        Condition* revive = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_REVIVE, 15000, 0);
+        addCondition(revive, true);
+    }
+
+    setMovementBlocked(true);
+
+    uint32_t playerId = getID();
+    Outfit_t savedOutfit = originalOutfit;
+    
+    g_scheduler.addEvent(createSchedulerTask(15000, [playerId, savedOutfit]() {
+        if (Player* p = g_game.getPlayerByID(playerId)) {
+            p->health = p->getMaxHealth();
+            p->mana = p->getMaxMana();
+            g_game.addCreatureHealth(p);
+            p->sendPlayerMana(p);
+
+            p->removeCombatCondition(CONDITION_POISON);
+            p->removeCombatCondition(CONDITION_FIRE);
+            p->removeCombatCondition(CONDITION_ENERGY);
+            p->removeCombatCondition(CONDITION_BLEEDING);
+            p->removeCondition(CONDITION_PARALYZE, true);
+            p->removeCondition(CONDITION_REVIVE, true);
+
+            p->defaultOutfit = savedOutfit;
+            g_game.internalCreatureChangeOutfit(p, savedOutfit);
+
+            p->ignoredByMonsters = false;
+
+            g_game.addMagicEffect(p->getPosition(), CONST_ME_HOLYAREA);
+            p->sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce foi revivido pelo seu anel.");
+            g_game.addAnimatedText("voce foi revivido", p->getPosition(), TEXTCOLOR_GREEN);
+
+            p->setMovementBlocked(false);
+            p->setRingReviving(false);
+        }
+    }));
+
+    return true;
+}
