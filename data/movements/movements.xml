@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <movements>
+
+	<!-- 792 -->
+	<movevent event="StepIn" actionid="9892" script="Outhers/sala.lua"/>
+	<!-- First items for new character tile -->
+	<movevent event="StepIn" actionid="30001" script="Outhers/firstitems.lua"/>
+	<!-- Ring FS -->
+	<movevent event="Equip" itemid="4863" slot="ring" script="Outhers/Fighting Spirit.lua"/>
+	<movevent event="DeEquip" itemid="5884" slot="ring" script="Outhers/Fighting Spirit.lua"/>
+	<!-- Sistema De Pisos -->
+	<movevent event="StepIn" actionid="154" script="Pisos/Mag.lua" />
+
+	<!-- Vip tiles -->
+     <movevent event="StepIn" actionid="61124" script="VIP/bemvindo.lua" />
+
+	 <!-- Delay Escada! -->
+	<movevent event="StepIn" itemid="8281;459;8564;8565;8566;8560;8561;8562;8563;8559;6924;6923;6922;6918;6919;6920;6917;9574;480;5259;5260;3687;3688;9573;1388;1390;1392;1394;5258;6921;6130;6129;6128;411;423;4836;9846;432;433;4837;475;429;3138;8282;476;3219;3220;8283;479;4834;4835;7925;7924;1396;1385;8372;6915;6913;6911;6909;3685;3683;3681;8374;8376;8378" script="Escada.lua"/>
+
 	<!-- Decaying tiles -->
 	<movevent event="StepIn" itemid="293" script="decay.lua" />
 	<movevent event="StepIn" itemid="461" script="decay.lua" />

@@ -9978,7 +9978,7 @@
 		<attribute key="weight" value="120" />
 	</item>
 	<item id="5884" article="a" name="fighting spirit">
-			<attribute key="description" value="Item utilizado para duplicar a experiencia obtida de criaturas. Tem duracao de 15 minutos (clique no item)." />
+			<attribute key="description" value="Item utilizado para duplicar a experiencia obtida de criaturas. Tem duracao de 15 minutos." />
 		<attribute key="slotType" value="ring"/>
 		<attribute key="weight" value="600" />
 	</item>

@@ -3,6 +3,10 @@ local ITEM_GOLD_COIN      = 2148
 local ITEM_PLATINUM_COIN  = 2152
 local ITEM_CRYSTAL_COIN   = 2160
 
+-- Fighting Spirit IDs
+local FIGHTING_SPIRIT_ORIGINAL = 4863
+local FIGHTING_SPIRIT_EQUIPPED = 5884
+
 local blockTeleportTrashing = true
 
 local STONE_SKIN_AMULET       = 2197   -- ID for Stone Skin Amulet
@@ -99,13 +103,27 @@ end
 -- Main event: onMoveItem
 local event = Event()
 event.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
-    -- Corpse IDs display functionality
+    -- Loots Animados!
     local allowedCorpseIds = {
-        [20367] = true, -- Corpse Type A
-        [2881] = true,  -- Corpse Type B
-        [2916] = true,  -- Corpse Type C
-        [3065] = true,  -- Default Corpse
-        [5995] = true   -- Added for testing
+        [2857] = true,
+        [2858] = true, 
+        [2967] = true, 
+        [2968] = true, 
+        [3065] = true, 
+        [3066] = true, 
+        [3128] = true, 
+        [3129] = true, 
+        [3130] = true, 
+        [3059] = true, 
+        [5527] = true, 
+        [6068] = true, 
+        [7091] = true, 
+        [38914] = true, 
+        [38913] = true, 
+        [38909] = true, 
+        [39128] = true, 
+        [39127] = true, 
+        [38908] = true
     }
     
     if fromCylinder and fromCylinder:isItem() then
@@ -113,6 +131,17 @@ event.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCyl
         if allowedCorpseIds[fromCylinderId] then
             if toCylinder ~= fromCylinder then
                 self:say(string.format("x%d %s", count, item:getName()), TALKTYPE_MONSTER_SAY, false, nil, fromCylinder:getPosition())
+            end
+        else
+            
+            local parentContainer = fromCylinder:getParent()
+            if parentContainer and parentContainer:isItem() then
+                local parentId = parentContainer:getId()
+                if allowedCorpseIds[parentId] then
+                    if toCylinder ~= fromCylinder then
+                        self:say(string.format("x%d %s", count, item:getName()), TALKTYPE_MONSTER_SAY, false, nil, parentContainer:getPosition())
+                    end
+                end
             end
         end
     end
@@ -358,7 +387,17 @@ event.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCyl
         return false
     end
 
-    -- 14) Check anti-push limit
+    -- 14) Fighting Spirit remove
+    if fromPosition.x == CONTAINER_POSITION and fromPosition.y == CONST_SLOT_RING then
+        if item:getId() == FIGHTING_SPIRIT_EQUIPPED then
+            self:removeCondition(CONDITION_DOUBLE_XP)
+            item:remove()
+            self:sendTextMessage(MESSAGE_STATUS_CONSOLE_RED, "O Fighting Spirit foi perdido ao ser removido do slot.")
+            return false
+        end
+    end
+
+    -- 15) Check anti-push limit
     if not antiPush(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder) then
         return false
     end
