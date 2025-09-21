@@ -1,8 +1,9 @@
-function onUse(cid, item, frompos, item2, topos)
-
-if item2.itemid == 13662 then
-doTransformItem(item2.uid,13627)
-doDecayItem(item2.uid)
-doRemoveItem(item.uid,10)
-end
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    if target:getId() == 13864 then
+        target:transform(7759)
+        target:decay()
+        item:remove(10)
+    end
+    
+    return true
 end

@@ -98,6 +98,23 @@
 	<action itemid="38915" script="other/change_gold.lua" />
 
 
+	-----begin bryan scripts-----
+	<action uniqueid="3021" script="792/Outhers/hellhounds.lua"/>
+	<action itemid="2307" script="792/Outhers/firerune.lua" allowfaruse="1"/>
+	<action itemid="6576" script="792/Outhers/fireworks.lua"/>
+	<action itemid="2036" script="792/Outhers/watch.lua"/>
+
+	----- Forja -----
+	<action itemid="2321" script="792/forja/Blacksmith Hammer.lua"/>
+	<action itemid="7142" script="792/forja/Bucket.lua"/>
+	<action itemid="13864" script="792/forja/Bucket of water.lua"/>
+	<action itemid="7759" script="792/forja/Emeralds Refinadas.lua"/>
+	<action itemid="13632" script="792/forja/Violet Gem Refinadas.lua"/>
+	<action itemid="13633" script="792/forja/Gold Nugget Refinados.lua"/>
+	<action itemid="5944" script="792/forja/Soul Orb.lua"/>
+	<action itemid="8300" script="792/forja/Orb.lua"/>
+	<action itemid="2553" script="792/forja/Pick/Pick.lua"/>
+
 	<!-- Enchanting -->
 	<action fromid="2146" toid="2147" script="other/enchanting.lua" />
 	<action fromid="2149" toid="2150" script="other/enchanting.lua" />

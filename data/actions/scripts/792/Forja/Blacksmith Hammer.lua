@@ -1,74 +1,75 @@
-function onUse(cid, item, frompos, item2, topos)
-
-piecepos1 = {x=444, y=197, z=4, stackpos=2} or {x=444, y=201, z=4, stackpos=2}
-piecepos2 = {x=443, y=197, z=4, stackpos=2} or {x=443, y=201, z=4, stackpos=2}
-piecepos3 = {x=443, y=198, z=4, stackpos=2} or {x=443, y=202, z=4, stackpos=2}
-piecepos4 = {x=443, y=199, z=4, stackpos=2} or {x=443, y=203, z=4, stackpos=2}
-piecepos5 = {x=444, y=199, z=4, stackpos=2} or {x=444, y=203, z=4, stackpos=2}
-
-getpiece1 = getThingfromPos(piecepos1)
-getpiece2 = getThingfromPos(piecepos2)
-getpiece3 = getThingfromPos(piecepos3)
-getpiece4 = getThingfromPos(piecepos4)
-getpiece5 = getThingfromPos(piecepos5)
-
-if getpiece1.itemid == 2321 and getpiece3.itemid == 2149 and getpiece3.type == 10 then
-	skill_level = getPlayerSkill(cid,6)
-	random_number = math.random(1,(100+skill_level/10))
-	doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-	doSendMagicEffect(topos,CONST_ME_BLOCKHIT)
-	if random_number<=skill_level then
-	doTransformItem(item2.uid,13626)
-	doDecayItem(item2.uid)
-	doPlayerSendTextMessage(cid,19,"Voce refinou 10 small emeralds.")
-	doPlayerAddHealth(cid, -25)
-end
-	doPlayerAddSkillTry(cid,6,1)
-	doPlayerAddHealth(cid, -25)
-   
-elseif getpiece1.itemid == 2321 and getpiece3.itemid == 2153 then
-	skill_level = getPlayerSkill(cid,6)
-	random_number = math.random(1,(100+skill_level/10))
-	doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-	doSendMagicEffect(topos,CONST_ME_BLOCKHIT)
-	if random_number<=skill_level then
-	doTransformItem(item2.uid,13632)
-	doDecayItem(item2.uid)
-	doPlayerSendTextMessage(cid,19,"Voce refinou um violet gem.")
-	doPlayerAddHealth(cid, -25)
-end
-	doPlayerAddSkillTry(cid,6,1)
-	doPlayerAddHealth(cid, -25)
-   
-elseif getpiece1.itemid == 2321 and getpiece3.itemid == 2157 and getpiece3.type == 10 then
-	skill_level = getPlayerSkill(cid,6)
-	random_number = math.random(1,(100+skill_level/10))
-	doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-	doSendMagicEffect(topos,CONST_ME_BLOCKHIT)
-	if random_number<=skill_level then
-	doTransformItem(item2.uid,13633)
-	doDecayItem(item2.uid)
-	doPlayerSendTextMessage(cid,19,"Voce refinou 10 gold nuggets.")
-	doPlayerAddHealth(cid, -25)
-end
-	doPlayerAddSkillTry(cid,6,1)
-	doPlayerAddHealth(cid, -25)
-   
-elseif getpiece1.itemid == 2321 and getpiece3.itemid == 13641 and getpiece3.type == 10 then
-	skill_level = getPlayerSkill(cid,6)
-	random_number = math.random(1,(100+skill_level/10))
-	doSendAnimatedText(topos, "Cleck!", TEXTCOLOR_ORANGE)
-	doSendMagicEffect(topos,CONST_ME_BLOCKHIT)
-	if random_number<=skill_level then
-	doRemoveItem(item2.uid,item2.type)
-	doPlayerAddItem(cid,13685,1)
-	doPlayerSendTextMessage(cid,19,"Voce refinou 10 iron nuggets.")
-	doPlayerAddHealth(cid, -25)
-end
-	doPlayerAddSkillTry(cid,6,1)
-	doPlayerAddHealth(cid, -25)
-else 
-return 0
-end
-return 1
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    local positions = {
+        {Position(444, 197, 4), Position(444, 201, 4)},
+        {Position(443, 197, 4), Position(443, 201, 4)},
+        {Position(443, 198, 4), Position(443, 202, 4)},
+        {Position(443, 199, 4), Position(443, 203, 4)},
+        {Position(444, 199, 4), Position(444, 203, 4)}
+    }
+    
+    local getItem = function(pos)
+        local tile = Tile(pos[1])
+        if tile then
+            return tile:getTopVisibleThing()
+        end
+        tile = Tile(pos[2])
+        if tile then
+            return tile:getTopVisibleThing()
+        end
+        return nil
+    end
+    
+    local getpiece1 = getItem(positions[1])
+    local getpiece3 = getItem(positions[3])
+    
+    if not getpiece1 or not getpiece3 then
+        return false
+    end
+    
+    local skill_level = player:getSkillLevel(SKILL_MINING)
+    local random_number = math.random(1, 100 + skill_level/10)
+    
+    toPosition:sendAnimatedText("Cleck!", TEXTCOLOR_ORANGE)
+    toPosition:sendMagicEffect(CONST_ME_BLOCKHIT)
+    
+    if getpiece1:getId() == 2321 and getpiece3:getId() == 2149 and target:getSubType() == 10 then
+        if random_number <= skill_level then
+            target:transform(13626)
+            target:decay()
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce refinou 10 small emeralds.")
+        end
+        player:addSkillTries(SKILL_MINING, 1)
+        player:addHealth(-25)
+        
+    elseif getpiece1:getId() == 2321 and getpiece3:getId() == 2153 then
+        if random_number <= skill_level then
+            target:transform(13632)
+            target:decay()
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce refinou um violet gem.")
+        end
+        player:addSkillTries(SKILL_MINING, 1)
+        player:addHealth(-25)
+        
+    elseif getpiece1:getId() == 2321 and getpiece3:getId() == 2157 and target:getSubType() == 10 then
+        if random_number <= skill_level then
+            target:transform(13633)
+            target:decay()
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce refinou 10 gold nuggets.")
+        end
+        player:addSkillTries(SKILL_MINING, 1)
+        player:addHealth(-25)
+        
+    elseif getpiece1:getId() == 2321 and getpiece3:getId() == 13641 and target:getSubType() == 10 then
+        if random_number <= skill_level then
+            target:remove(target:getSubType())
+            player:addItem(13685, 1)
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Voce refinou 10 iron nuggets.")
+        end
+        player:addSkillTries(SKILL_MINING, 1)
+        player:addHealth(-25)
+    else
+        return false
+    end
+    
+    return true
 end

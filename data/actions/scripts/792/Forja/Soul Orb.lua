@@ -1,9 +1,10 @@
-function onUse(cid, item, frompos, item2, topos)
-
-if item2.itemid == 5944 then
-doTransformItem(item.uid,13663)
-doDecayItem(item.uid)
-doRemoveItem(item2.uid,1)
-doCreateItem(13651,1,topos)
-end
+function onUse(player, item, fromPosition, target, toPosition, isHotkey)
+    if target:getId() == 5944 then
+        item:transform(13663)
+        item:decay()
+        target:remove(1)
+        Game.createItem(13651, 1, toPosition)
+    end
+    
+    return true
 end
