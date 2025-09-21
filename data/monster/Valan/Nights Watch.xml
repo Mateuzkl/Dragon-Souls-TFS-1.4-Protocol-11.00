@@ -19,7 +19,7 @@
       <flag runonhealth="10"/>
     </flags>
     <attacks>
-      <attack name="Diceshaker" interval="6000" chance="5" min="-100" max="-200"/>
+      <attack name="Diceshaker_1" interval="6000" chance="5" min="-100" max="-200"/>
       <attack name="melee" interval="5000"  chance="10" min="-3000" max="-3400"/>
       <attack name="melee" interval="2900"  chance="5" min="-3000" max="-4200"/>
       <attack name="large rock" interval="2500" chance="50" min="-2800" max="-3000"/>

@@ -1264,6 +1264,7 @@ void LuaScriptInterface::registerFunctions()
 	registerEnum(CONDITION_STAMINAREGEN)
 	registerEnum(CONDITION_SOULBONUS)
 	registerEnum(CONDITION_EXHAUSTED)
+	registerEnum(CONDITION_DOUBLE_XP)
 
 	registerEnum(CONDITIONID_DEFAULT)
 	registerEnum(CONDITIONID_COMBAT)

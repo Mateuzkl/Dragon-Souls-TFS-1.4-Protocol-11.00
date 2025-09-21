@@ -6108,6 +6108,11 @@ bool Player::applyBonusExperience(uint64_t& gainExp, Creature* source)
 		return false;
 	}
 
+	Item* ring = getInventoryItem(CONST_SLOT_RING);
+	if ((ring && ring->getID() == 5884) || hasCondition(CONDITION_DOUBLE_XP)) {
+		gainExp *= 2;
+	}
+
 	for (uint8_t preySlotId = 0; preySlotId < PREY_SLOTCOUNT; preySlotId++) {
 		PreyData& currentPrey = preyData[preySlotId];
 		if (currentPrey.state == STATE_ACTIVE && currentPrey.bonusType == BONUS_XP_BONUS && currentPrey.preyMonster == source->getName()) {

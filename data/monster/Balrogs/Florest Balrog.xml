@@ -18,7 +18,7 @@
       <attribute key="areaEffect" value="redspark"/>
       <attribute key="shootEffect" value="spear"/>
     </attack>
-    <attack name="Terra Wave" interval="6000" chance="30" min="-5500" max="-6700">
+    <attack name="poison ball" interval="6000" chance="30" min="-5500" max="-6700">
       <attribute key="areaEffect" value="redspark"/>
       <attribute key="shootEffect" value="spear"/>
     </attack>

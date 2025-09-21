@@ -21,7 +21,7 @@
   <attack name="melee" interval="2000"  chance="24"  min="-1050" max="-1510"/>
   <attack name="berserk" interval="3000"  chance="24"  min="-350" max="-610"/>
   <attack name="orshabaal berserk" interval="3500"  chance="24"  min="-700" max="-1099"/>
-  <attack name="Groundshaker" interval="6000"   chance="24" min="-900" max="-1323"/>
+  <attack name="Diceshaker_1" interval="6000"   chance="24" min="-900" max="-1323"/>
   <attack name="explosion" interval="2000"   chance="24" min="-250" max="-410"/>
  <attack name="physical" interval="1000" chance="24" range="7" min="-50" max="-500">
   <attribute key="shootEffect" value="largerock" /> 

@@ -209,6 +209,7 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_MANASHIELD:
 		case CONDITION_STUN:
 		case CONDITION_HASTEGA:
+		case CONDITION_DOUBLE_XP:
 			return new ConditionGeneric(id, type, ticks, buff, subId);
 
 		default:

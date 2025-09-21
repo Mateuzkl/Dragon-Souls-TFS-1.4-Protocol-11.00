@@ -21,7 +21,7 @@
       <attack name="melee" interval="2000" min="-30000" max="-40000"/>
       <attack name="berserk" interval="2500" chance="40" min="-40000" max="-50000"/>
       <attack name="Tides Of Darkness" interval="5000" chance="30" min="-40000" max="-50000"/>
-      <attack name="Diceshaker" interval="4000" chance="30" min="-60000" max="-70000"/>
+      <attack name="Diceshaker_1" interval="4000" chance="30" min="-60000" max="-70000"/>
 	  <attack name="spear" interval="3000" chance="30"  min="-70000" max="-80000"/>
 	  <attack name="life drain" interval="3500" chance="30"  min="-80000" max="-90000"/>
     </attacks>

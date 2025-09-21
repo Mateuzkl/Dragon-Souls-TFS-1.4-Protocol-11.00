@@ -25625,6 +25625,18 @@
 	<item id="39655" name="Revitalizing Essence">
 		<attribute key="description" value="Pocicao de Vigor: Esta pocao regenera 1 ponto de stamina a cada segundo por 5 minutos. Ideal para fornecer energia continua, aumentando a resistencia e permitindo um desempenho prolongado durante atividades fisicas intensas ou desafios prolongados.." />
 	</item>
+	<item id="21584" article="a" name="reward chest">
+		<attribute key="type" value="rewardchest" />
+		<attribute key="description" value="This chest contains your rewards earned in battles." />
+		<attribute key="containersize" value="32" />
+		<attribute key="pickupable" value="0" />
+		<attribute key="moveable" value="0" />
+	</item>
+	<item id="21518" article="a" name="reward container">
+		<attribute key="containersize" value="32" />
+		<attribute key="pickupable" value="0" />
+		<attribute key="moveable" value="0" />
+	</item>
 	<item id="20001" name="water" />
 	<item id="20002" name="blood" />
 	<item id="20003" name="beer" />

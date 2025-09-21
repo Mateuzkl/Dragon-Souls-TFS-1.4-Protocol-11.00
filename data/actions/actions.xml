@@ -101,8 +101,6 @@
 	-----begin bryan scripts-----
 	<action uniqueid="3021" script="792/Outhers/hellhounds.lua"/>
 	<action itemid="2307" script="792/Outhers/firerune.lua" allowfaruse="1"/>
-	<action itemid="6576" script="792/Outhers/fireworks.lua"/>
-	<action itemid="2036" script="792/Outhers/watch.lua"/>
 
 	----- Forja -----
 	<action itemid="2321" script="792/forja/Blacksmith Hammer.lua"/>
@@ -113,14 +111,6 @@
 	<action itemid="13633" script="792/forja/Gold Nugget Refinados.lua"/>
 	<action itemid="5944" script="792/forja/Soul Orb.lua"/>
 	<action itemid="8300" script="792/forja/Orb.lua"/>
-	<action itemid="2553" script="792/forja/Pick/Pick.lua"/>
-
-	<!-- Enchanting -->
-	<action fromid="2146" toid="2147" script="other/enchanting.lua" />
-	<action fromid="2149" toid="2150" script="other/enchanting.lua" />
-	<action itemid="2342" script="other/enchanting.lua" />
-	<action fromid="7759" toid="7762" script="other/enchanting.lua" />
-	<action itemid="24739" script="other/enchanting.lua" />
 	
 	<!-- Imbuement System -->
 	<action fromid="27728" toid="27729" function="imbuement" />
@@ -140,7 +130,6 @@
 	<action itemid="2420" script="tools/machete.lua" />
 	<action itemid="2442" script="tools/machete.lua" />
 	<action itemid="2550" script="tools/scythe.lua" />
-	<action itemid="2553" script="tools/pick.lua" />
 	<action itemid="2566" script="tools/kitchen_knife.lua" />
 	<action itemid="2580" script="tools/fishing.lua" allowfaruse="1" />
 	<action itemid="2554" script="tools/shovel.lua" />
@@ -270,7 +259,9 @@
 	<action itemid="486" script="other/snow_heap.lua" />
 	<action itemid="1369" script="other/teleport.lua" />
 	<action itemid="1386" script="other/teleport.lua" />
-	<action fromid="1728" toid="1731" script="other/watch.lua" />
+	<action itemid="1728" script="other/watch.lua" />
+	<action itemid="1730" script="other/watch.lua" />
+	<action itemid="1731" script="other/watch.lua" />
 	<action fromid="1816" toid="1817" script="other/wall_mirror.lua" />
 	<action fromid="1843" toid="1844" script="other/wall_mirror.lua" />
 	<action fromid="1846" toid="1847" script="other/wall_mirror.lua" />
