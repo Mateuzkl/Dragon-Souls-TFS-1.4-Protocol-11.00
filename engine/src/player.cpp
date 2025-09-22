@@ -4464,7 +4464,7 @@ void Player::setStamina(uint16_t stamina)
 	}
 }
 
-std::pair<uint32_t, uint32_t> Player::calculateResetBonus(uint32_t currentResets) const
+std::pair<uint32_t, uint32_t> Player::calculateResetBonus(uint32_t /*currentResets*/) const
 {
 	uint32_t resetStatBonus = g_config.getNumber(ConfigManager::RESET_STATBONUS);
 	

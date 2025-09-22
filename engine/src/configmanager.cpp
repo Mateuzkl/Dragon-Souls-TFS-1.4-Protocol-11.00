@@ -319,10 +319,10 @@ bool ConfigManager::load()
 	floating[RATE_ATTACK_SPEED] = getGlobalFloat(L, "rateAttackSpeed", 1.0);
 	
 
-	floating[CRITICAL_MULTIPLIER_KNIGHT] = getGlobalFloat(L, "criticalMultiplierKnight", 2.0);
-	floating[CRITICAL_MULTIPLIER_PALADIN] = getGlobalFloat(L, "criticalMultiplierPaladin", 1.8);
-	floating[CRITICAL_MULTIPLIER_MAGE] = getGlobalFloat(L, "criticalMultiplierMage", 1.5);
-	floating[CRITICAL_MULTIPLIER_DRUID] = getGlobalFloat(L, "criticalMultiplierDruid", 1.5);
+	floating[CRITICAL_MULTIPLIER_KNIGHT] = getGlobalFloat(L, "criticalMultiplierKnight", 2.0f);
+	floating[CRITICAL_MULTIPLIER_PALADIN] = getGlobalFloat(L, "criticalMultiplierPaladin", 1.8f);
+	floating[CRITICAL_MULTIPLIER_MAGE] = getGlobalFloat(L, "criticalMultiplierMage", 1.5f);
+	floating[CRITICAL_MULTIPLIER_DRUID] = getGlobalFloat(L, "criticalMultiplierDruid", 1.5f);
 
 
 	floating[CRITICAL_HEAL_PERCENT_KNIGHT] = getGlobalFloat(L, "criticalHealPercentKnight", 5.0);

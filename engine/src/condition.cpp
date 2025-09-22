@@ -779,13 +779,13 @@ bool ConditionRegeneration::executeCondition(Creature* creature, int32_t interva
 
 			if (realHealthGain > 0 && !creature->isInGhostMode()) {
 				bool isCritical = false;
-			if (Player* player = creature->getPlayer()) {
-				isCritical = Combat::checkCriticalHeal(player, realHealthGain);
-			}
-			g_game.addAnimatedText(fmt::format("+{:d}", realHealthGain), creature->getPosition(), TEXTCOLOR_DARKGREEN);
-			if (isCritical) {
-				g_game.addAnimatedText("Critical!", creature->getPosition(), TEXTCOLOR_WHITE_EXP);
-			}
+				if (Player* playerCreature = creature->getPlayer()) {
+					isCritical = Combat::checkCriticalHeal(playerCreature, realHealthGain);
+				}
+				g_game.addAnimatedText(fmt::format("+{:d}", realHealthGain), creature->getPosition(), TEXTCOLOR_DARKGREEN);
+				if (isCritical) {
+					g_game.addAnimatedText("Critical!", creature->getPosition(), TEXTCOLOR_WHITE_EXP);
+				}
 			}
 
 			if (isBuff && realHealthGain > 0) {
@@ -1883,7 +1883,7 @@ bool ConditionRevive::startCondition(Creature* creature)
 	return Condition::startCondition(creature);
 }
 
-void ConditionRevive::endCondition(Creature* creature)
+void ConditionRevive::endCondition(Creature* /*creature*/)
 {
 	// No special cleanup needed - condition removal is handled automatically
 }
@@ -1903,12 +1903,12 @@ bool ConditionSilence::executeCondition(Creature* creature, int32_t interval)
 	return Condition::executeCondition(creature, interval);
 }
 
-void ConditionSilence::endCondition(Creature* creature)
+void ConditionSilence::endCondition(Creature* /*creature*/)
 {
 	// Silence condition ended - no special cleanup needed
 }
 
-void ConditionSilence::addCondition(Creature* creature, const Condition* addCondition)
+void ConditionSilence::addCondition(Creature* /*creature*/, const Condition* addCondition)
 {
 	if (addCondition->getTicks() > getTicks()) {
 		setTicks(addCondition->getTicks());
