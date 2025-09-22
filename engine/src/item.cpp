@@ -1876,6 +1876,25 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 				s << "magic level " << std::showpos << it.abilities->stats[STAT_MAGICPOINTS] << std::noshowpos;
 			}
 
+			{
+				uint16_t dodge = 0;
+				if (item) {
+					dodge = item->getDodge();
+				} else if (it.abilities) {
+					dodge = static_cast<uint16_t>(std::max<int32_t>(0, it.abilities->dodge));
+				}
+
+				if (dodge != 0) {
+					if (begin) {
+						begin = false;
+						s << " (";
+					} else {
+						s << ", ";
+					}
+					s << "dodge " << std::showpos << static_cast<int32_t>(dodge) << std::noshowpos << '%';
+				}
+			}
+
 			int16_t show = it.abilities->absorbPercent[0];
 			if (show != 0) {
 				for (size_t i = 1; i < COMBAT_COUNT; ++i) {

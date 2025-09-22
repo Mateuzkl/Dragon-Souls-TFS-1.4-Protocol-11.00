@@ -1236,7 +1236,6 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			// handled by helper
 		} else if (tmpStrValue == "dodge") {
 			it.getAbilities().dodge = pugi::cast<int16_t>(valueAttribute.value());
-			it.getAbilities().increasePercent[combatTypeToIndex(COMBAT_PHYSICALDAMAGE)] += 
 				pugi::cast<int16_t>(valueAttribute.value());
 		} else if (tmpStrValue == "suppressdrunk") {
 			if (valueAttribute.as_bool()) {

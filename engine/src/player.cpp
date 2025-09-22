@@ -2227,22 +2227,28 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 	}
 
 	if (damage > 0) {
-		// Check for dodge from equipped items
-		int32_t totalDodgeChance = 0;
+		int32_t totalDodgeAccumulated = 0;
+		bool hasPermyriadInput = false;
 		for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
-			if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
-				continue;
-			}
-
 			Item* item = inventory[slot];
 			if (!item) {
 				continue;
 			}
 
-			totalDodgeChance += item->getDodge();
+			int32_t itemDodge = static_cast<int32_t>(item->getDodge());
+			if (itemDodge > 100) {
+				hasPermyriadInput = true;
+			}
+			totalDodgeAccumulated += itemDodge;
 		}
 
-		if (totalDodgeChance > 0 && uniform_random(1, 100) <= totalDodgeChance) {
+		int32_t totalDodgePercent = totalDodgeAccumulated;
+		if (hasPermyriadInput) {
+			totalDodgePercent = totalDodgePercent / 100;
+		}
+		totalDodgePercent = std::max<int32_t>(0, std::min<int32_t>(100, totalDodgePercent));
+
+		if (totalDodgePercent > 0 && uniform_random(1, 100) <= totalDodgePercent) {
 			damage = 0;
 			g_game.addMagicEffect(getPosition(), CONST_ME_DODGE);
 			return BLOCK_DEFENSE;
