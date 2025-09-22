@@ -383,6 +383,15 @@ class Items
 	protected:
 		ItemTypes_t getLootType(const std::string& strValue);
 
+		// helpers to reduce nesting in parseItemNode
+		void applyTypeByString(ItemType& it, const std::string& value);
+		void applyFloorChange(ItemType& it, const std::string& value);
+		void applyCorpseType(ItemType& it, const std::string& value);
+		void applyFluidSource(ItemType& it, const std::string& value);
+		void applyWeaponType(ItemType& it, const std::string& value);
+		void applySlotType(ItemType& it, const std::string& value);
+		void applyField(ItemType& it, const pugi::xml_node& attributeNode, const std::string& value);
+
 		std::map<uint16_t, uint16_t> reverseItemMap;
 		std::vector<ItemType> items;
 		InventoryVector inventory;
