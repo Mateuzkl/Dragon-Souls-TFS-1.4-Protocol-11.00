@@ -392,6 +392,10 @@ class Items
 		void applySlotType(ItemType& it, const std::string& value);
 		void applyField(ItemType& it, const pugi::xml_node& attributeNode, const std::string& value);
 
+		// helpers for reflect/increase keys (to avoid deep if-else nesting)
+		bool applyReflectKey(ItemType& it, const std::string& key, const pugi::xml_attribute& valueAttribute);
+		bool applyIncreasePercentKey(ItemType& it, const std::string& key, const pugi::xml_attribute& valueAttribute);
+
 		std::map<uint16_t, uint16_t> reverseItemMap;
 		std::vector<ItemType> items;
 		InventoryVector inventory;
