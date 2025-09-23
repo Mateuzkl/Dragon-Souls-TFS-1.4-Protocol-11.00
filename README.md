@@ -36,6 +36,7 @@
 - **Sistema de Stun** - Paralisia temporária em combate
 - **Reset System** - Sistema de reset de personagem
 - **Sistema de Cooldown Avançado** - Mensagens automáticas de cooldown
+- **Sistema AOL Customizado** - AOL com estados energizado/desenergizado
 - **Combate balanceado** - Baseado no Tibia 7.92
 
 ### ✅ Sistemas de Gameplay
@@ -98,6 +99,67 @@ if (exhaustion < 50) {
 - `exhaustion="100"` = 100 milissegundos (0.1 segundo)
 - `exhaustion="7000"` = 7000 milissegundos (7 segundos)
 
+## 🛡️ Sistema AOL Customizado
+
+O Dragon Souls possui um sistema avançado de AOL (Amulet of Loss) com estados energizado e desenergizado, oferecendo proteção inteligente contra perda de itens.
+
+### 🔋 Estados do AOL
+
+#### AOL Energizado (IDs: 38906, 38901, 38900)
+- **Proteção total** - Protege todos os itens na morte
+- **Exceções**: Red skull e Black skull seguem regras especiais
+- **Visual diferenciado** - Aparência energizada no jogo
+
+#### AOL Desenergizado
+- **Sem proteção** - Funciona como se não tivesse AOL
+- **Perda normal** - Itens podem ser perdidos na morte
+- **Estado padrão** - AOL comum sem energia
+
+### ⚙️ Configuração via items.xml
+
+Para configurar um item com proteção AOL customizada:
+
+```xml
+<item id="38906" name="energized amulet of loss">
+    <attribute key="weight" value="520"/>
+    <attribute key="slotType" value="necklace"/>
+    <attribute key="pressLoss" value="1"/>
+    <attribute key="showduration" value="1"/>
+</item>
+```
+
+### 🎯 Atributos de Configuração
+
+| Atributo | Descrição | Valores |
+|----------|-----------|---------|
+| `pressLoss` | Ativa proteção AOL | `0` = Desativado<br>`1` = Ativado |
+| `showduration` | Mostra duração | `0` = Não mostra<br>`1` = Mostra |
+| `slotType` | Tipo de slot | `necklace` = Pescoço |
+
+### 🏴‍☠️ Regras Especiais por Skull
+
+#### Red Skull 🔴
+- **Sempre perde tudo** - AOL não protege
+- **Punição máxima** - Independente do estado do AOL
+
+#### Black Skull ⚫
+- **Comportamento padrão** - Segue regras normais
+- **Drop completo** - Mais dano extra
+
+#### Sem Skull ⚪
+- **AOL energizado** - Proteção total
+- **AOL desenergizado** - Sem proteção
+
+### 💡 Exemplo de Uso
+
+```cpp
+// Verificação no código C++
+if (player->hasEnergedAOL() && !player->hasRedSkull()) {
+    // Protege todos os itens
+    return false; // Não dropa itens
+}
+```
+
 ---
 
 ## 💻 Requisitos do Sistema
@@ -110,7 +172,7 @@ if (exhaustion < 50) {
 - **MySQL**: 5.7+ ou MariaDB 10.2+
 
 ### Cliente
-- **Tibia Client 12.86** para RME (Map Editor)
+- **Tibia Client 10.98** para RME (Map Editor)
 - **OTClient** para jogadores (protocolo 11.00)
 - **RME (Remere's Map Editor)** para edição de mapas
 
@@ -232,9 +294,9 @@ Dragon-Souls-TFS-1.4-Protocol-11.00/
 4. Push para a branch (`git push origin feature/nova-feature`)
 5. Abra um Pull Request
 
-## 🐛 Problemas Conhecidos
+##### 🐛 Problemas Conhecidos
 
-- **Conversão de Mapas**: Mapas 7.92 precisam ser convertidos para 12.86
+- **Conversão de Mapas**: Mapas 7.92 precisam ser convertidos para 10.98
 - **Compatibilidade**: Alguns items podem precisar de ajustes
 - **Performance**: Otimizações contínuas sendo implementadas
 
