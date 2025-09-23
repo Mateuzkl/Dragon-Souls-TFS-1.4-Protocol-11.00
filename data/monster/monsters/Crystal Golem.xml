@@ -44,18 +44,18 @@
     <voice sentence="Gnarr."/>
   </voices>
   <loot>
-    <item id="2148" countmax="60" chance1="100000" chancemax="0"/> --Gold Coins
-    <item id="2144" countmax="1" chance1="3200" chancemax="0"/> --Black Pearl
-    <item id="7290" chance="1000"/> --Shard
-    <item id="2145" countmax="1" chance1="3333" chancemax="0"/> --Small Diamond
-    <item id="7441" chance="1500"/> --Ice Cube
-    <item id="1987" chance="100000"> --Bag
+    <item id="2148" countmax="60" chance="100000"/>
+    <item id="2144" countmax="1" chance="3200"/>
+    <item id="7290" chance="1000"/>
+    <item id="2145" countmax="1" chance="3333"/>
+    <item id="7441" chance="1500"/>
+    <item id="1987" chance="100000">
       <inside>
-          <item id="2146" countmax="1" chance1="4200" chancemax="0"/> --Small Sapphire
-          <item id="2396" chance="2050"/> --Ice Rapier
-          <item id="2479" chance="2555"/> --Strange Helmet
-          <item id="7449" chance="1500"/> --Crystal Sword
-          <item id="2383" chance="3111"/> --Spike Sword
+          <item id="2146" countmax="1" chance="4200"/>
+          <item id="2396" chance="2050"/>
+          <item id="2479" chance="2555"/>
+          <item id="7449" chance="1500"/>
+          <item id="2383" chance="3111"/>
        </inside>
      </item>
   </loot>

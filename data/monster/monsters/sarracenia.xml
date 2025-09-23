@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <monster name="Sarracenia" nameDescription="a Sarracenia" race="venom" experience="10000000" speed="600" manacost="0">
+    <health now="10000000" max="10000000"/>
+    <look type="120" head="0" body="0" legs="0" feet="0" corpse="4280"/>
+    <targetchange interval="60000" chance="0"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+      <flag summonable="0"/>
+      <flag attackable="1"/>
+      <flag hostile="1"/>
+      <flag illusionable="0"/>
+      <flag convinceable="0"/>
+      <flag pushable="0"/>
+      <flag canpushitems="0"/>
+      <flag staticattack="50"/>
+      <flag lightlevel="0"/>
+      <flag lightcolor="0"/>
+      <flag targetdistance="1"/>
+      <flag runonhealth="0"/>
+    </flags>
+    <attacks>
+      <attack name="melee" interval="2000" min="-10000" max="-30000"/>
+      <attack name="poison" interval="2500" chance="80" min="-10000" max="-30050"/>
+      <attack name="hydra poisonwave" interval="3000" min="-25200" max="-47000" chance="300"/>
+    </attacks>
+    <defenses armor="3" defense="5"/>
+    <immunities>
+      <immunity physical="0"/>
+      <immunity energy="0"/>
+      <immunity fire="0"/>
+      <immunity poison="1"/>
+      <immunity lifedrain="0"/>
+      <immunity paralyze="1"/>
+      <immunity outfit="0"/>
+      <immunity drunk="1"/>
+      <immunity invisible="1"/>
+    </immunities>
+    <loot>
+      <item id="2148" countmax="10" chance="100000"/>
+    </loot>
+  </monster>

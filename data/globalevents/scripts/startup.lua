@@ -122,11 +122,13 @@ function onStartup()
     if lastServerSave == 0 then
         Game.sendConsoleMessage('[daily reward WARNING] LastServerSave is 0, reseting to now', CONSOLEMESSAGE_TYPE_WARNING)
         lastServerSave = dailytime
+        setGlobalStorageValueDB(GlobalStorageKeys.LastServerSave, lastServerSave)
     elseif lastServerSave < (dailytime - 24*60*60) then
         Game.sendConsoleMessage('[daily reward WARNING]: LastServerSave is more than 24 hours old, falling back to the last eligible time...', CONSOLEMESSAGE_TYPE_WARNING)
         while(lastServerSave<(dailytime - 24*60*60)) do
             lastServerSave = lastServerSave + 23*60*60
         end
+        setGlobalStorageValueDB(GlobalStorageKeys.LastServerSave, lastServerSave)
         Game.sendConsoleMessage('[daily reward INFO] done falling back.', CONSOLEMESSAGE_TYPE_INFO)
     end
 

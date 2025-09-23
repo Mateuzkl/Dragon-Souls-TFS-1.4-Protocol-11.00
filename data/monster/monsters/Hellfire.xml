@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<monster name="Hellfire" nameDescription="a hellfire" race="fire" experience="1200" speed="260" manacost="0">
+  <health now="1500" max="1500"/>
+  <look type="242" head="20" body="30" legs="40" feet="50" corpse="6324"/>
+  <targetchange interval="2000" chance="10"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="0"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag staticattack="80"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" min="-150" max="-300"/>
+	<attack name="flame strike" interval="3500" min="-400" max="-600" chance="35"/>
+    <attack name="Great Fireball" interval="3300" chance="65" min="-80" max="-150"/>
+  </attacks>
+  <defenses armor="21" defense="22">
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="0"/>
+    <immunity drunk="0"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <loot>
+   <item id="2148" countmax="50" chance="100000"/>
+   <item id="2148" countmax="90" chance="80000"/>
+   <item id="2147" countmax="3" chance="40000"/>
+   <item id="2239" chance="20000"/>
+   <item id="2179" chance="3500"/>
+   <item id="2187" chance="6550"/>
+   <item id="2195" chance="550"/>
+   <item id="2498" chance="550"/>
+   <item id="2260" chance="13500"/>
+   <item id="1987" chance="100000">
+  <inside>
+   <item id="2462" chance="5000"/>
+   <item id="2520" chance="550"/>
+   <item id="2432" chance="2500"/>
+   <item id="2392" chance="2500"/>
+  </inside>
+  </item>
+  </loot>
+</monster>

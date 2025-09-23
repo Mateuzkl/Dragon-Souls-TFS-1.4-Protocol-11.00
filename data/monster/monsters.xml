@@ -15,11 +15,39 @@
 	<monster name="Mean Lost Soul" file="novos monstros/Mean Lost Soul.xml" />
 	<monster name="Training Dummy" file="novos monstros/Training Dummy.xml" />
 
-	<!-- Monsters -->
+	<!-- Monsters 7.92 -->
 	<monster name="Mawhawk" file="monsters/Mawhawk.xml" />
 	<monster name="Lonely Frazzlemaw" file="monsters/Lonely Frazzlemaw.xml" />
 	<monster name="Zumbie" file="monsters/zumbie.xml" />
 	<monster name="Crystal Golem" file="monsters/Crystal Golem.xml" />
+	<monster name="Orc slayer" file="monsters/Orc slayer.xml" />
+	<monster name="Hellfire" file="monsters/Hellfire.xml" />
+	<monster name="Elven Hunter" file="monsters/Elven Hunter.xml" />
+	<monster name="Female Gnoll" file="monsters/Female Gnoll.xml" />
+	<monster name="Master Goblin" file="monsters/Master Goblin.xml" />
+	<monster name="dipthrah" file="monsters/dipthrah.xml" />
+	<monster name="Ashmunrah" file="monsters/Ashmunrah.xml" />
+	<monster name="Hydramat" file="monsters/Hydramat.xml" />
+	<monster name="Cursed Corpse" file="monsters/Cursed Corpse.xml" />
+	<monster name="Chef Bandit" file="monsters/Chef Bandit.xml" />
+	<monster name="Deer" file="monsters/Deer.xml" />
+	<monster name="hardur" file="monsters/hardur.xml" />
+	<monster name="Iron Gate" file="monsters/Iron Gate.xml" />
+	<monster name="Castle Soldier" file="monsters/Castle Soldier.xml" />
+	<monster name="Sarracenia" file="monsters/Sarracenia.xml" />
+	<monster name="castle guard" file="monsters/Castle Guard.xml" />
+	<monster name="Centipede" file="monsters/Centipede.xml" />
+	<monster name="diamond golem" file="monsters/diamond golem.xml" />
+	<monster name="King Kong" file="monsters/King Kong.xml" />
+	<monster name="castle archer" file="monsters/Castle Archer.xml" />
+	<monster name="Flamingo" file="monsters/Flamingo.xml" />
+	<monster name="Dracula" file="monsters/Dracula.xml" />
+	<monster name="Ancient Scarab" file="monsters/Ancient Scarab.xml" />
+	<monster name="neron" file="monsters/neron.xml" />
+	<monster name="castle beast" file="monsters/castle beast.xml" />
+	<monster name="lucifer" file="monsters/lucifer.xml" />
+	<monster name="apocalypse" file="monsters/apocalypse.xml" />
+	<monster name="Omruc" file="monsters/Omruc.xml" />
 
 	<!-- Novos -->
 	<monster name="Yalaharian Summoner" file="novos/Yalaharian Summoner.xml" />
@@ -587,8 +615,8 @@
 	<monster name="Zombie" file="Undead Humanoids/zombie.xml" />
 
 	<!-- Deeplings -->
-	<monster name="Deepling Elite" file="Deeplings/deepling elite.xml" />
-	<monster name="Deepling Guard" file="Deeplings/deepling guard.xml" />
+	<monster name="Deepling Elite" file="monsters/deepling_elite.xml" />
+	<monster name="Deepling Guard" file="monsters/deepling_guard.xml" />
 
 	<!-- Geo-Elementals -->
 	<monster name="Earth Elemental" file="Geo-Elementals/earth elemental.xml" />

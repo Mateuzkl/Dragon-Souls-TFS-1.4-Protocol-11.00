@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Elven Hunter" nameDescription="a Elven Hunter" race="venom" experience="340000" speed="290" manacost="30000">
+  <health now="150000" max="150000"/>
+<look type="129" head="95" body="120" legs="116" feet="115" addons="3" corpse="3128"/>
+  <targetchange interval="2000" chance="10"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="0"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag staticattack="50"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="5"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="physical" interval="400" chance="100" min="-450" max="-1000"/>
+    <attack name="exevo pox" interval="5900" chance="20" min="-5700" max="-5084"/>
+ <attack name="exevo tera" interval="12900" chance="60" min="-5700" max="-5084"/>
+  </attacks>
+  <defenses armor="7" defense="11"/>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="0"/>
+    <immunity poison="0"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="0"/>
+    <immunity outfit="1"/>
+    <immunity drunk="0"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <voices interval="2000" chance="5">
+    <voice sentence="Guess who we're hunting, haha!"/>
+  </voices>
+   <loot>
+    <item id="2152" countmax="100" chance="100000"/>
+    <item id="2152" countmax="50" chance="50000"/>
+    <item id="2789" countmax="5" chance="30000"/>
+    <item id="2795" countmax="5" chance="30000"/>
+    <item id="2796" countmax="5" chance="30000"/>
+    <item id="2150" countmax="5" chance="30000"/>
+    <item id="2153" chance="10000"/>
+    <item id="2169" chance="8000"/>
+    <item id="5813" chance="3000"/>
+    <item id="6391" chance="500"/>
+
+    <item id="1991" chance="100000">
+      <inside>
+        <item id="2452" chance="2000"/>
+        <item id="2443" chance="2000"/>
+        <item id="2444" chance="2000"/>
+        <item id="7452" chance="500"/>
+      </inside>
+    </item>
+  </loot>
+</monster>

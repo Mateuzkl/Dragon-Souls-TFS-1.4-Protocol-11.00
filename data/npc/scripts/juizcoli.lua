@@ -112,5 +112,5 @@ npcHandler:setMessage(MESSAGE_FAREWELL, 'Farewell, warrior!')
 npcHandler:setMessage(MESSAGE_WALKAWAY, 'Come back when you are ready to fight!')
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
-npcHandler:setCallback(CALLBACK_DISAPPEAR, onDisappear)
+npcHandler:setCallback(CALLBACK_CREATURE_DISAPPEAR, onDisappear)
 npcHandler:addModule(FocusModule:new())

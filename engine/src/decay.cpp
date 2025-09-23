@@ -128,4 +128,6 @@ void Decay::checkDecay()
 	if (it != end) {
 		eventId = g_scheduler.addEvent(createSchedulerTask(std::max<int32_t>(SCHEDULER_MINTICKS, static_cast<int32_t>(it->first - timestamp)), std::bind(&Decay::checkDecay, this)));
 	}
+
+	g_game.cleanup();
 }

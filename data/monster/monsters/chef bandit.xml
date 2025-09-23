@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="chef bandit" nameDescription="a chef bandit" race="blood" experience="65" speed="180" manacost="450">
+    <health now="245" max="245"/>
+    <look type="129" head="114" body="114" legs="114" feet="114" corpse="3128"/>
+  <targetchange interval="5000" chance="8"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="1"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="1"/>
+    <flag pushable="1"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="0"/>
+    <flag targetdistance="1"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="25"/>
+  </flags>
+  <attacks>
+      <attack name="melee" interval="2000" min="-65" max="-105"/>
+  </attacks>
+  <defenses armor="11" defense="15"/>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="0"/>
+    <immunity poison="0"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="0"/>
+    <immunity outfit="0"/>
+    <immunity drunk="0"/>
+    <immunity invisible="0"/>
+  </immunities>
+  <voices interval="5000" chance="10">
+    <voice sentence="Your money or your life!"/>
+    <voice sentence="Hand me your purse!"/>
+  </voices>
+    <loot>
+  <item id="2148" countmax="30" chance="82000" /><!-- gold -->
+  <item id="2666" countmax="4" chance="42000" /><!-- meat -->
+  <item id="2649" chance="30000" /><!-- leather legs -->
+  <item id="2465" chance="5000" /><!-- brass armor -->
+  <item id="1987" chance="100000">
+  <inside>
+  <item id="2398" chance="10000" /><!-- mace -->
+  <item id="2458" chance="8888" /><!-- chain helmet -->
+  <item id="2509" chance="3000" /><!-- steel shield -->
+  <item id="2386" chance="42000" /><!-- axe -->
+  <item id="2391" chance="3000" /><!-- war hammer -->
+  <item id="2511" chance="55000" /><!-- brass shield -->
+  <item id="2110" chance="3500" /><!-- doll -->
+  <item id="2459" chance="1500" /><!-- iron helmet -->
+      </inside>
+    </item>
+  </loot>
+</monster>

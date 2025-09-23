@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Orc slayer" nameDescription="a orc slayer" race="blood" experience="520" speed="270" manacost="0">
+  <health now="610" max="610"/>
+  <look type="8" head="20" body="30" legs="40" feet="50" corpse="2864"/>
+  <targetchange interval="2000" chance="5"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag staticattack="70"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" min="-250" max="-500"/>
+	<attack name="physical" range="1" interval="2500" chance="1" min="-500" max="-1000"/>
+  </attacks>
+  <defenses armor="9" defense="11">
+    <defense name="haste" interval="7000" chance="60"/>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="0"/>
+    <immunity fire="0"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="0"/>
+    <immunity outfit="0"/>
+    <immunity drunk="0"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <voices interval="2000" chance="5">
+    <voice sentence="KRAAKK!!!"/>
+  </voices>
+  <loot>
+    <item id="2148" countmax="95" chance="100000"/>
+    <item id="2666" countmax="3" chance="33333"/>
+    <item id="2381" chance="6666"/>
+    <item id="1987" chance="100000">
+      <inside>
+        <item id="2464" chance="10000"/>
+        <item id="2458" chance="10000"/>
+        <item id="2044" chance="5000"/>
+        <item id="2378" chance="5000"/>
+        <item id="2207" chance="1857"/>
+      </inside>
+    </item>
+  </loot>
+</monster>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lucifer" nameDescription="a lucifer" race="undead" experience="14000000" speed="410" manacost="0">
+  <health now="4000000" max="4000000"/>
+  <look type="704" head="0" body="95" legs="0" feet="94" corpse="3128"/>
+  <targetchange interval="3000" chance="10"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="0"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag staticattack="80"/>
+    <flag lightlevel="0"/>
+    <flag lightcolor="0"/>
+    <flag targetdistance="1"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+<attack name="melee" interval="2500" min="-30000" max="-40000"/>
+<attack name="ice explosion" interval="2000" chance="15" min="-14100" max="-15100"/>
+    <attack name="exevo gran mas flam" interval="2000" chance="15" min="-14100" max="-15100"/>
+  <attack name="tides of darkness" interval="2000" chance="15" min="-20100" max="-23050"/>
+<attack name="throwing knife" interval="1000" chance="30" min="-13000" max="-16000"/>
+<attack name="physical" interval="1000" chance="30" min="-13000" max="-16000"/>
+    <attack name="Great Fireball" interval="3100" chance="25" min="-15000" max="-20000"/>
+    <attack name="berserk" interval="5300" chance="45" min="-15000" max="-30000"/>
+	<attack name="energy strike" interval="6300" chance="60" min="-15000" max="-30000"/>
+	<attack name="paralyze" interval="5000" chance="10" min="-15000" max="-30000"/>
+    <attack name="paralyze" interval="3000" chance="20" min="-10" max="-20"/>
+	<attack name="drunk" interval="2000" chance="70" min="-25" max="-35"/>
+    <attack name="berserk" interval="4000" chance="5"/>
+  </attacks>
+  <defenses armor="100" defense="100">
+    <defense name="Ultimate Healing" interval="30000" chance="100" min="30000" max="60000"/>
+  </defenses>
+  <immunities>
+    <immunity physical="0"/>
+    <immunity energy="1"/>
+    <immunity fire="1"/>
+    <immunity poison="1"/>
+    <immunity lifedrain="0"/>
+    <immunity paralyze="1"/>
+    <immunity outfit="0"/>
+    <immunity drunk="1"/>
+    <immunity invisible="1"/>
+  </immunities>
+   <loot>
+    <item id="38915" countmax="5" chance="100000"/>
+    <item id="7242" chance="100000"/>
+    <item id="38874" chance="200"/> <!-- soul helmet -->
+    <item id="39118" chance="20"/> <!-- soul armor -->
+    <item id="38885" chance="300"/> <!-- soul legs -->
+    <item id="38781" chance="150"/> <!-- peacemaker -->
+    <item id="38840" chance="25"/> <!-- legendary helmet -->
+    <item id="38843" chance="5"/> <!-- legendary armor -->
+    <item id="38888" chance="100"/> <!-- legendary legs -->
+
+    <item id="1996" chance="100000">
+      <inside>
+        <item id="2218" chance="500"/> <!-- colar -->
+        <item id="38719" chance="500"/> <!-- bloodhunter axe -->
+        <item id="39024" chance="150"/> <!-- sauron hammer -->
+        <item id="38798" chance="150"/> <!-- spirit of belkor -->
+      </inside>
+    </item>
+  </loot>
+</monster>

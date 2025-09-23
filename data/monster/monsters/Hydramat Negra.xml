@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Hydramat Negra" nameDescription="a Hydramat Negra" race="Blood" experience="23000" speed="260" manacost="0">
+<health now="23700" max="23700" />
+<look type="" />
+<targetchange interval="5100" chance="9" />
+<strategy attack="200" defense="3" />
+
+<flags>
+<flag summonable="0" />
+<flag attackable="1" />
+<flag hostile="1" />
+<flag illusionable="0" />
+<flag convinceable="0" />
+<flag pushable="0" />
+<flag canpushitems="0" />
+<flag staticattack="70" />
+<flag lightlevel="1" />
+<flag lightcolor="0" />
+<flag targetdistance="" />
+<flag runonhealth="" />
+</flags>
+
+<immunities>
+<immunity physical="0" />
+<immunity energy="0" />
+<immunity fire="0" />
+<immunity poison="1" />
+<immunity lifedrain="0" />
+<immunity paralyze="1" />
+<immunity outfit="0" />
+<immunity drunk="0" />
+<immunity invisible="0" />
+</immunities>
+
+<loot capacity="">
+<item id="2061" countmax="7" chance="600" />
+<item id="2536" countmax="1" chance="700" />
+</loot>
+</monster>

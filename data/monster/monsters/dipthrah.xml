@@ -34,7 +34,7 @@
 		<attack name="melee" interval="3000" chance="34" radius="3" target="0" min="-50" max="-600">
 			<attribute key="areaEffect" value="bluebubble" />
 		</attack>
-		<attack name="dipthrah skill reducer" interval="2000" chance="10" />
+		<attack name="paralyze" interval="2000" chance="10" />
 	</attacks>
 	<defenses armor="25" defense="25">
 		<defense name="healing" interval="1000" chance="25" min="100" max="200">
@@ -61,18 +61,18 @@
 		<voice sentence="You don't need this magic anymore." />
 	</voices>
 	<loot>
-		<item name="ornamented ankh" chance="100000" />
-		<item name="gold coin" countmax="100" chance="30000" />
-		<item name="gold coin" countmax="100" chance="30000" />
-		<item name="gold coin" countmax="26" chance="30000" />
-		<item name="small sapphire" countmax="3" chance="9800" />
-		<item name="great mana potion" chance="8900" />
-		<item name="energy ring" chance="4800" />
-		<item name="mind stone" chance="1000" />
-		<item name="blue gem" chance="900" />
-		<item name="ankh" chance="600" />
-		<item name="skull staff" chance="560" />
-		<item name="pharaoh sword" chance="90" />
-		<item name="mini mummy" chance="90" />
+		<item id="2193" chance="100000" /> <!-- ankh -->
+		<item id="2148" countmax="100" chance="30000" /> <!-- gold coin -->
+		<item id="2148" countmax="100" chance="30000" /> <!-- gold coin -->
+		<item id="2148" countmax="26" chance="30000" /> <!-- gold coin -->
+		<item id="2149" countmax="3" chance="9800" /> <!-- small sapphire -->
+		<item id="7590" chance="8900" /> <!-- great mana potion -->
+		<item id="2167" chance="4800" /> <!-- energy ring -->
+		<item id="2178" chance="1000" /> <!-- mind stone -->
+		<item id="2146" chance="900" /> <!-- blue gem -->
+		<item id="2327" chance="600" /> <!-- ankh -->
+		<item id="2436" chance="560" /> <!-- skull staff -->
+		<item id="2182" chance="90" /> <!-- pharaoh sword -->
+		<item id="2110" chance="90" /> <!-- doll -->
 	</loot>
 </monster>

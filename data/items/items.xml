@@ -19106,20 +19106,6 @@
     <attribute key="healthGain" value="1500"/>
 	<attribute key="healthTicks" value="1000"/>
 </item>
-<item id="39595" name="Rare soul helmet">
-	<attribute key="weight" value="2950"/>
-	<attribute key="armor" value="38"/>
-	<attribute key="slotType" value="head"/>
-    <attribute key="healthGain" value="1500"/>
-	<attribute key="healthTicks" value="1000"/>
-</item>
-<item id="39596" name="Epic soul helmet">
-	<attribute key="weight" value="2950"/>
-	<attribute key="armor" value="39"/>
-	<attribute key="slotType" value="head"/>
-    <attribute key="healthGain" value="1500"/>
-	<attribute key="healthTicks" value="1000"/>
-</item>
 <item id="39597" name="Legendary soul helmet">
 	<attribute key="weight" value="2950"/>
 	<attribute key="armor" value="40"/>

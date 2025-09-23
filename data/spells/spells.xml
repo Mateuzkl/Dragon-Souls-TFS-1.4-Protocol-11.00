@@ -1462,7 +1462,4 @@
 <instant name="teleport_Boss" words="teleport_Boss" enabled="0" script="monsters/teleport_Boss.lua"></instant>
 
 
-<instant name="teste" words="teste" enabled="0" script="monsters/teste.lua"></instant>
-
-
 </spells>

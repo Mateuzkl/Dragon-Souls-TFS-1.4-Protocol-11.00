@@ -5711,8 +5711,6 @@ void Game::checkCreatures(size_t index)
 			ReleaseCreature(creature);
 		}
 	}
-
-	cleanup();
 }
 
 void Game::changeSpeed(Creature* creature, int32_t varSpeedDelta)
@@ -6843,7 +6841,6 @@ void Game::checkImbuements()
 	}
 
 	lastImbuedBucket = bucket;
-	cleanup();
 }
 
 void Game::checkLight()
