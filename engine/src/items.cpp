@@ -1,4 +1,4 @@
-﻿/**
+/**
  * The Forgotten Server - a free and open-source MMORPG server emulator
  * Copyright (C) 2019 Mark Samman <mark.samman@gmail.com>
  *
@@ -1342,6 +1342,8 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.forceSerialize = valueAttribute.as_bool();
 		} else if (tmpStrValue == "worth") {
 			it.worth = pugi::cast<uint64_t>(valueAttribute.value());
+		} else if (tmpStrValue == "pressloss") {
+			it.pressLoss = pugi::cast<uint32_t>(valueAttribute.value());
 		} else {
 			std::cout << "[Warning - Items::parseItemNode] Unknown key value: " << keyAttribute.as_string() << std::endl;
 		}

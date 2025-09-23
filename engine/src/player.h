@@ -403,6 +403,7 @@ class Player final : public Creature, public Cylinder
 		uint16_t getContainerIndex(uint8_t cid) const;
 
 		bool canOpenCorpse(uint32_t ownerId) const;
+		bool pressLoss() const;
 
 		void addStorageValue(const uint32_t key, const int32_t value, const bool isLogin = false);
 		bool getStorageValue(const uint32_t key, int32_t& value) const;

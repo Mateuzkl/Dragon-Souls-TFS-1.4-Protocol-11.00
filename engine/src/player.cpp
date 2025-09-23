@@ -2356,6 +2356,35 @@ void Player::death(Creature* lastHitCreature)
 		}
 	}
 
+	Item* necklace = getInventoryItem(CONST_SLOT_NECKLACE);
+	if (necklace) {
+		uint16_t necklaceId = necklace->getID();
+		uint16_t newItemId = 0;
+		
+		switch (necklaceId) {
+			case 38906:
+				newItemId = 2197;
+				break;
+			case 38901:
+				newItemId = 38902;
+				break;
+			case 38900:
+				newItemId = 38894;
+				break;
+			default:
+				break;
+		}
+		
+		if (newItemId != 0) {
+			Item* newItem = Item::CreateItem(newItemId);
+			if (newItem) {
+				inventory[CONST_SLOT_NECKLACE] = newItem;
+				g_game.ReleaseItem(necklace);
+				onUpdateInventoryItem(necklace, newItem);
+			}
+		}
+	}
+
 	loginPosition = town->getTemplePosition();
 
 	if (skillLoss) {
@@ -2564,14 +2593,23 @@ void Player::death(Creature* lastHitCreature)
 	}
 }
 
-bool Player::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified)
+bool Player::dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature,
+                        bool lastHitUnjustified, bool mostDamageUnjustified)
 {
-	if (getZone() != ZONE_PVP || !Player::lastHitIsPlayer(lastHitCreature)) {
-		return Creature::dropCorpse(lastHitCreature, mostDamageCreature, lastHitUnjustified, mostDamageUnjustified);
-	}
+	if (pressLoss()) {
+        setDropLoot(false);
+        return true;
+    }
 
-	setDropLoot(true);
-	return false;
+    if (getZone() != ZONE_PVP || !Player::lastHitIsPlayer(lastHitCreature)) {
+        return Creature::dropCorpse(
+            lastHitCreature, mostDamageCreature,
+            lastHitUnjustified, mostDamageUnjustified
+        );
+    }
+
+    setDropLoot(true);
+    return false;
 }
 
 Item* Player::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)
@@ -2590,8 +2628,22 @@ Item* Player::getCorpse(Creature* lastHitCreature, Creature* mostDamageCreature)
 		}
 
 		corpse->setSpecialDescription(ss.str());
+		
+		if (pressLoss()) {
+			setDropLoot(false);
+		}
 	}
 	return corpse;
+}
+
+bool Player::pressLoss() const
+{
+	const Item* necklace = getInventoryItem(CONST_SLOT_NECKLACE);
+	if (!necklace) {
+		return false;
+	}
+	const ItemType& it = Item::items[necklace->getID()];
+	return it.pressLoss > 0;
 }
 
 void Player::addInFightTicks(bool pzlock /*= false*/)
@@ -4166,6 +4218,10 @@ bool Player::onKilledCreature(Creature* target, bool lastHit/* = true*/)
 	Creature::onKilledCreature(target, lastHit);
 
 	if (Player* targetPlayer = target->getPlayer()) {
+		if (targetPlayer->pressLoss()) {
+			targetPlayer->setDropLoot(false);
+		}
+		
 		if (targetPlayer != this && !isPartner(targetPlayer)) {
 			addKill();
 			targetPlayer->addDeath();

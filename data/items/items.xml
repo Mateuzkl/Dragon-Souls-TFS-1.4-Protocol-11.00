@@ -19547,6 +19547,7 @@
 	<attribute key="armor" value="3"/>
 	<attribute key="absorbPercentAll" value="10"/>
 	 <attribute key="increasepercentmagic" value="10"/>
+	<attribute key="pressLoss" value="1" />
 	<attribute key="description" value="It s a item maked by Sony. (Press.Loss)"/>
 </item>
 <item id="38915" article="a" name="ruby coin" plural="ruby coins">
@@ -19565,6 +19566,7 @@
 	<attribute key="slotType" value="necklace" />
 	<attribute key="armor" value="6"/>
 	<attribute key="absorbPercentAll" value="20"/>
+	<attribute key="pressLoss" value="1" />
 	<attribute key="description" value="It s a item maked by Sony. (Press.Loss)"/>
 </item>
 <item id="38900" name="magic elemental amulet">
@@ -19572,6 +19574,7 @@
     <attribute key="slotType" value="necklace" />
 	<attribute key="armor" value="9"/>
 	<attribute key="absorbPercentAll" value="30"/>
+	<attribute key="pressLoss" value="1" />
 	<attribute key="description" value="It s a item maked by Sony. (Press.Loss)"/>
 </item>
 <item id="39543" name="novo aol">

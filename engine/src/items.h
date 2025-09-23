@@ -262,6 +262,7 @@ class ItemType
 		uint32_t classification = 0;
 		uint32_t tier = 0;
 		uint64_t worth = 0;
+		uint32_t pressLoss = 0;
 		int32_t maxHitChance = -1;
 		int32_t decayTo = -1;
 		int32_t attack = 0;
