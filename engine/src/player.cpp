@@ -5065,28 +5065,22 @@ void Player::clearPartyInvitations()
 
 GuildEmblems_t Player::getGuildEmblem(const Player* player) const
 {
-	if (!player) {
-		return GUILDEMBLEM_NONE;
-	}
+    if (!player) {
+        return GUILDEMBLEM_NONE;
+    }
 
-	const Guild* playerGuild = player->getGuild();
-	if (!playerGuild) {
-		return GUILDEMBLEM_NONE;
-	}
+    const Guild* playerGuild = player->getGuild();
+    if (!playerGuild) {
+        return GUILDEMBLEM_NONE;
+    }
 
-	if (player->getGuildWarVector().empty()) {
-		if (guild == playerGuild) {
-			return GUILDEMBLEM_MEMBER;
-		} else {
-			return GUILDEMBLEM_OTHER;
-		}
-	} else if (guild == playerGuild) {
-		return GUILDEMBLEM_ALLY;
-	} else if (isInWar(player)) {
-		return GUILDEMBLEM_ENEMY;
-	}
+    if (guild == playerGuild) {
+        return GUILDEMBLEM_ALLY;
+    } else if (isInWar(player)) {
+        return GUILDEMBLEM_ENEMY;
+    }
 
-	return GUILDEMBLEM_NEUTRAL;
+    return GUILDEMBLEM_NEUTRAL;
 }
 
 void Player::sendUnjustifiedPoints()

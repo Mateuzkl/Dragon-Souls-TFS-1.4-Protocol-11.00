@@ -67,7 +67,7 @@ local function getPlayerGuildStatus(playerName)
     end
     
     -- Check if player has pending invitation
-    local query = db.storeQuery("SELECT guild_id FROM guild_invitations WHERE player_id = " .. playerId)
+    local query = db.storeQuery(string.format("SELECT guild_id FROM guild_invitations WHERE player_id = %d AND expiration > %d", playerId, os.time()))
     if query then
         result.free(query)
         return INVITED
@@ -118,6 +118,28 @@ local function getPlayerGuildName(playerName)
     return guildName
 end
 
+local function getInvitedGuildName(playerName)
+    local playerId = getPlayerGUIDByName(playerName)
+    if not playerId then
+        return nil
+    end
+    
+    local query = db.storeQuery(string.format([[
+        SELECT g.name 
+        FROM guild_invitations gi 
+        INNER JOIN guilds g ON gi.guild_id = g.id 
+        WHERE gi.player_id = %d AND gi.expiration > %d
+    ]], playerId, os.time()))
+    
+    if not query then
+        return nil
+    end
+    
+    local guildName = result.getString(query, "name")
+    result.free(query)
+    return guildName
+end
+
 local function foundNewGuild(name)
     -- Check if guild already exists
     local query = db.storeQuery("SELECT id FROM guilds WHERE name = " .. db.escapeString(name))
@@ -133,8 +155,8 @@ local function createGuildForPlayer(cid, name, leaderRank)
     local playerId = player:getGuid()
     
     -- Create guild in database
-    db.query(string.format("INSERT INTO guilds (name, ownerid, creationdata, points, level) VALUES (%s, %d, %d, %d, %d)",
-        db.escapeString(name), playerId, os.time(), 0, GUILD_DEFAULT_LEVEL))
+    db.query(string.format("INSERT INTO guilds (name, ownerid, creationdata, points, level, residence, description) VALUES (%s, %d, %d, %d, %d, %d, %s)",
+        db.escapeString(name), playerId, os.time(), 0, GUILD_DEFAULT_LEVEL, 0, db.escapeString("")))
     
     -- Get newly created guild ID
     local guildId = 0
@@ -179,7 +201,7 @@ local function setPlayerGuildStatus(playerName, status)
     
     if status == MEMBER then
         -- Accept invitation
-        local query = db.storeQuery("SELECT guild_id FROM guild_invitations WHERE player_id = " .. playerId)
+        local query = db.storeQuery(string.format("SELECT guild_id FROM guild_invitations WHERE player_id = %d AND expiration > %d", playerId, os.time()))
         if not query then
             return false
         end
@@ -200,7 +222,7 @@ local function setPlayerGuildStatus(playerName, status)
             playerId, guildId, rankId))
         
         -- Remove invitation
-        db.query("DELETE FROM guild_invitations WHERE player_id = " .. playerId)
+        db.query(string.format("DELETE FROM guild_invitations WHERE player_id = %d", playerId))
         
     elseif status == VICE then
         -- Promote to vice-leader
@@ -365,9 +387,14 @@ function creatureSayCallback(cid, type, msg)
                 npcHandler:say('Sorry, you are not invited to any guild.', cid)
                 talkState[cid] = 0
             elseif gstat == INVITED then
-                local gname = getPlayerGuildName(cname)
-                npcHandler:say('Do you want to join ' .. gname .. '?', cid)
-                talkState[cid] = 3
+                local gname = getInvitedGuildName(cname)
+                if gname then
+                    npcHandler:say('Do you want to join {' .. gname .. '}?', cid)
+                    talkState[cid] = 3
+                else
+                    npcHandler:say('Sorry, there was an error finding your guild invitation.', cid)
+                    talkState[cid] = 0
+                end
             elseif gstat == MEMBER or gstat == VICE or gstat == LEADER then
                 npcHandler:say('Sorry, you are a member of a guild.', cid)
                 talkState[cid] = 0
