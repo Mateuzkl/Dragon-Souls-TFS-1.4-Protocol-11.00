@@ -2361,18 +2361,29 @@ void Player::death(Creature* lastHitCreature)
 		uint16_t necklaceId = necklace->getID();
 		uint16_t newItemId = 0;
 		
-		switch (necklaceId) {
-			case 38906:
-				newItemId = 2197;
-				break;
-			case 38901:
-				newItemId = 38902;
-				break;
-			case 38900:
-				newItemId = 38894;
-				break;
-			default:
-				break;
+		if (g_luaEnvironment.loadFile("data/necklace-config.lua") == 0) {
+			if (g_luaEnvironment.reserveScriptEnv()) {
+				ScriptEnvironment* env = g_luaEnvironment.getScriptEnv();
+				env->setScriptId(-1, &g_luaEnvironment);
+				
+				lua_State* L = g_luaEnvironment.getLuaState();
+				
+				lua_getglobal(L, "getNecklaceTransformation");
+				if (lua_isfunction(L, -1)) {
+					lua_pushnumber(L, necklaceId);
+					
+					if (lua_pcall(L, 1, 1, 0) == 0) {
+						if (lua_isnumber(L, -1)) {
+							newItemId = static_cast<uint16_t>(lua_tonumber(L, -1));
+						}
+						lua_pop(L, 1);
+					}
+				} else {
+					lua_pop(L, 1);
+				}
+				
+				g_luaEnvironment.resetScriptEnv();
+			}
 		}
 		
 		if (newItemId != 0) {
