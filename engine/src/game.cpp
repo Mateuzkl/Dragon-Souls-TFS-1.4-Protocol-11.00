@@ -5374,10 +5374,22 @@ bool Game::playerSaySpell(Player* player, SpeakClasses type, const std::string& 
 		// cancelando o push
 		player->cancelPush();
 
+		int32_t hiddenValue;
+		player->getStorageValue(90002, hiddenValue);
+		if (hiddenValue == 1) {
+			return true;
+		}
+
 		if (!g_config.getBoolean(ConfigManager::EMOTE_SPELLS)) {
 			return internalCreatureSay(player, TALKTYPE_SAY, words, false);
 		} else {
-			return internalCreatureSay(player, TALKTYPE_MONSTER_SAY, words, false);
+			int32_t emoteValue;
+			player->getStorageValue(90001, emoteValue);
+			if (g_config.getBoolean(ConfigManager::EMOTE_SPELLS) && emoteValue == 1) {
+				return internalCreatureSay(player, TALKTYPE_MONSTER_SAY, words, false);
+			} else {
+				return internalCreatureSay(player, TALKTYPE_SAY, words, false);
+			}
 		}
 
 	} else if (result == TALKACTION_FAILED) {
@@ -5561,6 +5573,12 @@ bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, const std:
 	//send to client
 	for (Creature* spectator : ((isSpectatorsPtrInvalid) ? spectators : *spectatorsPtr)) {
 		if (Player* tmpPlayer = spectator->getPlayer()) {
+			int32_t hiddenValue;
+			tmpPlayer->getStorageValue(90002, hiddenValue);
+			if (hiddenValue == 1) {
+				continue;
+			}
+
 			if (!ghostMode || tmpPlayer->canSeeCreature(creature)) {
 				tmpPlayer->sendCreatureSay(creature, type, text, pos);
 			}

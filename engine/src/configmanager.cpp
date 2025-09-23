@@ -306,6 +306,8 @@ bool ConfigManager::load()
 	integer[CRITICAL_BASE_HIT_PALADIN] = getGlobalNumber(L, "criticalBaseHitPaladin", 10);
 	integer[CRITICAL_BASE_HIT_MAGE] = getGlobalNumber(L, "criticalBaseHitMage", 5);
 	integer[CRITICAL_BASE_HIT_DRUID] = getGlobalNumber(L, "criticalBaseHitDruid", 5);
+	integer[STORAGEVALUE_EMOTE] = getGlobalNumber(L, "emoteStorage", 90001);
+	integer[STORAGEVALUE_HIDDEN] = getGlobalNumber(L, "hiddenStorage", 90002);
 
 	floating[RATE_MONSTER_HEALTH] = getGlobalFloat(L, "rateMonsterHealth", 1.0);
 	floating[RATE_MONSTER_ATTACK] = getGlobalFloat(L, "rateMonsterAttack", 1.0);
