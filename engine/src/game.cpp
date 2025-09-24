@@ -6346,7 +6346,11 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 
 				if (tmpPlayer == attackerPlayer && attackerPlayer != targetPlayer) {
 					ss.str({});
-					ss << ucfirst(target->getNameDescription()) << " loses " << damageString << " due to your attack.";
+					if (damage.critical) {
+						ss << ucfirst(target->getNameDescription()) << " loses " << damageString << " due to your CRITICAL attack.";
+					} else {
+						ss << ucfirst(target->getNameDescription()) << " loses " << damageString << " due to your attack.";
+					}
 					bool hasParent = false;
 					if (tmpPlayer->hasActivePreyBonus(BONUS_DAMAGE_BOOST, target)) {
 						hasParent = true;

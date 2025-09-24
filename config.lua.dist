@@ -246,28 +246,3 @@ url = ""
 location = "Brazil"
 
 blockWord = ""
-
-
--- Critical Hit System
-maxCriticalChance = 50
-criticalSkillDivisor = 4
-criticalHealPercent = 10
-
--- Critical Base Hit per Vocation
-criticalBaseHitKnight = 15
-criticalBaseHitPaladin = 10
-criticalBaseHitMage = 5
-criticalBaseHitDruid = 5
-
--- Critical Multipliers per Vocation
-criticalMultiplierKnight = 1.8
-criticalMultiplierPaladin = 1.6
-criticalMultiplierMage = 1.3
-criticalMultiplierDruid = 1.3
-
--- Critical Heal Percent per Vocation
-criticalHealPercentKnight = 5
-criticalHealPercentPaladin = 4
-criticalHealPercentMage = 3
-criticalHealPercentDruid = 3
-criticalHealPercentGod = 1
