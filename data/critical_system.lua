@@ -98,7 +98,7 @@ end
 function calculateCriticalDamageNew(finalDamage, vocationId)
     local multiplier = getCriticalMultiplier(vocationId)
     local result = math.floor(math.abs(finalDamage) * multiplier)
-    print("[LUA DEBUG] Vocation: " .. vocationId .. " | Final Damage: " .. math.abs(finalDamage) .. " | Multiplier: " .. multiplier .. " | Result: " .. result)
+    --print("[LUA DEBUG] Vocation: " .. vocationId .. " | Final Damage: " .. math.abs(finalDamage) .. " | Multiplier: " .. multiplier .. " | Result: " .. result)
     return result
 end
 
@@ -110,4 +110,72 @@ function getRandomCriticalPhrase(vocationId)
     return ""
 end
 
-print("Critical System!")
+WEAPON_CLASSES = {
+    [250] = {
+        class = "GOD",
+        description = "Legendary weapon of divine power",
+        suitability = "Recommended for high-level players (200+)",
+        powerAnalysis = "This weapon has devastating power!"
+    },
+    [180] = {
+        class = "A", 
+        description = "Epic weapon of great power",
+        suitability = "Recommended for experienced players (150+)",
+        powerAnalysis = "This weapon is very powerful!"
+    },
+    [150] = {
+        class = "B",
+        description = "Rare weapon of moderate power", 
+        suitability = "Recommended for intermediate players (100+)",
+        powerAnalysis = "This weapon has moderate power."
+    },
+    [130] = {
+        class = "C",
+        description = "Common weapon of basic power",
+        suitability = "Suitable for beginner players (50+)",
+        powerAnalysis = "This weapon has limited power."
+    },
+    [100] = {
+        class = "D",
+        description = "Basic weapon of limited power",
+        suitability = "Suitable for novice players (20+)",
+        powerAnalysis = "This weapon has limited power."
+    },
+    [0] = {
+        class = "E",
+        description = "Weak weapon of minimal power",
+        suitability = "Only for initial training",
+        powerAnalysis = "This weapon has limited power."
+    }
+}
+
+function getWeaponClassification(attack)
+    if attack >= 250 then
+        return WEAPON_CLASSES[250]
+    elseif attack >= 180 then
+        return WEAPON_CLASSES[180]
+    elseif attack >= 150 then
+        return WEAPON_CLASSES[150]
+    elseif attack >= 130 then
+        return WEAPON_CLASSES[130]
+    elseif attack >= 100 then
+        return WEAPON_CLASSES[100]
+    else
+        return WEAPON_CLASSES[0]
+    end
+end
+
+function getWeaponClassDescription(attack)
+    local classification = getWeaponClassification(attack)
+    return "Class " .. classification.class .. ": " .. classification.description
+end
+
+function getWeaponSuitability(attack)
+    local classification = getWeaponClassification(attack)
+    return classification.suitability
+end
+
+function getWeaponPowerAnalysis(attack)
+    local classification = getWeaponClassification(attack)
+    return classification.powerAnalysis
+end
