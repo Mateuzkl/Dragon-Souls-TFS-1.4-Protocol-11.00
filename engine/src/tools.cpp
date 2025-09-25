@@ -670,6 +670,8 @@ ShootTypeNames shootTypeNames = {
 	{"diamondarrow",		CONST_ANI_DIAMONDARROW},
 	{"spectralbolt",		CONST_ANI_SPECTRALBOLT},
 	{"royalstar",			CONST_ANI_ROYALSTAR},
+	{"elementalbolt",		CONST_ANI_ELEMENTALBOLT},
+	{"bullet",				CONST_ANI_BULLET},
 };
 
 CombatTypeNames combatTypeNames = {
@@ -714,6 +716,7 @@ AmmoTypeNames ammoTypeNames = {
 	{"throwingknife",		AMMO_THROWINGKNIFE},
 	{"diamondarrow",		AMMO_ARROW},
 	{"spectralbolt",		AMMO_BOLT},
+	{"bullet",				AMMO_BULLET},
 
 };
 

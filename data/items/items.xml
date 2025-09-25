@@ -2865,6 +2865,7 @@
 	<attribute key="maxHitChance" value="320" />
 	<attribute key="weaponType" value="ammunition" />
 	<attribute key="ammoType" value="bolt" />
+	<attribute key="shootType" value="elementalbolt" />
 </item>
 <item id="2353" article="a" name="burning heart">
 	<attribute key="description" value="It is still beating with unholy life. It seems to be rotting rapidly." />
@@ -18877,7 +18878,7 @@
 	<attribute key="weight" value="12000" />
 	<attribute key="slotType" value="two-handed" />
 	<attribute key="weaponType" value="distance" />
-	<attribute key="ammoType" value="bolt" />
+	<attribute key="ammoType" value="bullet" />
 	<attribute key="range" value="10" />
 	<attribute key="hitChance" value="100" />
 	<attribute key="attack" value="70" />
@@ -18888,7 +18889,8 @@
 	<attribute key="slotType" value="ammo" />
 	<attribute key="attack" value="92" />
 	<attribute key="weaponType" value="ammunition" />
-	<attribute key="ammoType" value="bolt" />
+	<attribute key="ammoType" value="bullet" />
+	<attribute key="shootType" value="bullet" />
 	<attribute key="maxHitChance" value="90" />
 	<attribute key="skilldist" value="15" />
 	<attribute key="skillshield" value="15" />
@@ -25644,4 +25646,45 @@
 	<item id="20027" name="rum" />
 	<item id="20028" name="swamp" />
 	<item id="20035" name="tea" />
+	<item id="39681" article="a" name="quiver">
+		<attribute key="weight" value="1700" />
+		<attribute key="containerSize" value="6" />
+		<attribute key="weaponType" value="quiver" />
+		<attribute key="slotType" value="right-hand" />
+	    <attribute key="showattributes" value="1" />
+	</item>
+	<item id="39682" article="a" name="blue quiver">
+		<attribute key="weight" value="1700" />
+		<attribute key="containerSize" value="6" />
+		<attribute key="weaponType" value="quiver" />
+		<attribute key="skillDist" value="1" />
+		<attribute key="slotType" value="right-hand" />
+	    <attribute key="showattributes" value="1" />
+	</item>	
+	<item id="39683" article="a" name="red quiver">
+		<attribute key="weight" value="1700" />
+		<attribute key="containerSize" value="6" />
+		<attribute key="skillDist" value="2" />
+		<attribute key="weaponType" value="quiver" />
+		<attribute key="slotType" value="right-hand" />
+	    <attribute key="showattributes" value="1" />
+	</item>	
+	
+	<item id="39684" article="a" name="jungle quiver">
+		<attribute key="weight" value="1800" />
+		<attribute key="containerSize" value="8" />
+		<attribute key="skillDist" value="3" />
+		<attribute key="weaponType" value="quiver" />
+		<attribute key="slotType" value="right-hand" />
+	    <attribute key="showattributes" value="1" />
+	</item>
+	<item id="39685" article="a" name="Eldritch Quiver">
+		<attribute key="weight" value="2200" />
+		<attribute key="containerSize" value="8" />
+		<attribute key="weaponType" value="quiver" />
+		<attribute key="skillDist" value="5" />
+		<attribute key="slotType" value="right-hand" />
+	    <attribute key="showattributes" value="1" />
+		<attribute key="imbuingSlots" value="1" />
+	</item>
 </items>
