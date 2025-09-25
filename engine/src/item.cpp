@@ -2676,6 +2676,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 			s << std::endl << *text;
 		}
 	}
+	
+	s << std::endl << marcador << "Client ID: " << it.clientId;
+	
 	return s.str();
 }
 
