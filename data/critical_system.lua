@@ -1,81 +1,30 @@
 -- Critical chance by vocation (percentage)
 CRITICAL_CHANCE = {
-    [0] = 2.0,   -- None
-    [1] = 5.0,   -- Sorcerer
-    [2] = 5.0,   -- Druid
-    [3] = 8.0,   -- Archer
     [4] = 10.0,  -- Knight
-    [5] = 5.0,   -- Master Sorcerer
-    [6] = 5.0,   -- Elder Druid
-    [7] = 8.0,   -- Royal Archer
     [8] = 10.0,  -- Elite Knight
-    [9] = 6.0,   -- Wyzard
-    [10] = 6.0,  -- Cleric
-    [11] = 9.0,  -- Ranger
     [12] = 11.0, -- Slayer
-    [13] = 7.0,  -- Dark Wyzard
-    [14] = 7.0,  -- Elemental Cleric
-    [15] = 10.0, -- Elven Ranger
     [16] = 12.0  -- Dragon Slayer
 }
 
 CRITICAL_MULTIPLIERS = {
     [0] = 1.2,   -- None
-    [1] = 1.5,   -- Sorcerer
-    [2] = 1.5,   -- Druid
-    [3] = 1.7,   -- Archer
     [4] = 2.0,   -- Knight
-    [5] = 1.5,   -- Master Sorcerer
-    [6] = 1.5,   -- Elder Druid
-    [7] = 1.7,   -- Royal Archer
     [8] = 2.0,   -- Elite Knight
-    [9] = 1.6,   -- Wyzard
-    [10] = 1.6,  -- Cleric
-    [11] = 1.8,  -- Ranger
     [12] = 2.1,  -- Slayer
-    [13] = 1.7,  -- Dark Wyzard
-    [14] = 1.7,  -- Elemental Cleric
-    [15] = 2.0,  -- Elven Ranger
     [16] = 2.3   -- Dragon Slayer
 }
 
 CRITICAL_HEAL_PERCENT = {
-    [0] = 1.0,   -- None
-    [1] = 3.0,   -- Sorcerer
-    [2] = 3.0,   -- Druid
-    [3] = 4.0,   -- Archer
     [4] = 5.0,   -- Knight
-    [5] = 3.0,   -- Master Sorcerer
-    [6] = 3.0,   -- Elder Druid
-    [7] = 4.0,   -- Royal Archer
     [8] = 5.0,   -- Elite Knight
-    [9] = 3.5,   -- Wyzard
-    [10] = 3.5,  -- Cleric
-    [11] = 4.5,  -- Ranger
     [12] = 5.5,  -- Slayer
-    [13] = 4.0,  -- Dark Wyzard
-    [14] = 4.0,  -- Elemental Cleric
-    [15] = 5.0,  -- Elven Ranger
     [16] = 6.0   -- Dragon Slayer
 }
 
 CRITICAL_PHRASES = {
-    [0] = {"Basic strike!", "Simple hit!", "Basic attack!"},
-    [1] = {"Arcane power!", "You shall not pass!", "Magic flows through me!"},
-    [2] = {"Light guides me!", "Faith is my shield!", "Nature's wrath!"},
-    [3] = {"Precise shot!", "Arrow of destiny!", "Distance is my ally!"},
     [4] = {"Strength and steel!", "No mercy!", "Feel my blade!"},
-    [5] = {"Arcane mastery!", "Supreme magic!", "Master sorcery!"},
-    [6] = {"Elder wisdom!", "Ancient healing!", "Druidic power!"},
-    [7] = {"Royal precision!", "Noble shot!", "Elite archery!"},
     [8] = {"Elite strength!", "Knight's honor!", "Elite blade!"},
-    [9] = {"Mystic energy!", "Ancient wisdom!", "Power of the arcane!"},
-    [10] = {"Divine blessing!", "Heaven's light!", "Sacred power!"},
-    [11] = {"Forest's call!", "Nature's precision!", "Wild spirit!"},
     [12] = {"Slayer's edge!", "Death's embrace!", "Hunter's fury!"},
-    [13] = {"Dark magic!", "Shadow's power!", "Void energy!"},
-    [14] = {"Elemental fury!", "Nature's balance!", "Elemental storm!"},
-    [15] = {"Elven grace!", "Forest's might!", "Ancient precision!"},
     [16] = {"Dragon's fury!", "Slayer's might!", "Feel the dragon's wrath!"}
 }
 
