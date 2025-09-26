@@ -45,6 +45,7 @@ extern CreatureEvents* g_creatureEvents;
 extern Events* g_events;
 extern Imbuements g_imbuements;
 extern Prey g_prey;
+extern LuaEnvironment g_luaEnvironment;
 
 MuteCountMap Player::muteCountMap;
 
