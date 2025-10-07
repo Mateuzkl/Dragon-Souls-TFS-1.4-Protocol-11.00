@@ -1066,6 +1066,10 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 
 void Combat::doAreaCombat(Creature* caster, const Position& position, const AreaCombat* area, CombatDamage& damage, const CombatParams& params)
 {
+	if (!area) {
+		return;
+	}
+
 	std::forward_list<Tile*> tileList;
 
 	if (caster) {
@@ -1169,10 +1173,10 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 					if (success) {
 						if (params.origin != ORIGIN_MELEE && (!params.conditionList.empty() || (damage.primary.value != 0 && damage.secondary.value != 0))) {
 							for (const auto& condition : params.conditionList) {
-								if (caster->getMonster() && (creature->getMonster() || (creature->getMaster() && !creature->getMaster()->getPlayer()))) {
+								if (caster && caster->getMonster() && (creature->getMonster() || (creature->getMaster() && !creature->getMaster()->getPlayer()))) {
 									continue;
 								}
-								if ((caster == creature && !caster->isImmune(condition->getType())) || !creature->isImmune(condition->getType())) {
+								if ((caster == creature && caster && !caster->isImmune(condition->getType())) || (creature && !creature->isImmune(condition->getType()))) {
 									Condition* conditionCopy = condition->clone();
 									if (caster) {
 										conditionCopy->setParam(CONDITION_PARAM_OWNER, caster->getCombatID());
