@@ -75,6 +75,7 @@ class ConfigManager
 			ANTI_MULTI_CLIENT_ENABLED,
 			ALLOW_MOUNT_IN_PZ,
 			SHOW_KILLS_DEATHS_ON_LOOK,
+			BLOCK_SAME_IP_PVP,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};
