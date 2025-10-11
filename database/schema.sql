@@ -40,10 +40,16 @@ CREATE TABLE `accounts` (
   `creation` bigint(20) NOT NULL DEFAULT 0,
   `vote` int(11) NOT NULL DEFAULT 0,
   `key` varchar(20) NOT NULL DEFAULT '0',
+  `created` int(11) NOT NULL DEFAULT 0,
   `email_new` varchar(255) NOT NULL DEFAULT '',
   `email_new_time` int(11) NOT NULL DEFAULT 0,
   `rlname` varchar(255) NOT NULL DEFAULT '',
   `location` varchar(255) NOT NULL DEFAULT '',
+  `country` varchar(255) NOT NULL DEFAULT '',
+  `web_lastlogin` int(11) NOT NULL DEFAULT 0,
+  `web_flags` int(11) NOT NULL DEFAULT 0,
+  `email_hash` varchar(32) NOT NULL DEFAULT '',
+  `email_verified` tinyint(1) NOT NULL DEFAULT 0,
   `page_access` int(11) NOT NULL DEFAULT 0,
   `email_code` varchar(255) NOT NULL DEFAULT '',
   `next_email` int(11) NOT NULL DEFAULT 0,
@@ -1653,7 +1659,7 @@ CREATE TABLE `players` (
   `group_id` int(11) NOT NULL DEFAULT 1,
   `account_id` int(11) NOT NULL DEFAULT 0,
   `level` int(11) NOT NULL DEFAULT 1,
-   `reset` int(11) NOT NULL DEFAULT 0,
+  `reset` int(11) NOT NULL DEFAULT 0,
   `vocation` int(11) NOT NULL DEFAULT 0,
   `health` int(11) NOT NULL DEFAULT 150,
   `healthmax` int(11) NOT NULL DEFAULT 150,
@@ -1789,11 +1795,11 @@ CREATE TABLE `players` (
 
 INSERT INTO `players` (`id`, `name`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `exptoday`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `lookaddons`, `maglevel`, `mana`, `manamax`, `manaspent`, `soul`, `town_id`, `posx`, `posy`, `posz`, `conditions`, `cap`, `sex`, `lastlogin`, `lastip`, `save`, `skull`, `skulltime`, `lastlogout`, `blessings`, `blessings1`, `blessings2`, `blessings3`, `blessings4`, `blessings5`, `blessings6`, `blessings7`, `blessings8`, `onlinetime`, `deletion`, `balance`, `bonusrerollcount`, `quick_loot_fallback`, `offlinetraining_time`, `offlinetraining_skill`, `stamina`, `skill_fist`, `skill_fist_tries`, `skill_club`, `skill_club_tries`, `skill_sword`, `skill_sword_tries`, `skill_axe`, `skill_axe_tries`, `skill_dist`, `skill_dist_tries`, `skill_shielding`, `skill_shielding_tries`, `skill_fishing`, `skill_fishing_tries`, `deleted`, `description`, `comment`, `create_ip`, `create_date`, `hide_char`, `skill_critical_hit_chance`, `skill_critical_hit_chance_tries`, `skill_critical_hit_damage`, `skill_critical_hit_damage_tries`, `skill_life_leech_chance`, `skill_life_leech_chance_tries`, `skill_life_leech_amount`, `skill_life_leech_amount_tries`, `skill_mana_leech_chance`, `skill_mana_leech_chance_tries`, `skill_mana_leech_amount`, `skill_mana_leech_amount_tries`, `skill_criticalhit_chance`, `skill_criticalhit_damage`, `skill_lifeleech_chance`, `skill_lifeleech_amount`, `skill_manaleech_chance`, `skill_manaleech_amount`, `prey_stamina_1`, `prey_stamina_2`, `prey_stamina_3`, `prey_column`, `xpboost_stamina`, `xpboost_value`, `marriage_status`, `hide_skills`, `hide_set`, `former`, `signature`, `marriage_spouse`, `loyalty_ranking`, `bonus_rerolls`, `critical`, `sbw_points`, `instantrewardtokens`, `charmpoints`, `direction`, `lookmount`, `version`, `lootaction`, `spells`, `storages`, `items`, `depotitems`, `inboxitems`, `rewards`, `varcap`, `charmExpansion`, `bestiarykills`, `charms`, `bestiaryTracker`, `autoloot`, `lastday`, `bonus_reroll`, `lookmountbody`, `lookmountfeet`, `lookmounthead`, `lookmountlegs`, `lookfamiliarstype`, `kills`, `deaths`) VALUES
 (1, 'Rook Sample', 1, 1, 1, 0, 150, 150, 0, NULL, 106, 76, 78, 58, 136, 0, 0, 5, 5, 0, 0, 6, 121, 311, 7, '', 400, 0, 1594061826, 16777343, 1, 0, 0, 1594062801, 0, 0, 1, 1, 1, 1, 1, 0, 0, 2936, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1230, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(2, 'Sorcerer Sample', 1, 1, 8, 1, 185, 185, 4200, NULL, 44, 98, 15, 76, 128, 0, 0, 90, 90, 0, 100, 1, 0, 0, 0, '', 470, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(3, 'Druid Sample', 1, 1, 491, 2, 2600, 2600, 1948877000, NULL, 106, 76, 78, 58, 136, 0, 0, 14580, 14580, 0, 100, 1, 121, 311, 7, '', 5300, 0, 1753491103, 16777343, 1, 0, 0, 1753491219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 900, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 20, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 3, 0, 1100, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(4, 'Paladin Sample', 1, 1, 508, 3, 5185, 5185, 2159279200, NULL, 106, 76, 78, 58, 136, 0, 0, 7590, 7590, 0, 100, 1, 121, 311, 7, 0x010004000002ffffffff03f80007001a001b00000000fe, 10470, 0, 1753491058, 16777343, 1, 0, 0, 1753491219, 0, 0, 0, 0, 0, 0, 0, 0, 0, 583, 0, 0, 0, 0, 43200, -1, 2520, 11, 0, 10, 0, 11, 50, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 2, 0, 1100, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(5, 'Knight Sample', 1, 1, 202, 4, 3020, 3095, 135017843, NULL, 106, 76, 78, 58, 136, 0, 1, 1060, 1060, 3196, 100, 1, 121, 311, 7, 0x010004000002ffffffff03287607001a001b00000000fe, 5320, 0, 1753490521, 16777343, 1, 5, 2012690218, 1753490547, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1553, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 19, 44, 13, 55, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 2, 0, 1100, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0x010000000000000015000300000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 1753490096, 0, 0, 0, 0, 0, 0, 0, 0),
-(6, 'God', 6, 1, 1, 0, 185, 185, 0, NULL, 106, 76, 78, 58, 136, 0, 0, 90, 90, 0, 100, 1, 95, 125, 7, '', 470, 0, 1753491025, 16777343, 1, 0, 0, 1753491064, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11372, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1100, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(2, 'Sorcerer Sample', 1, 1, 8, 1, 185, 185, 4200, NULL, 44, 98, 15, 76, 128, 0, 0, 90, 90, 0, 100, 1, 121, 311, 7, '', 470, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(3, 'Druid Sample', 1, 1, 8, 2, 185, 185, 4200, NULL, 44, 98, 15, 76, 128, 0, 0, 90, 90, 0, 100, 1, 121, 311, 7, '', 470, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(4, 'Paladin Sample', 1, 1, 8, 3, 185, 185, 4200, NULL, 44, 98, 15, 76, 128, 0, 0, 90, 90, 0, 100, 1, 121, 311, 7, '', 470, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 'Knight Sample', 1, 1, 8, 4, 185, 185, 4200, NULL, 44, 98, 15, 76, 128, 0, 0, 90, 90, 0, 100, 1, 121, 311, 7, '', 470, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, NULL, NULL, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1000, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(6, 'God', 6, 1, 1, 0, 185, 185, 0, NULL, 106, 76, 78, 58, 136, 0, 0, 90, 90, 0, 100, 1, 121, 311, 7, '', 470, 0, 1753491025, 16777343, 1, 0, 0, 1753491064, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11372, 0, 0, 0, 0, 43200, -1, 2520, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, 1, 0, 0, 0, NULL, NULL, '-', '', -1, 0, 0, 0, 0, 0, 0, 0, 0, 1100, 0, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1930,32 +1936,8 @@ CREATE TABLE `player_items` (
 -- Despejando dados para a tabela `player_items`
 --
 
-INSERT INTO `player_items` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES
-(5, 3, 101, 1987, 1, 0x2601),
-(5, 4, 102, 2651, 1, ''),
-(5, 11, 103, 26052, 1, ''),
-(6, 3, 101, 1987, 1, 0x2601),
-(6, 4, 102, 2651, 1, ''),
-(6, 6, 103, 2382, 1, ''),
-(6, 10, 104, 2050, 1, ''),
-(6, 11, 105, 26052, 1, ''),
-(6, 101, 106, 7618, 1, 0x0f01),
-(6, 101, 107, 7589, 1, 0x0f01),
-(6, 101, 108, 7588, 1, 0x0f01),
-(6, 101, 109, 7588, 1, 0x0f01),
-(6, 101, 110, 2493, 1, ''),
-(6, 101, 111, 2674, 1, 0x0f01),
-(6, 105, 112, 16101, 1, 0x04d71b0744005573696e672074686973207363726f6c6c2077696c6c206164642033302064617973206f66207669702074696d6520746f20796f7572206163636f756e74206f6e63652e),
-(6, 105, 113, 16101, 1, 0x04d71b0744005573696e672074686973207363726f6c6c2077696c6c206164642033302064617973206f66207669702074696d6520746f20796f7572206163636f756e74206f6e63652e),
-(6, 105, 114, 16101, 1, 0x04d71b0744005573696e672074686973207363726f6c6c2077696c6c206164642033302064617973206f66207669702074696d6520746f20796f7572206163636f756e74206f6e63652e),
-(3, 3, 101, 1987, 1, ''),
-(3, 11, 102, 26052, 1, ''),
-(4, 3, 101, 1987, 1, ''),
-(4, 4, 102, 2651, 1, ''),
-(4, 6, 103, 2400, 1, 0x1c7f969800),
-(4, 10, 104, 2050, 1, ''),
-(4, 11, 105, 26052, 1, ''),
-(4, 101, 106, 2674, 1, 0x0f01);
+
+
 
 -- --------------------------------------------------------
 
@@ -4035,6 +4017,19 @@ ALTER TABLE `tickets_reply`
 --
 ALTER TABLE `tile_store`
   ADD CONSTRAINT `tile_store_ibfk_1` FOREIGN KEY (`house_id`) REFERENCES `houses` (`id`) ON DELETE CASCADE;
+
+
+-- Tabela para convites de guild
+CREATE TABLE `guild_invitations` (
+  `player_id` int(11) NOT NULL,
+  `guild_id` int(11) NOT NULL,
+  `expiration` int(11) NOT NULL,
+  `rank_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`player_id`, `guild_id`),
+  FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
