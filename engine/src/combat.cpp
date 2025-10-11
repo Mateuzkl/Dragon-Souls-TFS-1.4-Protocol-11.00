@@ -494,6 +494,14 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 					return RETURNVALUE_NONVALAN_CANNOTATTACKPLAYER;
 				}
 
+				// Same IP PvP Block: Check if both players have the same IP
+				if (g_config.getBoolean(ConfigManager::BLOCK_SAME_IP_PVP)) {
+					if (attackerPlayer->getIP() != 0 && targetPlayer->getIP() != 0 && 
+						attackerPlayer->getIP() == targetPlayer->getIP()) {
+						return RETURNVALUE_SAMEIP_CANNOTATTACKPLAYER;
+					}
+				}
+
 				//nopvp-zone
 				const Tile* targetPlayerTile = targetPlayer->getTile();
 				if (targetPlayerTile->hasFlag(TILESTATE_NOPVPZONE)) {
@@ -517,9 +525,17 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 						return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 					}
 
-			if (isNonValan(masterAttackerPlayer, targetPlayer)) {
-				return RETURNVALUE_NONVALAN_CANNOTATTACKPLAYER;
-			}
+					if (isNonValan(masterAttackerPlayer, targetPlayer)) {
+						return RETURNVALUE_NONVALAN_CANNOTATTACKPLAYER;
+					}
+
+					// Same IP PvP Block: Check if master and target have the same IP
+					if (g_config.getBoolean(ConfigManager::BLOCK_SAME_IP_PVP)) {
+						if (masterAttackerPlayer->getIP() != 0 && targetPlayer->getIP() != 0 && 
+							masterAttackerPlayer->getIP() == targetPlayer->getIP()) {
+							return RETURNVALUE_SAMEIP_CANNOTATTACKPLAYER;
+						}
+					}
 		}
 	}
 

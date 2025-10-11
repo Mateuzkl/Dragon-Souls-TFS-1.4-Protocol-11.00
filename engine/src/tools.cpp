@@ -1234,6 +1234,9 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_NONVALAN_CANNOTATTACKPLAYER:
 			return "System non-valan: You cannot attack this player.";
 
+		case RETURNVALUE_SAMEIP_CANNOTATTACKPLAYER:
+			return "You cannot attack accounts with the same IP address.";
+
 		case RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE:
 			return "You may not attack this creature.";
 
