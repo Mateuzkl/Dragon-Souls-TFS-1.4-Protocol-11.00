@@ -792,14 +792,16 @@ void Game::playerMoveCreatureByID(uint32_t playerId, uint32_t movingCreatureId, 
 
 void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Position& movingCreatureOrigPos, Tile* toTile)
 {
-	if (!player->canDoAction()) {
-		uint32_t delay = player->getNextActionTime();
-		SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveCreatureByID,
-			this, player->getID(), movingCreature->getID(), movingCreatureOrigPos, toTile->getPosition()));
+    bool pushWhenAttacking = g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING);
+    bool canPerformPush = pushWhenAttacking ? player->canPush() : player->canDoAction();
+    if (!canPerformPush) {
+        uint32_t delay = pushWhenAttacking ? player->getNextPushTime() : player->getNextActionTime();
+        SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveCreatureByID,
+            this, player->getID(), movingCreature->getID(), movingCreatureOrigPos, toTile->getPosition()));
 
-		player->setNextActionPushTask(task);
-		return;
-	}
+        player->setNextActionPushTask(task);
+        return;
+    }
 
 	if (movingCreature->isMovementBlocked()) {
 		player->sendCancelMessage(RETURNVALUE_NOTMOVEABLE);
@@ -1000,15 +1002,19 @@ void Game::playerMoveItemByPlayerID(uint32_t playerId, const Position& fromPos, 
 }
 
 void Game::playerMoveItem(Player* player, const Position& fromPos,
-						  uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count, Item* item, Cylinder* toCylinder)
+                          uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count, Item* item, Cylinder* toCylinder)
 {
-	if (!player->canDoAction()) {
-		uint32_t delay = player->getNextActionTime();
-		SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveItemByPlayerID, this,
-							  player->getID(), fromPos, spriteId, fromStackPos, toPos, count));
-		player->setNextActionTask(task);
-		return;
-	}
+    {
+        bool pushWhenAttacking = g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING);
+        bool canPerformPush = pushWhenAttacking ? player->canPush() : player->canDoAction();
+        if (!canPerformPush) {
+            uint32_t delay = pushWhenAttacking ? player->getNextPushTime() : player->getNextActionTime();
+            SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveItemByPlayerID, this,
+                                  player->getID(), fromPos, spriteId, fromStackPos, toPos, count));
+            player->setNextActionTask(task);
+            return;
+        }
+    }
 
 	player->setNextActionTask(nullptr);
 
@@ -1057,12 +1063,27 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
 		return;
 	}
 
-	const Position& playerPos = player->getPosition();
-	const Position& mapFromPos = fromCylinder->getTile()->getPosition();
-	if (playerPos.z != mapFromPos.z) {
-		player->sendCancelMessage(playerPos.z > mapFromPos.z ? RETURNVALUE_FIRSTGOUPSTAIRS : RETURNVALUE_FIRSTGODOWNSTAIRS);
-		return;
-	}
+    const Position& playerPos = player->getPosition();
+    const Position& mapFromPos = fromCylinder->getTile()->getPosition();
+    if (playerPos.z != mapFromPos.z) {
+        player->sendCancelMessage(playerPos.z > mapFromPos.z ? RETURNVALUE_FIRSTGOUPSTAIRS : RETURNVALUE_FIRSTGODOWNSTAIRS);
+        return;
+    }
+
+    // apply push delay window when enabled
+    {
+        bool pushWhenAttacking = g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING);
+        if (pushWhenAttacking) {
+            bool isAdjacent = Position::areInRange<1, 1>(playerPos, mapFromPos) && playerPos.z == mapFromPos.z;
+            int32_t pushDelay = isAdjacent ?
+                g_config.getNumber(ConfigManager::PUSH_DELAY) :
+                g_config.getNumber(ConfigManager::PUSH_DISTANCE_DELAY);
+
+            if (pushDelay > 0) {
+                player->setNextPushAction(OTSYS_TIME() + pushDelay);
+            }
+        }
+    }
 
 	if (!Position::areInRange<1, 1>(playerPos, mapFromPos)) {
 		//need to walk to the item first before using it

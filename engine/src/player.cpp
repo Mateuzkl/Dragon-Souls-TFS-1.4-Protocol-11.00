@@ -1500,8 +1500,7 @@ void Player::onWalk(Direction& dir)
 	
 	Creature::onWalk(dir);
 	setNextActionTask(nullptr);
-	// Removing this line fixes exhausted when opening backpack while running.
-	//setNextAction(OTSYS_TIME() + getStepDuration(dir));
+
 }
 
 void Player::onCreatureMove(Creature* creature, const Tile* newTile, const Position& newPos,
@@ -1752,7 +1751,12 @@ uint32_t Player::getNextActionTime() const
 
 uint32_t Player::getNextPotionActionTime() const
 {
-	return std::max<int64_t>(SCHEDULER_MINTICKS, nextPotionAction - OTSYS_TIME());
+    return std::max<int64_t>(SCHEDULER_MINTICKS, nextPotionAction - OTSYS_TIME());
+}
+
+uint32_t Player::getNextPushTime() const
+{
+    return std::max<int64_t>(SCHEDULER_MINTICKS, nextPushAction - OTSYS_TIME());
 }
 
 void Player::onThink(uint32_t interval)
@@ -3848,17 +3852,17 @@ void Player::doAttacking(uint32_t)
 		uint32_t delay = getAttackSpeed();
 		bool classicSpeed = g_config.getBoolean(ConfigManager::CLASSIC_ATTACK_SPEED);
 
-		if (weapon) {
-			if (!weapon->interruptSwing()) {
-				result = weapon->useWeapon(this, tool, attackedCreature);
-			} else if (!classicSpeed && !canDoAction()) {
-				delay = getNextActionTime();
-			} else {
-				result = weapon->useWeapon(this, tool, attackedCreature);
-			}
-		} else {
-			result = Weapon::useFist(this, attackedCreature);
-		}
+        if (weapon) {
+            if (!weapon->interruptSwing()) {
+                result = weapon->useWeapon(this, tool, attackedCreature);
+            } else if (!classicSpeed && !canDoAction()) {
+                delay = getNextActionTime();
+            } else {
+                result = weapon->useWeapon(this, tool, attackedCreature);
+            }
+        } else {
+            result = Weapon::useFist(this, attackedCreature);
+        }
 
 		SchedulerTask* task = createSchedulerTask(std::max<uint32_t>(SCHEDULER_MINTICKS, delay), std::bind(&Game::checkCreatureAttack, &g_game, getID()));
 		if (!classicSpeed) {

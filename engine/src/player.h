@@ -1577,6 +1577,15 @@ class Player final : public Creature, public Cylinder
 			return nextPotionAction <= OTSYS_TIME();
 		}
 
+		void setNextPushAction(int64_t time) {
+			if (time > nextPushAction) {
+				nextPushAction = time;
+			}
+		}
+		bool canPush() const {
+			return nextPushAction <= OTSYS_TIME();
+		}
+
 		void cancelPush();
 
 		void setModuleDelay(uint8_t byteortype, int16_t delay) {
@@ -1592,6 +1601,7 @@ class Player final : public Creature, public Cylinder
 
 		uint32_t getNextActionTime() const;
 		uint32_t getNextPotionActionTime() const;
+		uint32_t getNextPushTime() const;
 
 		Item* getWriteItem(uint32_t& windowTextId, uint16_t& maxWriteLen);
 		void setWriteItem(Item* item, uint16_t maxWriteLen = 0);
@@ -1908,6 +1918,7 @@ class Player final : public Creature, public Cylinder
 		int64_t lastPong;
 		int64_t nextAction = 0;
 		int64_t nextPotionAction = 0;
+		int64_t nextPushAction = 0;
 		int64_t bonusRerollCount = 0;
 		int64_t lastQuickLootNotification = 0;
 		uint32_t myPet = 0;

@@ -217,6 +217,7 @@ bool ConfigManager::load()
 	boolean[SHOW_KILLS_DEATHS_ON_LOOK] = getGlobalBoolean(L, "showKillsDeathsOnLook", true);
 	boolean[BLOCK_SAME_IP_PVP] = getGlobalBoolean(L, "blockSameIpPvp", true);
 	boolean[DISABLE_PUSH_CANCEL_ON_SPELLS] = getGlobalBoolean(L, "disablePushCancelOnSpells", false);
+	boolean[PUSH_WHEN_ATTACKING] = getGlobalBoolean(L, "pushWhenAttacking", true);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
@@ -282,6 +283,9 @@ bool ConfigManager::load()
 	integer[SPOOF_INTERVAL] = getGlobalNumber(L, "spoofInterval", 60 * 1000);
 	integer[SPOOF_CHANGE_CHANCE] = getGlobalNumber(L, "spoofChangeChance", 100);
 	integer[SPOOF_INCREMENT_CHANCE] = getGlobalNumber(L, "spoofIncrementChange", 5);
+	// Push mechanics
+	integer[PUSH_DELAY] = getGlobalNumber(L, "pushDelay", 1);
+	integer[PUSH_DISTANCE_DELAY] = getGlobalNumber(L, "pushDistanceDelay", 1);
 	integer[RESET_LEVEL] = getGlobalNumber(L, "resetLevel", 100); // reset system
 	integer[RESET_STATBONUS] = getGlobalNumber(L, "resetStatBonus", 5); // reset system
 	integer[RESET_DMGBONUS] = getGlobalNumber(L, "resetDmgBonus", 10); // reset system

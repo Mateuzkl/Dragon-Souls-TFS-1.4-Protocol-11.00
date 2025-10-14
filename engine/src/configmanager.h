@@ -76,6 +76,7 @@ class ConfigManager
 			ALLOW_MOUNT_IN_PZ,
 			SHOW_KILLS_DEATHS_ON_LOOK,
 			DISABLE_PUSH_CANCEL_ON_SPELLS,
+			PUSH_WHEN_ATTACKING,
 			BLOCK_SAME_IP_PVP,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
@@ -111,7 +112,7 @@ class ConfigManager
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
 
-		enum integer_config_t {
+			enum integer_config_t {
 			SQL_PORT,
 			MAX_PLAYERS,
 			PZ_LOCKED,
@@ -197,6 +198,10 @@ class ConfigManager
 			CRITICAL_SKILL_DIVISOR,
 			STORAGEVALUE_EMOTE,
 			STORAGEVALUE_HIDDEN,
+
+			// Push mechanics
+			PUSH_DELAY,
+			PUSH_DISTANCE_DELAY,
 
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
