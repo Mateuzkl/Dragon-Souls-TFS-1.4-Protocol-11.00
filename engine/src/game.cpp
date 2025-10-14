@@ -5371,8 +5371,9 @@ bool Game::playerSaySpell(Player* player, SpeakClasses type, const std::string& 
 
 	result = g_spells->playerSaySpell(player, words);
 	if (result == TALKACTION_BREAK) {
-		// cancelando o push
-		player->cancelPush();
+		if (!g_config.getBoolean(ConfigManager::DISABLE_PUSH_CANCEL_ON_SPELLS)) {
+			player->cancelPush();
+		}
 
 		int32_t hiddenValue;
 		player->getStorageValue(90002, hiddenValue);

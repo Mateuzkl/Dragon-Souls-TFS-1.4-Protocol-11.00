@@ -216,6 +216,7 @@ bool ConfigManager::load()
 	boolean[ALLOW_MOUNT_IN_PZ] = getGlobalBoolean(L, "allowMountInPz", false);
 	boolean[SHOW_KILLS_DEATHS_ON_LOOK] = getGlobalBoolean(L, "showKillsDeathsOnLook", true);
 	boolean[BLOCK_SAME_IP_PVP] = getGlobalBoolean(L, "blockSameIpPvp", true);
+	boolean[DISABLE_PUSH_CANCEL_ON_SPELLS] = getGlobalBoolean(L, "disablePushCancelOnSpells", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");
