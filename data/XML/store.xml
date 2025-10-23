@@ -447,8 +447,8 @@
 		<offer name="Monk Exercise Dummy" itemtype="32147" count="1" price="150" icon="Monk_Exercise_Dummy.png" description="Buy an incredible Monk Exercise Dummye to decorate your home." type="house" />
 		<offer name="Daily Reward Shrine" itemtype="29022" count="1" price="150" icon="Daily_Reward_Shrine.png" description="Buy an incredible Daily Reward Shrine to decorate your home." type="house" />
 		<offer name="Shiny Daily Reward Shrine" itemtype="29024" count="1" price="150" icon="Shiny_Reward_Shrine.png" description="Buy an incredible Shiny Daily Reward Shrine to decorate your home." type="house" />
-		<offer name="Gilded Imbuing Shrine" itemtype="27851" count="1" price="200" icon="Gilded_Imbuing_Shrine.png" description="Buy an incredible Gilded Imbuing Shrine to decorate your home." type="house" />
-		<offer name="Imbuing Shrine" itemtype="27842" count="1" price="150" icon="Imbuing_Shrine.png" description="Buy an incredible Imbuing Shrine to decorate your home." type="house" />
+		<offer name="Gilded Imbuing Shrine" itemtype="27760" count="1" price="200" icon="Gilded_Imbuing_Shrine.png" description="Buy an incredible Gilded Imbuing Shrine to decorate your home." type="house" />
+		<offer name="Imbuing Shrine" itemtype="27759" count="1" price="150" icon="Imbuing_Shrine.png" description="Buy an incredible Imbuing Shrine to decorate your home." type="house" />
 		<offer name="Royal Mailbox" itemtype="26056" count="1" price="150" icon="Mailbox.png" description="Buy an incredible Royal Mailbox to decorate your home." type="house" />
 		<offer name="Ornate Mailbox" itemtype="26058" count="1" price="200" icon="Ornate_Mailbox.png" description="Buy an incredible Ornate Mailbox to decorate your home." type="house" />
 	</offers>

@@ -411,6 +411,7 @@ class ConditionSpellGroupCooldown final : public ConditionGeneric
 			ConditionGeneric(id, type, ticks, buff, subId) {}
 
 		bool startCondition(Creature* creature) final;
+		void endCondition(Creature* creature) final;
 		void addCondition(Creature* creature, const Condition* condition) final;
 
 		ConditionSpellGroupCooldown* clone() const final {

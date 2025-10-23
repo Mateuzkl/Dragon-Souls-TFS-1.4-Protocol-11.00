@@ -118,20 +118,20 @@
 </rune>												
 															<!-- Wyzard -->
 
-<instant name="Arcanum Metabolism" words="utani mas hur" lvl="50" maglv="50" manapercent="5" prem="1" aggressive="0" selftarget="1" exhaustion="8" cooldownmsg="1" needlearn="0" script="support/Utani Mas Hur.lua">
+<instant spellid="201" name="Arcanum Metabolism" words="utani mas hur" lvl="50" maglv="50" manapercent="5" prem="1" aggressive="0" selftarget="1" exhaustion="8" cooldownmsg="1" needlearn="0" script="support/Utani Mas Hur.lua">
 		<vocation name="Wyzard"/><vocation name="Dark Wyzard"/>
 		<vocation name="Cleric"/><vocation name="Elemental Cleric"/>
 </instant>
 
-<instant name="Adori Gran Dark" words="Adori Gran Dark" lvl="400" maglv="130" manapercent="45" soul="0" exhaustion="45" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/Adori Gran Dark.lua">
+<instant spellid="202" name="Adori Gran Dark" words="Adori Gran Dark" lvl="400" maglv="130" manapercent="45" soul="0" exhaustion="45" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/Adori Gran Dark.lua">
 		<vocation name="Dark Wyzard"/>
 </instant>
 
-<instant name="Tides Of Darknes" words="exevo gran mas dark" lvl="200" maglv="100" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo gran mas dark.lua">
+<instant spellid="200" name="Tides Of Darknes" words="exevo gran mas dark" lvl="200" maglv="100" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo gran mas dark.lua">
 		<vocation name="Wyzard"/><vocation name="Dark Wyzard"/>
 </instant>
 													
-<instant name="Glaciate" words="adori frigo" lvl="100" maglv="70" manapercent="10" soul="0" exhaustion="7" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/adori frigo.lua">
+<instant spellid="203" name="Glaciate" words="adori frigo" lvl="100" maglv="70" manapercent="10" soul="0" exhaustion="7" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/adori frigo.lua">
 <vocation name="Dark Wyzard" showInDescription="0"/>
 	</instant>
 
@@ -173,12 +173,12 @@
 		<vocation name="Dark Wyzard" />
 </instant>
 
-<instant name="Exevo Gran Mas Frigo" words="Exevo Gran Mas Frigo" lvl="350" maglv="110" manapercent="35" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo Gran Mas Frigo.lua">
+<instant spellid="204" name="Exevo Gran Mas Frigo" words="Exevo Gran Mas Frigo" lvl="350" maglv="110" manapercent="35" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo Gran Mas Frigo.lua">
 
 <vocation name="Dark Wyzard" showInDescription="0"/>
 	</instant>
 
-<instant name="Exevo Gran Mas Flam" words="Exevo Gran Mas Flam" lvl="250" maglv="110" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo Gran Mas Flam.lua">
+<instant spellid="205" name="Exevo Gran Mas Flam" words="Exevo Gran Mas Flam" lvl="250" maglv="110" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo Gran Mas Flam.lua">
 
 <vocation name="Dark Wyzard" showInDescription="0"/>
 	</instant>
@@ -188,7 +188,7 @@
 		<vocation name="Cleric"/><vocation name="Elemental Cleric"/>
 </instant>
 
-<instant name="Ultimate Time" words="exevo gran mas time" aggressive="0" lvl="300" maglv="100" manapercent="20" soul="0" exhaustion="15" cooldownmsg="1" prem="1" enabled="1" script="support/exevo gran mas time.lua">
+<instant spellid="206" name="Ultimate Time" words="exevo gran mas time" aggressive="0" lvl="300" maglv="100" manapercent="20" soul="0" exhaustion="15" cooldownmsg="1" prem="1" enabled="1" script="support/exevo gran mas time.lua">
 	<vocation name="Cleric"/><vocation name="Elemental Cleric"/>
 </instant>
 
@@ -310,52 +310,52 @@
 </instant>
 
 
-<instant name="exevo gran mas time ultimate" words="exevo gran mas time ultimate" aggressive="0" lvl="400" maglv="140" manapercent="70" soul="50" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/silence rune2.lua">
+<instant spellid="207" name="exevo gran mas time ultimate" words="exevo gran mas time ultimate" aggressive="0" lvl="400" maglv="140" manapercent="70" soul="50" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/silence rune2.lua">
 		<vocation name="Elemental Cleric" showInDescription="0"/>
 </instant>
 
 														<!-- Ranger -->
 
-<instant name="exevo tera" words="exevo tera" lvl="250" maglv="25" manapercent="25" soul="0" exhaustion="14" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="support/exevo tera.lua">
+<instant spellid="208" name="exevo tera" words="exevo tera" lvl="250" maglv="25" manapercent="25" soul="0" exhaustion="14" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="support/exevo tera.lua">
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Strike Bean" words="adori gran frigo" lvl="250" maglv="100" manapercent="15" soul="0" exhaustion="20" cooldownmsg="1" blockwalls="1" prem="1" enabled="1" script="attack/adori gran frigo.lua">
+<instant spellid="209" name="Strike Bean" words="adori gran frigo" lvl="250" maglv="100" manapercent="15" soul="0" exhaustion="20" cooldownmsg="1" blockwalls="1" prem="1" enabled="1" script="attack/adori gran frigo.lua">
 	<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="exevo mas flam" words="exevo mas flam" aggressive="1" lvl="400" maglv="35" manapercent="50" soul="0" needtarget="1" exhaustion="15" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo mas flam.lua">
+<instant spellid="210" name="exevo mas flam" words="exevo mas flam" aggressive="1" lvl="400" maglv="35" manapercent="50" soul="0" needtarget="1" exhaustion="15" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo mas flam.lua">
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Divine Caldera" words="exevo mas san" lvl="50" maglv="15" manapercent="10" soul="0" exhaustion="5" cooldownmsg="1" prem="1" enabled="1" script="attack/divine caldera.lua">
+<instant spellid="211" name="Divine Caldera" words="exevo mas san" lvl="50" maglv="15" manapercent="10" soul="0" exhaustion="5" cooldownmsg="1" prem="1" enabled="1" script="attack/divine caldera.lua">
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Exevo mas vita" words="Exevo mas vita" aggressive="0" lvl="250" maglv="100" blockwalls="1" manapercent="30" soul="0" exhaustion="12" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo mas vita.lua">
+<instant spellid="212" name="Exevo mas vita" words="Exevo mas vita" aggressive="0" lvl="250" maglv="100" blockwalls="1" manapercent="30" soul="0" exhaustion="12" cooldownmsg="1" prem="1" enabled="1" script="attack/Exevo mas vita.lua">
 		<vocation name="Ranger"/>
 		<vocation name="Elven Ranger"/>
 </instant>
 
-<instant name="Exevo Pox" words="Exevo Pox" lvl="350" maglv="30" manapercent="25" soul="0" exhaustion="18" cooldownmsg="1" blockwalls="1" prem="1" enabled="1" script="attack/Exevo Pox.lua">
+<instant spellid="213" name="Exevo Pox" words="Exevo Pox" lvl="350" maglv="30" manapercent="25" soul="0" exhaustion="18" cooldownmsg="1" blockwalls="1" prem="1" enabled="1" script="attack/Exevo Pox.lua">
 		<vocation name="Elven Ranger"/>
 </instant>
 
 
-<instant name="exevo gran mas shadow" words="exevo gran mas shadow" lvl="400" maglv="35" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo gran mas shadow.lua">
+<instant spellid="214" name="exevo gran mas shadow" words="exevo gran mas shadow" lvl="400" maglv="35" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo gran mas shadow.lua">
     <vocation name="Elven Ranger"/>
 </instant>
 														<!-- Slayer -->
 														
 
-<instant name="Berserk Strike" words="exori hur" lvl="150" maglv="10" manapercent="30" soul="0" exhaustion="10" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/exori gran hur.lua">
+<instant spellid="215" name="Berserk Strike" words="exori hur" lvl="150" maglv="10" manapercent="30" soul="0" exhaustion="10" cooldownmsg="1" prem="1" blockwalls="1" enabled="1" script="attack/exori gran hur.lua">
 		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
 </instant>
 
 
-<instant name="Divine Metabolism" words="exeta mas regen" lvl="300" soul="0" manapercent="20" maglv="10" prem="1" selftarget="1" aggressive="0" exhaustion="35" cooldownmsg="1" needlearn="0" script="healing/Exeta Mas Regen.lua">
+<instant spellid="216" name="Divine Metabolism" words="exeta mas regen" lvl="300" soul="0" manapercent="20" maglv="10" prem="1" selftarget="1" aggressive="0" exhaustion="35" cooldownmsg="1" needlearn="0" script="healing/Exeta Mas Regen.lua">
 		<vocation name="Dragon Slayer"/>
 </instant>
 
@@ -392,7 +392,7 @@
 		<vocation name="Slayer"/><vocation name="Dragon Slayer"/>
 </instant>
 
-<instant name="Terremoto" words="exori gran tera" lvl="300" maglv="15" manapercent="40" soul="0" exhaustion="20" cooldownmsg="1" prem="1" enabled="1" script="attack/exori gran tera.lua">
+<instant spellid="217" name="Terremoto" words="exori gran tera" lvl="300" maglv="15" manapercent="40" soul="0" exhaustion="20" cooldownmsg="1" prem="1" enabled="1" script="attack/exori gran tera.lua">
 		<vocation name="Dragon Slayer"/>	
 </instant>
 
@@ -1461,5 +1461,10 @@
 
 <instant name="teleport_Boss" words="teleport_Boss" enabled="0" script="monsters/teleport_Boss.lua"></instant>
 
-
+	<!-- House Spells -->
+	<instant name="House Guest List" words="aleta sio" aggressive="0" script="house/edit_guest_list.lua" />
+	<instant name="House Subowner List" words="aleta som" aggressive="0" script="house/edit_subowner_list.lua" />
+	<instant name="House Door List" words="aleta grav" casterTargetOrDirection="1" aggressive="0" script="house/edit_door_list.lua" />
+	<instant name="House Kick" words="alana sio" aggressive="0" playernameparam="1" params="1" script="house/kick.lua" />
+	
 </spells>

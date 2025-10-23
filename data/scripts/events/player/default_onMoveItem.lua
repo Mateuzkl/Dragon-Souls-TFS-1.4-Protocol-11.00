@@ -402,6 +402,44 @@ event.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCyl
         return false
     end
 
+    -- 16) House Protection System
+    local HOUSE_PROTECTION_STORAGE = 50000
+    
+    local fromTile = Tile(fromPosition)
+    local toTile = Tile(toPosition)
+    
+    if fromTile or toTile then
+        local house = nil
+        
+        if fromTile then
+            house = fromTile:getHouse()
+        end
+        
+        if not house and toTile then
+            house = toTile:getHouse()
+        end
+        
+        if house then
+            local houseId = house:getId()
+            local ownerGuid = house:getOwnerGuid()
+            
+            if ownerGuid ~= 0 then
+                local owner = Player(ownerGuid)
+                if owner then
+                    local storageKey = HOUSE_PROTECTION_STORAGE + houseId
+                    local protectionActive = owner:getStorageValue(storageKey)
+                    
+                    if protectionActive == 1 then
+                        if self:getGuid() ~= owner:getGuid() then
+                            self:sendCancelMessage("Only the house owner can move items while protection is active.")
+                            return false
+                        end
+                    end
+                end
+            end
+        end
+    end
+
     return true
 end
 event:register()

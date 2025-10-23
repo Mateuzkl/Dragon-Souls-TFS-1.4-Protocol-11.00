@@ -1841,7 +1841,7 @@ void ConditionSpellCooldown::endCondition(Creature* creature)
                 if (InstantSpell* instant = spells->getInstantSpellById(subId)) {
                     if (instant->getShowCooldownMessage()) {
                         std::string msg = std::string("CD: ") + instant->getWords();
-                        player->sendTextMessage(MESSAGE_STATUS_WARNING, msg);
+                        player->sendTextMessage(MESSAGE_STATUS_CONSOLE_RED, msg);
                     }
                 }
             }
@@ -1876,6 +1876,11 @@ bool ConditionSpellGroupCooldown::startCondition(Creature* creature)
 		}
 	}
 	return true;
+}
+
+void ConditionSpellGroupCooldown::endCondition(Creature* creature)
+{
+	
 }
 
 bool ConditionRevive::startCondition(Creature* creature)

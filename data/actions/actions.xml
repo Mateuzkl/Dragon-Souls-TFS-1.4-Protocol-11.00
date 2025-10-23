@@ -113,9 +113,7 @@
 	<action itemid="8300" script="792/forja/Orb.lua"/>
 	
 	<!-- Imbuement System -->
-	<action fromid="27728" toid="27729" function="imbuement" />
-	<action fromid="27842" toid="27843" function="imbuement" />
-	<action fromid="27850" toid="27851" function="imbuement" />
+	<action fromid="27759" toid="27760" function="imbuement" />
 	
 	<!-- Daily Reward System -->
 	<action fromid="29021" toid="29024" script="other/dailyRewardShrine.lua"/>

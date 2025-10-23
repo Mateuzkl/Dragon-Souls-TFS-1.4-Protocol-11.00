@@ -3700,10 +3700,12 @@
 <attribute key="slotType" value="head" />
 <attribute key="absorbPercentFire" value="10" />
 </item>
-	<item id="2494" article="a" name="demon armor">
+		<item id="2494" article="a" name="demon armor">
 		<attribute key="weight" value="8000" />
 		<attribute key="armor" value="16" />
 		<attribute key="slotType" value="body" />
+		<attribute key="imbuingSlots" value="2" />
+			<attribute key="classification" value="2" />
 	</item>
 	<item id="2495" name="demon legs">
 		<attribute key="weight" value="5400" />
@@ -25686,5 +25688,21 @@
 		<attribute key="slotType" value="right-hand" />
 	    <attribute key="showattributes" value="1" />
 		<attribute key="imbuingSlots" value="1" />
+	</item>
+	<item id="27757" article="a" name="gilded imbuing shrine">
+		<attribute key="rotateTo" value="27758" />
+		<attribute key="wrapableTo" value="26054" />
+	</item>
+	<item id="27758" article="a" name="gilded imbuing shrine">
+		<attribute key="rotateTo" value="27757" />
+		<attribute key="wrapableTo" value="26054" />
+	</item>
+	<item id="27759" article="a" name="imbuing shrine">
+		<attribute key="rotateTo" value="27760" />
+		<attribute key="wrapableTo" value="26054" />
+	</item>
+	<item id="27760" article="a" name="imbuing shrine">
+		<attribute key="rotateTo" value="27759" />
+		<attribute key="wrapableTo" value="26054" />
 	</item>
 </items>

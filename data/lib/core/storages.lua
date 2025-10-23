@@ -39,7 +39,9 @@ PlayerStorageKeys = {
         activeTaskStorage = 1011000,
         roomStorageBase = 1010500,
         chestActionId = 49026
-    }
+    },
+    emoteStorage = 90001,
+    hiddenStorage = 90002
 }
 
 GlobalStorageKeys = {
