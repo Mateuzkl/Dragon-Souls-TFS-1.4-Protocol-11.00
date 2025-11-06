@@ -325,10 +325,10 @@ bool ConfigManager::load()
 	floating[CRITICAL_HEAL_PERCENT_MAGE] = getGlobalFloat(L, "criticalHealPercentMage", 10.0);
 	floating[CRITICAL_HEAL_PERCENT_DRUID] = getGlobalFloat(L, "criticalHealPercentDruid", 10.0);
 	floating[CRITICAL_HEAL_PERCENT_GOD] = getGlobalFloat(L, "criticalHealPercentGod", 5.0);
-	floating[CRITICAL_MULTIPLIER_KNIGHT] = getGlobalFloat(L, "criticalMultiplierKnight", 1.5);
-	floating[CRITICAL_MULTIPLIER_PALADIN] = getGlobalFloat(L, "criticalMultiplierPaladin", 1.4);
-	floating[CRITICAL_MULTIPLIER_MAGE] = getGlobalFloat(L, "criticalMultiplierMage", 1.3);
-	floating[CRITICAL_MULTIPLIER_DRUID] = getGlobalFloat(L, "criticalMultiplierDruid", 1.3);
+	floating[CRITICAL_MULTIPLIER_KNIGHT] = getGlobalFloat(L, "criticalMultiplierKnight", 1.5f);
+	floating[CRITICAL_MULTIPLIER_PALADIN] = getGlobalFloat(L, "criticalMultiplierPaladin", 1.4f);
+	floating[CRITICAL_MULTIPLIER_MAGE] = getGlobalFloat(L, "criticalMultiplierMage", 1.3f);
+	floating[CRITICAL_MULTIPLIER_DRUID] = getGlobalFloat(L, "criticalMultiplierDruid", 1.3f);
 	
 
 
