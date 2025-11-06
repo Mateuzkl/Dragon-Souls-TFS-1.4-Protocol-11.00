@@ -1,0 +1,37 @@
+image: Visual Studio 2022
+
+shallow_clone: true
+
+platform:
+  - x64
+
+configuration:
+  - Release
+
+matrix:
+  fast_finish: false
+
+only_commits:
+  files:
+    - /engine/src/
+    - /engine/vc17/
+    - .appveyor.yml
+    - /engine/cmake/
+
+install:
+   - cmd: vcpkg install
+
+build:
+  parallel: true
+
+after_build:
+  - 7z a -tzip Otg.zip -r .\engine\vc17\*.exe -ir!.\engine\vc17\*.dll
+
+cache:
+  - c:\tools\vcpkg\installed\
+
+artifacts:
+  - path: \engine\vc17\**\theforgottenserver*.exe
+  - path: \engine\vc17\**\*.dll
+  - path: Otg.zip
+

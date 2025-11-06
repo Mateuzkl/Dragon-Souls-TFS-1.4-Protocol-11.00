@@ -1880,7 +1880,7 @@ bool ConditionSpellGroupCooldown::startCondition(Creature* creature)
 
 void ConditionSpellGroupCooldown::endCondition(Creature* creature)
 {
-	
+	(void)creature;
 }
 
 bool ConditionRevive::startCondition(Creature* creature)

@@ -277,8 +277,15 @@ int32_t LuaScriptInterface::scriptEnvIndex = -1;
 
 LuaScriptInterface::LuaScriptInterface(std::string interfaceName) : interfaceName(std::move(interfaceName))
 {
-	if (!g_luaEnvironment.getLuaState()) {
-		g_luaEnvironment.initState();
+	// Don't initialize g_luaEnvironment here if we ARE g_luaEnvironment
+	// This prevents infinite recursion during static initialization
+	// Also check if luaState is already initialized to prevent double initialization
+	if (this != &g_luaEnvironment) {
+		// Only initialize if g_luaEnvironment exists and doesn't have a state yet
+		// This prevents recursion during static initialization order issues
+		if (!g_luaEnvironment.getLuaState()) {
+			g_luaEnvironment.initState();
+		}
 	}
 }
 

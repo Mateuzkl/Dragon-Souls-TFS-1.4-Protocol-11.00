@@ -7,6 +7,8 @@
 
 # Build Output
 /build
+build-release/
+build-debug/
 vcpkg_installed/
 
 # Personal Config Files
@@ -32,7 +34,6 @@ data/world/*.otbm:Zone.Identifier
 *.bak
 
 # IDE files
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -41,3 +42,4 @@ data/world/*.otbm:Zone.Identifier
 .DS_Store
 Thumbs.db
 desktop.ini EXE and DLL's.rar
+engine/build/
