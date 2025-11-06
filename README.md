@@ -280,6 +280,19 @@ Dragon-Souls-TFS-1.4-Protocol-11.00/
 - **CMake** - Sistema de build
 - **Git** - Controle de versão
 
+### 🔄 CI/CD (Continuous Integration)
+
+O projeto utiliza **AppVeyor** para builds automáticos:
+
+- ✅ Builds automáticos a cada commit
+- ✅ Compilação para Windows x64 (Release)
+- ✅ Geração automática de executáveis e DLLs
+- ✅ Artifacts disponíveis para download
+
+**Para configurar o AppVeyor**, consulte o guia completo em [APPVEYOR_SETUP.md](APPVEYOR_SETUP.md)
+
+**Status do Build:** Clique no badge acima para ver o status mais recente do build.
+
 ### Funcionalidades em Desenvolvimento
 - [ ] Sistema de montarias
 - [ ] Novos mapas de Rohan
@@ -314,7 +327,7 @@ Dragon-Souls-TFS-1.4-Protocol-11.00/
 
 ## 📊 Status do Projeto
 
-![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00?svg=true)](https://ci.appveyor.com/project/Mateuzkl/dragon-souls-tfs-1-4-protocol-11-00)
 ![Version](https://img.shields.io/badge/version-1.4.0-blue)
 ![Protocol](https://img.shields.io/badge/protocol-11.00-orange)
 ![License](https://img.shields.io/badge/license-GPL--2.0-red)
