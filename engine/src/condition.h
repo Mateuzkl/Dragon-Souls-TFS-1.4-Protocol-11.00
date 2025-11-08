@@ -247,6 +247,21 @@ class ConditionInvisible final : public ConditionGeneric
 		}
 };
 
+class ConditionRooted final : public ConditionGeneric
+{
+	public:
+		ConditionRooted(ConditionId_t id, ConditionType_t type, int32_t ticks, bool buff = false, uint32_t subId = 0) :
+			ConditionGeneric(id, type, ticks, buff, subId) {}
+
+		bool startCondition(Creature* creature) final;
+		bool executeCondition(Creature* creature, int32_t interval) final;
+		void endCondition(Creature* creature) final;
+
+		ConditionRooted* clone() const final {
+			return new ConditionRooted(*this);
+		}
+};
+
 class ConditionDamage final : public Condition
 {
 	public:

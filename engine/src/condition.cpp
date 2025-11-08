@@ -165,6 +165,9 @@ Condition* Condition::createCondition(ConditionId_t id, ConditionType_t type, in
 		case CONDITION_INVISIBLE:
 			return new ConditionInvisible(id, type, ticks, buff, subId);
 
+		case CONDITION_ROOTED:
+			return new ConditionRooted(id, type, ticks, buff, subId);
+
 		case CONDITION_OUTFIT:
 			return new ConditionOutfit(id, type, ticks, buff, subId);
 
@@ -1627,6 +1630,33 @@ void ConditionInvisible::endCondition(Creature* creature)
 	if (!creature->isInvisible()) {
 		g_game.internalCreatureChangeVisible(creature, true);
 	}
+}
+	
+bool ConditionRooted::startCondition(Creature* creature)
+{
+	if (!Condition::startCondition(creature)) {
+		return false;
+	}
+
+	creature->setMovementBlocked(true);
+	
+	if (Player* player = creature->getPlayer()) {
+		g_game.internalCreatureSay(player, TALKTYPE_MONSTER_SAY, "You are rooted.", false);
+		player->sendCancelWalk();
+	}
+	
+	return true;
+}
+
+bool ConditionRooted::executeCondition(Creature* creature, int32_t interval)
+{
+	creature->setMovementBlocked(true);
+	return ConditionGeneric::executeCondition(creature, interval);
+}
+
+void ConditionRooted::endCondition(Creature* creature)
+{
+	creature->setMovementBlocked(false);
 }
 
 void ConditionOutfit::setOutfit(const Outfit_t& outfit)

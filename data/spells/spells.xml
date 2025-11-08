@@ -347,6 +347,11 @@
 <instant spellid="214" name="exevo gran mas shadow" words="exevo gran mas shadow" lvl="400" maglv="35" manapercent="30" soul="0" exhaustion="35" cooldownmsg="1" prem="1" enabled="1" script="attack/exevo gran mas shadow.lua">
     <vocation name="Elven Ranger"/>
 </instant>
+
+<instant spellid="218" name="Raizes Amaldicoadas" words="exana tera" aggressive="1" lvl="200" maglv="20" manapercent="15" soul="0" needtarget="1" exhaustion="20" cooldownmsg="1" prem="1" enabled="1" script="attack/raizes amaldicoadas.lua">
+	<vocation name="Ranger"/>
+	<vocation name="Elven Ranger"/>
+</instant>
 														<!-- Slayer -->
 														
 
