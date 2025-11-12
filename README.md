@@ -203,19 +203,32 @@ cp config.lua.dist config.lua
 # Alterar: mysqlHost, mysqlUser, mysqlPass, mysqlDatabase
 ```
 
-### 4. Compilação (Windows)
-```bash
-# Extrair executáveis
-unrar x "EXE and DLL's.rar"
-
-# Ou compilar do código fonte
-cd engine
-mkdir build && cd build
-cmake ..
-make
+### 4. Preparar vcpkg (Windows)
+```powershell
+# Escolha onde instalar (ex.: C:\vcpkg)
+git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
+cd C:\vcpkg
+.\bootstrap-vcpkg.bat
+.\vcpkg.exe integrate install
 ```
 
-### 5. Inicialização
+- O vcpkg instala exatamente na pasta que você clonou. Se você usar `C:\vcpkg`, tudo ficará nesse drive. Você pode usar `D:\vcpkg` ou `E:\vcpkg` da mesma forma.
+- As bibliotecas compiladas ficam em `C:\vcpkg\installed\x64-windows` (ou no drive/pasta equivalente que você escolheu).
+- O cache de artefatos é salvo em `%LOCALAPPDATA%\vcpkg\archives`.
+
+### 5. Atualizar baseline do projeto (opcional)
+```powershell
+cd "C:\Users\SEU PC\Desktop\Dragon-Souls-TFS-1.4-Protocol-11.00"
+C:\vcpkg\vcpkg.exe x-update-baseline
+```
+
+### 6. Compilação com Visual Studio
+- Tenha o vcpkg instalado. Se já existir uma versão antiga, apague a pasta do vcpkg e instale novamente como acima.
+- Abra `engine\vc17\theforgottenserver.vcxproj` (ou `engine\vc17\theforgottenserver.sln`) no Visual Studio.
+- Clique em `Compilar Solução` (Ctrl+Shift+B).
+- O próprio Visual Studio baixa todas as libs e dependências automaticamente via vcpkg até terminar.
+
+### 7. Inicialização
 ```bash
 # Linux
 ./start.sh
