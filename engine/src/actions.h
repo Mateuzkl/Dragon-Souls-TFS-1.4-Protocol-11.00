@@ -20,6 +20,9 @@
 #ifndef FS_ACTIONS_H_87F60C5F587E4B84948F304A6451E6E6
 #define FS_ACTIONS_H_87F60C5F587E4B84948F304A6451E6E6
 
+#include <map>
+#include <vector>
+
 #include "baseevents.h"
 #include "enums.h"
 #include "luascript.h"
@@ -82,6 +85,16 @@ class Action : public Event
 			aids.emplace_back(id);
 		}
 
+		void setPositionList(const std::vector<Position>& posList) {
+			positionList = posList;
+		}
+		const std::vector<Position>& getPositionList() const {
+			return positionList;
+		}
+		bool hasPosition() const {
+			return !positionList.empty();
+		}
+
 		virtual ReturnValue canExecuteAction(const Player* player, const Position& toPos);
 		virtual bool hasOwnErrorHandler() {
 			return false;
@@ -99,6 +112,7 @@ class Action : public Event
 		std::vector<uint16_t> ids;
 		std::vector<uint16_t> uids;
 		std::vector<uint16_t> aids;
+		std::vector<Position> positionList;
 };
 
 class Actions final : public BaseEvents
@@ -134,8 +148,10 @@ class Actions final : public BaseEvents
 		ActionUseMap useItemMap;
 		ActionUseMap uniqueItemMap;
 		ActionUseMap actionItemMap;
+		std::map<Position, Action> positionMap;
 
 		Action* getAction(const Item* item);
+		Action* getAction(const Position& pos);
 		void clearMap(ActionUseMap& map, bool fromLua);
 
 		LuaScriptInterface scriptInterface;

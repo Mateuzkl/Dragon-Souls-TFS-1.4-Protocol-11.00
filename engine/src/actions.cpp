@@ -60,6 +60,13 @@ void Actions::clear(bool fromLua)
 	clearMap(useItemMap, fromLua);
 	clearMap(uniqueItemMap, fromLua);
 	clearMap(actionItemMap, fromLua);
+	for (auto it = positionMap.begin(); it != positionMap.end(); ) {
+		if (fromLua == it->second.fromLua) {
+			it = positionMap.erase(it);
+		} else {
+			++it;
+		}
+	}
 
 	reInitState(fromLua);
 }
@@ -93,6 +100,14 @@ bool Actions::registerEvent(Event_ptr event, const pugi::xml_node& node)
 		auto result = useItemMap.emplace(id, std::move(*action));
 		if (!result.second) {
 			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with id: " << id << std::endl;
+		} else if (result.first->second.hasPosition()) {
+			for (const auto& pos : result.first->second.getPositionList()) {
+				auto posResult = positionMap.emplace(pos, result.first->second);
+				if (!posResult.second) {
+					std::cout << "[Warning - Actions::registerEvent] Duplicate position ("
+					          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+				}
+			}
 		}
 		return result.second;
 	} else if ((attr = node.attribute("fromid"))) {
@@ -120,6 +135,17 @@ bool Actions::registerEvent(Event_ptr event, const pugi::xml_node& node)
 			}
 			success = true;
 		}
+		if (action->hasPosition()) {
+			for (const auto& pos : action->getPositionList()) {
+				auto posResult = positionMap.emplace(pos, *action);
+				if (!posResult.second) {
+					std::cout << "[Warning - Actions::registerEvent] Duplicate position ("
+					          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+				} else {
+					success = true;
+				}
+			}
+		}
 		return success;
 	} else if ((attr = node.attribute("uniqueid"))) {
 		uint16_t uid = pugi::cast<uint16_t>(attr.value());
@@ -127,6 +153,14 @@ bool Actions::registerEvent(Event_ptr event, const pugi::xml_node& node)
 		auto result = uniqueItemMap.emplace(uid, std::move(*action));
 		if (!result.second) {
 			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with uniqueid: " << uid << std::endl;
+		} else if (result.first->second.hasPosition()) {
+			for (const auto& pos : result.first->second.getPositionList()) {
+				auto posResult = positionMap.emplace(pos, result.first->second);
+				if (!posResult.second) {
+					std::cout << "[Warning - Actions::registerEvent] Duplicate position ("
+					          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+				}
+			}
 		}
 		return result.second;
 	} else if ((attr = node.attribute("fromuid"))) {
@@ -154,6 +188,17 @@ bool Actions::registerEvent(Event_ptr event, const pugi::xml_node& node)
 			}
 			success = true;
 		}
+		if (action->hasPosition()) {
+			for (const auto& pos : action->getPositionList()) {
+				auto posResult = positionMap.emplace(pos, *action);
+				if (!posResult.second) {
+					std::cout << "[Warning - Actions::registerEvent] Duplicate position ("
+					          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+				} else {
+					success = true;
+				}
+			}
+		}
 		return success;
 	} else if ((attr = node.attribute("actionid"))) {
 		uint16_t aid = pugi::cast<uint16_t>(attr.value());
@@ -161,6 +206,14 @@ bool Actions::registerEvent(Event_ptr event, const pugi::xml_node& node)
 		auto result = actionItemMap.emplace(aid, std::move(*action));
 		if (!result.second) {
 			std::cout << "[Warning - Actions::registerEvent] Duplicate registered item with actionid: " << aid << std::endl;
+		} else if (result.first->second.hasPosition()) {
+			for (const auto& pos : result.first->second.getPositionList()) {
+				auto posResult = positionMap.emplace(pos, result.first->second);
+				if (!posResult.second) {
+					std::cout << "[Warning - Actions::registerEvent] Duplicate position ("
+					          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+				}
+			}
 		}
 		return result.second;
 	} else if ((attr = node.attribute("fromaid"))) {
@@ -188,6 +241,30 @@ bool Actions::registerEvent(Event_ptr event, const pugi::xml_node& node)
 			}
 			success = true;
 		}
+		if (action->hasPosition()) {
+			for (const auto& pos : action->getPositionList()) {
+				auto posResult = positionMap.emplace(pos, *action);
+				if (!posResult.second) {
+					std::cout << "[Warning - Actions::registerEvent] Duplicate position ("
+					          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+				} else {
+					success = true;
+				}
+			}
+		}
+		return success;
+	}
+	if (action->hasPosition()) {
+		bool success = false;
+		for (const auto& pos : action->getPositionList()) {
+			auto posResult = positionMap.emplace(pos, *action);
+			if (!posResult.second) {
+				std::cout << "[Warning - Actions::registerEvent] Duplicate position ("
+				          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+			} else {
+				success = true;
+			}
+		}
 		return success;
 	}
 	return false;
@@ -201,57 +278,138 @@ bool Actions::registerLuaEvent(Action* event)
 			auto result = useItemMap.emplace(action->getItemIdRange().at(0), std::move(*action));
 			if (!result.second) {
 				std::cout << "[Warning - Actions::registerLuaEvent] Duplicate registered item with id: " << action->getItemIdRange().at(0) << std::endl;
+				return false;
+			}
+			if (result.first->second.hasPosition()) {
+				for (const auto& pos : result.first->second.getPositionList()) {
+					auto posResult = positionMap.emplace(pos, result.first->second);
+					if (!posResult.second) {
+						std::cout << "[Warning - Actions::registerLuaEvent] Duplicate position ("
+						          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+					}
+				}
 			}
 			return result.second;
 		} else {
 			auto v = action->getItemIdRange();
+			bool success = false;
 			for (auto i = v.begin(); i != v.end(); i++) {
-				auto result = useItemMap.emplace(*i, std::move(*action));
+				auto result = useItemMap.emplace(*i, *action);
 				if (!result.second) {
 					std::cout << "[Warning - Actions::registerLuaEvent] Duplicate registered item with id: " << *i << " in range from id: " << v.at(0) << ", to id: " << v.at(v.size() - 1) << std::endl;
 					continue;
 				}
+				success = true;
 			}
-			return true;
+			if (action->hasPosition()) {
+				for (const auto& pos : action->getPositionList()) {
+					auto posResult = positionMap.emplace(pos, *action);
+					if (!posResult.second) {
+						std::cout << "[Warning - Actions::registerLuaEvent] Duplicate position ("
+						          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+					} else {
+						success = true;
+					}
+				}
+			}
+			return success;
 		}
 	} else if (action->getUniqueIdRange().size() > 0) {
 		if (action->getUniqueIdRange().size() == 1) {
 			auto result = uniqueItemMap.emplace(action->getUniqueIdRange().at(0), std::move(*action));
 			if (!result.second) {
 				std::cout << "[Warning - Actions::registerLuaEvent] Duplicate registered item with uid: " << action->getUniqueIdRange().at(0) << std::endl;
+				return false;
+			}
+			if (result.first->second.hasPosition()) {
+				for (const auto& pos : result.first->second.getPositionList()) {
+					auto posResult = positionMap.emplace(pos, result.first->second);
+					if (!posResult.second) {
+						std::cout << "[Warning - Actions::registerLuaEvent] Duplicate position ("
+						          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+					}
+				}
 			}
 			return result.second;
 		} else {
 			auto v = action->getUniqueIdRange();
+			bool success = false;
 			for (auto i = v.begin(); i != v.end(); i++) {
-				auto result = uniqueItemMap.emplace(*i, std::move(*action));
+				auto result = uniqueItemMap.emplace(*i, *action);
 				if (!result.second) {
 					std::cout << "[Warning - Actions::registerLuaEvent] Duplicate registered item with uid: " << *i << " in range from uid: " << v.at(0) << ", to uid: " << v.at(v.size() - 1) << std::endl;
 					continue;
 				}
+				success = true;
 			}
-			return true;
+			if (action->hasPosition()) {
+				for (const auto& pos : action->getPositionList()) {
+					auto posResult = positionMap.emplace(pos, *action);
+					if (!posResult.second) {
+						std::cout << "[Warning - Actions::registerLuaEvent] Duplicate position ("
+						          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+					} else {
+						success = true;
+					}
+				}
+			}
+			return success;
 		}
 	} else if (action->getActionIdRange().size() > 0) {
 		if (action->getActionIdRange().size() == 1) {
 			auto result = actionItemMap.emplace(action->getActionIdRange().at(0), std::move(*action));
 			if (!result.second) {
 				std::cout << "[Warning - Actions::registerLuaEvent] Duplicate registered item with aid: " << action->getActionIdRange().at(0) << std::endl;
+				return false;
+			}
+			if (result.first->second.hasPosition()) {
+				for (const auto& pos : result.first->second.getPositionList()) {
+					auto posResult = positionMap.emplace(pos, result.first->second);
+					if (!posResult.second) {
+						std::cout << "[Warning - Actions::registerLuaEvent] Duplicate position ("
+						          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+					}
+				}
 			}
 			return result.second;
 		} else {
 			auto v = action->getActionIdRange();
+			bool success = false;
 			for (auto i = v.begin(); i != v.end(); i++) {
-				auto result = actionItemMap.emplace(*i, std::move(*action));
+				auto result = actionItemMap.emplace(*i, *action);
 				if (!result.second) {
 					std::cout << "[Warning - Actions::registerLuaEvent] Duplicate registered item with aid: " << *i << " in range from aid: " << v.at(0) << ", to aid: " << v.at(v.size() - 1) << std::endl;
 					continue;
 				}
+				success = true;
 			}
-			return true;
+			if (action->hasPosition()) {
+				for (const auto& pos : action->getPositionList()) {
+					auto posResult = positionMap.emplace(pos, *action);
+					if (!posResult.second) {
+						std::cout << "[Warning - Actions::registerLuaEvent] Duplicate position ("
+						          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+					} else {
+						success = true;
+					}
+				}
+			}
+			return success;
 		}
+	} else if (action->hasPosition()) {
+		bool success = false;
+		for (const auto& pos : action->getPositionList()) {
+			auto result = positionMap.emplace(pos, *action);
+			if (!result.second) {
+				std::cout << "[Warning - Actions::registerLuaEvent] Duplicate position ("
+				          << pos.x << ", " << pos.y << ", " << pos.z << ")" << std::endl;
+			} else {
+				success = true;
+			}
+		}
+		return success;
 	} else {
-		std::cout << "[Warning - Actions::registerLuaEvent] There is no id / aid / uid set for this event" << std::endl;
+		std::cout << "[Warning - Actions::registerLuaEvent] There is no id / aid / uid / position set for this event" << std::endl;
 		return false;
 	}
 }
@@ -327,12 +485,40 @@ Action* Actions::getAction(const Item* item)
 	return g_spells->getRuneSpell(item->getID());
 }
 
+Action* Actions::getAction(const Position& pos)
+{
+	auto it = positionMap.find(pos);
+	if (it != positionMap.end()) {
+		return &it->second;
+	}
+	return nullptr;
+}
+
 ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey)
 {
 	if (Door* door = item->getDoor()) {
 		if (!door->canUse(player)) {
 			return RETURNVALUE_CANNOTUSETHISOBJECT;
 		}
+	}
+
+	Action* posAction = getAction(pos);
+	if (posAction) {
+		ReturnValue ret = posAction->canExecuteAction(player, pos);
+		if (ret != RETURNVALUE_NOERROR) {
+			return ret;
+		}
+		if (posAction->isScripted()) {
+			if (posAction->executeUse(player, item, pos, nullptr, pos, isHotkey)) {
+				return RETURNVALUE_NOERROR;
+			}
+			if (item->isRemoved()) {
+				return RETURNVALUE_CANNOTUSETHISOBJECT;
+			}
+		} else if (posAction->function && posAction->function(player, item, pos, nullptr, pos, isHotkey)) {
+			return RETURNVALUE_NOERROR;
+		}
+		return RETURNVALUE_CANNOTUSETHISOBJECT;
 	}
 
 	Action* action = getAction(item);
