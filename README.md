@@ -183,15 +183,14 @@ if (player->hasEnergedAOL() && !player->hasRedSkull()) {
 ## 🧩 OTClient e SPR 11.x
 
 - **Cliente recomendado**: `otclientv8-ota` (Mirror oficial). Compila facilmente no Windows com `vcpkg` e Visual Studio 2022.
-- **Ative recursos no cliente** para compatibilidade com SPR 11.x:
+- **Ative recursos no cliente** no arquivo: `/modules/game_features/features.lua`:
 ```lua
--- init.lua (OTClient)
 g_game.enableFeature(GameSpritesAlphaChannel)
 g_game.enableFeature(GameMagicEffectU16)
 ```
-- **SPR/DAT pack**: use `SPR-11x-Dragon-Souls` para sprites e efeitos com canal alpha e IDs U16.
-- **RME pack**: use `RME-dragon-souls` para editar mapas no Remere (10.98).
-- **Ferramentas úteis**: `otg-br/tools` (somente `Item Editor` e `OBJ Builder`) para manutenção de itens e assets.
+- **SPR/DAT pack**: use [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) para sprites e efeitos com canal alpha e IDs U16.
+- **RME pack**: use [RME-dragon-souls](https://github.com/Mateuzkl/RME-dragon-souls) para editar mapas no Remere (10.98).
+- **Ferramentas úteis**: [otg-br/tools](https://github.com/otg-br/tools) (somente `Item Editor` e `OBJ Builder`) para manutenção de itens e assets.
 
 ### Observações
 - `GameSpritesAlphaChannel` garante transparência correta em sprites.
