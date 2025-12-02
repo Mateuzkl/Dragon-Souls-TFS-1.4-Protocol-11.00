@@ -24,7 +24,7 @@ local function registerDoorAction(config)
 			return false
 		end
 
-		local resets = player:getReset and player:getReset() or 0
+		local resets = player.getReset and player:getReset() or 0
 		if resets < config.requiredResets then
 			player:sendTextMessage(MESSAGE_INFO_DESCR, string.format(config.failureMessage, config.requiredResets))
 			return true

@@ -6,25 +6,27 @@ local portalPositions = {
 	Position(99, 116, 7),
 }
 
-local portal = Action()
+local destination = Position(95, 112, 7)
 
-function portal.onUse(player, item, fromPosition, target, toPosition, isHotkey)
+local portal = MoveEvent()
+
+function portal.onStepIn(creature, item, position, fromPosition)
+	local player = creature:getPlayer()
 	if not player then
-		return false
+		return true
 	end
 
-	local destination = Position(95, 112, 7)
-
-	fromPosition:sendMagicEffect(CONST_ME_TELEPORT)
+	position:sendMagicEffect(CONST_ME_TELEPORT)
 	player:teleportTo(destination)
 	player:getPosition():sendMagicEffect(CONST_ME_TELEPORT)
 	player:sendTextMessage(MESSAGE_INFO_DESCR, "You have been teleported!")
 	return true
 end
 
+portal:type("stepin")
+
 for _, pos in pairs(portalPositions) do
 	portal:position(pos)
 end
 
 portal:register()
-
