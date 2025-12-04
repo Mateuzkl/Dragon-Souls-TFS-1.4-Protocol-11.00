@@ -21,7 +21,7 @@ local voices = { {text = "I can help you with elemental items and blessings!"} }
 npcHandler:addModule(VoiceModule:new(voices))
 
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, text = 'I am a servant of Merlian!'})
-keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'I can do an element item or energize your element item, i only need all {necklace}, {amulet} or {magic} amulet, also can {bless} a little mortal and {reset} a god! Say {info} for reset information.'})
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'I can help you with several services:\n\n{Necklace} - Combine 6 necklaces into Elemental Necklace\n{Amulet} - Combine 7 amulets into Spirit Elemental Amulet\n{Magic} - Combine 7 magic amulets into Elemental Magic Amulet\n\n{Energize} (or {energy}, {ener}) - Upgrade your items:\n  - Necklace: 50k gold\n  - Amulet: 100k gold\n  - Magic Amulet: 150k gold\n\n{Bless} (or {blessing}) - Get all 5 blessings (Premium only)\n{Reset} - Reset your god character (Level 500+, God vocation)\n{Info} - Check your current stats and reset cost'})
 keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, text = 'I am not a merchant!'})
 keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, text = 'I am not a merchant!'})
 keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! You are only a novice!'})
@@ -54,8 +54,8 @@ function creatureSayCallback(cid, type, msg)
         npcHandler:say('I only need a Merlian, relic of the hell, Broonier, Thordain, dark wizard, angel and gaya, accept change all for a Elemental magic amulet?', cid)
         npcHandler.topic[cid] = 3
 
-    elseif msgcontains(msg, 'energize') then
-        npcHandler:say('I can energize your necklace for 50k, amulet for 100k or your magic amulet for 150k, do you want energize?', cid)
+    elseif msgcontains(msg, 'energize') or msgcontains(msg, 'energy') or msgcontains(msg, 'ener') then
+        npcHandler:say('I can energize your items to make them more powerful!\n\nElemental Necklace (ID 2197) - 50,000 gold\nSpirit Elemental Amulet (ID 2173) - 100,000 gold\nElemental Magic Amulet (ID 38894) - 150,000 gold\n\nDo you want to energize one of your items?', cid)
         npcHandler.topic[cid] = 4
 
     elseif msgcontains(msg, 'bless') or msgcontains(msg, 'blessing') then
