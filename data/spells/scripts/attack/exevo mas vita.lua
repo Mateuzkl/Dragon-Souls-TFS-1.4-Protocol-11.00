@@ -1,5 +1,5 @@
 local combatDist = Combat()
-combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_HOLYDAMAGE)
 combatDist:setParameter(COMBAT_PARAM_EFFECT, 202)
 combatDist:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 32)
 combatDist:setFormula(COMBAT_FORMULA_LEVELMAGIC, -7.7, 0, -10.9, 0)
@@ -70,7 +70,7 @@ function onCastSpell(creature, variant)
             lookAddons = targetOutfit.lookAddons
         }
         target:setOutfit(congelado)
-        targetPlayer:sendTextMessage(MESSAGE_STATUS_WARNING, 'Voce está em panico.')
+        targetPlayer:sendTextMessage(MESSAGE_STATUS_WARNING, 'Voce estï¿½ em panico.')
         
         addEvent(restoreOutfit, 3000, targetPlayer:getId(), targetOutfit)
         

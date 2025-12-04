@@ -1,11 +1,11 @@
 local combat = Combat()
-combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 combat:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
 combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -0.85, -30, -1.75, 0)
 
 local combat2 = Combat()
-combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 combat2:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
 combat2:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 combat2:setFormula(COMBAT_FORMULA_LEVELMAGIC, -0.40, -30, -0.90, 0)
@@ -27,11 +27,11 @@ local exhaust = Condition(CONDITION_EXHAUSTED)
 exhaust:setParameter(CONDITION_PARAM_TICKS, 2000)
 
 local marcher1 = Combat()
-marcher1:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+marcher1:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 marcher1:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 16)
 
 local mmage1 = Combat()
-mmage1:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+mmage1:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 mmage1:setParameter(COMBAT_PARAM_EFFECT, CONST_ME_EXPLOSIONHIT)
 mmage1:setParameter(COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_FIRE)
 mmage1:setFormula(COMBAT_FORMULA_LEVELMAGIC, -0.4, 0, -0.8, 0)
@@ -91,14 +91,25 @@ end
 
 combat:setCallback(CALLBACK_PARAM_TARGETCREATURE, "onTargetCreature")
 
-local function combo(creature, mmage1, marcher1, var)
+local function combo(creatureId, targetId)
+    local creature = Creature(creatureId)
+    if not creature then
+        return
+    end
+
     local player = creature:getPlayer()
     if not player then
         return
     end
     
+    local target = Creature(targetId)
+    if not target then
+        return
+    end
+    
     player:addCondition(exhaust)
     local vocation = player:getVocation():getId()
+    local var = Variant(targetId)
     
     if table.contains({1, 2, 5, 6}, vocation) then
         mmage1:execute(creature, var)
@@ -115,7 +126,6 @@ function onCastSpell(creature, variant)
         return false
     end
     
-    -- 10% chance de combo especial
     local comboChance = math.random(1, 10)
     if comboChance == 1 then
         Game.sendAnimatedText("Combo!", player:getPosition(), 215)
@@ -129,15 +139,17 @@ function onCastSpell(creature, variant)
             player:say('Rajada!', TALKTYPE_MONSTER_SAY)
         end
         
-        addEvent(combo, 800, creature, mmage1, marcher1, variant)
-        addEvent(combo, 1200, creature, mmage1, marcher1, variant)
-        addEvent(combo, 1600, creature, mmage1, marcher1, variant)
+        local creatureId = creature:getId()
+        local targetId = variant:getNumber()
         
-        -- 5% chance de combo estendido
+        addEvent(combo, 800, creatureId, targetId)
+        addEvent(combo, 1200, creatureId, targetId)
+        addEvent(combo, 1600, creatureId, targetId)
+        
         local extendedChance = math.random(1, 20)
         if extendedChance == 1 then
-            addEvent(combo, 2000, creature, mmage1, marcher1, variant)
-            addEvent(combo, 2400, creature, mmage1, marcher1, variant)
+            addEvent(combo, 2000, creatureId, targetId)
+            addEvent(combo, 2400, creatureId, targetId)
         end
     end
     

@@ -515,6 +515,8 @@
 	<movevent event="DeEquip" itemid="26130" slot="head" function="onDeEquipItem" />
 
 	<!-- Armors -->
+	<movevent event="Equip" itemid="38859" slot="armor" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="38859" slot="armor" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="2466" slot="armor" function="onEquipItem">
 		<vocation name="Knight" />
 		<vocation name="Elite Knight" showInDescription="0" />

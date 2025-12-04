@@ -1,5 +1,5 @@
 local combatDist = Combat()
-combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_HOLYDAMAGE)
 combatDist:setParameter(COMBAT_PARAM_EFFECT, 32)
 combatDist:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 21)
 combatDist:setFormula(COMBAT_FORMULA_LEVELMAGIC, -13.7, 0, -19.9, 0)
@@ -46,7 +46,7 @@ function onCastSpell(creature, variant)
         }
         target:setOutfit(congelado)
         target:addCondition(condition)
-        targetPlayer:sendTextMessage(MESSAGE_STATUS_WARNING, 'Voce está stunado.')
+        targetPlayer:sendTextMessage(MESSAGE_STATUS_WARNING, 'Voce estï¿½ stunado.')
         
         addEvent(restoreOutfit, 3000, targetPlayer:getId(), targetOutfit)
         

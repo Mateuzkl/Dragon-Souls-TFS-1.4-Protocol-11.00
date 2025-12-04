@@ -1,5 +1,5 @@
 local combat1 = Combat()
-combat1:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat1:setParameter(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
 combat1:setParameter(COMBAT_PARAM_EFFECT, 127)
 combat1:setFormula(COMBAT_FORMULA_LEVELMAGIC, -1.50, -30, -2.25, 0)
 
@@ -9,7 +9,7 @@ condition1:setFormula(-0.7, 0, -0.7, 0)
 combat1:setCondition(condition1)
 
 local combat2 = Combat()
-combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
 combat2:setParameter(COMBAT_PARAM_EFFECT, 127)
 combat2:setFormula(COMBAT_FORMULA_LEVELMAGIC, -1.50, -30, -2.25, 0)
 
@@ -19,7 +19,7 @@ condition2:setFormula(-0.7, 0, -0.7, 0)
 combat2:setCondition(condition2)
 
 local combat3 = Combat()
-combat3:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat3:setParameter(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
 combat3:setParameter(COMBAT_PARAM_EFFECT, 127)
 combat3:setFormula(COMBAT_FORMULA_LEVELMAGIC, -1.50, -30, -2.25, 0)
 
@@ -29,7 +29,7 @@ condition3:setFormula(-0.7, 0, -0.7, 0)
 combat3:setCondition(condition3)
 
 local combat4 = Combat()
-combat4:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat4:setParameter(COMBAT_PARAM_TYPE, COMBAT_FIREDAMAGE)
 combat4:setParameter(COMBAT_PARAM_EFFECT, 127)
 combat4:setFormula(COMBAT_FORMULA_LEVELMAGIC, -1.50, -30, -2.25, 0)
 

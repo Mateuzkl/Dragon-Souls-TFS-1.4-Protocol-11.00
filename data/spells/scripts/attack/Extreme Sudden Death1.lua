@@ -1,11 +1,11 @@
 local combat = createCombatObject()
-setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
 setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, 40)
 setCombatFormula(combat, COMBAT_FORMULA_LEVELMAGIC, -2.30, -30, -4.25, 0)
 
 local combat2 = createCombatObject()
-setCombatParam(combat2, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+setCombatParam(combat2, COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 setCombatParam(combat2, COMBAT_PARAM_EFFECT, CONST_ME_MORTAREA)
 setCombatParam(combat2, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SUDDENDEATH)
 setCombatFormula(combat2, COMBAT_FORMULA_LEVELMAGIC, -1.0, -30, -2.0, 0)

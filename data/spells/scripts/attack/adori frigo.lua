@@ -1,5 +1,5 @@
 local combatDist = Combat()
-combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_ICEDAMAGE)
 combatDist:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 44)
 combatDist:setFormula(COMBAT_FORMULA_LEVELMAGIC, -7.7, 0, -10.9, 0)
 

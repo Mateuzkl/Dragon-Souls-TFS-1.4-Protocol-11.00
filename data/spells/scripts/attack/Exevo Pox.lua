@@ -1,5 +1,5 @@
 local combatDist = Combat()
-combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_EARTHDAMAGE)
 combatDist:setParameter(COMBAT_PARAM_EFFECT, 47)
 combatDist:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 30)
 combatDist:setFormula(COMBAT_FORMULA_LEVELMAGIC, -7.7, 0, -10.9, 0)
@@ -53,7 +53,7 @@ function onCastSpell(creature, variant)
         }
         target:setOutfit(congelado)
         target:addCondition(condition)
-        targetPlayer:sendTextMessage(MESSAGE_STATUS_WARNING, 'Voce está envenenado.')
+        targetPlayer:sendTextMessage(MESSAGE_STATUS_WARNING, 'Voce estï¿½ envenenado.')
         
         addEvent(restoreOutfit, 14000, targetPlayer:getId(), targetOutfit)
         

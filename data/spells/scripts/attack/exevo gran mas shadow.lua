@@ -2,7 +2,7 @@ local acombat1 = Combat()
 acombat1:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 22)
 
 local combat1 = Combat()
-combat1:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat1:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 combat1:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 22)
 combat1:setFormula(COMBAT_FORMULA_LEVELMAGIC, -7.7, 0, -10.9, 0)
 
@@ -14,7 +14,7 @@ local acombat2 = Combat()
 acombat2:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 22)
 
 local combat2 = Combat()
-combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_DEATHDAMAGE)
 combat2:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 22)
 combat2:setFormula(COMBAT_FORMULA_LEVELMAGIC, -7.7, 0, -10.9, 0)
 

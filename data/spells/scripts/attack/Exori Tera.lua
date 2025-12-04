@@ -1,10 +1,10 @@
 local combat = Combat()
 combat:setParameter(COMBAT_PARAM_EFFECT, 118)
-combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat:setParameter(COMBAT_PARAM_TYPE, COMBAT_EARTHDAMAGE)
 combat:setFormula(COMBAT_FORMULA_LEVELMAGIC, -2.0, -30, -2.6, 0)
 
 local combat2 = Combat()
-combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combat2:setParameter(COMBAT_PARAM_TYPE, COMBAT_EARTHDAMAGE)
 combat2:setParameter(COMBAT_PARAM_EFFECT, 118)
 combat2:setFormula(COMBAT_FORMULA_LEVELMAGIC, -1.0, -30, -1.4, 0)
 

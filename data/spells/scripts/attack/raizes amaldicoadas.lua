@@ -1,5 +1,5 @@
 local combatDist = Combat()
-combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
+combatDist:setParameter(COMBAT_PARAM_TYPE, COMBAT_EARTHDAMAGE)
 combatDist:setParameter(COMBAT_PARAM_EFFECT, 112)
 
 local combat = Combat()
