@@ -560,8 +560,8 @@ class Game
 		static void addCreatureHealth(const SpectatorHashSet& spectators, const Creature* target);
 		void addMagicEffect(const Position& pos, uint16_t effect);
 		static void addMagicEffect(const SpectatorHashSet& spectators, const Position& pos, uint16_t effect);
-		void addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect);
-		static void addDistanceEffect(const SpectatorHashSet& spectators, const Position& fromPos, const Position& toPos, uint8_t effect);
+		void addDistanceEffect(const Position& fromPos, const Position& toPos, uint16_t effect);
+		static void addDistanceEffect(const SpectatorHashSet& spectators, const Position& fromPos, const Position& toPos, uint16_t effect);
 
 		void startImbuementCountdown(Item* item) {
 			item->incrementReferenceCounter();
@@ -635,8 +635,8 @@ class Game
 
 		bool reload(ReloadTypes_t reloadType);
 
-		bool hasEffect(uint8_t effectId);
-		bool hasDistanceEffect(uint8_t effectId);
+		bool hasEffect(uint16_t effectId);
+		bool hasDistanceEffect(uint16_t effectId);
 		bool hasLootType(uint16_t lootTypeId);
 
 		bool loadFreePass();

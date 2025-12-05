@@ -161,10 +161,10 @@ enum MagicEffectClasses : uint16_t {
 	CONST_ME_BLUE_FIREWORKS = 199,
 	CONST_ME_DODGE = 231,
 
-CONST_ME_LAST = CONST_ME_BLUE_FIREWORKS,
+	CONST_ME_LAST = 65535, // uint16_t max value (0xFFFF)
 };
 
-enum ShootType_t : uint8_t {
+enum ShootType_t : uint16_t {
 	CONST_ANI_NONE,
 
 	CONST_ANI_SPEAR = 1,
@@ -228,7 +228,7 @@ enum ShootType_t : uint8_t {
 	CONST_ANI_ROYALSTAR = 61,
 	CONST_ANI_BULLET = 74,
 
-	CONST_ANI_LAST = CONST_ANI_BULLET,
+	CONST_ANI_LAST = 65535, // uint16_t max value (0xFFFF)
 
 	// for internal use, don't send to client
 	CONST_ANI_WEAPONTYPE = 0xFE, // 254

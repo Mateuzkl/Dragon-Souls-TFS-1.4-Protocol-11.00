@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Rashid" script="rashid.lua" walkinterval="2000" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="146" head="20" body="30" legs="40" feet="50" corpse="3128"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I am Rashid, a traveling merchant. I buy rare and valuable items!" />
+		<parameter key="message_farewell" value="Good bye, |PLAYERNAME|. Come back when you have more items to sell!" />
+		<parameter key="message_walkaway" value="Good bye then." />
+		<parameter key="shop_sellable" value="
+magic plate armor,2472,100000;
+golden armor,2466,30000;
+dragon scale mail,2492,50000;
+royal helmet,2498,30000;
+crown helmet,2491,3000;
+crusader helmet,2497,5000;
+warrior helmet,2475,4000;
+devil helmet,2462,900;
+golden legs,2470,70000;
+crown legs,2488,30000;
+knight legs,2477,10000;
+boots of haste,2195,40000;
+steel boots,2645,100000;
+mastermind shield,2514,70000;
+demon shield,2520,40000;
+vampire shield,2534,20000;
+medusa shield,2536,10000;
+crown shield,2519,8000;
+tower shield,2528,8000;
+dragon shield,2516,8000;
+giant sword,2393,30000;
+bright sword,2407,20000;
+fire sword,2392,7000;
+ice rapier,2396,2000;
+dragon lance,2414,25000;
+fire axe,2432,8000;
+knight axe,2430,3000;
+guardian halberd,2427,10000;
+dragon hammer,2434,3000;
+war hammer,2391,2000;
+skull staff,2436,10000;
+blue robe,2656,10000;
+magic sword,2400,100000;
+mystic turban,2663,1000;
+strange helmet,2479,1000;
+dark armor,2489,1000;
+dark helmet,2490,200;
+beholder shield,2518,2000;
+scarab shield,2540,2000;
+castle shield,2535,1000;
+serpent sword,2409,1000;
+obsidian lance,2425,1000;
+plate armor,2463,500;
+spike sword,2383,500;
+two-handed sword,2377,900;
+halberd,2381,800;
+golden sickle,2418,600;
+double axe,2387,520;
+broad sword,2413,500;
+clerical mace,2423,400;
+brass armor,2465,300;
+barbarian axe,2429,300;
+steel helmet,2457,300;
+iron helmet,2459,300;
+battle hammer,2417,240;
+morning star,2394,200;
+battle axe,2378,160;
+steel shield,2509,160;
+scale armor,2483,150;
+viking helmet,2473,140;
+chain armor,2464,140;
+plate shield,2510,100;
+brass legs,2478,100;
+longsword,2397,100;
+brass helmet,2460,60;
+short sword,2406,60;
+mace,2398,60;
+chain helmet,2458,100;
+chain legs,2648,50;
+sword,2376,50;
+sabre,2385,50;
+soldier helmet,2481,50;
+hatchet,2388,50;
+katana,2412,30;" />
+	</parameters>
+</npc>

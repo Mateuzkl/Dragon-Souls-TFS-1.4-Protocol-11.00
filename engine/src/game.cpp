@@ -6720,7 +6720,7 @@ void Game::addMagicEffect(const SpectatorHashSet& spectators, const Position& po
 	}
 }
 
-void Game::addDistanceEffect(const Position& fromPos, const Position& toPos, uint8_t effect)
+void Game::addDistanceEffect(const Position& fromPos, const Position& toPos, uint16_t effect)
 {
 	SpectatorHashSet spectators;
 	map.getSpectators(spectators, fromPos, false, true);
@@ -6729,7 +6729,7 @@ void Game::addDistanceEffect(const Position& fromPos, const Position& toPos, uin
 	addDistanceEffect(spectators, fromPos, toPos, effect);
 }
 
-void Game::addDistanceEffect(const SpectatorHashSet& spectators, const Position& fromPos, const Position& toPos, uint8_t effect)
+void Game::addDistanceEffect(const SpectatorHashSet& spectators, const Position& fromPos, const Position& toPos, uint16_t effect)
 {
 	for (Creature* spectator : spectators) {
 		if (Player* tmpPlayer = spectator->getPlayer()) {
@@ -8681,24 +8681,14 @@ bool Game::reload(ReloadTypes_t reloadType)
 	}
 }
 
-bool Game::hasEffect(uint8_t effectId) {
-	for (uint8_t i = CONST_ME_NONE; i <= CONST_ME_LAST; i++) {
-		MagicEffectClasses effect = static_cast<MagicEffectClasses>(i);
-		if (effect == effectId) {
-			return true;
-		}
-	}
-	return false;
+bool Game::hasEffect(uint16_t effectId) {
+	// Allow all uint16_t values (0-65535)
+	return effectId <= CONST_ME_LAST;
 }
 
-bool Game::hasDistanceEffect(uint8_t effectId) {
-	for (uint8_t i = CONST_ANI_NONE; i <= CONST_ANI_LAST; i++) {
-		ShootType_t effect = static_cast<ShootType_t>(i);
-		if (effect == effectId) {
-			return true;
-		}
-	}
-	return false;
+bool Game::hasDistanceEffect(uint16_t effectId) {
+	// Allow all uint16_t values (0-65535)
+	return effectId <= CONST_ANI_LAST;
 }
 
 bool Game::isExpertPvpEnabled()

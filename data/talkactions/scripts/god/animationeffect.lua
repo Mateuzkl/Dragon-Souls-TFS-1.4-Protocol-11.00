@@ -4,6 +4,16 @@ function onSay(player, words, param)
 	end
 
 	local effect = tonumber(param)
+	if not effect then
+		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Usage: !x <effect_id> (0-65535)")
+		return false
+	end
+
+	if effect < 0 or effect > 65535 then
+		player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Effect ID must be between 0 and 65535.")
+		return false
+	end
+
 	local position = player:getPosition()
 	local toPositionLow = {z = position.z}
 	local toPositionHigh = {z = position.z}
@@ -25,5 +35,7 @@ function onSay(player, words, param)
 		position:sendDistanceEffect(toPositionLow, effect)
 		position:sendDistanceEffect(toPositionHigh, effect)
 	end
+
+	player:sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, "Distance effect " .. effect .. " sent!")
 	return false
 end

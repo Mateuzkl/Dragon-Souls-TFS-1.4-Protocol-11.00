@@ -764,7 +764,7 @@ void ProtocolGameBase::sendMagicEffect(const Position& pos, uint16_t type)
 		msg.addByte(0x1);
 		msg.addByte(0x00); // distance -- formula improvisada: https://pastebin.com/EVy6TYWs
 		msg.addByte(MAGIC_EFFECTS_CREATE_EFFECT); // type
-		msg.addByte(type); // effect
+		msg.add<uint16_t>(type); // effect (uint16_t for 65535 support)
 		msg.addByte(MAGIC_EFFECTS_END_LOOP); // hasImpactEffect?
 
 	}

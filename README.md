@@ -187,6 +187,7 @@ if (player->hasEnergedAOL() && !player->hasRedSkull()) {
 ```lua
 g_game.enableFeature(GameSpritesAlphaChannel)
 g_game.enableFeature(GameMagicEffectU16)
+g_game.enableFeature(GameDistanceEffectU16)
 ```
 - **SPR/DAT pack**: use [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) para sprites e efeitos com canal alpha e IDs U16.
 - **RME pack**: use [RME-dragon-souls](https://github.com/Mateuzkl/RME-dragon-souls) para editar mapas no Remere (10.98).
@@ -195,7 +196,62 @@ g_game.enableFeature(GameMagicEffectU16)
 ### Observações
 - `GameSpritesAlphaChannel` garante transparência correta em sprites.
 - `GameMagicEffectU16` permite efeitos mágicos com IDs 16-bit usados nos packs 11.x.
-- Insira as linhas acima na inicialização do cliente (ex.: `modules/client/init.lua`).
+- `GameDistanceEffectU16` permite efeitos de distância com IDs 16-bit.
+
+## 🎨 Limites Expandidos de Efeitos
+
+O Dragon Souls implementa suporte expandido para efeitos visuais, aumentando drasticamente o limite de IDs disponíveis.
+
+### 📊 Limites de IDs
+
+| Tipo de Efeito | Limite Antigo (uint8_t) | Limite Novo (uint16_t) | Aumento |
+|----------------|-------------------------|------------------------|---------|
+| **Magic Effects** | 256 (0-255) | **65.536** (0-65535) | 256x mais |
+| **Distance Effects** | 256 (0-255) | **65.536** (0-65535) | 256x mais |
+
+### 🚀 Benefícios
+
+- **Mais efeitos visuais**: Suporte para até 65.536 efeitos mágicos únicos
+- **Mais projéteis**: Suporte para até 65.536 efeitos de distância (flechas, magias, etc)
+- **Compatibilidade**: Totalmente compatível com SPR 11.x que usa IDs U16
+- **Sem limitações**: Liberdade total para criar novos efeitos customizados
+
+### ⚙️ Implementação Técnica
+
+A mudança foi feita alterando o tipo de dados de `uint8_t` (8 bits) para `uint16_t` (16 bits):
+
+```cpp
+// Antes (limite de 256)
+uint8_t magicEffect = CONST_ME_NONE;
+uint8_t distanceEffect = CONST_ANI_NONE;
+
+// Depois (limite de 65.536)
+uint16_t magicEffect = CONST_ME_NONE;
+uint16_t distanceEffect = CONST_ANI_NONE;
+```
+
+### 🎯 Arquivos Modificados
+
+- `engine/src/combat.h` - Estrutura de parâmetros de combate
+- `engine/src/combat.cpp` - Lógica de efeitos de combate
+- `engine/src/game.h` - Declarações de métodos de efeitos
+- `engine/src/game.cpp` - Implementação de efeitos visuais
+- `engine/src/enums.h` - Documentação de tipos de efeitos
+- `engine/src/backup.cpp` - Sistema de backup de efeitos
+
+### 💡 Como Usar
+
+Agora você pode usar IDs de efeitos muito maiores em seus scripts:
+
+```lua
+-- Efeito mágico com ID alto
+combat:setParameter(COMBAT_PARAM_EFFECT, 5000)
+
+-- Efeito de distância com ID alto
+combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 10000)
+```
+
+**Importante**: Certifique-se de que seu cliente OTClient tenha as features `GameMagicEffectU16` e `GameDistanceEffectU16` ativadas!
 
 ## 🚀 Instalação
 
