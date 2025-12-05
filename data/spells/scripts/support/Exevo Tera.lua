@@ -69,10 +69,10 @@ function onCastSpell(creature, variant)
         
         addEvent(restoreOutfit, 3000, targetPlayer:getId(), targetOutfit)
         
-        combatDist:execute(creature, Variant(target:getPosition()))
+        combatDist:execute(creature, Variant(targetId))
     else
         target:addCondition(condition)
-        combatDist:execute(creature, Variant(target:getPosition()))
+        combatDist:execute(creature, Variant(targetId))
     end
     
     player:say("Exevo Tera!", TALKTYPE_MONSTER_SAY)

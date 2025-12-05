@@ -216,41 +216,6 @@ O Dragon Souls implementa suporte expandido para efeitos visuais, aumentando dra
 - **Compatibilidade**: Totalmente compatível com SPR 11.x que usa IDs U16
 - **Sem limitações**: Liberdade total para criar novos efeitos customizados
 
-### ⚙️ Implementação Técnica
-
-A mudança foi feita alterando o tipo de dados de `uint8_t` (8 bits) para `uint16_t` (16 bits):
-
-```cpp
-// Antes (limite de 256)
-uint8_t magicEffect = CONST_ME_NONE;
-uint8_t distanceEffect = CONST_ANI_NONE;
-
-// Depois (limite de 65.536)
-uint16_t magicEffect = CONST_ME_NONE;
-uint16_t distanceEffect = CONST_ANI_NONE;
-```
-
-### 🎯 Arquivos Modificados
-
-- `engine/src/combat.h` - Estrutura de parâmetros de combate
-- `engine/src/combat.cpp` - Lógica de efeitos de combate
-- `engine/src/game.h` - Declarações de métodos de efeitos
-- `engine/src/game.cpp` - Implementação de efeitos visuais
-- `engine/src/enums.h` - Documentação de tipos de efeitos
-- `engine/src/backup.cpp` - Sistema de backup de efeitos
-
-### 💡 Como Usar
-
-Agora você pode usar IDs de efeitos muito maiores em seus scripts:
-
-```lua
--- Efeito mágico com ID alto
-combat:setParameter(COMBAT_PARAM_EFFECT, 5000)
-
--- Efeito de distância com ID alto
-combat:setParameter(COMBAT_PARAM_DISTANCEEFFECT, 10000)
-```
-
 **Importante**: Certifique-se de que seu cliente OTClient tenha as features `GameMagicEffectU16` e `GameDistanceEffectU16` ativadas!
 
 ## 🚀 Instalação
