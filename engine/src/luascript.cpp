@@ -2821,6 +2821,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "getArmor", LuaScriptInterface::luaPlayerGetArmor);
 	registerMethod("Player", "getDefense", LuaScriptInterface::luaPlayerGetDefense);
 	registerMethod("Player", "getWeapon", LuaScriptInterface::luaPlayerGetWeapon);
+	registerMethod("Player", "getEquipmentStatusReport", LuaScriptInterface::luaPlayerGetEquipmentStatusReport);
 
 	registerMethod("Player", "getHouse", LuaScriptInterface::luaPlayerGetHouse);
 	registerMethod("Player", "sendHouseWindow", LuaScriptInterface::luaPlayerSendHouseWindow);
@@ -11743,6 +11744,18 @@ int LuaScriptInterface::luaPlayerGetDefense(lua_State* L)
 	Player* player = getUserdata<Player>(L, 1);
 	if (player) {
 		lua_pushnumber(L, player->getDefense());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetEquipmentStatusReport(lua_State* L)
+{
+	// player:getEquipmentStatusReport()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		pushString(L, player->getEquipmentStatusReport());
 	} else {
 		lua_pushnil(L);
 	}

@@ -821,6 +821,8 @@ class Player final : public Creature, public Cylinder
 		float getAttackFactor() const final;
 		float getDefenseFactor() const final;
 
+		std::string getEquipmentStatusReport() const;
+
 		bool isDead() const final {
 			return deathTime > 0;
 		}

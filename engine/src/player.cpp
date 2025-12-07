@@ -437,6 +437,323 @@ float Player::getDefenseFactor() const
 	}
 }
 
+std::string Player::getEquipmentStatusReport() const
+{
+	std::ostringstream ss;
+	ss << "===== EQUIPMENT STATUS =====\n\n";
+
+	struct EquipmentStats {
+		int32_t magicLevel = 0, armor = 0, attack = 0, defense = 0, extraDefense = 0;
+		int32_t speed = 0, maxHealth = 0, maxMana = 0, dodge = 0;
+		int32_t skillFist = 0, skillClub = 0, skillSword = 0, skillAxe = 0;
+		int32_t skillDistance = 0, skillShield = 0, skillFishing = 0;
+		int32_t criticalChance = 0, criticalDamage = 0;
+		int32_t lifeLeechChance = 0, lifeLeechAmount = 0;
+		int32_t manaLeechChance = 0, manaLeechAmount = 0;
+		int32_t absorbPhysical = 0, absorbFire = 0, absorbIce = 0, absorbEnergy = 0;
+		int32_t absorbEarth = 0, absorbHoly = 0, absorbDeath = 0;
+		int32_t elementFire = 0, elementIce = 0, elementEnergy = 0;
+		int32_t elementEarth = 0, elementHoly = 0, elementDeath = 0;
+		int32_t increasePhysical = 0, increaseFire = 0, increaseIce = 0;
+		int32_t increaseEnergy = 0, increaseEarth = 0, increaseHoly = 0, increaseDeath = 0;
+	};
+
+	EquipmentStats stats;
+	std::vector<std::string> itemList;
+
+	static const slots_t equipmentSlots[] = {
+		CONST_SLOT_HEAD, CONST_SLOT_NECKLACE, CONST_SLOT_ARMOR, 
+		CONST_SLOT_LEGS, CONST_SLOT_FEET, CONST_SLOT_RING,
+		CONST_SLOT_LEFT, CONST_SLOT_RIGHT, CONST_SLOT_AMMO
+	};
+
+	static const char* slotNames[] = {
+		"Helmet", "Necklace", "Armor", "Legs", "Boots", 
+		"Ring", "Left Hand", "Right Hand", "Ammo"
+	};
+
+	for (size_t i = 0; i < 9; ++i) {
+		const Item* item = inventory[equipmentSlots[i]];
+		if (!item) continue;
+
+		const ItemType& it = Item::items[item->getID()];
+		std::ostringstream itemInfo;
+		itemInfo << slotNames[i] << ": " << it.name;
+		std::vector<std::string> bonuses;
+
+		int32_t armor = item->getArmor();
+		if (armor > 0) {
+			stats.armor += armor;
+			std::ostringstream bonus;
+			bonus << "Armor +" << armor;
+			bonuses.push_back(bonus.str());
+		}
+
+		int32_t attack = item->getAttack();
+		if (attack > 0) {
+			stats.attack += attack;
+			std::ostringstream bonus;
+			bonus << "Atk +" << attack;
+			bonuses.push_back(bonus.str());
+		}
+
+		int32_t defense = item->getDefense();
+		if (defense > 0) {
+			stats.defense += defense;
+			std::ostringstream bonus;
+			bonus << "Def +" << defense;
+			bonuses.push_back(bonus.str());
+		}
+
+		int32_t extraDef = item->getExtraDefense();
+		if (extraDef > 0) {
+			stats.extraDefense += extraDef;
+			std::ostringstream bonus;
+			bonus << "ExtraDef +" << extraDef;
+			bonuses.push_back(bonus.str());
+		}
+
+		if (it.abilities) {
+			const Abilities& abilities = *it.abilities;
+			
+			if (abilities.stats[STAT_MAGICPOINTS] > 0) {
+				stats.magicLevel += abilities.stats[STAT_MAGICPOINTS];
+				std::ostringstream bonus;
+				bonus << "ML +" << abilities.stats[STAT_MAGICPOINTS];
+				bonuses.push_back(bonus.str());
+			}
+			
+			if (abilities.stats[STAT_MAXHITPOINTS] > 0) {
+				stats.maxHealth += abilities.stats[STAT_MAXHITPOINTS];
+				std::ostringstream bonus;
+				bonus << "HP +" << abilities.stats[STAT_MAXHITPOINTS];
+				bonuses.push_back(bonus.str());
+			}
+			
+			if (abilities.stats[STAT_MAXMANAPOINTS] > 0) {
+				stats.maxMana += abilities.stats[STAT_MAXMANAPOINTS];
+				std::ostringstream bonus;
+				bonus << "MP +" << abilities.stats[STAT_MAXMANAPOINTS];
+				bonuses.push_back(bonus.str());
+			}
+			
+			if (abilities.speed > 0) {
+				stats.speed += abilities.speed;
+				std::ostringstream bonus;
+				bonus << "Speed +" << abilities.speed;
+				bonuses.push_back(bonus.str());
+			}
+			
+			stats.skillFist += abilities.skills[SKILL_FIST];
+			stats.skillClub += abilities.skills[SKILL_CLUB];
+			stats.skillSword += abilities.skills[SKILL_SWORD];
+			stats.skillAxe += abilities.skills[SKILL_AXE];
+			stats.skillDistance += abilities.skills[SKILL_DISTANCE];
+			stats.skillShield += abilities.skills[SKILL_SHIELD];
+			stats.skillFishing += abilities.skills[SKILL_FISHING];
+			
+			if (abilities.skills[SKILL_CRITICAL_HIT_CHANCE] > 0) {
+				stats.criticalChance += abilities.skills[SKILL_CRITICAL_HIT_CHANCE];
+				std::ostringstream bonus;
+				bonus << "Crit +" << abilities.skills[SKILL_CRITICAL_HIT_CHANCE] << "%";
+				bonuses.push_back(bonus.str());
+			}
+			
+			if (abilities.skills[SKILL_CRITICAL_HIT_DAMAGE] > 0) {
+				stats.criticalDamage += abilities.skills[SKILL_CRITICAL_HIT_DAMAGE];
+				std::ostringstream bonus;
+				bonus << "CritDmg +" << abilities.skills[SKILL_CRITICAL_HIT_DAMAGE] << "%";
+				bonuses.push_back(bonus.str());
+			}
+			
+			stats.lifeLeechChance += abilities.skills[SKILL_LIFE_LEECH_CHANCE];
+			stats.lifeLeechAmount += abilities.skills[SKILL_LIFE_LEECH_AMOUNT];
+			stats.manaLeechChance += abilities.skills[SKILL_MANA_LEECH_CHANCE];
+			stats.manaLeechAmount += abilities.skills[SKILL_MANA_LEECH_AMOUNT];
+
+			if (abilities.elementType != COMBAT_NONE && abilities.elementDamage > 0) {
+				switch (abilities.elementType) {
+					case COMBAT_FIREDAMAGE: stats.elementFire += abilities.elementDamage; break;
+					case COMBAT_ICEDAMAGE: stats.elementIce += abilities.elementDamage; break;
+					case COMBAT_ENERGYDAMAGE: stats.elementEnergy += abilities.elementDamage; break;
+					case COMBAT_EARTHDAMAGE: stats.elementEarth += abilities.elementDamage; break;
+					case COMBAT_HOLYDAMAGE: stats.elementHoly += abilities.elementDamage; break;
+					case COMBAT_DEATHDAMAGE: stats.elementDeath += abilities.elementDamage; break;
+					default: break;
+				}
+			}
+		}
+
+		int32_t absorbPhys = item->getAbsorbPercent(COMBAT_PHYSICALDAMAGE);
+		if (absorbPhys > 0) {
+			stats.absorbPhysical += absorbPhys;
+			std::ostringstream bonus;
+			bonus << "Phys +" << absorbPhys << "%";
+			bonuses.push_back(bonus.str());
+		}
+		
+		stats.absorbFire += item->getAbsorbPercent(COMBAT_FIREDAMAGE);
+		stats.absorbIce += item->getAbsorbPercent(COMBAT_ICEDAMAGE);
+		stats.absorbEnergy += item->getAbsorbPercent(COMBAT_ENERGYDAMAGE);
+		stats.absorbEarth += item->getAbsorbPercent(COMBAT_EARTHDAMAGE);
+		stats.absorbHoly += item->getAbsorbPercent(COMBAT_HOLYDAMAGE);
+		stats.absorbDeath += item->getAbsorbPercent(COMBAT_DEATHDAMAGE);
+
+		stats.elementFire += item->getElementDamage(COMBAT_FIREDAMAGE);
+		stats.elementIce += item->getElementDamage(COMBAT_ICEDAMAGE);
+		stats.elementEnergy += item->getElementDamage(COMBAT_ENERGYDAMAGE);
+		stats.elementEarth += item->getElementDamage(COMBAT_EARTHDAMAGE);
+		stats.elementHoly += item->getElementDamage(COMBAT_HOLYDAMAGE);
+		stats.elementDeath += item->getElementDamage(COMBAT_DEATHDAMAGE);
+
+		int32_t incPhys = item->getIncreasePercent(COMBAT_PHYSICALDAMAGE);
+		if (incPhys > 0) {
+			stats.increasePhysical += incPhys;
+			std::ostringstream bonus;
+			bonus << "Inc.Phys +" << incPhys << "%";
+			bonuses.push_back(bonus.str());
+		}
+		
+		int32_t incFire = item->getIncreasePercent(COMBAT_FIREDAMAGE);
+		int32_t incIce = item->getIncreasePercent(COMBAT_ICEDAMAGE);
+		int32_t incEnergy = item->getIncreasePercent(COMBAT_ENERGYDAMAGE);
+		int32_t incEarth = item->getIncreasePercent(COMBAT_EARTHDAMAGE);
+		int32_t incHoly = item->getIncreasePercent(COMBAT_HOLYDAMAGE);
+		int32_t incDeath = item->getIncreasePercent(COMBAT_DEATHDAMAGE);
+		
+		stats.increaseFire += incFire;
+		stats.increaseIce += incIce;
+		stats.increaseEnergy += incEnergy;
+		stats.increaseEarth += incEarth;
+		stats.increaseHoly += incHoly;
+		stats.increaseDeath += incDeath;
+		
+		if (incFire > 0 && incFire == incIce && incIce == incEnergy && 
+			incEnergy == incEarth && incEarth == incHoly && incHoly == incDeath) {
+			std::ostringstream bonus;
+			bonus << "Inc.Magic +" << incFire << "%";
+			bonuses.push_back(bonus.str());
+		}
+
+		int32_t dodge = item->getDodge();
+		if (dodge > 0) {
+			stats.dodge += dodge;
+			std::ostringstream bonus;
+			bonus << "Dodge +" << dodge << "%";
+			bonuses.push_back(bonus.str());
+		}
+
+		if (!bonuses.empty()) {
+			itemInfo << " (";
+			for (size_t j = 0; j < bonuses.size(); ++j) {
+				if (j > 0) itemInfo << ", ";
+				itemInfo << bonuses[j];
+			}
+			itemInfo << ")";
+		}
+		
+		itemList.push_back(itemInfo.str());
+	}
+
+	ss << "--- BASIC ATTRIBUTES ---\n";
+	if (stats.armor > 0) ss << "Armor: +" << stats.armor << "\n";
+	if (stats.attack > 0) ss << "Attack: +" << stats.attack << "\n";
+	if (stats.defense > 0) ss << "Defense: +" << stats.defense << "\n";
+	if (stats.extraDefense > 0) ss << "Extra Defense: +" << stats.extraDefense << "\n";
+	if (stats.speed > 0) ss << "Speed: +" << stats.speed << "\n";
+	if (stats.maxHealth > 0) ss << "Max Health: +" << stats.maxHealth << "\n";
+	if (stats.maxMana > 0) ss << "Max Mana: +" << stats.maxMana << "\n";
+	if (stats.magicLevel > 0) ss << "Magic Level: +" << stats.magicLevel << "\n";
+	if (stats.dodge > 0) ss << "Dodge: +" << stats.dodge << "%\n";
+
+	if (stats.skillFist > 0 || stats.skillClub > 0 || stats.skillSword > 0 || 
+		stats.skillAxe > 0 || stats.skillDistance > 0 || stats.skillShield > 0 || stats.skillFishing > 0) {
+		ss << "\n--- SKILLS ---\n";
+		if (stats.skillFist > 0) ss << "Fist Fighting: +" << stats.skillFist << "\n";
+		if (stats.skillClub > 0) ss << "Club Fighting: +" << stats.skillClub << "\n";
+		if (stats.skillSword > 0) ss << "Sword Fighting: +" << stats.skillSword << "\n";
+		if (stats.skillAxe > 0) ss << "Axe Fighting: +" << stats.skillAxe << "\n";
+		if (stats.skillDistance > 0) ss << "Distance Fighting: +" << stats.skillDistance << "\n";
+		if (stats.skillShield > 0) ss << "Shielding: +" << stats.skillShield << "\n";
+		if (stats.skillFishing > 0) ss << "Fishing: +" << stats.skillFishing << "\n";
+	}
+
+	if (stats.criticalChance > 0 || stats.criticalDamage > 0 || 
+		stats.lifeLeechChance > 0 || stats.manaLeechChance > 0) {
+		ss << "\n--- CRITICAL & LEECH ---\n";
+		if (stats.criticalChance > 0) ss << "Critical Chance: +" << stats.criticalChance << "%\n";
+		if (stats.criticalDamage > 0) ss << "Critical Damage: +" << stats.criticalDamage << "%\n";
+		if (stats.lifeLeechChance > 0) ss << "Life Leech Chance: +" << stats.lifeLeechChance << "%\n";
+		if (stats.lifeLeechAmount > 0) ss << "Life Leech Amount: +" << stats.lifeLeechAmount << "%\n";
+		if (stats.manaLeechChance > 0) ss << "Mana Leech Chance: +" << stats.manaLeechChance << "%\n";
+		if (stats.manaLeechAmount > 0) ss << "Mana Leech Amount: +" << stats.manaLeechAmount << "%\n";
+	}
+
+	if (stats.absorbPhysical > 0 || stats.absorbFire > 0 || stats.absorbIce > 0 || 
+		stats.absorbEnergy > 0 || stats.absorbEarth > 0 || stats.absorbHoly > 0 || stats.absorbDeath > 0) {
+		ss << "\n--- ABS.ALL ---\n";
+		if (stats.absorbPhysical > 0) ss << "Physical: +" << stats.absorbPhysical << "%\n";
+		if (stats.absorbFire > 0) ss << "Fire: +" << stats.absorbFire << "%\n";
+		if (stats.absorbIce > 0) ss << "Ice: +" << stats.absorbIce << "%\n";
+		if (stats.absorbEnergy > 0) ss << "Energy: +" << stats.absorbEnergy << "%\n";
+		if (stats.absorbEarth > 0) ss << "Earth: +" << stats.absorbEarth << "%\n";
+		if (stats.absorbHoly > 0) ss << "Holy: +" << stats.absorbHoly << "%\n";
+		if (stats.absorbDeath > 0) ss << "Death: +" << stats.absorbDeath << "%\n";
+	}
+
+	if (stats.elementFire > 0 || stats.elementIce > 0 || stats.elementEnergy > 0 || 
+		stats.elementEarth > 0 || stats.elementHoly > 0 || stats.elementDeath > 0) {
+		ss << "\n--- ELEMENTAL DAMAGE ---\n";
+		if (stats.elementFire > 0) ss << "Fire: +" << stats.elementFire << "\n";
+		if (stats.elementIce > 0) ss << "Ice: +" << stats.elementIce << "\n";
+		if (stats.elementEnergy > 0) ss << "Energy: +" << stats.elementEnergy << "\n";
+		if (stats.elementEarth > 0) ss << "Earth: +" << stats.elementEarth << "\n";
+		if (stats.elementHoly > 0) ss << "Holy: +" << stats.elementHoly << "\n";
+		if (stats.elementDeath > 0) ss << "Death: +" << stats.elementDeath << "\n";
+	}
+
+	if (stats.increasePhysical > 0) {
+		ss << "\n--- INC PHYS ---\n";
+		ss << "Inc.Phys: +" << stats.increasePhysical << "%\n";
+	}
+
+	if (stats.increaseFire > 0 || stats.increaseIce > 0 || stats.increaseEnergy > 0 || 
+		stats.increaseEarth > 0 || stats.increaseHoly > 0 || stats.increaseDeath > 0) {
+		
+		bool allMagicSame = (stats.increaseFire == stats.increaseIce && 
+							 stats.increaseIce == stats.increaseEnergy && 
+							 stats.increaseEnergy == stats.increaseEarth && 
+							 stats.increaseEarth == stats.increaseHoly && 
+							 stats.increaseHoly == stats.increaseDeath);
+		
+		int magicCount = (stats.increaseFire > 0 ? 1 : 0) + (stats.increaseIce > 0 ? 1 : 0) + 
+						 (stats.increaseEnergy > 0 ? 1 : 0) + (stats.increaseEarth > 0 ? 1 : 0) + 
+						 (stats.increaseHoly > 0 ? 1 : 0) + (stats.increaseDeath > 0 ? 1 : 0);
+		
+		ss << "\n--- INC MAGIC ---\n";
+		
+		if (allMagicSame && magicCount > 1 && stats.increaseFire > 0) {
+			ss << "Inc.Magic: +" << stats.increaseFire << "%\n";
+		} else {
+			if (stats.increaseFire > 0) ss << "Inc.Fire: +" << stats.increaseFire << "%\n";
+			if (stats.increaseIce > 0) ss << "Inc.Ice: +" << stats.increaseIce << "%\n";
+			if (stats.increaseEnergy > 0) ss << "Inc.Energy: +" << stats.increaseEnergy << "%\n";
+			if (stats.increaseEarth > 0) ss << "Inc.Earth: +" << stats.increaseEarth << "%\n";
+			if (stats.increaseHoly > 0) ss << "Inc.Holy: +" << stats.increaseHoly << "%\n";
+			if (stats.increaseDeath > 0) ss << "Inc.Death: +" << stats.increaseDeath << "%\n";
+		}
+	}
+
+	if (!itemList.empty()) {
+		ss << "\n--- EQUIPPED ITEMS ---\n";
+		for (const auto& itemStr : itemList) {
+			ss << itemStr << "\n";
+		}
+	}
+
+	return ss.str();
+}
+
 uint16_t Player::getClientIcons() const
 {
 	uint16_t icons = 0;

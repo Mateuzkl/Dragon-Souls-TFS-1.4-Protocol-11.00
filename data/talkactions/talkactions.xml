@@ -78,6 +78,7 @@
 	<talkaction words="!report" separator=" " script="player/admin_report.lua"/>
 	<talkaction words="!frags" separator=" " script="player/frags.lua" />
 	<talkaction words="!xpinfo" script="player/xpinfo.lua" />
+	<talkaction words="!status" script="player/status.lua" />
 
 	<!-- <talkaction words="!analyser" separator=" " script="player/analyser.lua" /> -->
 	<!-- <talkaction words="!daily" separator=" " script="player/dailyrewardtalkaction.lua" /> -->

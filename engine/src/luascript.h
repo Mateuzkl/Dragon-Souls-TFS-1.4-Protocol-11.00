@@ -1110,6 +1110,7 @@ class LuaScriptInterface
 		static int luaPlayerGetArmor(lua_State* L);
 		static int luaPlayerGetDefense(lua_State* L);
 		static int luaPlayerGetWeapon(lua_State* L);
+		static int luaPlayerGetEquipmentStatusReport(lua_State* L);
 
 		static int luaPlayerGetHouse(lua_State* L);
 		static int luaPlayerSendHouseWindow(lua_State* L);
