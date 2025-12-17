@@ -352,6 +352,11 @@
 	<vocation name="Ranger"/>
 	<vocation name="Elven Ranger"/>
 </instant>
+	<instant spellid="219" name="Holy Precision" words="utito holy" lvl="150" maglv="30" manapercent="15" soul="0" exhaustion="20" cooldownmsg="1" prem="1" aggressive="0" selftarget="1" enabled="1" script="support/holy_precision.lua">
+		<vocation name="Ranger"/>
+		<vocation name="Elven Ranger"/>
+	</instant>
+
 														<!-- Slayer -->
 														
 
