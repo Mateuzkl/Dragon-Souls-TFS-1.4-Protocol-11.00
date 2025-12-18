@@ -11,7 +11,7 @@ return {
 		[17320] = Slot {
 			needItem = {id = 8978, count = 1},
 			tilesPerSlot = 11,
-			centerPosition = Position(32957, 32076, 7),
+			centerPosition = Position(121, 318, 7),
 
 			items = {
 				{id = 8870, count = 1, chance = 0.2, rare = true},
