@@ -4,10 +4,13 @@ event.onGainSkillTries = function(self, skill, tries)
         return tries
     end
 
+    local multiplier
     if skill == SKILL_MAGLEVEL then
-        return tries * configManager.getNumber(configKeys.RATE_MAGIC)
+        multiplier = Game.getMagicLevelStage(self:getMagicLevel())
+    else
+        multiplier = Game.getSkillStage(self:getSkillLevel(skill))
     end
     
-    return tries * configManager.getNumber(configKeys.RATE_SKILL)
+    return tries * multiplier
 end
 event:register(1)

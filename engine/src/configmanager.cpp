@@ -26,6 +26,7 @@
 #endif
 
 #include <algorithm>
+#include <limits>
 #include "configmanager.h"
 #include "game.h"
 #include "pugicast.h"
@@ -118,9 +119,9 @@ ExperienceStages loadLuaStages(lua_State* L)
 	lua_pushnil(L);
 	while (lua_next(L, -2) != 0) {
 		const auto tableIndex = lua_gettop(L);
-		auto minLevel = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minlevel");
-		auto maxLevel = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxlevel");
-		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier");
+		auto minLevel = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minlevel", 1);
+		auto maxLevel = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxlevel", std::numeric_limits<uint32_t>::max());
+		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier", 1.0f);
 		stages.emplace_back(minLevel, maxLevel, multiplier);
 		lua_pop(L, 4);
 	}
@@ -141,9 +142,9 @@ SkillStages loadLuaSkillStages(lua_State* L)
 	lua_pushnil(L);
 	while (lua_next(L, -2) != 0) {
 		const auto tableIndex = lua_gettop(L);
-		auto minSkill = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minskill");
-		auto maxSkill = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxskill");
-		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier");
+		auto minSkill = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minskill", 1);
+		auto maxSkill = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxskill", std::numeric_limits<uint32_t>::max());
+		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier", 1.0f);
 		stages.emplace_back(minSkill, maxSkill, multiplier);
 		lua_pop(L, 4);
 	}
@@ -164,9 +165,9 @@ MagicLevelStages loadLuaMagicLevelStages(lua_State* L)
 	lua_pushnil(L);
 	while (lua_next(L, -2) != 0) {
 		const auto tableIndex = lua_gettop(L);
-		auto minMagic = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minmagic");
-		auto maxMagic = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxmagic");
-		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier");
+		auto minMagic = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minmagic", 0);
+		auto maxMagic = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxmagic", std::numeric_limits<uint32_t>::max());
+		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier", 1.0f);
 		stages.emplace_back(minMagic, maxMagic, multiplier);
 		lua_pop(L, 4);
 	}
@@ -181,7 +182,6 @@ ExperienceStages loadXMLStages()
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("data/XML/stages.xml");
 	if (!result) {
-		printXMLError("Error - loadXMLStages", "data/XML/stages.xml", result);
 		return {};
 	}
 
@@ -192,11 +192,11 @@ ExperienceStages loadXMLStages()
 				return {};
 			}
 		} else {
-			uint32_t minLevel, maxLevel, multiplier;
+			uint32_t minLevel = 1, maxLevel = std::numeric_limits<uint32_t>::max();
+			float multiplier = 1.0f;
+			
 			if (auto minLevelAttribute = stageNode.attribute("minlevel")) {
 				minLevel = pugi::cast<uint32_t>(minLevelAttribute.value());
-			} else {
-				minLevel = 1;
 			}
 
 			if (auto maxLevelAttribute = stageNode.attribute("maxlevel")) {
@@ -204,12 +204,96 @@ ExperienceStages loadXMLStages()
 			}
 
 			if (auto multiplierAttribute = stageNode.attribute("multiplier")) {
-				multiplier = pugi::cast<uint32_t>(multiplierAttribute.value());
+				multiplier = pugi::cast<float>(multiplierAttribute.value());
+			}
+
+			stages.emplace_back(minLevel, maxLevel, multiplier);
+		}
+	}
+
+	std::sort(stages.begin(), stages.end());
+	return stages;
+}
+
+SkillStages loadXMLSkillStages()
+{
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file("data/XML/skillstages.xml");
+	if (!result) {
+		return {};
+	}
+
+	SkillStages stages;
+	for (auto stageNode : doc.child("skillstages").child("skills").children()) {
+		if (strcasecmp(stageNode.name(), "config") == 0) {
+			if (!stageNode.attribute("enabled").as_bool()) {
+				return {};
+			}
+		} else {
+			uint32_t minSkill, maxSkill;
+			float multiplier;
+			if (auto minSkillAttribute = stageNode.attribute("minskill")) {
+				minSkill = pugi::cast<uint32_t>(minSkillAttribute.value());
+			} else {
+				minSkill = 1;
+			}
+
+			if (auto maxSkillAttribute = stageNode.attribute("maxskill")) {
+				maxSkill = pugi::cast<uint32_t>(maxSkillAttribute.value());
+			} else {
+				maxSkill = 0;
+			}
+
+			if (auto multiplierAttribute = stageNode.attribute("multiplier")) {
+				multiplier = pugi::cast<float>(multiplierAttribute.value());
 			} else {
 				multiplier = 1;
 			}
 
-			stages.emplace_back(minLevel, maxLevel, multiplier);
+			stages.emplace_back(minSkill, maxSkill, multiplier);
+		}
+	}
+
+	std::sort(stages.begin(), stages.end());
+	return stages;
+}
+
+MagicLevelStages loadXMLMagicLevelStages()
+{
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file("data/XML/skillstages.xml");
+	if (!result) {
+		return {};
+	}
+
+	MagicLevelStages stages;
+	for (auto stageNode : doc.child("skillstages").child("magiclevel").children()) {
+		if (strcasecmp(stageNode.name(), "config") == 0) {
+			if (!stageNode.attribute("enabled").as_bool()) {
+				return {};
+			}
+		} else {
+			uint32_t minMagic, maxMagic;
+			float multiplier;
+			if (auto minMagicAttribute = stageNode.attribute("minmagic")) {
+				minMagic = pugi::cast<uint32_t>(minMagicAttribute.value());
+			} else {
+				minMagic = 0;
+			}
+
+			if (auto maxMagicAttribute = stageNode.attribute("maxmagic")) {
+				maxMagic = pugi::cast<uint32_t>(maxMagicAttribute.value());
+			} else {
+				maxMagic = 0;
+			}
+
+			if (auto multiplierAttribute = stageNode.attribute("multiplier")) {
+				multiplier = pugi::cast<float>(multiplierAttribute.value());
+			} else {
+				multiplier = 1;
+			}
+
+			stages.emplace_back(minMagic, maxMagic, multiplier);
 		}
 	}
 
@@ -454,6 +538,22 @@ bool ConfigManager::load()
 	}
 	expStages.shrink_to_fit();
 
+	skillStages = loadXMLSkillStages();
+	if (skillStages.empty()) {
+		skillStages = loadLuaSkillStages(L);
+	} else {
+		std::cout << "[Warning - ConfigManager::load] XML skill stages are deprecated, consider moving to config.lua." << std::endl;
+	}
+	skillStages.shrink_to_fit();
+
+	magicLevelStages = loadXMLMagicLevelStages();
+	if (magicLevelStages.empty()) {
+		magicLevelStages = loadLuaMagicLevelStages(L);
+	} else {
+		std::cout << "[Warning - ConfigManager::load] XML magic level stages are deprecated, consider moving to config.lua." << std::endl;
+	}
+	magicLevelStages.shrink_to_fit();
+
 	loaded = true;
 	lua_close(L);
 	return true;
@@ -545,39 +645,45 @@ void ConfigManager::setNumber(integer_config_t what, int32_t value)
 
 float ConfigManager::getExperienceStage(uint32_t level) const
 {
-	auto it = std::find_if(expStages.begin(), expStages.end(), [level](ExperienceStages::value_type stage) {
-		return level >= std::get<0>(stage) && level <= std::get<1>(stage);
+	auto it = std::find_if(expStages.begin(), expStages.end(), [level](auto&& stage) {
+		auto&& [minLevel, maxLevel, _] = stage;
+		return level >= minLevel && level <= maxLevel;
 	});
 
 	if (it == expStages.end()) {
 		return getNumber(ConfigManager::RATE_EXPERIENCE);
 	}
 
-	return std::get<2>(*it);
+	auto&& [minLevel, maxLevel, multiplier] = *it;
+	return multiplier;
 }
 
 float ConfigManager::getSkillStage(uint32_t skill) const
 {
-	auto it = std::find_if(skillStages.begin(), skillStages.end(), [skill](SkillStages::value_type stage) {
-		return skill >= std::get<0>(stage) && skill <= std::get<1>(stage);
+	auto it = std::find_if(skillStages.begin(), skillStages.end(), [skill](auto&& stage) {
+		auto&& [minSkill, maxSkill, _] = stage;
+		return skill >= minSkill && skill <= maxSkill;
 	});
 
 	if (it == skillStages.end()) {
 		return getNumber(ConfigManager::RATE_SKILL);
 	}
 
-	return std::get<2>(*it);
+	auto&& [minSkill, maxSkill, multiplier] = *it;
+	return multiplier;
 }
 
 float ConfigManager::getMagicLevelStage(uint32_t magicLevel) const
 {
-	auto it = std::find_if(magicLevelStages.begin(), magicLevelStages.end(), [magicLevel](MagicLevelStages::value_type stage) {
-		return magicLevel >= std::get<0>(stage) && magicLevel <= std::get<1>(stage);
+	auto it = std::find_if(magicLevelStages.begin(), magicLevelStages.end(), [magicLevel](auto&& stage) {
+		auto&& [minMagic, maxMagic, _] = stage;
+		return magicLevel >= minMagic && magicLevel <= maxMagic;
 	});
 
 	if (it == magicLevelStages.end()) {
 		return getNumber(ConfigManager::RATE_MAGIC);
 	}
 
-	return std::get<2>(*it);
+	auto&& [minMagic, maxMagic, multiplier] = *it;
+	return multiplier;
 }

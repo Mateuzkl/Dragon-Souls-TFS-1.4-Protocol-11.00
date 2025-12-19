@@ -224,7 +224,8 @@ experienceStages = {
 	{ minlevel = 9, maxlevel = 20, multiplier = 6 },
 	{ minlevel = 21, maxlevel = 50, multiplier = 5 },
 	{ minlevel = 51, maxlevel = 100, multiplier = 4 },
-	{ minlevel = 101, multiplier = 3 }
+	{ minlevel = 101, maxlevel = 509, multiplier = 3 },
+	{ minlevel = 510, multiplier = 0 }
 }
 
 -- Skill stages
@@ -242,7 +243,8 @@ skillStages = {
 	{ minskill = 81, maxskill = 90, multiplier = 23 },
 	{ minskill = 90, maxskill = 100, multiplier = 15 },
 	{ minskill = 101, maxskill = 110, multiplier = 3 },
-	{ minskill = 111, multiplier = 1 }
+	{ minskill = 111, maxskill = 254, multiplier = 1 },
+	{ minskill = 255, multiplier = 0 }
 }
 
 -- Magic Level stages
@@ -260,13 +262,13 @@ magicLevelStages = {
 }
 
 -- Rates
--- NOTE: rateExp is not used if you have enabled stages above
--- NOTE: rateSkill is not used if you have enabled skillStages above
--- NOTE: rateMagic is not used if you have enabled magicLevelStages above
+-- NOTE: rateExp is NOT USED because experienceStages is enabled above
+-- NOTE: rateSkill is NOT USED because skillStages is enabled above
+-- NOTE: rateMagic is NOT USED because magicLevelStages is enabled above
 rateExp = 1
-rateSkill = 50
+rateSkill = 1
 rateLoot = 5
-rateMagic = 25
+rateMagic = 1
 rateSpawn = 2
 spawnSpeed = 2.0
 

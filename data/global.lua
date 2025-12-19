@@ -33,6 +33,12 @@ end
 
 dofile('data/lib/libs.lua')
 
+-- Action IDs
+actionIds = {
+	levelDoor = 1000, -- Base action ID for level doors (actionid - 1000 = required level)
+	questDoor = 2000  -- Base action ID for quest doors
+}
+
 ADVENTURERS_BLESSING_LEVEL = 100
 
 NOT_MOVEABLE_ACTION = 8000
