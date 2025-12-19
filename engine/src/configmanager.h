@@ -27,6 +27,8 @@
 #include <vector>
 
 using ExperienceStages = std::vector<std::tuple<uint32_t, uint32_t, float>>;
+using SkillStages = std::vector<std::tuple<uint32_t, uint32_t, float>>;
+using MagicLevelStages = std::vector<std::tuple<uint32_t, uint32_t, float>>;
 
 class ConfigManager
 {
@@ -264,9 +266,13 @@ class ConfigManager
 		};
 
 		float getExperienceStage(uint32_t level) const;
+		float getSkillStage(uint32_t skill) const;
+		float getMagicLevelStage(uint32_t magicLevel) const;
 
 	private:
 		ExperienceStages expStages = {};
+		SkillStages skillStages = {};
+		MagicLevelStages magicLevelStages = {};
 		std::string configFileLua = { "config.lua" };
 		std::string string[LAST_STRING_CONFIG] = {};
 		int32_t integer[LAST_INTEGER_CONFIG] = {};

@@ -227,8 +227,42 @@ experienceStages = {
 	{ minlevel = 101, multiplier = 3 }
 }
 
+-- Skill stages
+-- NOTE: to use a flat skill multiplier, set skillStages to nil
+-- minskill and multiplier are MANDATORY
+-- maxskill is OPTIONAL, but is considered infinite by default
+-- to disable stages, create a stage with minskill 1 and no maxskill
+skillStages = {
+	{ minskill = 1, maxskill = 30, multiplier = 99999 },
+	{ minskill = 31, maxskill = 40, multiplier = 98 },
+	{ minskill = 41, maxskill = 50, multiplier = 83 },
+	{ minskill = 51, maxskill = 60, multiplier = 68 },
+	{ minskill = 61, maxskill = 70, multiplier = 60 },
+	{ minskill = 71, maxskill = 80, multiplier = 38 },
+	{ minskill = 81, maxskill = 90, multiplier = 23 },
+	{ minskill = 90, maxskill = 100, multiplier = 15 },
+	{ minskill = 101, maxskill = 110, multiplier = 3 },
+	{ minskill = 111, multiplier = 1 }
+}
+
+-- Magic Level stages
+-- NOTE: to use a flat magic level multiplier, set magicLevelStages to nil
+-- minmagic and multiplier are MANDATORY
+-- maxmagic is OPTIONAL, but is considered infinite by default
+-- to disable stages, create a stage with minmagic 0 and no maxmagic
+magicLevelStages = {
+	{ minmagic = 0, maxmagic = 50, multiplier = 38 },
+	{ minmagic = 51, maxmagic = 70, multiplier = 35 },
+	{ minmagic = 71, maxmagic = 80, multiplier = 23 },
+	{ minmagic = 81, maxmagic = 100, multiplier = 15 },
+	{ minmagic = 101, maxmagic = 110, multiplier = 3 },
+	{ minmagic = 111, multiplier = 1 }
+}
+
 -- Rates
 -- NOTE: rateExp is not used if you have enabled stages above
+-- NOTE: rateSkill is not used if you have enabled skillStages above
+-- NOTE: rateMagic is not used if you have enabled magicLevelStages above
 rateExp = 1
 rateSkill = 50
 rateLoot = 5

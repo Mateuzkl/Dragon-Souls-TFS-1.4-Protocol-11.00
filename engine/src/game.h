@@ -577,12 +577,6 @@ class Game
 
 		bool loadItemsPrice();
 
-		bool loadSkillStages();
-		uint64_t getSkillStage(uint32_t level);
-
-		bool loadMagicLevelStages();
-		uint64_t getMagicLevelStage(uint32_t level);
-
 		void loadMotdNum();
 		void saveMotdNum() const;
 		const std::string& getMotdHash() const { return motdHash; }
@@ -697,8 +691,6 @@ class Game
 		std::unordered_map<uint32_t, Player*> mappedPlayerGuids;
 		std::unordered_map<uint32_t, Guild*> guilds;
 		std::unordered_map<uint16_t, Item*> uniqueItems;
-		std::map<uint32_t, uint32_t> stagesSkill;
-		std::map<uint32_t, uint32_t> stagesMl;
 		std::map<uint16_t, uint32_t> itemsPriceMap;
 
 		std::list<Item*> imbuedItems[EVENT_IMBUEMENT_BUCKETS];
@@ -759,14 +751,6 @@ class Game
 		int64_t lastSpoofUpdateNoiseTime;
 
 		uint16_t itemsSaleCount;
-
-		uint32_t lastStageSkill = 0;
-		bool stagesSkillEnabled = false;
-		bool useLastStageSkill = false;
-
-		uint32_t lastStageMl = 0;
-		bool stagesMlEnabled = false;
-		bool useLastStageMl = false;
 
 };
 

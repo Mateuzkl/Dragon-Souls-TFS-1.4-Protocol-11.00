@@ -130,6 +130,52 @@ ExperienceStages loadLuaStages(lua_State* L)
 	return stages;
 }
 
+SkillStages loadLuaSkillStages(lua_State* L)
+{
+	SkillStages stages;
+	lua_getglobal(L, "skillStages");
+	if (!lua_istable(L, -1)) {
+		return {};
+	}
+
+	lua_pushnil(L);
+	while (lua_next(L, -2) != 0) {
+		const auto tableIndex = lua_gettop(L);
+		auto minSkill = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minskill");
+		auto maxSkill = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxskill");
+		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier");
+		stages.emplace_back(minSkill, maxSkill, multiplier);
+		lua_pop(L, 4);
+	}
+	lua_pop(L, 1);
+
+	std::sort(stages.begin(), stages.end());
+	return stages;
+}
+
+MagicLevelStages loadLuaMagicLevelStages(lua_State* L)
+{
+	MagicLevelStages stages;
+	lua_getglobal(L, "magicLevelStages");
+	if (!lua_istable(L, -1)) {
+		return {};
+	}
+
+	lua_pushnil(L);
+	while (lua_next(L, -2) != 0) {
+		const auto tableIndex = lua_gettop(L);
+		auto minMagic = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "minmagic");
+		auto maxMagic = LuaScriptInterface::getField<uint32_t>(L, tableIndex, "maxmagic");
+		auto multiplier = LuaScriptInterface::getField<float>(L, tableIndex, "multiplier");
+		stages.emplace_back(minMagic, maxMagic, multiplier);
+		lua_pop(L, 4);
+	}
+	lua_pop(L, 1);
+
+	std::sort(stages.begin(), stages.end());
+	return stages;
+}
+
 ExperienceStages loadXMLStages()
 {
 	pugi::xml_document doc;
@@ -505,6 +551,32 @@ float ConfigManager::getExperienceStage(uint32_t level) const
 
 	if (it == expStages.end()) {
 		return getNumber(ConfigManager::RATE_EXPERIENCE);
+	}
+
+	return std::get<2>(*it);
+}
+
+float ConfigManager::getSkillStage(uint32_t skill) const
+{
+	auto it = std::find_if(skillStages.begin(), skillStages.end(), [skill](SkillStages::value_type stage) {
+		return skill >= std::get<0>(stage) && skill <= std::get<1>(stage);
+	});
+
+	if (it == skillStages.end()) {
+		return getNumber(ConfigManager::RATE_SKILL);
+	}
+
+	return std::get<2>(*it);
+}
+
+float ConfigManager::getMagicLevelStage(uint32_t magicLevel) const
+{
+	auto it = std::find_if(magicLevelStages.begin(), magicLevelStages.end(), [magicLevel](MagicLevelStages::value_type stage) {
+		return magicLevel >= std::get<0>(stage) && magicLevel <= std::get<1>(stage);
+	});
+
+	if (it == magicLevelStages.end()) {
+		return getNumber(ConfigManager::RATE_MAGIC);
 	}
 
 	return std::get<2>(*it);
