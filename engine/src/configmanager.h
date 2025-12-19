@@ -23,6 +23,10 @@
 #include <string>
 #include <unordered_map>
 #include <map>
+#include <utility>
+#include <vector>
+
+using ExperienceStages = std::vector<std::tuple<uint32_t, uint32_t, float>>;
 
 class ConfigManager
 {
@@ -259,7 +263,10 @@ class ConfigManager
 			return configFileLua;
 		};
 
+		float getExperienceStage(uint32_t level) const;
+
 	private:
+		ExperienceStages expStages = {};
 		std::string configFileLua = { "config.lua" };
 		std::string string[LAST_STRING_CONFIG] = {};
 		int32_t integer[LAST_INTEGER_CONFIG] = {};

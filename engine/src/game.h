@@ -577,9 +577,6 @@ class Game
 
 		bool loadItemsPrice();
 
-		bool loadExperienceStages();
-		uint64_t getExperienceStage(uint32_t level);
-
 		bool loadSkillStages();
 		uint64_t getSkillStage(uint32_t level);
 
@@ -700,7 +697,6 @@ class Game
 		std::unordered_map<uint32_t, Player*> mappedPlayerGuids;
 		std::unordered_map<uint32_t, Guild*> guilds;
 		std::unordered_map<uint16_t, Item*> uniqueItems;
-		std::map<uint32_t, uint32_t> stages;
 		std::map<uint32_t, uint32_t> stagesSkill;
 		std::map<uint32_t, uint32_t> stagesMl;
 		std::map<uint16_t, uint32_t> itemsPriceMap;
@@ -763,10 +759,6 @@ class Game
 		int64_t lastSpoofUpdateNoiseTime;
 
 		uint16_t itemsSaleCount;
-
-		uint32_t lastStageLevel = 0;
-		bool stagesEnabled = false;
-		bool useLastStageLevel = false;
 
 		uint32_t lastStageSkill = 0;
 		bool stagesSkillEnabled = false;
