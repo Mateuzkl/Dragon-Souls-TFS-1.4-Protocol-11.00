@@ -56,6 +56,8 @@
 - **Logs detalhados** para debugging
 - **API REST** para integração web
 - **Sistema de eventos** automatizados
+- **Suporte OTCv8** - Viewport dinâmico para monitores ultrawide
+- **Protocolo 0x42** - Negociação de viewport entre cliente e servidor
 
 ## 🔮 Sistema de Cooldown Avançado
 
@@ -188,6 +190,7 @@ if (player->hasEnergedAOL() && !player->hasRedSkull()) {
 g_game.enableFeature(GameSpritesAlphaChannel)
 g_game.enableFeature(GameMagicEffectU16)
 g_game.enableFeature(GameDistanceEffectU16)
+g_game.enableFeature(GameChangeMapAwareRange)  -- Nova feature para viewport dinâmico
 ```
 - **SPR/DAT pack**: use [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) para sprites e efeitos com canal alpha e IDs U16.
 - **RME pack**: use [RME-dragon-souls](https://github.com/Mateuzkl/RME-dragon-souls) para editar mapas no Remere (10.98).
@@ -197,6 +200,48 @@ g_game.enableFeature(GameDistanceEffectU16)
 - `GameSpritesAlphaChannel` garante transparência correta em sprites.
 - `GameMagicEffectU16` permite efeitos mágicos com IDs 16-bit usados nos packs 11.x.
 - `GameDistanceEffectU16` permite efeitos de distância com IDs 16-bit.
+- `GameChangeMapAwareRange` ativa o sistema de viewport dinâmico para monitores ultrawide.
+
+### 🖥️ Suporte para Monitores Ultrawide (OTCv8)
+
+O Dragon Souls implementa suporte completo para monitores ultrawide através do protocolo OTCv8.
+
+#### 📐 Especificações Técnicas
+
+| Recurso | Valor Padrão | Valor Máximo | Descrição |
+|---------|--------------|--------------|-----------|
+| **Viewport Width** | 18 tiles | **50 tiles** | Largura da área visível |
+| **Viewport Height** | 14 tiles | **30 tiles** | Altura da área visível |
+| **Client Viewport X** | 14 tiles | **24 tiles** | Viewport do cliente (X) |
+| **Client Viewport Y** | 10 tiles | **14 tiles** | Viewport do cliente (Y) |
+
+#### 🎮 Como Funciona
+
+1. **Negociação Automática**: O cliente OTCv8 solicita o tamanho de viewport desejado
+2. **Protocolo 0x42**: Servidor e cliente negociam o melhor tamanho
+3. **Adaptação Dinâmica**: O viewport se ajusta automaticamente ao tamanho da janela
+4. **Compatibilidade**: Clientes padrão continuam usando viewport tradicional
+
+#### ⚙️ Configuração no Cliente OTCv8
+
+No arquivo `data/game_features/features.lua`, encontre a versão do cliente 1100 e adicione:
+
+```lua
+-- Para protocolo 11.00
+if g_game.getProtocolVersion() >= 1100 then
+    g_game.enableFeature(GameSpritesAlphaChannel)
+    g_game.enableFeature(GameMagicEffectU16)
+    g_game.enableFeature(GameDistanceEffectU16)
+    g_game.enableFeature(GameChangeMapAwareRange)  -- ← Adicione esta linha
+end
+```
+
+#### 🎯 Benefícios
+
+- ✅ **Visão Expandida**: Veja mais do mapa em monitores ultrawide (21:9, 32:9)
+- ✅ **Melhor Gameplay**: Maior consciência situacional em PvP e PvE
+- ✅ **Performance Otimizada**: Sistema inteligente que envia apenas o necessário
+- ✅ **Compatibilidade Total**: Funciona com clientes padrão e ultrawide
 
 ## 🎨 Limites Expandidos de Efeitos
 
