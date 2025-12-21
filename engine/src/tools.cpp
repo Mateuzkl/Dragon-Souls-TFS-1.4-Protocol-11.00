@@ -820,16 +820,16 @@ std::string getSkillName(uint8_t skillid)
 {
 	switch (skillid) {
 		case SKILL_FIST:
-			return "fist fighting";
+			return "melee fighting";
 
 		case SKILL_CLUB:
-			return "club fighting";
+			return "melee fighting";
 
 		case SKILL_SWORD:
-			return "sword fighting";
+			return "melee fighting";
 
 		case SKILL_AXE:
-			return "axe fighting";
+			return "melee fighting";
 
 		case SKILL_DISTANCE:
 			return "distance fighting";

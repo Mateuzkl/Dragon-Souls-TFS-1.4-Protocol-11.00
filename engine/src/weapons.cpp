@@ -595,21 +595,9 @@ bool WeaponMelee::getSkillType(const Player* player, const Item* item,
 
 	WeaponType_t weaponType = item->getWeaponType();
 	switch (weaponType) {
-		case WEAPON_SWORD: {
-			skill = SKILL_SWORD;
-			return true;
-		}
-
-		case WEAPON_CLUB: {
-			skill = SKILL_CLUB;
-			return true;
-		}
-
-		case WEAPON_AXE: {
-			skill = SKILL_AXE;
-			return true;
-		}
-
+		case WEAPON_SWORD:
+		case WEAPON_CLUB:
+		case WEAPON_AXE:
 		case WEAPON_FIST: {
 			skill = SKILL_FIST;
 			return true;

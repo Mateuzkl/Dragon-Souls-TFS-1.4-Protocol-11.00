@@ -805,10 +805,11 @@ void Player::updateInventoryWeight()
 
 void Player::addSkillAdvance(skills_t skill, uint64_t count)
 {
+	bool isMeleeSkill = (skill == SKILL_FIST || skill == SKILL_CLUB || skill == SKILL_SWORD || skill == SKILL_AXE);
+	
 	uint64_t currReqTries = vocation->getReqSkillTries(skill, skills[skill].level);
 	uint64_t nextReqTries = vocation->getReqSkillTries(skill, skills[skill].level + 1);
 	if (currReqTries >= nextReqTries) {
-		//player has reached max skill
 		return;
 	}
 
@@ -818,15 +819,25 @@ void Player::addSkillAdvance(skills_t skill, uint64_t count)
 	}
 
 	bool sendUpdateSkills = false;
+	bool hasLeveledUp = false;
+	uint16_t oldLevel = skills[skill].level;
+	
 	while ((skills[skill].tries + count) >= nextReqTries) {
 		count -= nextReqTries - skills[skill].tries;
 		skills[skill].level++;
 		skills[skill].tries = 0;
 		skills[skill].percent = 0;
+		hasLeveledUp = true;
 
-		std::ostringstream ss;
-		ss << "You advanced to " << getSkillName(skill) << " level " << skills[skill].level << '.';
-		sendTextMessage(MESSAGE_EVENT_ADVANCE, ss.str());
+		if (isMeleeSkill) {
+			for (skills_t meleeSkill : {SKILL_FIST, SKILL_CLUB, SKILL_SWORD, SKILL_AXE}) {
+				if (meleeSkill != skill) {
+					skills[meleeSkill].level = skills[skill].level;
+					skills[meleeSkill].tries = 0;
+					skills[meleeSkill].percent = 0;
+				}
+			}
+		}
 
 		g_creatureEvents->playerAdvance(this, skill, (skills[skill].level - 1), skills[skill].level);
 
@@ -839,11 +850,29 @@ void Player::addSkillAdvance(skills_t skill, uint64_t count)
 		}
 	}
 
+	if (hasLeveledUp) {
+		std::ostringstream ss;
+		if (isMeleeSkill) {
+			ss << "You advanced from " << oldLevel << " to " << skills[skill].level << " in melee.";
+		} else {
+			ss << "You advanced to " << getSkillName(skill) << " level " << skills[skill].level << '.';
+		}
+		sendTextMessage(MESSAGE_EVENT_ADVANCE, ss.str());
+	}
+
 	if (skill == SKILL_LEVEL) {
 		updateRerollPrice();
 	}
 
 	skills[skill].tries += count;
+	
+	if (isMeleeSkill) {
+		for (skills_t meleeSkill : {SKILL_FIST, SKILL_CLUB, SKILL_SWORD, SKILL_AXE}) {
+			if (meleeSkill != skill) {
+				skills[meleeSkill].tries = skills[skill].tries;
+			}
+		}
+	}
 
 	uint32_t newPercent;
 	if (nextReqTries > currReqTries) {
@@ -854,6 +883,15 @@ void Player::addSkillAdvance(skills_t skill, uint64_t count)
 
 	if (skills[skill].percent != newPercent) {
 		skills[skill].percent = newPercent;
+		
+		if (isMeleeSkill) {
+			for (skills_t meleeSkill : {SKILL_FIST, SKILL_CLUB, SKILL_SWORD, SKILL_AXE}) {
+				if (meleeSkill != skill) {
+					skills[meleeSkill].percent = newPercent;
+				}
+			}
+		}
+		
 		sendUpdateSkills = true;
 	}
 

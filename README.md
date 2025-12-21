@@ -184,7 +184,7 @@ if (player->hasEnergedAOL() && !player->hasRedSkull()) {
 
 ## 🧩 OTClient e SPR 11.x
 
-- **Cliente recomendado**: `otclientv8-ota` (Mirror oficial). Compila facilmente no Windows com `vcpkg` e Visual Studio 2022.
+- **Cliente recomendado**: [Dragon Souls Client](https://github.com/Mateuzkl/Dragon-Souls-Client) - Cliente customizado baseado em OTCv8. Compila facilmente no Windows com `vcpkg` e Visual Studio 2022.
 - **Ative recursos no cliente** no arquivo: `/modules/game_features/features.lua`:
 ```lua
 g_game.enableFeature(GameSpritesAlphaChannel)

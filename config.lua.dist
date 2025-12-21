@@ -234,7 +234,7 @@ experienceStages = {
 -- maxskill is OPTIONAL, but is considered infinite by default
 -- to disable stages, create a stage with minskill 1 and no maxskill
 skillStages = {
-	{ minskill = 1, maxskill = 30, multiplier = 99999 },
+	{ minskill = 1, maxskill = 30, multiplier = 100 },
 	{ minskill = 31, maxskill = 40, multiplier = 98 },
 	{ minskill = 41, maxskill = 50, multiplier = 83 },
 	{ minskill = 51, maxskill = 60, multiplier = 68 },
