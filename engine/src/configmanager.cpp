@@ -31,10 +31,7 @@
 #include "game.h"
 #include "pugicast.h"
 
-#if LUA_VERSION_NUM >= 502
-#undef lua_strlen
-#define lua_strlen lua_rawlen
-#endif
+
 
 extern Game g_game;
 
@@ -44,11 +41,13 @@ std::string getGlobalString(lua_State* L, const char* identifier, const char* de
 {
 	lua_getglobal(L, identifier);
 	if (!lua_isstring(L, -1)) {
+		lua_pop(L, 1);
 		return defaultValue;
 	}
 
-	size_t len = lua_strlen(L, -1);
-	std::string ret(lua_tostring(L, -1), len);
+	size_t len;
+	const char* str = lua_tolstring(L, -1, &len);
+	std::string ret(str, len);
 	lua_pop(L, 1);
 	return ret;
 }
@@ -57,6 +56,7 @@ int32_t getGlobalNumber(lua_State* L, const char* identifier, const int32_t defa
 {
 	lua_getglobal(L, identifier);
 	if (!lua_isnumber(L, -1)) {
+		lua_pop(L, 1);
 		return defaultValue;
 	}
 
@@ -70,11 +70,13 @@ bool getGlobalBoolean(lua_State* L, const char* identifier, const bool defaultVa
 	lua_getglobal(L, identifier);
 	if (!lua_isboolean(L, -1)) {
 		if (!lua_isstring(L, -1)) {
+			lua_pop(L, 1);
 			return defaultValue;
 		}
 
-		size_t len = lua_strlen(L, -1);
-		std::string ret(lua_tostring(L, -1), len);
+		size_t len;
+		const char* str = lua_tolstring(L, -1, &len);
+		std::string ret(str, len);
 		lua_pop(L, 1);
 		return booleanString(ret);
 	}
@@ -88,6 +90,7 @@ float getGlobalFloat(lua_State* L, const char* identifier, const float defaultVa
 {
 	lua_getglobal(L, identifier);
 	if (!lua_isnumber(L, -1)) {
+		lua_pop(L, 1);
 		return defaultValue;
 	}
 
@@ -100,6 +103,7 @@ double getGlobalDouble(lua_State* L, const char* identifier, const double defaul
 {
 	lua_getglobal(L, identifier);
 	if (!lua_isnumber(L, -1)) {
+		lua_pop(L, 1);
 		return defaultValue;
 	}
 

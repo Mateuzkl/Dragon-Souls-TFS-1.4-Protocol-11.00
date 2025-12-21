@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
 set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
@@ -10,6 +10,9 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(cotire)
 
 add_compile_options(-Wall -Werror -pipe -fvisibility=hidden)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_CXX_FLAGS_PERFORMANCE "${CMAKE_CXX_FLAGS_RELEASE} -Ofast -march=native -mtune=native -DBOOST_DISABLE_ASSERTS -DNDEBUG -g")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -march=native -mtune=native -DBOOST_DISABLE_ASSERTS -DNDEBUG -g")
@@ -26,7 +29,6 @@ if(MSVC)
     add_definitions(-DBOOST_PREDEF_DISABLED)
 endif()
 
-include(FindCXX11)
 include(FindLTO)
 
 # Find packages.
