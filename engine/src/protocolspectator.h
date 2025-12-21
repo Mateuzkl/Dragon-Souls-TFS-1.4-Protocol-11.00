@@ -55,6 +55,7 @@ class ProtocolSpectator final : public ProtocolGameBase
 		void syncChatChannels();
 		void syncOpenContainers();
 		void sendEmptyTileOnPlayerPos(const Tile* tile, const Position& playerPos);
+		void sendFloorDescription(const Position& pos, int floor) override;
 
 		void release() final;
 

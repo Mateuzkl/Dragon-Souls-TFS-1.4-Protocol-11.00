@@ -256,10 +256,11 @@ class QTreeNodeHashMap {
 class Map
 {
 	public:
-		static constexpr int32_t maxViewportX = 18; //min value: maxClientViewportX + 1
-		static constexpr int32_t maxViewportY = 18; //min value: maxClientViewportY + 1
-		static constexpr int32_t maxClientViewportX = 15;
-		static constexpr int32_t maxClientViewportY = 8;
+		// feat: add ultrawide monitor support (2560x1080)
+		static constexpr int32_t maxClientViewportX = 24;
+		static constexpr int32_t maxClientViewportY = 14;
+		static constexpr int32_t maxViewportX = maxClientViewportX + 2;
+		static constexpr int32_t maxViewportY = maxClientViewportY + 2;
 
 		uint32_t clean() const;
 

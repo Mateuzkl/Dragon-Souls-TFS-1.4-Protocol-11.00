@@ -755,7 +755,7 @@ enum DailyRewardStorages_t: uint32_t {
 };
 
 // OTCv8 features (from src/client/const.h)
-enum GameFeature {
+enum GameFeature : uint8_t {
 	GameProtocolChecksum = 1,
 	GameAccountNames = 2,
 	GameChallengeOnLogin = 3,

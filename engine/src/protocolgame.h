@@ -445,12 +445,14 @@ class ProtocolGame final : public ProtocolGameBase
 		
 		//OTCv8
 		void sendFeatures();
+		void parseChangeAwareRange(NetworkMessage& msg);
+		void updateAwareRange(int width, int height);
+		void sendAwareRange();
+		void sendFloorDescription(const Position& pos, int floor) override;
 
 		void parseBestiaryTracker(NetworkMessage& msg);
 
 		friend class Player;
-		
-		uint16_t otclientV8 = 0;
 
 		// Helpers so we don't need to bind every time
 		template <typename Callable, typename... Args>

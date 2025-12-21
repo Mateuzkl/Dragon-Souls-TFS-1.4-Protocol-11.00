@@ -36,6 +36,18 @@ class Quest;
 class StoreOffers;
 class StoreOffer;
 
+struct AwareRange {
+	int width = 17;
+	int height = 13;
+	
+	int left() const { return width / 2; }
+	int right() const { return 1 + width / 2; }
+	int top() const { return height / 2; }
+	int bottom() const { return 1 + height / 2; }
+	int horizontal() const { return width + 1; }
+	int vertical() const { return height + 1; }
+};
+
 /** \brief Contains methods and member variables common to both the game and spectator protocols
  */
 class ProtocolGameBase : public Protocol {
@@ -112,6 +124,7 @@ class ProtocolGameBase : public Protocol {
 		void sendWorldLight(const LightInfo& lightInfo);
 		void sendTibiaTime(int32_t time);
 		void sendMapDescription(const Position& pos);
+		virtual void sendFloorDescription(const Position& pos, int floor) = 0;
 
 		void sendVIP(uint32_t guid, const std::string& name, const std::string& description, uint32_t icon, bool notify, VipStatus_t status);
 		void sendCancelWalk();
@@ -135,6 +148,9 @@ class ProtocolGameBase : public Protocol {
 		bool canSee(const Position& pos) const;
 
 		Player* player = nullptr;
+
+		uint16_t otclientV8 = 0;
+		AwareRange awareRange;
 
 		uint32_t eventConnect = 0;
 		uint32_t challengeTimestamp = 0;

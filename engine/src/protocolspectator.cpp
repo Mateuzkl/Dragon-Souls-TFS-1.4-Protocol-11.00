@@ -425,3 +425,19 @@ void ProtocolSpectator::onLiveCastStop()
 	}
 	disconnect();
 }
+
+void ProtocolSpectator::sendFloorDescription(const Position& pos, int floor)
+{
+	// Spectators use the same implementation as ProtocolGame
+	NetworkMessage msg;
+	msg.addByte(0x4B);
+	msg.addPosition(player->getPosition());
+	msg.addByte(floor);
+	int32_t skip = -1;
+	GetFloorDescription(msg, pos.x - awareRange.left(), pos.y - awareRange.top(), floor, awareRange.horizontal(), awareRange.vertical(), pos.z - floor, skip);
+	if (skip >= 0) {
+		msg.addByte(skip);
+		msg.addByte(0xFF);
+	}
+	writeToOutputBuffer(msg);
+}
