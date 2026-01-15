@@ -25705,4 +25705,7 @@
 		<attribute key="rotateTo" value="27759" />
 		<attribute key="wrapableTo" value="26054" />
 	</item>
+	<item id="31406" article="a" name="supply stash">
+		<attribute key="containerSize" value="20" />
+	</item>
 </items>
