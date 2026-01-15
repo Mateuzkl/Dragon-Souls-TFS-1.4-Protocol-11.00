@@ -38,6 +38,10 @@
 #include "modules.h"
 #include "imbuements.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 extern Dispatcher g_dispatcher;
 
 extern ConfigManager g_config;
@@ -57,9 +61,34 @@ extern Modules* g_modules;
 
 using ErrorCode = boost::system::error_code;
 
+#ifdef _WIN32
+BOOL WINAPI consoleCtrlHandler(DWORD ctrlType)
+{
+	switch (ctrlType) {
+		case CTRL_C_EVENT:
+		case CTRL_CLOSE_EVENT:
+		case CTRL_BREAK_EVENT:
+		case CTRL_LOGOFF_EVENT:
+		case CTRL_SHUTDOWN_EVENT:
+			console::print(CONSOLEMESSAGE_TYPE_INFO, "Console close event received, shutting down...");
+			g_dispatcher.addTask(createTask([]() {
+				g_game.setGameState(GAME_STATE_SHUTDOWN);
+			}));
+			std::this_thread::sleep_for(std::chrono::seconds(5));
+			return TRUE;
+		default:
+			return FALSE;
+	}
+}
+#endif
+
 Signals::Signals(boost::asio::io_context& service) :
 	set(service)
 {
+#ifdef _WIN32
+	SetConsoleCtrlHandler(consoleCtrlHandler, TRUE);
+#endif
+
 	set.add(SIGINT);
 	set.add(SIGTERM);
 #ifndef _WIN32
