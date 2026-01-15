@@ -10,8 +10,31 @@ return {
 	slots = {
 		[17320] = Slot {
 			needItem = {id = 8978, count = 1},
+			tilesPerSlot = 10,
+			centerPosition = Position(109, 317, 7),
+
+			items = {
+				{id = 38906, count = 1, chance = 0.2, rare = true},
+				{id = 38859, count = 1, chance = 0.3, rare = true},
+				{id = 38850, count = 1, chance = 0.5, rare = true},
+				{id = 4863, count = 1, chance = 9},
+				{id = 2160, count = 1, chance = 9},
+				{id = 38915, count = 1, chance = 9},
+				{id = 38845, count = 1, chance = 9},
+				{id = 7443, count = 1, chance = 9},
+				{id = 38836, count = 1, chance = 9},
+				{id = 7426, count = 1, chance = 9},
+				{id = 10760, count = 1, chance = 9},
+				{id = 12466, count = 1, chance = 9},
+				{id = 9693, count = 1, chance = 9},
+				{id = 8474, count = 1, chance = 9}
+			},
+		},
+
+		[17321] = Slot {
+			needItem = {id = 8978, count = 1},
 			tilesPerSlot = 11,
-			centerPosition = Position(121, 318, 7),
+			centerPosition = Position(109, 317, 7),
 
 			items = {
 				{id = 8870, count = 1, chance = 0.2, rare = true},

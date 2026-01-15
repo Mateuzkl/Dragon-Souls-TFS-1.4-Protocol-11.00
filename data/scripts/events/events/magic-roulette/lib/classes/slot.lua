@@ -17,16 +17,26 @@ function Slot:generatePositions()
 	local centerPos = self.centerPosition
 	self.positions = {}
 
-	local half = math.floor(self.tilesPerSlot / 2)
+	local half = math.floor((self.tilesPerSlot - 1) / 2)
+	local extraRight = self.tilesPerSlot - 1 - half
+
 	self.startPosition = Position(centerPos.x - half, centerPos.y, centerPos.z)
-	self.endPosition = Position(centerPos.x + half, centerPos.y, centerPos.z)
+	self.endPosition = Position(centerPos.x + extraRight, centerPos.y, centerPos.z)
 
 	for i = 0, self.tilesPerSlot - 1 do
-		local position = self.startPosition + Position(i, 0, 0)
+		local position = Position(self.startPosition.x + i, self.startPosition.y, self.startPosition.z)
 		local tile = Tile(position)
 		if tile then
 			self.positions[#self.positions + 1] = position
 		end
+	end
+
+	local realTiles = #self.positions
+	if realTiles ~= self.tilesPerSlot and realTiles > 0 then
+		print("[Roulette] Slot ajustado: config=" .. self.tilesPerSlot .. " -> real=" .. realTiles)
+		self.tilesPerSlot = realTiles
+		self.startPosition = self.positions[1]
+		self.endPosition = self.positions[realTiles]
 	end
 end
 

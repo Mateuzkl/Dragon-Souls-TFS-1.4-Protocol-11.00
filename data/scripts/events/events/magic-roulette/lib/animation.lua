@@ -81,6 +81,7 @@ function Animation:start(args)
 					if args.reward.rare then
 						self:drawFireworks(slot)
 						self:drawRewardHighlight(slot, rewardId)
+						self:drawCelebration(slot)
 					end
 				end, 500)
 			end, 700)
@@ -112,6 +113,30 @@ function Animation:drawFireworks(slot)
 	end
 
 	decrease()
+end
+
+function Animation:drawCelebration(slot)
+	local count = 0
+	local duration = 5
+
+	local function celebrate()
+		if slot:isRolling() then
+			return
+		end
+
+		if count < duration then
+			count = count + 1
+			slot.centerPosition:sendMagicEffect(CONST_ME_TUTORIALARROW)
+			slot.centerPosition:sendMagicEffect(CONST_ME_TUTORIALSQUARE)
+			for _, position in ipairs(slot:getPositions()) do
+				position:sendMagicEffect(29)
+				position:sendMagicEffect(30)
+			end
+			addEvent(celebrate, 1000)
+		end
+	end
+
+	celebrate()
 end
 
 function Animation:drawRewardHighlight(slot, rewardId)
