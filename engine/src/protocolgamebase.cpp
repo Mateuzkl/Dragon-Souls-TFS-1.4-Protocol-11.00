@@ -361,8 +361,8 @@ void ProtocolGameBase::AddPlayerStats(NetworkMessage& msg)
 {
 	msg.addByte(0xA0);
 
-	msg.add<uint16_t>(std::min<int32_t>(player->getHealth(), std::numeric_limits<uint16_t>::max()));
-	msg.add<uint16_t>(std::min<int32_t>(player->getMaxHealth(), std::numeric_limits<uint16_t>::max()));
+	msg.add<uint32_t>(player->getHealth());
+	msg.add<uint32_t>(player->getMaxHealth());
 
 	msg.add<uint32_t>(player->getFreeCapacity());
 	if (version < 1150) {
@@ -382,8 +382,8 @@ void ProtocolGameBase::AddPlayerStats(NetworkMessage& msg)
 	msg.add<uint16_t>(player->getStoreXpBoost()); // xp boost
 	msg.add<uint16_t>(player->getStaminaXpBoost()); // stamina multiplier (100 = 1.0x)
 
-	msg.add<uint16_t>(std::min<int32_t>(player->getMana(), std::numeric_limits<uint16_t>::max()));
-	msg.add<uint16_t>(std::min<int32_t>(player->getMaxMana(), std::numeric_limits<uint16_t>::max()));
+	msg.add<uint32_t>(player->getMana());
+	msg.add<uint32_t>(player->getMaxMana());
 
 	if (version < 1200) {
 		msg.addByte(std::min<uint32_t>(player->getMagicLevel(), std::numeric_limits<uint8_t>::max()));
