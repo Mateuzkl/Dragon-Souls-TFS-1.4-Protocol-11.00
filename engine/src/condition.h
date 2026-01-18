@@ -57,6 +57,7 @@ enum ConditionAttr_t {
 	CONDITIONATTR_SUBID,
 	CONDITIONATTR_STAMINAGAIN,
 	CONDITIONATTR_STAMINATICKS,
+	CONDITIONATTR_ABSORBPERCENTALL,
 
 	//reserved for serialization
 	CONDITIONATTR_END = 254,
@@ -171,7 +172,9 @@ class ConditionAttributes final : public ConditionGeneric
 		int32_t currentSkill = 0;
 		int32_t currentStat = 0;
 
+
 		bool disableDefense = false;
+		int32_t absorbPercentAll = 0;
 
 		void updatePercentStats(Player* player);
 		void updateStats(Player* player);

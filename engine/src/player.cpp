@@ -54,7 +54,7 @@ uint32_t Player::playerAutoID = 0x10010000;
 uint32_t Player::maxPlayerAutoID = 0x60000000;
 
 Player::Player(ProtocolGame_ptr p) :
-	Creature(), preyData(PREY_SLOTCOUNT), lastPing(OTSYS_TIME()), lastPong(lastPing), inbox(new Inbox(ITEM_INBOX)), client(std::move(p))
+	Creature(), preyData(PREY_SLOTCOUNT), lastPing(OTSYS_TIME()), lastPong(lastPing), inbox(new Inbox(ITEM_INBOX)), client(std::move(p)), varAbsorbPercentAll(0)
 {
 	inbox->incrementReferenceCounter();
 }

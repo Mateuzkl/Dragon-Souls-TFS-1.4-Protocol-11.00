@@ -378,6 +378,7 @@ void ConditionAttributes::addCondition(Creature* creature, const Condition* addC
 		memcpy(skillsPercent, conditionAttrs.skillsPercent, sizeof(skillsPercent));
 		memcpy(stats, conditionAttrs.stats, sizeof(stats));
 		memcpy(statsPercent, conditionAttrs.statsPercent, sizeof(statsPercent));
+		absorbPercentAll = conditionAttrs.absorbPercentAll;
 		disableDefense = conditionAttrs.disableDefense;
 
 		if (Player* player = creature->getPlayer()) {
@@ -385,6 +386,9 @@ void ConditionAttributes::addCondition(Creature* creature, const Condition* addC
 			updateSkills(player);
 			updatePercentStats(player);
 			updateStats(player);
+			if (absorbPercentAll != 0) {
+				player->setAbsorbPercentAll(player->getAbsorbPercentAll() + absorbPercentAll);
+			}
 		}
 	}
 }
@@ -395,6 +399,8 @@ bool ConditionAttributes::unserializeProp(ConditionAttr_t attr, PropStream& prop
 		return propStream.read<int32_t>(skills[currentSkill++]);
 	} else if (attr == CONDITIONATTR_STATS) {
 		return propStream.read<int32_t>(stats[currentStat++]);
+	} else if (attr == CONDITIONATTR_ABSORBPERCENTALL) {
+		return propStream.read<int32_t>(absorbPercentAll);
 	}
 	return Condition::unserializeProp(attr, propStream);
 }
@@ -408,9 +414,15 @@ void ConditionAttributes::serialize(PropWriteStream& propWriteStream)
 		propWriteStream.write<int32_t>(skills[i]);
 	}
 
+
 	for (int32_t i = STAT_FIRST; i <= STAT_LAST; ++i) {
 		propWriteStream.write<uint8_t>(CONDITIONATTR_STATS);
 		propWriteStream.write<int32_t>(stats[i]);
+	}
+
+	if (absorbPercentAll != 0) {
+		propWriteStream.write<uint8_t>(CONDITIONATTR_ABSORBPERCENTALL);
+		propWriteStream.write<int32_t>(absorbPercentAll);
 	}
 }
 
@@ -427,6 +439,9 @@ bool ConditionAttributes::startCondition(Creature* creature)
 		updateSkills(player);
 		updatePercentStats(player);
 		updateStats(player);
+		if (absorbPercentAll != 0) {
+			player->setAbsorbPercentAll(player->getAbsorbPercentAll() + absorbPercentAll);
+		}
 	}
 
 	return true;
@@ -525,9 +540,14 @@ void ConditionAttributes::endCondition(Creature* creature)
 			}
 		}
 
+
 		if (needUpdate) {
 			player->sendStats();
 			player->sendSkills();
+		}
+
+		if (absorbPercentAll != 0) {
+			player->setAbsorbPercentAll(player->getAbsorbPercentAll() - absorbPercentAll);
 		}
 	}
 
@@ -687,6 +707,11 @@ bool ConditionAttributes::setParam(ConditionParam_t param, int32_t value)
 
 		case CONDITION_PARAM_DISABLE_DEFENSE: {
 			disableDefense = (value != 0);
+			return true;
+		}
+
+		case CONDITION_PARAM_STAT_ABSORBPERCENTALL: {
+			absorbPercentAll = value;
 			return true;
 		}
 

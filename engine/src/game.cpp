@@ -6199,6 +6199,10 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			
 		// }
 
+
+
+
+
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
 			return true;
@@ -6308,6 +6312,23 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				return combatChangeHealth(attacker, target, damage);
 			}
 		}
+
+		if (targetPlayer) {
+			int32_t absorption = targetPlayer->getAbsorbPercentAll();
+			if (absorption > 0) {
+				damage.primary.value -= (damage.primary.value * absorption) / 100;
+				if (damage.primary.value < 0) {
+					damage.primary.value = 0;
+				}
+
+				damage.secondary.value -= (damage.secondary.value * absorption) / 100;
+				if (damage.secondary.value < 0) {
+					damage.secondary.value = 0;
+				}
+			}
+		}
+
+
 
 		int32_t targetHealth = target->getHealth();
 		if (damage.primary.value >= targetHealth) {
