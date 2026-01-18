@@ -2641,6 +2641,7 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "hasFlag", LuaScriptInterface::luaPlayerHasFlag);
 
 	registerMethod("Player", "getCapacity", LuaScriptInterface::luaPlayerGetCapacity);
+	registerMethod("Player", "getLuck", LuaScriptInterface::luaPlayerGetLuck);
 	registerMethod("Player", "setCapacity", LuaScriptInterface::luaPlayerSetCapacity);
 
 	registerMethod("Player", "getFreeCapacity", LuaScriptInterface::luaPlayerGetFreeCapacity);
@@ -9414,6 +9415,18 @@ int LuaScriptInterface::luaPlayerHasFlag(lua_State* L)
 	if (player) {
 		PlayerFlags flag = getNumber<PlayerFlags>(L, 2);
 		pushBoolean(L, player->hasFlag(flag));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetLuck(lua_State* L)
+{
+	// player:getLuck()
+	Player* player = getUserdata<Player>(L, 1);
+	if (player) {
+		lua_pushnumber(L, player->getLuck());
 	} else {
 		lua_pushnil(L);
 	}

@@ -6199,10 +6199,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 			
 		// }
 
-
-
-
-
 		int32_t healthChange = damage.primary.value + damage.secondary.value;
 		if (healthChange == 0) {
 			return true;
@@ -6327,8 +6323,6 @@ bool Game::combatChangeHealth(Creature* attacker, Creature* target, CombatDamage
 				}
 			}
 		}
-
-
 
 		int32_t targetHealth = target->getHealth();
 		if (damage.primary.value >= targetHealth) {

@@ -25,6 +25,10 @@ event.onDropLoot = function(self, corpse)
     local hasCharm = false
 
     if player then
+        local luck = player:getLuck()
+        if luck > 0 then
+            percent = percent * (1 + (luck / 100))
+        end
         local random = (player:getPreyBonusLoot(mType) >= math.random(100))
         if player:getPreyBonusLoot(mType) > 0 and random then
             bonusPrey = player:getPreyBonusLoot(mType)

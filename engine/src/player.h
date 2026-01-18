@@ -675,6 +675,13 @@ class Player final : public Creature, public Cylinder
 		void setAbsorbPercentAll(int32_t value) {
 			varAbsorbPercentAll = value;
 		}
+
+		int32_t getLuck() const {
+			return varLuck;
+		}
+		void setLuck(int32_t value) {
+			varLuck = value;
+		}
 		int32_t getDefaultStats(stats_t stat) const;
 
 		void addConditionSuppressions(uint32_t conditions);
@@ -2105,6 +2112,7 @@ class Player final : public Creature, public Cylinder
 		void getPathSearchParams(const Creature* creature, FindPathParams& fpp) const final;
 		
 		int32_t varAbsorbPercentAll = 0;
+		int32_t varLuck = 0;
 
 		friend class Game;
 		friend class Npc;
