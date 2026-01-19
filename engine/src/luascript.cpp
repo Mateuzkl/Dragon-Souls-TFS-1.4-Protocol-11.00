@@ -2471,6 +2471,7 @@ void LuaScriptInterface::registerFunctions()
 
 	registerMethod("Item", "getPosition", LuaScriptInterface::luaItemGetPosition);
 	registerMethod("Item", "getTile", LuaScriptInterface::luaItemGetTile);
+	registerMethod("Item", "getContainer", LuaScriptInterface::luaItemGetContainer);
 
 	registerMethod("Item", "hasAttribute", LuaScriptInterface::luaItemHasAttribute);
 	registerMethod("Item", "getAttribute", LuaScriptInterface::luaItemGetAttribute);
@@ -7290,6 +7291,25 @@ int LuaScriptInterface::luaItemGetTile(lua_State* L)
 	if (tile) {
 		pushUserdata<Tile>(L, tile);
 		setMetatable(L, -1, "Tile");
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetContainer(lua_State* L)
+{
+	// item:getContainer()
+	Item* item = getUserdata<Item>(L, 1);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Container* container = item->getContainer();
+	if (container) {
+		pushUserdata<Container>(L, container);
+		setMetatable(L, -1, "Container");
 	} else {
 		lua_pushnil(L);
 	}
