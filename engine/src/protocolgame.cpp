@@ -1150,12 +1150,16 @@ void ProtocolGame::parseRuleViolationReport(NetworkMessage &msg)
 
 void ProtocolGame::parseRequestBestiaryData()
 {
+	// Temporarily disable resource balance to prevent stack overflow
+	// sendResourceBalance(player->getMoney(), player->getBankBalance());
+	
 	addGameTask(&Game::playerBestiaryGroups, player->getID());
 }
 
 void ProtocolGame::parseRequestBestiaryOverview(NetworkMessage& msg)
 {
 	uint8_t type = msg.getByte();
+	
 	if (type == 0x00) {
 		std::string raceName = msg.getString();
 		player->sendBestiaryOverview(raceName);
@@ -1166,6 +1170,11 @@ void ProtocolGame::parseRequestBestiaryOverview(NetworkMessage& msg)
 			monsters.emplace_back(msg.get<uint16_t>());
 		}
 		player->sendBestiaryOverview(monsters);
+	} else if (type == 0x02) {
+		std::string raceName = msg.getString();
+		player->sendBestiaryOverview(raceName);
+	} else {
+		std::cout << "[ERROR] Unknown bestiary overview type: " << (int)type << std::endl;
 	}
 }
 
@@ -1934,14 +1943,19 @@ void ProtocolGame::sendGameNews()
 
 void ProtocolGame::sendResourceBalance(uint64_t money, uint64_t bank)
 {
-	NetworkMessage msg;
-	msg.addByte(0xEE);
-	msg.addByte(0x00);
-	msg.add<uint64_t>(bank);
-	msg.addByte(0xEE);
-	msg.addByte(0x01);
-	msg.add<uint64_t>(money);
-	writeToOutputBuffer(msg);
+	// Send bank balance
+	NetworkMessage msg1;
+	msg1.addByte(0xEE);
+	msg1.addByte(0x00);
+	msg1.add<uint64_t>(bank);
+	writeToOutputBuffer(msg1);
+	
+	// Send inventory balance
+	NetworkMessage msg2;
+	msg2.addByte(0xEE);
+	msg2.addByte(0x01);
+	msg2.add<uint64_t>(money);
+	writeToOutputBuffer(msg2);
 }
 
 void ProtocolGame::sendSaleItemList(const std::list<ShopInfo>& shop)
@@ -3889,6 +3903,9 @@ void ProtocolGame::sendFloorDescription(const Position& pos, int floor)
 
 void ProtocolGame::sendBestiaryGroups()
 {
+	// Send charm points data
+	sendCharmData();
+	
 	NetworkMessage msg;
 	msg.addByte(0xD5);
 	msg.add<uint16_t>(g_bestiaries.bestiary.size());
@@ -3904,7 +3921,7 @@ void ProtocolGame::sendBestiaryOverview(std::string raceName)
 {
 	Bestiary* race = g_bestiaries.getBestiaryByName(raceName);
 	if (!race) {
-		std::cout << "nao achei " << raceName << std::endl;
+		std::cout << "[ERROR] Categoria não encontrada: '" << raceName << "'" << std::endl;
 		return;
 	}
 

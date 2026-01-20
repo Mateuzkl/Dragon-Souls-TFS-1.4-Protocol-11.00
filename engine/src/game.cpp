@@ -7423,7 +7423,6 @@ void Game::playerBestiaryMonsterData(uint32_t playerId, uint16_t monsterId)
 
 	MonsterType* monsterType = g_monsters.getMonsterTypeByRace(monsterId);
 	if (!monsterType) {
-		std::cout << "[Game::playerBestiaryMonsterData] Monster by id " << monsterId << " not found" << std::endl;
 		return;
 	}
 
