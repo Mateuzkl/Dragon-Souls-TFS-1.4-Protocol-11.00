@@ -1158,13 +1158,13 @@ void Items::parseItemNode(const pugi::xml_node& itemNode, uint16_t id)
 			it.getAbilities().skills[SKILL_CRITICAL_HIT_CHANCE] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "skillcriticaldamage") {
 			it.getAbilities().skills[SKILL_CRITICAL_HIT_DAMAGE] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "skilllifechance") {
+		} else if (tmpStrValue == "skilllifechance" || tmpStrValue == "lifeleechchange") {
 			it.getAbilities().skills[SKILL_LIFE_LEECH_CHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "skilllifeamount") {
+		} else if (tmpStrValue == "skilllifeamount" || tmpStrValue == "lifeleechamount") {
 			it.getAbilities().skills[SKILL_LIFE_LEECH_AMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "skillmanachance") {
+		} else if (tmpStrValue == "skillmanachance" || tmpStrValue == "manaleechchange") {
 			it.getAbilities().skills[SKILL_MANA_LEECH_CHANCE] = pugi::cast<int32_t>(valueAttribute.value());
-		} else if (tmpStrValue == "skillmanaamount") {
+		} else if (tmpStrValue == "skillmanaamount" || tmpStrValue == "manaleechamount") {
 			it.getAbilities().skills[SKILL_MANA_LEECH_AMOUNT] = pugi::cast<int32_t>(valueAttribute.value());
 		} else if (tmpStrValue == "maxhitpoints") {
 			it.getAbilities().stats[STAT_MAXHITPOINTS] = pugi::cast<int32_t>(valueAttribute.value());
