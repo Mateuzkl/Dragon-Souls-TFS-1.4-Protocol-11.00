@@ -195,6 +195,7 @@ g_game.enableFeature(GameChangeMapAwareRange)  -- Nova feature para viewport din
 ```
 - **SPR/DAT pack**: use [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) para sprites e efeitos com canal alpha e IDs U16.
 - **RME pack**: use [RME-dragon-souls](https://github.com/Mateuzkl/RME-dragon-souls) para editar mapas no Remere (10.98).
+- **Suporte a Stacks**: Para usar stacks "1kk" (u16), o RME precisa de suporte a count de 2 bytes. Veja: [Commit Reference](https://github.com/Mateuzkl/OTAcademy_RME/commit/136dc5fe52a4691b4ab4784a7f21a58820fa7dc4)
 - **Ferramentas úteis**: [otg-br/tools](https://github.com/otg-br/tools) (somente `Item Editor` e `OBJ Builder`) para manutenção de itens e assets.
 
 ### Observações
