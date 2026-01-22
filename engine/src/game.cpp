@@ -707,7 +707,7 @@ bool Game::removeCreature(Creature* creature, bool isLogout/* = true*/)
 }
 
 void Game::playerMoveThing(uint32_t playerId, const Position& fromPos,
-						   uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count)
+						   uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint16_t count)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
@@ -988,7 +988,7 @@ ReturnValue Game::internalMoveCreature(Creature& creature, Tile& toTile, uint32_
 	return RETURNVALUE_NOERROR;
 }
 
-void Game::playerMoveItemByPlayerID(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count)
+void Game::playerMoveItemByPlayerID(uint32_t playerId, const Position& fromPos, uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint16_t count)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
@@ -998,7 +998,7 @@ void Game::playerMoveItemByPlayerID(uint32_t playerId, const Position& fromPos, 
 }
 
 void Game::playerMoveItem(Player* player, const Position& fromPos,
-                          uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint8_t count, Item* item, Cylinder* toCylinder)
+                          uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint16_t count, Item* item, Cylinder* toCylinder)
 {
     {
         bool pushWhenAttacking = g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING);
@@ -1313,7 +1313,7 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
 		uint32_t duration;
 		if (item->equals(toItem)) {
 			duration = std::min<uint32_t>(item->getDuration(), toItem->getDuration());
-			n = std::min<uint32_t>(100 - toItem->getItemCount(), m);
+			n = std::min<uint32_t>(item->getItemMaxCount() - toItem->getItemCount(), m);
 			toCylinder->updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
 			if (static_cast<uint32_t>(toItem->getDuration()) > duration){ //punishing the duppers with the minimum time
 				toItem->setDuration(duration);
@@ -1433,7 +1433,7 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 
 	if (item->isStackable() && item->equals(toItem)) {
 		uint32_t m = std::min<uint32_t>(item->getItemCount(), maxQueryCount);
-		uint32_t n = std::min<uint32_t>(100 - toItem->getItemCount(), m);
+		uint32_t n = std::min<uint32_t>(item->getItemMaxCount() - toItem->getItemCount(), m);
 
 		toCylinder->updateThing(toItem, toItem->getID(), toItem->getItemCount() + n);
 
@@ -1715,7 +1715,7 @@ void Game::addMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*/)
 	uint32_t rubyCoins = money / 1000000;
 	money -= rubyCoins * 1000000;
 	while (rubyCoins > 0) {
-		const uint16_t count = std::min<uint32_t>(100, rubyCoins);
+		const uint16_t count = std::min<uint32_t>(Item::items[ITEM_RUBY_COIN].getItemMaxCount(), rubyCoins);
 
 		Item* remaindItem = Item::CreateItem(ITEM_RUBY_COIN, count);
 
@@ -1730,7 +1730,7 @@ void Game::addMoney(Cylinder* cylinder, uint64_t money, uint32_t flags /*= 0*/)
 	uint32_t crystalCoins = money / 10000;
 	money -= crystalCoins * 10000;
 	while (crystalCoins > 0) {
-		const uint16_t count = std::min<uint32_t>(100, crystalCoins);
+		const uint16_t count = std::min<uint32_t>(Item::items[ITEM_CRYSTAL_COIN].getItemMaxCount(), crystalCoins);
 
 		Item* remaindItem = Item::CreateItem(ITEM_CRYSTAL_COIN, count);
 
@@ -2318,7 +2318,7 @@ void Game::playerEquipItem(uint32_t playerId, uint16_t spriteId)
 	Item* slotItem = player->getInventoryItem(slot);
 	Item* equipItem = searchForItem(backpack, it.id);
 	ReturnValue ret = RETURNVALUE_NOTPOSSIBLE;
-	if (slotItem && slotItem->getID() == it.id && (!it.stackable || slotItem->getItemCount() == 100 || !equipItem)) {
+	if (slotItem && slotItem->getID() == it.id && (!it.stackable || slotItem->getItemCount() == item->getItemMaxCount() || !equipItem)) {
 		if (backpack->capacity() - backpack->size() <= 0) {
 			player->sendCancelMessage(RETURNVALUE_CONTAINERNOTENOUGHROOM);
 			return;
@@ -4440,10 +4440,11 @@ void Game::internalCloseTrade(Player* player)
 	}
 }
 
-void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount,
+void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint16_t count, uint16_t amount,
 							  bool ignoreCap/* = false*/, bool inBackpacks/* = false*/)
 {
-	if (amount == 0 || amount > 100) {
+	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
+	if (amount == 0 || amount > it.getItemMaxCount()) {
 		return;
 	}
 
@@ -4459,7 +4460,6 @@ void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 		return;
 	}
 
-	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if (it.id == 0) {
 		return;
 	}
@@ -4478,9 +4478,10 @@ void Game::playerPurchaseItem(uint32_t playerId, uint16_t spriteId, uint8_t coun
 	merchant->onPlayerTrade(player, onBuy, it.id, subType, amount, ignoreCap, inBackpacks);
 }
 
-void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, uint8_t amount, bool ignoreEquipped)
+void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint16_t count, uint16_t amount, bool ignoreEquipped)
 {
-	if (amount == 0 || amount > 100) {
+	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
+	if (amount == 0 || amount > it.getItemMaxCount()) {
 		return;
 	}
 
@@ -4496,7 +4497,6 @@ void Game::playerSellItem(uint32_t playerId, uint16_t spriteId, uint8_t count, u
 		return;
 	}
 
-	const ItemType& it = Item::items.getItemIdByClientId(spriteId);
 	if (it.id == 0) {
 		return;
 	}
@@ -4521,7 +4521,7 @@ void Game::playerCloseShop(uint32_t playerId)
 	player->closeShopWindow();
 }
 
-void Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint8_t count)
+void Game::playerLookInShop(uint32_t playerId, uint16_t spriteId, uint16_t count)
 {
 	Player* player = getPlayerByID(playerId);
 	if (!player) {
@@ -7729,7 +7729,7 @@ void Game::playerCancelMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		} else if (it.stackable) {
 			uint16_t tmpAmount = offer.amount;
 			while (tmpAmount > 0) {
-				int32_t stackCount = std::min<int32_t>(100, tmpAmount);
+				int32_t stackCount = std::min<int32_t>(it.getItemMaxCount(), tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
 				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
@@ -7859,7 +7859,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		} else if (it.stackable) {
 			uint16_t tmpAmount = amount;
 			while (tmpAmount > 0) {
-				uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
+				uint16_t stackCount = std::min<uint16_t>(it.getItemMaxCount(), tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
 				if (internalAddItem(buyerPlayer->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;
@@ -7904,7 +7904,7 @@ void Game::playerAcceptMarketOffer(uint32_t playerId, uint32_t timestamp, uint16
 		} else if (it.stackable) {
 			uint16_t tmpAmount = amount;
 			while (tmpAmount > 0) {
-				uint16_t stackCount = std::min<uint16_t>(100, tmpAmount);
+				uint16_t stackCount = std::min<uint16_t>(it.getItemMaxCount(), tmpAmount);
 				Item* item = Item::CreateItem(it.id, stackCount);
 				if (internalAddItem(player->getInbox(), item, INDEX_WHEREEVER, FLAG_NOLIMIT) != RETURNVALUE_NOERROR) {
 					delete item;

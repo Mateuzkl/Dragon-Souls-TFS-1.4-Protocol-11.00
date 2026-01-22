@@ -152,6 +152,7 @@ houseRentPeriod = "never"
 -- Do not touch here
 timeBetweenActions = 500
 timeBetweenExActions = 800
+maxStack = 1000
 
 -- Controle do cancelamento de push durante spells/poções
 -- true: não cancelar push ao usar spells/runes/poções

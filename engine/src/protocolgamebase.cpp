@@ -36,7 +36,7 @@ extern Monsters g_monsters;
 extern Prey g_prey;
 extern Store g_store;
 
-void ProtocolGameBase::AddItem(NetworkMessage& msg, uint16_t id, uint8_t count)
+void ProtocolGameBase::AddItem(NetworkMessage& msg, uint16_t id, uint16_t count)
 {
 	const ItemType& it = Item::items[id];
 	msg.add<uint16_t>(it.clientId);
@@ -64,7 +64,7 @@ void ProtocolGameBase::AddItem(NetworkMessage& msg, uint16_t id, uint8_t count)
 	}
 
 	if (it.stackable) {
-		msg.addByte(count);
+		msg.add<uint16_t>(count);
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		msg.addByte(fluidMap[count & 7]);
 	} else if (version >= 1150 && it.isContainer()) {
@@ -121,7 +121,7 @@ void ProtocolGameBase::AddItem(NetworkMessage& msg, const Item* item)
 	}
 
 	if (it.stackable) {
-		msg.addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
+		msg.add<uint16_t>(item->getItemCount());
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		msg.addByte(fluidMap[item->getFluidType() & 7]);
 	} else if (version >= 1150 && it.isContainer()) {

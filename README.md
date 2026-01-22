@@ -190,6 +190,7 @@ if (player->hasEnergedAOL() && !player->hasRedSkull()) {
 g_game.enableFeature(GameSpritesAlphaChannel)
 g_game.enableFeature(GameMagicEffectU16)
 g_game.enableFeature(GameDistanceEffectU16)
+g_game.enableFeature(GameCountU16) -- 1kk stack
 g_game.enableFeature(GameChangeMapAwareRange)  -- Nova feature para viewport dinâmico
 ```
 - **SPR/DAT pack**: use [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) para sprites e efeitos com canal alpha e IDs U16.
@@ -232,6 +233,7 @@ if g_game.getProtocolVersion() >= 1100 then
     g_game.enableFeature(GameSpritesAlphaChannel)
     g_game.enableFeature(GameMagicEffectU16)
     g_game.enableFeature(GameDistanceEffectU16)
+    g_game.enableFeature(GameCountU16)
     g_game.enableFeature(GameChangeMapAwareRange)  -- ← Adicione esta linha
 end
 ```

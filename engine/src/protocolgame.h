@@ -71,7 +71,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void logout(bool displayEffect, bool forced);
 
 		void AddItem(NetworkMessage& msg, const Item* item);
-		void AddItem(NetworkMessage& msg, uint16_t id, uint8_t count);
+		void AddItem(NetworkMessage& msg, uint16_t id, uint16_t count);
 
 		uint16_t getVersion() const {
 			return version;

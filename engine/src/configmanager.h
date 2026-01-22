@@ -209,6 +209,8 @@ class ConfigManager
 			PUSH_DELAY,
 			PUSH_DISTANCE_DELAY,
 
+			ITEM_STACKING_LIMIT,
+
 			LAST_INTEGER_CONFIG /* this must be the last one */
 		};
 

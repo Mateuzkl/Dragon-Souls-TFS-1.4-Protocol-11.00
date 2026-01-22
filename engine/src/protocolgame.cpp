@@ -896,7 +896,7 @@ void ProtocolGame::parseThrow(NetworkMessage& msg)
 	uint16_t spriteId = msg.get<uint16_t>();
 	uint8_t fromStackpos = msg.getByte();
 	Position toPos = msg.getPosition();
-	uint8_t count = msg.getByte();
+	uint16_t count = msg.get<uint16_t>();
 
 	if (toPos != fromPos) {
 		addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerMoveThing, player->getID(), fromPos, spriteId, fromStackpos, toPos, count);
@@ -1055,15 +1055,15 @@ void ProtocolGame::parseHouseWindow(NetworkMessage& msg)
 void ProtocolGame::parseLookInShop(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint8_t count = msg.getByte();
+	uint16_t count = msg.get<uint16_t>();
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerLookInShop, player->getID(), id, count);
 }
 
 void ProtocolGame::parsePlayerPurchase(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint8_t count = msg.getByte();
-	uint8_t amount = msg.getByte();
+	uint16_t count = msg.get<uint16_t>();
+	uint16_t amount = msg.get<uint16_t>();
 	bool ignoreCap = msg.getByte() != 0;
 	bool inBackpacks = msg.getByte() != 0;
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerPurchaseItem, player->getID(), id, count, amount, ignoreCap, inBackpacks);
@@ -1072,8 +1072,8 @@ void ProtocolGame::parsePlayerPurchase(NetworkMessage& msg)
 void ProtocolGame::parsePlayerSale(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint8_t count = msg.getByte();
-	uint8_t amount = msg.getByte();
+	uint16_t count = msg.get<uint16_t>();
+	uint16_t amount = msg.get<uint16_t>();
 	bool ignoreEquipped = msg.getByte() != 0;
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerSellItem, player->getID(), id, count, amount, ignoreEquipped);
 }
@@ -3571,7 +3571,7 @@ void ProtocolGame::sendImbuementWindow(Item* item)
 	writeToOutputBuffer(msg);
 }
 
-void ProtocolGame::AddItem(NetworkMessage& msg, uint16_t id, uint8_t count)
+void ProtocolGame::AddItem(NetworkMessage& msg, uint16_t id, uint16_t count)
 {
 	const ItemType& it = Item::items[id];
 	msg.add<uint16_t>(it.clientId);
@@ -3600,7 +3600,7 @@ void ProtocolGame::AddItem(NetworkMessage& msg, uint16_t id, uint8_t count)
 	}
 
 	if (it.stackable) {
-		msg.addByte(count);
+		msg.add<uint16_t>(count);
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		msg.addByte(fluidMap[count & 7]);
 	} else if (version >= 1150 && it.isContainer()) {
@@ -3659,7 +3659,7 @@ void ProtocolGame::AddItem(NetworkMessage& msg, const Item* item)
 	}
 
 	if (it.stackable) {
-		msg.addByte(std::min<uint16_t>(0xFF, item->getItemCount()));
+		msg.add<uint16_t>(item->getItemCount());
 	} else if (it.isSplash() || it.isFluidContainer()) {
 		msg.addByte(fluidMap[item->getFluidType() & 7]);
 	} else if (version >= 1150 && it.isContainer()) {

@@ -407,7 +407,16 @@ void Item::setSubType(uint16_t n)
 Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 {
 	switch (attr) {
-		case ATTR_COUNT:
+		case ATTR_COUNT: {
+			uint16_t count;
+			if (!propStream.read<uint16_t>(count)) {
+				return ATTR_READ_ERROR;
+			}
+
+			setSubType(count);
+			break;
+		}
+
 		case ATTR_RUNE_CHARGES: {
 			uint8_t count;
 			if (!propStream.read<uint8_t>(count)) {
@@ -954,7 +963,7 @@ void Item::serializeAttr(PropWriteStream& propWriteStream) const
 	const ItemType& it = items[id];
 	if (it.stackable || it.isFluidContainer() || it.isSplash()) {
 		propWriteStream.write<uint8_t>(ATTR_COUNT);
-		propWriteStream.write<uint8_t>(getSubType());
+		propWriteStream.write<uint16_t>(getSubType());
 	}
 
 	uint16_t charges = getCharges();

@@ -59,7 +59,7 @@ class ProtocolGameBase : public Protocol {
 
 
 		void AddItem(NetworkMessage& msg, const Item* item);
-		void AddItem(NetworkMessage& msg, uint16_t id, uint8_t count);
+		void AddItem(NetworkMessage& msg, uint16_t id, uint16_t count);
 
 		void checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown);
 		void AddCreature(NetworkMessage& msg, const Creature* creature, bool known, uint32_t remove);

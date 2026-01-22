@@ -211,6 +211,8 @@ class ItemType
 			return (isFluidContainer() || isSplash() || stackable || charges != 0);
 		}
 
+		uint16_t getItemMaxCount() const;
+
 		Abilities& getAbilities() {
 			if (!abilities) {
 				abilities.reset(new Abilities());

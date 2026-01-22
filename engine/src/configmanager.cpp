@@ -486,6 +486,7 @@ bool ConfigManager::load()
 	// Push mechanics
 	integer[PUSH_DELAY] = getGlobalNumber(L, "pushDelay", 1);
 	integer[PUSH_DISTANCE_DELAY] = getGlobalNumber(L, "pushDistanceDelay", 1);
+	integer[ITEM_STACKING_LIMIT] = getGlobalNumber(L, "maxStack", 100);
 	integer[RESET_LEVEL] = getGlobalNumber(L, "resetLevel", 100); // reset system
 	integer[RESET_STATBONUS] = getGlobalNumber(L, "resetStatBonus", 5); // reset system
 	integer[RESET_DMGBONUS] = getGlobalNumber(L, "resetDmgBonus", 10); // reset system

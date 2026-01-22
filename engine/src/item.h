@@ -959,6 +959,10 @@ class Item : virtual public Thing
 			}
 			return items[id].tier;
 		}
+
+		uint16_t getItemMaxCount() const {
+			return items[id].getItemMaxCount();
+		}
 		
 		// Dynamic element functions (following same pattern as getAttack)
 		uint16_t getElementDamage(CombatType_t combatType) const {
@@ -1211,7 +1215,7 @@ class Item : virtual public Thing
 		uint16_t getItemCount() const {
 			return count;
 		}
-		void setItemCount(uint8_t n) {
+		void setItemCount(uint16_t n) {
 			count = n;
 		}
 
@@ -1303,7 +1307,7 @@ class Item : virtual public Thing
 		uint32_t referenceCounter = 0;
 
 		uint16_t id;  // the same id as in ItemType
-		uint8_t count = 1; // number of stacked items
+		uint16_t count = 1; // number of stacked items
 
 		bool loadedFromMap = false;
 

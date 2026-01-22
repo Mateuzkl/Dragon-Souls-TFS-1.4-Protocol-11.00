@@ -23,6 +23,9 @@
 #include "spells.h"
 #include "movement.h"
 #include "weapons.h"
+#include "configmanager.h"
+
+extern ConfigManager g_config;
 
 #include "pugicast.h"
 
@@ -1388,4 +1391,12 @@ uint16_t Items::getItemIdByName(const std::string& name)
 		return 0;
 
 	return result->second;
+}
+
+uint16_t ItemType::getItemMaxCount() const
+{
+	if (stackable) {
+		return g_config.getNumber(ConfigManager::ITEM_STACKING_LIMIT);
+	}
+	return 1;
 }
