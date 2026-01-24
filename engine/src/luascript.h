@@ -287,6 +287,9 @@ class LuaScriptInterface
 		static int luaPlayerGetPet(lua_State* L);
 		static int luaPlayerSetPet(lua_State* L);
 
+		static int luaPlayerGetIncMagic(lua_State* L);
+		static int luaPlayerGetIncPhys(lua_State* L);
+
 		// Userdata
 		template<class T>
 		static void pushUserdata(lua_State* L, T* value)

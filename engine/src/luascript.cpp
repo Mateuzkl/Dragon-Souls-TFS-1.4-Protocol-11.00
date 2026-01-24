@@ -2672,6 +2672,8 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Player", "setReset", LuaScriptInterface::luaPlayerSetReset); // reset system
 
 	registerMethod("Player", "getMagicLevel", LuaScriptInterface::luaPlayerGetMagicLevel);
+	registerMethod("Player", "getIncMagic", LuaScriptInterface::luaPlayerGetIncMagic);
+	registerMethod("Player", "getIncPhys", LuaScriptInterface::luaPlayerGetIncPhys);
 	registerMethod("Player", "getBaseMagicLevel", LuaScriptInterface::luaPlayerGetBaseMagicLevel);
 	registerMethod("Player", "setMaxMana", LuaScriptInterface::luaPlayerSetMaxMana);
 	registerMethod("Player", "getManaSpent", LuaScriptInterface::luaPlayerGetManaSpent);
@@ -20165,5 +20167,48 @@ int LuaScriptInterface::luaPlayerSetHelmetCooldownReduction(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetIncMagic(lua_State* L)
+{
+	// player:getIncMagic()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	int32_t value = 0;
+	for (int32_t slot = CONST_SLOT_HEAD; slot <= CONST_SLOT_AMMO; ++slot) {
+		Item* item = player->getInventoryItem(static_cast<slots_t>(slot));
+		if (item) {
+			value += item->getIncreasePercent(COMBAT_FIREDAMAGE);
+		}
+	}
+
+	lua_pushnumber(L, value);
+	return 1;
+}
+
+int LuaScriptInterface::luaPlayerGetIncPhys(lua_State* L)
+{
+	// player:getIncPhys()
+	Player* player = getUserdata<Player>(L, 1);
+	if (!player) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	int32_t value = 0;
+	// check all slots for items with increasePhysicalPercent
+	for (int32_t slot = CONST_SLOT_HEAD; slot <= CONST_SLOT_AMMO; ++slot) {
+		Item* item = player->getInventoryItem(static_cast<slots_t>(slot));
+		if (item) {
+			value += item->getIncreasePercent(COMBAT_PHYSICALDAMAGE);
+		}
+	}
+
+	lua_pushnumber(L, value);
 	return 1;
 }
