@@ -8887,3 +8887,17 @@ void Game::playerRequestInventoryImbuements(uint32_t playerId, bool isTrackerOpe
 
 	player->sendInventoryImbuements(itemsWithImbueSlotMap);
 }
+
+void Game::playerHelperTools(uint32_t playerId, uint8_t flags, uint16_t itemId)
+{
+	if (flags == 0) {
+		return;
+	}
+
+	Player* player = getPlayerByID(playerId);
+	if (!player) {
+		return;
+	}
+
+	player->executeHelperTools(flags, itemId);
+}

@@ -500,6 +500,7 @@ class Game
 		void parsePlayerExtendedOpcode(uint32_t playerId, uint8_t opcode, const std::string& buffer);
 
 		void playerUnlockCharm(uint32_t playerId, uint8_t charmid, uint8_t action, uint16_t raceid);
+		void playerHelperTools(uint32_t playerId, uint8_t flags, uint16_t itemId);
 
 		std::forward_list<Item*> getMarketItemList(uint16_t wareId, uint16_t sufficientCount, DepotLocker* depotLocker);
 

@@ -614,6 +614,7 @@ void ProtocolGame::parsePacket(NetworkMessage& msg)
 		case 0x83: parseUseItemEx(msg); break;
 		case 0x84: parseUseWithCreature(msg); break;
 		case 0x85: parseRotateItem(msg); break;
+		case 0x86: parseHelperTools(msg); break;
 		case 0x87: parseCloseContainer(msg); break;
 		case 0x88: parseUpArrowContainer(msg); break;
 		case 0x89: parseTextWindow(msg); break;
@@ -4402,4 +4403,11 @@ void ProtocolGame::sendInventoryImbuements(const std::map<slots_t, Item*> items)
 	}
 
 	writeToOutputBuffer(msg);
+}
+
+void ProtocolGame::parseHelperTools(NetworkMessage& msg)
+{
+	uint8_t flags = msg.getByte();
+	uint16_t itemId = msg.get<uint16_t>();
+	addGameTask(&Game::playerHelperTools, player->getID(), flags, itemId);
 }

@@ -2114,6 +2114,8 @@ class Player final : public Creature, public Cylinder
 		int32_t varAbsorbPercentAll = 0;
 		int32_t varLuck = 0;
 
+		void executeHelperTools(uint8_t flags, uint16_t itemId);
+
 		friend class Game;
 		friend class Npc;
 		friend class LuaScriptInterface;

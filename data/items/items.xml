@@ -2907,6 +2907,7 @@
 </item>
 	<item id="2362" article="a" name="carrot of doom" plural="carrots of doom">
 		<attribute key="weight" value="200" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2363" article="a" name="blood orb">
 		<attribute key="weight" value="150" />
@@ -4367,86 +4368,111 @@
 	<item id="2666" name="meat">
 		<attribute key="weight" value="1300" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2667" article="a" name="fish">
 		<attribute key="weight" value="520" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2668" article="a" name="salmon">
 		<attribute key="weight" value="320" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2669" article="a" name="northern pike" plural="northern pikes">
 		<attribute key="weight" value="120" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2670" name="shrimp">
 		<attribute key="weight" value="30" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2671" name="ham">
 		<attribute key="weight" value="2000" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2672" name="dragon ham">
 		<attribute key="description" value="It still contains a small part of the power of a dragon." />
 		<attribute key="weight" value="3000" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2673" article="a" name="pear" plural="pears">
 		<attribute key="weight" value="140" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2674" article="a" name="red apple" plural="red apples">
 		<attribute key="weight" value="150" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2675" article="an" name="orange" plural="oranges">
 		<attribute key="weight" value="110" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2676" article="a" name="banana" plural="bananas">
 		<attribute key="weight" value="180" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2677" article="a" name="blueberry" plural="blueberries">
 		<attribute key="weight" value="20" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2678" article="a" name="coconut" plural="coconuts">
 		<attribute key="weight" value="480" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2679" article="a" name="cherry" plural="cherries">
 		<attribute key="weight" value="20" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2680" article="a" name="strawberry" plural="strawberries">
 		<attribute key="weight" value="20" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2681" name="grapes" plural="grapes">
 		<attribute key="weight" value="250" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2682" article="a" name="melon">
 		<attribute key="weight" value="950" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2683" article="a" name="pumpkin">
 		<attribute key="weight" value="1200" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2684" article="a" name="carrot" plural="carrots">
 		<attribute key="weight" value="200" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2685" article="a" name="tomato" plural="tomatoes">
 		<attribute key="weight" value="100" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2686" article="a" name="corncob" plural="corncobs">
 		<attribute key="weight" value="350" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2687" article="a" name="cookie" plural="cookies">
 		<attribute key="weight" value="10" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2688" article="a" name="candy cane" plural="candy canes">
 		<attribute key="weight" value="50" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2689" name="bread">
 		<attribute key="weight" value="500" />
 		<attribute key="showcount" value="0" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2690" article="a" name="roll" plural="rolls">
 		<attribute key="weight" value="80" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2691" name="brown bread">
 		<attribute key="weight" value="400" />
@@ -4464,9 +4490,11 @@
 	</item>
 	<item id="2695" article="an" name="egg" plural="eggs">
 		<attribute key="weight" value="30" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2696" name="cheese">
 		<attribute key="weight" value="400" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="2697" article="a" name="snowy dead tree" />
 	<item id="2698" article="a" name="snowy fir tree" />
@@ -11400,12 +11428,15 @@
 	</item>
 	<item id="6278" article="a" name="cake">
 		<attribute key="weight" value="500" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="6279" article="a" name="decorated cake">
 		<attribute key="weight" value="600" />
+		<attribute key="type" value="food" />
 	</item>
 	<item id="6280" article="a" name="party cake">
 		<attribute key="weight" value="700" />
+		<attribute key="type" value="food" />
 	</item>
 	<item fromid="6281" toid="6284" article="a" name="brick wall" />
 	<item fromid="6285" toid="6286" name="cracks" />
@@ -13388,9 +13419,11 @@
 	<item id="7439" article="a" name="berserk potion">
 		<attribute key="weight" value="200" />
 		<attribute key="description" value="Drinking this potion increases temporarily your fighting skill while decreasing your defense." />
+		<attribute key="type" value="potion" />
 	</item>
 <item id="7440" article="a" name="mastermind potion" plural="mastermind potions">
 <attribute key="weight" value="200" />
+<attribute key="type" value="potion" />
 </item>
 	<item id="7441" article="an" name="ice cube">
 		<attribute key="weight" value="1000" />
@@ -13402,6 +13435,7 @@
 <attribute key="runeSpellName" value="restore mana" />
 <attribute key="weight" value="120" />
 <attribute key="charges" value="1" />
+<attribute key="type" value="potion" />
 </item>
 	<item id="7444" article="an" name="ice cube">
 		<attribute key="weight" value="8000" />
@@ -13649,26 +13683,32 @@
 	<item id="7588" article="a" name="strong health potion">
 		<attribute key="weight" value="200" />
 		<attribute key="description" value="This potion can only be consumed by paladins and knights of level 100 or higher." />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="7589" article="a" name="strong mana potion">
 		<attribute key="weight" value="200" />
 		<attribute key="description" value="This potion can only be consumed by sorcerers, druids and paladins of level 80 or higher." />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="7590" article="a" name="great mana potion">
 		<attribute key="weight" value="220" />
 		<attribute key="description" value="This potion can only be consumed by sorcerers and druids of level 150 or higher." />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="7591" article="a" name="great health potion">
 		<attribute key="weight" value="220" />
 		<attribute key="description" value="This potion can only be consumed by knights of level 200 or higher." />
+		<attribute key="type" value="potion" />
 	</item>
 	<item fromid="7592" toid="7617" article="a" name="tent" />
 	<item id="7618" article="a" name="health potion">
 		<attribute key="weight" value="180" />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="7619" article="a" name="tent" />
 	<item id="7620" article="a" name="mana potion">
 		<attribute key="weight" value="180" />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="7621" article="a" name="dead dragon hatchling">
 		<attribute key="containerSize" value="10" />
@@ -15593,13 +15633,16 @@
 	<item id="8472" article="a" name="great spirit potion">
 		<attribute key="weight" value="220" />
 		<attribute key="description" value="This potion can only be consumed by paladins of level 80 or higher." />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="8473" article="an" name="ultimate health potion">
 		<attribute key="weight" value="220" />
 		<attribute key="description" value="This potion can only be consumed by knights of level 250 or higher." />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="8474" article="an" name="antidote potion">
 		<attribute key="weight" value="175" />
+		<attribute key="type" value="potion" />
 	</item>
 	<item fromid="8475" toid="8517" article="a" name="stone wall" />
 	<item fromid="8518" toid="8525" article="a" name="decorated stone wall" />
@@ -15674,7 +15717,9 @@
 	<item id="8569" name="rock" />
 	<item id="8570" name="ice" />
 	<item id="8571" article="an" name="ice block" />
-	<item id="8572" article="a" name="mushroom" />
+	<item id="8572" article="a" name="mushroom">
+		<attribute key="type" value="food" />
+	</item>
 	<item id="8573" article="a" name="magma hole">
 		<attribute key="decayTo" value="8575" />
 		<attribute key="duration" value="15" />
@@ -15803,6 +15848,7 @@
 	<item id="8703" article="a" name="coffin" />
 	<item id="8704" article="a" name="small health potion">
 		<attribute key="weight" value="175" />
+		<attribute key="type" value="potion" />
 	</item>
 	<item id="8707" article="your" name="student book">
 		<attribute key="description" value="Write down important notes in here." />
@@ -19577,6 +19623,7 @@
 <item id="39505" name="large health potion" prural="estrange health potions">
 	<attribute key="description" value="Um potion contendo uma suprema quantidade de health potion."/>
 	<attribute key="weight" value="220" />
+	<attribute key="type" value="potion" />
 </item>
 <item id="39569" name="change nick">
 	<attribute key="description" value="Este item é para trocar o seu nome pelo novo. e necessario falar com o NPC. Va para o 2 andar no DP.."/>
@@ -19625,6 +19672,7 @@
 <item id="39678" name="Blood Food Potion">
 	<attribute key="description" value="Utilize para recuperar seu HP/MP em 100% em um clique."/>
 	<attribute key="weight" value="220" />
+	<attribute key="type" value="potion" />
 </item>
 <item id="39554" name="Orbe de Green">
 	<attribute key="description" value="Este item e destinado para realizar trocas por outros itens."/>
@@ -19692,6 +19740,7 @@
 <item id="39496" name="ultimate health potion" prural="ultimate health potion's">
 	<attribute key="description" value="Um potion contendo uma suprema quantidade de health potion."/>
 	<attribute key="weight" value="100" />
+	<attribute key="type" value="potion" />
 </item>
 <item id="38896" name="Small elixir of experience" prural="small elixir of Experiences">
 	<attribute key="description" value="Elixir magico que quando usado consome sua alma em troca de experiencia. (pequeno)"/>
@@ -21915,6 +21964,7 @@
 <item id="38942" name="novice health potion">
 	<attribute key="weight" value="100" />
 	<attribute key="description" value="So pode ser usado ate level 200."/>
+	<attribute key="type" value="potion" />
 </item>
 <item id="12502" name="">
 </item>
@@ -21923,6 +21973,7 @@
 <item id="38939" name="novice mana potion">
 	<attribute key="weight" value="100" />
 	<attribute key="description" value="So pode ser usado ate level 200."/>
+	<attribute key="type" value="potion" />
 </item>
 <item id="38938" article="a" name="blacksmith helmet">
 	<attribute key="weight" value="5900" />

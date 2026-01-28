@@ -306,6 +306,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		void parseRotateItem(NetworkMessage& msg);
 		void parseWrapItem(NetworkMessage& msg);
+		void parseHelperTools(NetworkMessage& msg);
 
 		//Channel tabs
 		void parseChannelInvite(NetworkMessage& msg);

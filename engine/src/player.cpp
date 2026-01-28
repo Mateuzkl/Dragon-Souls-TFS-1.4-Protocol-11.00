@@ -41,11 +41,15 @@ extern Chat* g_chat;
 extern Vocations g_vocations;
 extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
+extern Weapons* g_weapons;
 extern CreatureEvents* g_creatureEvents;
 extern Events* g_events;
 extern Imbuements g_imbuements;
 extern Prey g_prey;
 extern LuaEnvironment g_luaEnvironment;
+extern Actions* g_actions;
+
+#include "actions.h"
 
 MuteCountMap Player::muteCountMap;
 
@@ -6906,4 +6910,59 @@ bool Player::tryStartRingRevive() {
     }));
 
     return true;
+}
+
+// Fix for missing isFood and internalUseItem
+void Player::executeHelperTools(uint8_t flags, uint16_t itemId)
+{
+	(void)itemId;
+	if (hasBitSet(1, flags)) {
+		// Eat food
+		std::vector<Container*> containers;
+		for (size_t i = CONST_SLOT_FIRST; i <= CONST_SLOT_LAST; ++i) {
+			Item* item = inventory[i];
+			if (!item) {
+				continue;
+			}
+
+			const ItemType& it = Item::items[item->getID()];
+			if (it.type == ITEM_TYPE_FOOD) {
+				// Eat food
+				g_actions->useItem(this, item->getPosition(), 0, item, false);
+				containers.clear();
+				break;
+			}
+			else {
+				Container* container = item->getContainer();
+				if (container) {
+					containers.push_back(container);
+				}
+			}
+		}
+
+		size_t i = 0;
+		while (i < containers.size()) {
+			Container* container = containers[i++];
+			for (Item* item : container->getItemList()) {
+				const ItemType& it = Item::items[item->getID()];
+				if (it.type == ITEM_TYPE_FOOD) {
+					// Eat food
+					g_actions->useItem(this, item->getPosition(), 0, item, false);
+					containers.clear();
+					break;
+				}
+				else {
+					Container* subContainer = item->getContainer();
+					if (subContainer) {
+						containers.push_back(subContainer);
+					}
+				}
+			}
+		}
+	}
+
+	if (hasBitSet(2, flags)) {
+		// Use exercise weapon
+
+	}
 }
