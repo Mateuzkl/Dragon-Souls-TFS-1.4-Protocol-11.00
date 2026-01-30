@@ -1056,15 +1056,25 @@ void ProtocolGame::parseHouseWindow(NetworkMessage& msg)
 void ProtocolGame::parseLookInShop(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint16_t count = msg.get<uint16_t>();
+	uint16_t count;
+	if (player->getProtocolVersion() >= 1100) {
+		count = msg.get<uint16_t>();
+	} else {
+		count = msg.getByte();
+	}
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerLookInShop, player->getID(), id, count);
 }
 
 void ProtocolGame::parsePlayerPurchase(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint16_t count = msg.get<uint16_t>();
-	uint16_t amount = msg.get<uint16_t>();
+	uint16_t count = msg.getByte();
+	uint16_t amount;
+	if (player->getProtocolVersion() >= 1100) {
+		amount = msg.get<uint16_t>();
+	} else {
+		amount = msg.getByte();
+	}
 	bool ignoreCap = msg.getByte() != 0;
 	bool inBackpacks = msg.getByte() != 0;
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerPurchaseItem, player->getID(), id, count, amount, ignoreCap, inBackpacks);
@@ -1073,8 +1083,13 @@ void ProtocolGame::parsePlayerPurchase(NetworkMessage& msg)
 void ProtocolGame::parsePlayerSale(NetworkMessage& msg)
 {
 	uint16_t id = msg.get<uint16_t>();
-	uint16_t count = msg.get<uint16_t>();
-	uint16_t amount = msg.get<uint16_t>();
+	uint16_t count = msg.getByte();
+	uint16_t amount;
+	if (player->getProtocolVersion() >= 1100) {
+		amount = msg.get<uint16_t>();
+	} else {
+		amount = msg.getByte();
+	}
 	bool ignoreEquipped = msg.getByte() != 0;
 	addGameTaskTimed(DISPATCHER_TASK_EXPIRATION, &Game::playerSellItem, player->getID(), id, count, amount, ignoreEquipped);
 }
