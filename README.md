@@ -294,17 +294,26 @@ cp config.lua.dist config.lua
 ```
 
 ### 4. Preparar vcpkg (Windows)
+
 ```powershell
-# Escolha onde instalar (ex.: C:\vcpkg)
-git clone https://github.com/microsoft/vcpkg.git C:\vcpkg
+# NÃO utilize o vcpkg atual do GitHub.
+# Versões recentes podem quebrar a compatibilidade com TFS e OTClient V8
+# devido a atualizações de bibliotecas como Boost, OpenSSL, Lua e Zlib.
+
+# Baixe o vcpkg compatível (aprox. 5GB):
+# https://www.mediafire.com/file/ipd4qzohe9jwji3/vcpkg.rar/file
+
+# Extraia o conteúdo para:
+# C:\vcpkg
+
 cd C:\vcpkg
 .\bootstrap-vcpkg.bat
 .\vcpkg.exe integrate install
 ```
 
-- O vcpkg instala exatamente na pasta que você clonou. Se você usar `C:\vcpkg`, tudo ficará nesse drive. Você pode usar `D:\vcpkg` ou `E:\vcpkg` da mesma forma.
-- As bibliotecas compiladas ficam em `C:\vcpkg\installed\x64-windows` (ou no drive/pasta equivalente que você escolheu).
-- O cache de artefatos é salvo em `%LOCALAPPDATA%\vcpkg\archives`.
+O vcpkg instala exatamente na pasta onde você extraiu.
+
+Usando C:\vcpkg, todo o ambiente ficará consistente com as versões exigidas pelo TFS e OTClient V8 e Mehah serve pra todas funcionado complia de boa sim
 
 ### 5. Atualizar baseline do projeto (opcional)
 ```powershell
