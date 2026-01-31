@@ -1,484 +1,200 @@
-# 🐉 Dragon Souls RPG v1.0 - TFS 1.4 Protocol 11.00
+<div align="center">
 
-**Dragon Souls RPG v1.0** é um servidor de Tibia baseado no universo de **O Senhor dos Anéis**, desenvolvido sobre a engine **TFS 1.4** com **protocolo 11.00**. O projeto combina a nostalgia do Tibia clássico 7.92 com a performance e estabilidade das engines modernas.
+# 🐉 Dragon Souls RPG
 
-## 📋 Índice
+### The Middle-earth MMORPG Experience
 
-- [Características](#-características)
-- [Funcionalidades Implementadas](#️-funcionalidades-implementadas)
-- [Sistema de Cooldown Avançado](#-sistema-de-cooldown-avançado)
-- [Requisitos do Sistema](#-requisitos-do-sistema)
-- [Instalação](#-instalação)
-- [Configuração](#️-configuração)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Desenvolvimento](#-desenvolvimento)
-- [Contribuição](#-contribuição)
-- [Licença](#-licença)
+[![Build Status](https://ci.appveyor.com/api/projects/status/github/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00?svg=true)](https://ci.appveyor.com/project/Mateuzkl/dragon-souls-tfs-1-4-protocol-11-00)
+[![Version](https://img.shields.io/badge/version-1.4.0-blue?style=flat-square)](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/releases)
+[![Protocol](https://img.shields.io/badge/protocol-11.00-orange?style=flat-square)](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00)
+[![License](https://img.shields.io/badge/license-GPL--2.0-red?style=flat-square)](LICENSE)
+
+*Um servidor de Tibia baseado no universo de **O Senhor dos Anéis**, desenvolvido sobre a engine **TFS 1.4**.*
+
+[Recursos](#-recursos) • [Instalação](#-instalação-e-compilação) • [Sistemas](#-documentação-de-sistemas) • [Contribuição](#-como-contribuir) • [Suporte](#-suporte)
+
+</div>
+
+---
+
+## 📖 Sobre o Projeto
+
+**Dragon Souls RPG** é uma fusão ambiciosa entre a nostalgia clássica do Tibia 7.92 e a estabilidade das engines modernas. Este projeto visa recriar a atmosfera épica da Terra Média, permitindo que os jogadores explorem locais icônicos e enfrentem criaturas lendárias, tudo suportado por uma infraestrutura técnica robusta.
+
+### 🌟 Destaques
+- **Performance de Ponta:** Baseado no TFS 1.4, garantindo estabilidade e otimização.
+- **Protocolo Moderno:** Compatibilidade nativa com protocolo 11.00 e suporte total ao **OTClient**.
+- **Imersão Total:** Ambientação fiel, incluindo raças (Elfos, Anões, Humanos) e geografia de Tolkien.
+
+---
 
 ## 🔗 Links Oficiais
-- SPR 11.x: https://github.com/Mateuzkl/SPR-11x-Dragon-Souls
-- RME: https://github.com/Mateuzkl/RME-dragon-souls
 
-## 🌟 Características
+| Recurso | Descrição | Link |
+| :--- | :--- | :--- |
+| **Client** | Cliente OTCv8 customizado | [Acessar Repositório](https://github.com/Mateuzkl/Dragon-Souls-Client) |
+| **Sprites** | Repositório de Sprites 11.x | [Acessar Repositório](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) |
+| **Map Editor** | RME customizado para o projeto | [Acessar Repositório](https://github.com/Mateuzkl/RME-dragon-souls) |
+| **Ferramentas** | Utilitários para assets (Item Editor, OBJ Builder) | [Acessar Tools](https://github.com/otg-br/tools) |
 
-### Engine e Protocolo
-- **TFS 1.4** - Engine moderna e estável
-- **Protocolo 11.00** - Compatibilidade com clientes modernos
-- **OTClient** - Suporte completo para cliente customizado
-- **Performance otimizada** - Sem travamentos ou instabilidades
+---
 
-### Temática
-- **Universo de O Senhor dos Anéis** - Ambientação fiel ao mundo de Tolkien
-- **Raças jogáveis**: Elfos, Anões e Humanos
-- **Locais icônicos**: Rivendell, Minas Tirith, Mordor, Rohan
-- **Criaturas épicas**: Orcs, Nazgûls, Balrogs, Trolls
+## �️ Recursos Técnicos
 
-## ⚔️ Funcionalidades Implementadas
+### Engine & Compatibilidade
+*   **Core:** The Forgotten Server 1.4 (C++17)
+*   **Protocolo:** 11.00
+*   **Database:** MySQL (Alta performance e integridade de dados)
+*   **Integração:** API REST nativa para web services
+*   **Logs:** Sistema detalhado para debugging e auditoria
 
-### ✅ Sistemas de Combate
-- **Hastega System** - Aumento de velocidade de ataque
-- **Sistema de Stun** - Paralisia temporária em combate
-- **Reset System** - Sistema de reset de personagem
-- **Sistema de Cooldown Avançado** - Mensagens automáticas de cooldown
-- **Sistema AOL Customizado** - AOL com estados energizado/desenergizado
-- **Combate balanceado** - Baseado no Tibia 7.92
+### Gameplay & Sistemas
+*   **Combate:** Sistema balanceado 7.92 com mecânicas modernas (Stun, Hastega).
+*   **Cooldown Avançado:** Feedback visual e mensagens automáticas precisas.
+*   **Proteção de Itens:** Sistema AOL Inteligente com estados energizados.
+*   **Geral:** Party System reformulado, Guilds completas, Sistema de Casas e Ciclo Dia/Noite.
 
-### ✅ Sistemas de Gameplay
-- **Vocações customizadas** por raça
-- **Sistema de guilds** completo
-- **PvP balanceado** entre raças
-- **Quests épicas** inspiradas nos livros
-- **Sistema de casas** e propriedades
+---
 
-### ✅ Recursos Técnicos
-- **Database MySQL** - Armazenamento confiável
-- **Sistema de backup** automático
-- **Logs detalhados** para debugging
-- **API REST** para integração web
-- **Sistema de eventos** automatizados
-- **Suporte OTCv8** - Viewport dinâmico para monitores ultrawide
-- **Protocolo 0x42** - Negociação de viewport entre cliente e servidor
+## 🚀 Instalação e Compilação
 
-## 🔮 Sistema de Cooldown Avançado
+Para garantir a melhor performance e compatibilidade, siga rigorosamente os passos abaixo para preparar o ambiente de desenvolvimento.
 
-O Dragon Souls implementa um sistema completo de cooldown para magias com mensagens automáticas personalizadas.
+### 1. Preparação do Ambiente (vcpkg)
 
-### 📋 Configuração XML
+> [!WARNING]
+> **Atenção:** Versões recentes do vcpkg podem causar incompatibilidade. Utilize a versão homologada abaixo.
 
-Para configurar uma magia com cooldown de 7 segundos e mensagens ativadas:
+1.  **Download do vcpkg homologado (aprox. 5GB):**
+    [Baixar vcpkg.rar](https://www.mediafire.com/file/ipd4qzohe9jwji3/vcpkg.rar/file)
 
+2.  **Instalação:**
+    Extraia o conteúdo diretamente em `C:\vcpkg`.
+
+3.  **Bootstrap e Integração:**
+    Abra o PowerShell como Administrador e execute:
+    ```powershell
+    cd C:\vcpkg
+    .\bootstrap-vcpkg.bat
+    .\vcpkg.exe integrate install
+    ```
+
+### 2. Atualização da Baseline (Opcional)
+Caso necessário, atualize a baseline do projeto para sincronizar as dependências:
+```powershell
+cd "C:\Caminho\Para\Dragon-Souls-TFS-1.4-Protocol-11.00"
+C:\vcpkg\vcpkg.exe x-update-baseline
+```
+
+### 3. Compilação (Visual Studio 2022)
+1.  Abra o arquivo de solução `engine\vc17\theforgottenserver.sln`.
+2.  Selecione a configuração **Release** e plataforma **x64**.
+3.  Compile a solução (`Ctrl` + `Shift` + `B`). O Visual Studio baixará as dependências automaticamente.
+
+---
+
+## 📘 Documentação de Sistemas
+
+### � Sistema de Cooldown Avançado
+
+Implementação robusta para gerenciamento de exaustão de magias com feedback preciso ao jogador.
+
+**Exemplo de Configuração (`spells.xml`):**
 ```xml
-<instant name="Glaciate" 
-         words="adori frigo" 
-         spellid="201" 
-         exhaustion="7" 
-         cooldownmsg="1" 
-         script="adori frigo.lua">
+<instant name="Glaciate" words="adori frigo" spellid="201" exhaustion="7" cooldownmsg="1" script="adori frigo.lua">
     <vocation id="1"/><vocation id="5"/>
 </instant>
 ```
 
-### 🎯 Atributos Principais
-
-| Atributo | Descrição | Valores |
-|----------|-----------|---------|
-| `exhaustion` | Tempo de cooldown | `< 50` = segundos<br>`≥ 50` = milissegundos |
-| `cooldownmsg` | Ativa mensagem de CD | `0` = Desativado<br>`1` = Ativado |
-| `spellid` | ID único da magia | Número único |
-
-### 💬 Mensagens Automáticas
-
-- **Quando o cooldown termina:** `CD: Nome da Magia`
-- **Quando tenta usar em cooldown:** `voce nao esta pronto cooldown (Xs)`
-
-### ⚙️ Lógica de Conversão
-
-```cpp
-// Valores menores que 50: tratados como segundos
-if (exhaustion < 50) {
-    exhaustion = exhaustion * 1000; // Converte para milissegundos
-}
-```
-
-**Exemplos:**
-- `exhaustion="7"` = 7 segundos
-- `exhaustion="100"` = 100 milissegundos (0.1 segundo)
-- `exhaustion="7000"` = 7000 milissegundos (7 segundos)
-
-## 🛡️ Sistema AOL Customizado
-
-O Dragon Souls possui um sistema avançado de AOL (Amulet of Loss) com estados energizado e desenergizado, oferecendo proteção inteligente contra perda de itens.
-
-### 🔋 Estados do AOL
-
-#### AOL Energizado (IDs: 38906, 38901, 38900)
-- **Proteção total** - Protege todos os itens na morte
-- **Exceções**: Red skull e Black skull seguem regras especiais
-- **Visual diferenciado** - Aparência energizada no jogo
-
-#### AOL Desenergizado
-- **Sem proteção** - Funciona como se não tivesse AOL
-- **Perda normal** - Itens podem ser perdidos na morte
-- **Estado padrão** - AOL comum sem energia
-
-### ⚙️ Configuração via items.xml
-
-Para configurar um item com proteção AOL customizada:
-
-```xml
-<item id="38906" name="energized amulet of loss">
-    <attribute key="weight" value="520"/>
-    <attribute key="slotType" value="necklace"/>
-    <attribute key="pressLoss" value="1"/>
-    <attribute key="showduration" value="1"/>
-</item>
-```
-
-### 🎯 Atributos de Configuração
-
-| Atributo | Descrição | Valores |
-|----------|-----------|---------|
-| `pressLoss` | Ativa proteção AOL | `0` = Desativado<br>`1` = Ativado |
-| `showduration` | Mostra duração | `0` = Não mostra<br>`1` = Mostra |
-| `slotType` | Tipo de slot | `necklace` = Pescoço |
-
-### 🏴‍☠️ Regras Especiais por Skull
-
-#### Red Skull 🔴
-- **Sempre perde tudo** - AOL não protege
-- **Punição máxima** - Independente do estado do AOL
-
-#### Black Skull ⚫
-- **Comportamento padrão** - Segue regras normais
-- **Drop completo** - Mais dano extra
-
-#### Sem Skull ⚪
-- **AOL energizado** - Proteção total
-- **AOL desenergizado** - Sem proteção
-
-### 💡 Exemplo de Uso
-
-```cpp
-// Verificação no código C++
-if (player->hasEnergedAOL() && !player->hasRedSkull()) {
-    // Protege todos os itens
-    return false; // Não dropa itens
-}
-```
+| Atributo | Descrição | Regra de Valor |
+| :--- | :--- | :--- |
+| `exhaustion` | Tempo de recarga | `< 50`: Segundos (ex: 7 = 7s)<br>`≥ 50`: Milissegundos (ex: 7000 = 7s) |
+| `cooldownmsg` | Mensagem de feedback | `1`: Ativa |
 
 ---
 
-## 💻 Requisitos do Sistema
+### 🛡️ Sistema AOL Customizado (Energized Amulet of Loss)
 
-### Servidor
-- **OS**: Windows 10/11 ou Linux Ubuntu 18.04+
-- **RAM**: Mínimo 2GB, recomendado 4GB+
-- **CPU**: Dual-core 2.0GHz+
-- **Storage**: 5GB de espaço livre
-- **MySQL**: 5.7+ ou MariaDB 10.2+
+Sistema inteligente de proteção de inventário baseado no estado do amuleto e penalidades do jogador.
 
-### Cliente
-- **Tibia Client 10.98** para RME (Map Editor)
-- **OTClient** para jogadores (protocolo 11.00)
-- **RME (Remere's Map Editor)** para edição de mapas
+#### Estados do Amuleto
+*   🟢 **Energizado:** Proteção TOTAL (exceto Red/Black Skull). Efeito visual ativo.
+*   ⚪ **Desenergizado:** Sem proteção. Funciona como colar decorativo.
 
-## 🧩 OTClient e SPR 11.x
+#### Regras de Penalidade (Skulls)
+| Estado do Jogador | Proteção do AOL | Comportamento na Morte |
+| :--- | :---: | :--- |
+| **Normal** | ✅ Ativa | Protege todos os itens se energizado. |
+| **Red Skull** 🔴 | ❌ Inativa | Perda total de itens, ignorando o amuleto. |
+| **Black Skull** ⚫ | ❌ Inativa | Perda total + Dano extra recebido. |
 
-- **Cliente recomendado**: [Dragon Souls Client](https://github.com/Mateuzkl/Dragon-Souls-Client) - Cliente customizado baseado em OTCv8. Compila facilmente no Windows com `vcpkg` e Visual Studio 2022.
-- **Ative recursos no cliente** no arquivo: `/modules/game_features/features.lua`:
-```lua
-g_game.enableFeature(GameSpritesAlphaChannel)
-g_game.enableFeature(GameMagicEffectU16)
-g_game.enableFeature(GameDistanceEffectU16)
-g_game.enableFeature(GameCountU16) -- 1kk stack
-g_game.enableFeature(GameChangeMapAwareRange)  -- Nova feature para viewport dinâmico
-```
-- **SPR/DAT pack**: use [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) para sprites e efeitos com canal alpha e IDs U16.
-- **RME pack**: use [RME-dragon-souls](https://github.com/Mateuzkl/RME-dragon-souls) para editar mapas no Remere (10.98).
-- **Suporte a Stacks**: Para usar stacks "1kk" (u16), o RME precisa de suporte a count de 2 bytes. Veja: [Commit Reference](https://github.com/Mateuzkl/OTAcademy_RME/commit/136dc5fe52a4691b4ab4784a7f21a58820fa7dc4)
-- **Ferramentas úteis**: [otg-br/tools](https://github.com/otg-br/tools) (somente `Item Editor` e `OBJ Builder`) para manutenção de itens e assets.
+---
 
-### Observações
-- `GameSpritesAlphaChannel` garante transparência correta em sprites.
-- `GameMagicEffectU16` permite efeitos mágicos com IDs 16-bit usados nos packs 11.x.
-- `GameDistanceEffectU16` permite efeitos de distância com IDs 16-bit.
-- `GameChangeMapAwareRange` ativa o sistema de viewport dinâmico para monitores ultrawide.
+### ⚙️ Configuração do Cliente (OTCV8)
 
-### 🖥️ Suporte para Monitores Ultrawide (OTCv8)
-
-O Dragon Souls implementa suporte completo para monitores ultrawide através do protocolo OTCv8.
-
-#### 📐 Especificações Técnicas
-
-| Recurso | Valor Padrão | Valor Máximo | Descrição |
-|---------|--------------|--------------|-----------|
-| **Viewport Width** | 18 tiles | **50 tiles** | Largura da área visível |
-| **Viewport Height** | 14 tiles | **30 tiles** | Altura da área visível |
-| **Client Viewport X** | 14 tiles | **24 tiles** | Viewport do cliente (X) |
-| **Client Viewport Y** | 10 tiles | **14 tiles** | Viewport do cliente (Y) |
-
-#### 🎮 Como Funciona
-
-1. **Negociação Automática**: O cliente OTCv8 solicita o tamanho de viewport desejado
-2. **Protocolo 0x42**: Servidor e cliente negociam o melhor tamanho
-3. **Adaptação Dinâmica**: O viewport se ajusta automaticamente ao tamanho da janela
-4. **Compatibilidade**: Clientes padrão continuam usando viewport tradicional
-
-#### ⚙️ Configuração no Cliente OTCv8
-
-No arquivo `data/game_features/features.lua`, encontre a versão do cliente 1100 e adicione:
+Para garantir o funcionamento correto de todos os recursos visuais no protocolo 11.00, adicione o seguinte trecho ao seu `modules/game_features/features.lua`:
 
 ```lua
--- Para protocolo 11.00
 if g_game.getProtocolVersion() >= 1100 then
     g_game.enableFeature(GameSpritesAlphaChannel)
     g_game.enableFeature(GameMagicEffectU16)
     g_game.enableFeature(GameDistanceEffectU16)
     g_game.enableFeature(GameCountU16)
-    g_game.enableFeature(GameChangeMapAwareRange)  -- ← Adicione esta linha
+    g_game.enableFeature(GameChangeMapAwareRange) -- Importante para viewport estendido
 end
 ```
 
-#### 🎯 Benefícios
+---
 
-- ✅ **Visão Expandida**: Veja mais do mapa em monitores ultrawide (21:9, 32:9)
-- ✅ **Melhor Gameplay**: Maior consciência situacional em PvP e PvE
-- ✅ **Performance Otimizada**: Sistema inteligente que envia apenas o necessário
-- ✅ **Compatibilidade Total**: Funciona com clientes padrão e ultrawide
+## 🗺️ Roadmap e Status
 
-## 🎨 Limites Expandidos de Efeitos
+### Em Desenvolvimento
+- [ ] **Montarias:** Sistema completo de montarias.
+- [ ] **Expansão de Mapa:** Novas áreas de Rohan.
+- [ ] **Sistema de Clãs:** Hierarquia e benefícios por raça.
+- [ ] **Eventos:** Rotação automática de eventos diários/semanais.
 
-O Dragon Souls implementa suporte expandido para efeitos visuais, aumentando drasticamente o limite de IDs disponíveis.
-
-### 📊 Limites de IDs
-
-| Tipo de Efeito | Limite Antigo (uint8_t) | Limite Novo (uint16_t) | Aumento |
-|----------------|-------------------------|------------------------|---------|
-| **Magic Effects** | 256 (0-255) | **65.536** (0-65535) | 256x mais |
-| **Distance Effects** | 256 (0-255) | **65.536** (0-65535) | 256x mais |
-
-### 🚀 Benefícios
-
-- **Mais efeitos visuais**: Suporte para até 65.536 efeitos mágicos únicos
-- **Mais projéteis**: Suporte para até 65.536 efeitos de distância (flechas, magias, etc)
-- **Compatibilidade**: Totalmente compatível com SPR 11.x que usa IDs U16
-- **Sem limitações**: Liberdade total para criar novos efeitos customizados
-
-**Importante**: Certifique-se de que seu cliente OTClient tenha as features `GameMagicEffectU16` e `GameDistanceEffectU16` ativadas!
-
-## 🚀 Instalação
-
-### 1. Clone o Repositório
-```bash
-git clone https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00.git
-cd Dragon-Souls-TFS-1.4-Protocol-11.00
-```
-
-### 2. Configuração do Banco de Dados
-```sql
--- Criar database
-CREATE DATABASE dragonsouls;
-USE dragonsouls;
-
--- Importar schema
-source database/schema.sql;
-```
-
-### 3. Configuração do Servidor
-```bash
-# Copiar arquivo de configuração
-cp config.lua.dist config.lua
-
-# Editar configurações do banco
-# Alterar: mysqlHost, mysqlUser, mysqlPass, mysqlDatabase
-```
-
-### 4. Preparar vcpkg (Windows)
-
-```powershell
-# NÃO utilize o vcpkg atual do GitHub.
-# Versões recentes podem quebrar a compatibilidade com TFS e OTClient V8
-# devido a atualizações de bibliotecas como Boost, OpenSSL, Lua e Zlib.
-
-# Baixe o vcpkg compatível (aprox. 5GB):
-# https://www.mediafire.com/file/ipd4qzohe9jwji3/vcpkg.rar/file
-
-# Extraia o conteúdo para:
-# C:\vcpkg
-
-cd C:\vcpkg
-.\bootstrap-vcpkg.bat
-.\vcpkg.exe integrate install
-```
-
-O vcpkg instala exatamente na pasta onde você extraiu.
-
-Usando C:\vcpkg, todo o ambiente ficará consistente com as versões exigidas pelo TFS e OTClient V8 e Mehah serve pra todas funcionado complia de boa sim
-
-### 5. Atualizar baseline do projeto (opcional)
-```powershell
-cd "C:\Users\SEU PC\Desktop\Dragon-Souls-TFS-1.4-Protocol-11.00"
-C:\vcpkg\vcpkg.exe x-update-baseline
-```
-
-### 6. Compilação com Visual Studio
-- Tenha o vcpkg instalado. Se já existir uma versão antiga, apague a pasta do vcpkg e instale novamente como acima.
-- Abra `engine\vc17\theforgottenserver.vcxproj` (ou `engine\vc17\theforgottenserver.sln`) no Visual Studio.
-- Clique em `Compilar Solução` (Ctrl+Shift+B).
-- O próprio Visual Studio baixa todas as libs e dependências automaticamente via vcpkg até terminar.
-
-### 7. Inicialização
-```bash
-# Linux
-./start.sh
-
-# Windows
-theforgottenserver.exe
-```
-
-## ⚙️ Configuração
-
-### config.lua Principal
-```lua
--- Configurações do servidor
-serverName = "Dragon Souls"
-worldType = "open-pvp"
-maxPlayers = 100
-
--- Database
-mysqlHost = "localhost"
-mysqlUser = "root"
-mysqlPass = "password"
-mysqlDatabase = "dragonsouls"
-
--- Rates
-rateExp = 1
-rateSkill = 1
-rateLoot = 1
-rateMagic = 1
-```
-
-### Portas e Conexões
-- **Game Port**: 7172
-- **Login Port**: 7171
-- **Admin Port**: 7171
-- **Status Port**: 7171
-
-## 📁 Estrutura do Projeto
-
-```
-Dragon-Souls-TFS-1.4-Protocol-11.00/
-├── 📁 data/                    # Scripts e dados do jogo
-│   ├── 📁 actions/            # Scripts de ações
-│   ├── 📁 spells/             # Magias e feitiços
-│   ├── 📁 monster/            # Criaturas do jogo
-│   ├── 📁 npc/                # NPCs e diálogos
-│   └── 📁 world/              # Arquivos do mapa
-├── 📁 engine/                  # Código fonte C++
-│   ├── 📁 src/                # Arquivos fonte
-│   └── 📁 build/              # Arquivos de compilação
-├── 📁 database/               # Schema do banco de dados
-├── 📁 util/                   # Utilitários e ferramentas
-├── config.lua.dist            # Configuração padrão
-└── README.md                  # Este arquivo
-```
-
-## 🛠️ Desenvolvimento
-
-### Tecnologias Utilizadas
-- **C++17** - Linguagem principal do servidor
-- **Lua 5.2** - Scripts de gameplay
-- **MySQL/MariaDB** - Banco de dados
-- **CMake** - Sistema de build
-- **Git** - Controle de versão
-
-### 🔄 CI/CD (Continuous Integration)
-
-O projeto utiliza **AppVeyor** para builds automáticos:
-
-- ✅ Builds automáticos a cada commit
-- ✅ Compilação para Windows x64 (Release)
-- ✅ Geração automática de executáveis e DLLs
-- ✅ Artifacts disponíveis para download
-
-**Para configurar o AppVeyor**, consulte o guia completo em [APPVEYOR_SETUP.md](APPVEYOR_SETUP.md)
-
-**Status do Build:** Clique no badge acima para ver o status mais recente do build.
-
-### Funcionalidades em Desenvolvimento
-- [ ] Sistema de montarias
-- [ ] Novos mapas de Rohan
-- [ ] Sistema de clãs por raça
-- [ ] Eventos automáticos
-- [ ] Sistema de recompensas diárias
-
-### Como Contribuir
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
-##### 🐛 Problemas Conhecidos
-
-- **Conversão de Mapas**: Mapas 7.92 precisam ser convertidos para 10.98
-- **Compatibilidade**: Alguns items podem precisar de ajustes
-- **Performance**: Otimizações contínuas sendo implementadas
-
-## 📞 Suporte
-
-### Contato
-- **Discord**: [Dragon Souls Community](https://discord.gg/dragonsouls)
-- **GitHub Issues**: Para reportar bugs
-- **Email**: suporte@dragonsouls.com
-
-### Documentação
-- **Wiki**: [Dragon Souls Wiki](https://wiki.dragonsouls.com)
-- **API Docs**: [API Documentation](https://api.dragonsouls.com/docs)
-- **Scripting Guide**: [Lua Scripting Guide](https://docs.dragonsouls.com/scripting)
-
-## 📊 Status do Projeto
-
-[![Build status](https://ci.appveyor.com/api/projects/status/github/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00?svg=true)](https://ci.appveyor.com/project/Mateuzkl/dragon-souls-tfs-1-4-protocol-11-00)
-![Version](https://img.shields.io/badge/version-1.4.0-blue)
-![Protocol](https://img.shields.io/badge/protocol-11.00-orange)
-![License](https://img.shields.io/badge/license-GPL--2.0-red)
-
-### Estatísticas
-- **Linhas de Código**: ~50,000
-- **Commits**: 500+
-- **Contributors**: 5
-- **Issues Resolvidas**: 150+
-
-## 🏆 Créditos
-
-### Desenvolvimento Principal
-- **[@Mateuzkl](https://github.com/Mateuzkl)** - Desenvolvedor Principal
-
-### Agradecimentos Especiais
-- **TFS Team** - Engine base
-- **OTLand Community** - Suporte e recursos
-- **Evolution by Xiadozu** - Inspiração para sistemas 7.92
-- **Tolkien Estate** - Universo de O Senhor dos Anéis
-
-### Bibliotecas e Ferramentas
-- **Boost C++** - Bibliotecas auxiliares
-- **MySQL Connector** - Conexão com banco
-- **Lua** - Engine de scripting
-- **CMake** - Sistema de build
-
-## 📄 Licença
-
-Este projeto está licenciado sob a **GNU General Public License v2.0**.
-
-Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+### 🐛 Problemas Conhecidos
+*   **Conversão de Mapas:** Mapas antigos (7.92) necessitam de conversão para estrutura 10.98+.
+*   **Compatibilidade de Itens:** Alguns IDs de versões antigas podem exigir remapeamento.
+*   **Otimização:** Refatoração contínua de scripts legacy para LuaJIT.
 
 ---
 
+## 🤝 Como Contribuir
+
+Contribuições são bem-vindas! Se você deseja ajudar a moldar o futuro do Dragon Souls:
+
+1.  Faça um **Fork** do projeto.
+2.  Crie uma Branch para sua feature (`git checkout -b feature/MinhaFeature`).
+3.  Commit suas mudanças (`git commit -m 'Adiciona: MinhaFeature'`).
+4.  Push para a Branch (`git push origin feature/MinhaFeature`).
+5.  Abra um **Pull Request**.
+
+---
+
+## � Suporte e Comunidade
+
+*   **Discord:** `g.joker`
+*   **Issues:** Utilize a aba [Issues](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/issues) para reportar bugs.
+
+---
+
+## 📜 Licença e Créditos
+
+Este projeto é licenciado sob a **GNU General Public License v2.0**.
+
+**Desenvolvimento:**
+*   **[@Mateuzkl](https://github.com/Mateuzkl)** - Lead Developer
+
+**Agradecimentos:**
+*   TFS Team, OTLand Community, Xiadozu (Evolution), e Tolkien Estate.
+
 <div align="center">
+<br>
 
-**🐉 Dragon Souls - Onde a Magia de Middle-earth Encontra o Tibia 🐉**
-
-*"Nem todos os que vagam estão perdidos"* - J.R.R. Tolkien
+*"Nem todos os que vagam estão perdidos."*
+<br>
+— **J.R.R. Tolkien**
 
 </div>
