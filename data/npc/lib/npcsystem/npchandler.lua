@@ -473,6 +473,9 @@ local storage, duration = 1.4, 0.8
 	-- Handles onBuy events. If you wish to handle this yourself, use the CALLBACK_ONBUY callback.
 	function NpcHandler:onBuy(creature, itemid, subType, amount, ignoreCap, inBackpacks)
 		local cid = creature.uid
+		if amount > 100 then
+			amount = 100
+		end
 		if (os.stime() - getPlayerStorageValue(cid, storage)) >= duration then
 		setPlayerStorageValue(cid, storage, os.stime()) -- DELAY PRA COMPRAR
 		local callback = self:getCallback(CALLBACK_ONBUY)
@@ -489,6 +492,9 @@ local storage, duration = 1.4, 0.8
 	-- Handles onSell events. If you wish to handle this yourself, use the CALLBACK_ONSELL callback.
 	function NpcHandler:onSell(creature, itemid, subType, amount, ignoreCap, inBackpacks)
 		local cid = creature.uid
+		if amount > 100 then
+			amount = 100
+		end
 		local callback = self:getCallback(CALLBACK_ONSELL)
 		if callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks) then
 			if self:processModuleCallback(CALLBACK_ONSELL, cid, itemid, subType, amount, ignoreCap, inBackpacks) then
@@ -658,4 +664,4 @@ local storage, duration = 1.4, 0.8
 			end
 		end, self.talkDelayTime * 1000, Npc().uid, message, focus)
 	end
-end
+	end
