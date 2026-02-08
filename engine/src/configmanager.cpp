@@ -418,6 +418,9 @@ bool ConfigManager::load()
 	boolean[BLOCK_SAME_IP_PVP] = getGlobalBoolean(L, "blockSameIpPvp", true);
 	boolean[DISABLE_PUSH_CANCEL_ON_SPELLS] = getGlobalBoolean(L, "disablePushCancelOnSpells", false);
 	boolean[PUSH_WHEN_ATTACKING] = getGlobalBoolean(L, "pushWhenAttacking", true);
+	boolean[ENABLE_WINGS] = getGlobalBoolean(L, "enableWings", false);
+	boolean[ENABLE_AURAS] = getGlobalBoolean(L, "enableAuras", false);
+	boolean[ENABLE_SHADERS] = getGlobalBoolean(L, "enableShaders", false);
 
 	string[DEFAULT_PRIORITY] = getGlobalString(L, "defaultPriority", "high");
 	string[SERVER_NAME] = getGlobalString(L, "serverName", "");

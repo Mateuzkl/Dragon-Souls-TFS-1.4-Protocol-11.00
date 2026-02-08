@@ -119,6 +119,12 @@ free_autoloot = 15
 -- false = não permite mount em PZ (comportamento padrão)
 allowMountInPz = true 
 
+-- Extensões de Outfit (wings, auras, shaders)
+-- NOTA: Defina como verdadeiro para ativar, falso para desativar
+enableWings = true
+enableAuras = true
+enableShaders = true
+
 -- Depot Limit
 freeDepotLimit = 2000
 premiumDepotLimit = 10000

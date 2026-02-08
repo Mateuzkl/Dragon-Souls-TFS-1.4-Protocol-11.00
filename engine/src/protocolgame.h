@@ -454,6 +454,7 @@ class ProtocolGame final : public ProtocolGameBase
 		void parseBestiaryTracker(NetworkMessage& msg);
 
 		friend class Player;
+		friend class ProtocolGameBase;
 
 		// Helpers so we don't need to bind every time
 		template <typename Callable, typename... Args>

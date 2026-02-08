@@ -32,6 +32,8 @@
 #include "raids.h"
 #include "quests.h"
 #include "mounts.h"
+#include "auras.h"
+#include "wings.h"
 #include "globalevent.h"
 #include "monster.h"
 #include "events.h"
@@ -192,6 +194,12 @@ void Signals::sighupHandler()
 
 	g_game.mounts.reload();
 	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloaded mounts.");
+
+	g_game.auras.reload();
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloaded auras.");
+
+	g_game.wings.reload();
+	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloaded wings.");
 
 	g_globalEvents->reload();
 	console::print(CONSOLEMESSAGE_TYPE_INFO, "Reloaded globalevents.");

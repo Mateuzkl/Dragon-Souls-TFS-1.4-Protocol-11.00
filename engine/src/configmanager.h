@@ -84,6 +84,9 @@ class ConfigManager
 			DISABLE_PUSH_CANCEL_ON_SPELLS,
 			PUSH_WHEN_ATTACKING,
 			BLOCK_SAME_IP_PVP,
+			ENABLE_WINGS,
+			ENABLE_AURAS,
+			ENABLE_SHADERS,
 
 			LAST_BOOLEAN_CONFIG /* this must be the last one */
 		};

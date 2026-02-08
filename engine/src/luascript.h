@@ -1190,6 +1190,10 @@ class LuaScriptInterface
 		// Monster
 		static int luaMonsterCreate(lua_State* L);
 
+		static int luaPlayerAddAura(lua_State* L);
+		static int luaPlayerAddWings(lua_State* L);
+		static int luaPlayerAddShader(lua_State* L);
+
 		static int luaMonsterIsMonster(lua_State* L);
 
 		static int luaMonsterGetType(lua_State* L);

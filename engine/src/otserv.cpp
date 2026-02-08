@@ -294,12 +294,27 @@ void mainLoader(int argc, char* argv[], ServiceManager* services)
 		console::printResult(CONSOLE_LOADING_OK);
 	}
 
+	// Load shaders
+	std::cout << ">> Loading shaders" << std::endl;
+	if (!g_game.shaders.loadFromXml()) {
+		startupErrorMessage("Unable to load shaders!");
+		return;
+	}
+
 	//load vocations
 	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading vocations ...", false);
 	if (!g_vocations.loadFromXml()) {
 		startupErrorMessage("Unable to load vocations!");
 		return;
 	}
+
+	// NEW: load shaders before any creature definitions to ensure they are available for NPCs and monsters spawned during startup
+	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading shaders ...", false);
+	if (!g_game.shaders.loadFromXml()) {
+		startupErrorMessage("Unable to load shaders!");
+		return;
+	}
+	console::printResult(CONSOLE_LOADING_OK);
 
 	// load item data
 	console::print(CONSOLEMESSAGE_TYPE_STARTUP, "Loading items ...", false);

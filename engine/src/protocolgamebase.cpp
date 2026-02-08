@@ -20,6 +20,7 @@
 #include "otpch.h"
 #include <boost/range/adaptor/reversed.hpp>
 #include "protocolgamebase.h"
+#include "protocolgame.h"
 #include "game.h"
 #include "iologindata.h"
 #include "tile.h"
@@ -194,6 +195,24 @@ void ProtocolGameBase::AddOutfit(NetworkMessage& msg, const Outfit_t& outfit)
 	}
 
 	msg.add<uint16_t>(outfit.lookMount);
+
+	// OTCv8 extended outfit attributes: wings, aura and shader
+	// Only send these bytes if the respective feature is enabled
+	if (auto protoGame = dynamic_cast<ProtocolGame*>(this)) {
+		if (protoGame->otclientV8) {
+			// Wings and Auras - only send if feature is enabled
+			bool enableWingsOrAuras = g_config.getBoolean(ConfigManager::ENABLE_WINGS) || g_config.getBoolean(ConfigManager::ENABLE_AURAS);
+			if (enableWingsOrAuras) {
+				msg.add<uint16_t>(g_config.getBoolean(ConfigManager::ENABLE_WINGS) ? outfit.lookWings : 0);
+				msg.add<uint16_t>(g_config.getBoolean(ConfigManager::ENABLE_AURAS) ? outfit.lookAura : 0);
+			}
+			// Shaders - only send if feature is enabled
+			if (g_config.getBoolean(ConfigManager::ENABLE_SHADERS)) {
+				Shader* shader = g_game.shaders.getShaderByID(outfit.lookShader);
+				msg.addString(shader ? shader->name : "");
+			}
+		}
+	}
 }
 
 void ProtocolGameBase::checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown)

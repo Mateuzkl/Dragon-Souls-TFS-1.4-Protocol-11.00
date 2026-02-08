@@ -4046,6 +4046,11 @@ CREATE TABLE `guild_invitations` (
   FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+-- Wings, Auras and Shaders columns for players table
+ALTER TABLE `players` ADD COLUMN IF NOT EXISTS `lookwings` INT(11) NOT NULL DEFAULT 0 AFTER `lookaddons`;
+ALTER TABLE `players` ADD COLUMN IF NOT EXISTS `lookauras` INT(11) NOT NULL DEFAULT 0 AFTER `lookwings`;
+ALTER TABLE `players` ADD COLUMN IF NOT EXISTS `lookshader` INT(11) NOT NULL DEFAULT 0 AFTER `lookauras`;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
