@@ -440,11 +440,11 @@ void ProtocolSpectator::sendFloorDescription(const Position& pos, int floor)
 	NetworkMessage msg;
 	msg.addByte(0x4B);
 	msg.addPosition(player->getPosition());
-	msg.addByte(floor);
+	msg.addByte(static_cast<uint8_t>(floor));
 	int32_t skip = -1;
 	GetFloorDescription(msg, pos.x - awareRange.left(), pos.y - awareRange.top(), floor, awareRange.horizontal(), awareRange.vertical(), pos.z - floor, skip);
 	if (skip >= 0) {
-		msg.addByte(skip);
+		msg.addByte(static_cast<uint8_t>(skip));
 		msg.addByte(0xFF);
 	}
 	writeToOutputBuffer(msg);

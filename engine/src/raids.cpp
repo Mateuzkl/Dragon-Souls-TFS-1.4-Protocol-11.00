@@ -440,12 +440,12 @@ bool AreaSpawnEvent::configureRaidEvent(const pugi::xml_node& eventNode)
 			return false;
 		}
 
-		fromPos.x = std::max<int32_t>(0, centerPos.getX() - radius);
-		fromPos.y = std::max<int32_t>(0, centerPos.getY() - radius);
+		fromPos.x = static_cast<uint16_t>(std::max<int32_t>(0, centerPos.getX() - radius));
+		fromPos.y = static_cast<uint16_t>(std::max<int32_t>(0, centerPos.getY() - radius));
 		fromPos.z = centerPos.z;
 
-		toPos.x = std::min<int32_t>(0xFFFF, centerPos.getX() + radius);
-		toPos.y = std::min<int32_t>(0xFFFF, centerPos.getY() + radius);
+		toPos.x = static_cast<uint16_t>(std::min<int32_t>(0xFFFF, centerPos.getX() + radius));
+		toPos.y = static_cast<uint16_t>(std::min<int32_t>(0xFFFF, centerPos.getY() + radius));
 		toPos.z = centerPos.z;
 	} else {
 		if ((attr = eventNode.attribute("fromx"))) {
@@ -543,7 +543,7 @@ bool AreaSpawnEvent::executeEvent()
 
 			bool success = false;
 			for (int32_t tries = 0; tries < MAXIMUM_TRIES_PER_MONSTER; tries++) {
-				Tile* tile = g_game.map.getTile(uniform_random(fromPos.x, toPos.x), uniform_random(fromPos.y, toPos.y), uniform_random(fromPos.z, toPos.z));
+				Tile* tile = g_game.map.getTile(static_cast<uint16_t>(uniform_random(fromPos.x, toPos.x)), static_cast<uint16_t>(uniform_random(fromPos.y, toPos.y)), static_cast<uint8_t>(uniform_random(fromPos.z, toPos.z)));
 				if (tile && !tile->isMoveableBlocking() && !tile->hasFlag(TILESTATE_PROTECTIONZONE) && tile->getTopCreature() == nullptr && g_game.placeCreature(monster, tile->getPosition(), false, true)) {
 					if (g_events->eventMonsterOnSpawn(monster, tile->getPosition(), false, true)) {
 						monster->isRaid(true);

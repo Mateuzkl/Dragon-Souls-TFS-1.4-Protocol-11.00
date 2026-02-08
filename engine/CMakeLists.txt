@@ -84,4 +84,7 @@ option(ENABLE_UNITY_BUILD "Enable unity build" ON)
 
 if(ENABLE_UNITY_BUILD)
     set_target_properties(tfs PROPERTIES UNITY_BUILD ON)
+    if(MSVC)
+        set_target_properties(tfs PROPERTIES VS_GLOBAL_EnableUnitySupport "true")
+    endif()
 endif()

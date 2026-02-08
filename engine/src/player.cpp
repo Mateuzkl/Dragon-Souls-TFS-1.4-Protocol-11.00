@@ -886,12 +886,12 @@ void Player::addSkillAdvance(skills_t skill, uint64_t count)
 	}
 
 	if (skills[skill].percent != newPercent) {
-		skills[skill].percent = newPercent;
+		skills[skill].percent = static_cast<uint8_t>(newPercent);
 		
 		if (isMeleeSkill) {
 			for (skills_t meleeSkill : {SKILL_FIST, SKILL_CLUB, SKILL_SWORD, SKILL_AXE}) {
 				if (meleeSkill != skill) {
-					skills[meleeSkill].percent = newPercent;
+					skills[meleeSkill].percent = static_cast<uint8_t>(newPercent);
 				}
 			}
 		}
@@ -1341,7 +1341,7 @@ DepotLocker* Player::getDepotLocker(uint32_t depotId)
 	}
 
 	DepotLocker* depotLocker = new DepotLocker(ITEM_LOCKER1);
-	depotLocker->setDepotId(depotId);
+	depotLocker->setDepotId(static_cast<uint16_t>(depotId));
 	depotLocker->internalAddThing(Item::CreateItem(ITEM_MARKET));
 	depotLocker->internalAddThing(inbox);
 	Container* depotChest = Item::CreateItemAsContainer(ITEM_DEPOT, 1);
@@ -1592,7 +1592,7 @@ void Player::sendRemoveContainerItem(const Container* container, uint16_t slot)
 
 		uint16_t& firstIndex = openContainer.index;
 		if (firstIndex > 0 && firstIndex >= container->size() - 1) {
-			firstIndex -= container->capacity();
+			firstIndex -= static_cast<uint16_t>(container->capacity());
 			sendContainer(it.first, container, false, firstIndex);
 		}
 
@@ -2125,7 +2125,7 @@ void Player::onThink(uint32_t interval)
 	sendPing();
 
 	if (deathTime > 0) {
-		deathTime -= interval;
+		deathTime -= static_cast<int16_t>(interval);
 		if (deathTime <= 0) {
 			kickPlayer(true);
 		}
@@ -2673,7 +2673,7 @@ BlockType_t Player::blockHit(Creature* attacker, CombatType_t combatType, int32_
 				}
 			}
 
-			uint8_t slots = Item::items[item->getID()].imbuingSlots;
+			uint8_t slots = static_cast<uint8_t>(Item::items[item->getID()].imbuingSlots);
 			for (uint8_t i = 0; i < slots; i++) {
 				uint32_t info = item->getImbuement(i);
 				if (info >> 8) {
@@ -2848,7 +2848,7 @@ void Player::death(Creature* lastHitCreature)
 
 			uint32_t lostSkillTries = static_cast<uint32_t>(sumSkillTries * deathLossPercent);
 			while (lostSkillTries > skills[i].tries) {
-				lostSkillTries -= skills[i].tries;
+				lostSkillTries -= static_cast<uint32_t>(skills[i].tries);
 
 				if (skills[i].level <= 10) {
 					skills[i].level = 10;
@@ -2908,8 +2908,9 @@ void Player::death(Creature* lastHitCreature)
 			removeBlessing(TWIST_OF_FATE, 1);
 		} else {
 			for (int i = BLESS_PVE_FIRST; i <= BLESS_LAST; i++) {
-				if (hasBlessing(i))
-					removeBlessing(i, 1);
+				if (hasBlessing(static_cast<uint8_t>(i))) {
+					removeBlessing(static_cast<uint8_t>(i), 1);
+				}
 			}
 		}
 
@@ -3159,9 +3160,9 @@ void Player::autoCloseContainers(const Container* container)
 	}
 
 	for (uint32_t containerId : closeList) {
-		closeContainer(containerId);
+		closeContainer(static_cast<uint8_t>(containerId));
 		if (client) {
-			client->sendCloseContainer(containerId);
+			client->sendCloseContainer(static_cast<uint8_t>(containerId));
 		}
 	}
 }
@@ -3673,7 +3674,7 @@ void Player::updateThing(Thing* thing, uint16_t itemId, uint32_t count)
 	}
 
 	item->setID(itemId);
-	item->setSubType(count);
+	item->setSubType(static_cast<uint16_t>(count));
 
 	//send to client
 	sendInventoryItem(static_cast<slots_t>(index), item);
@@ -4748,9 +4749,9 @@ void Player::changeMana(int32_t manaChange)
 void Player::changeSoul(int32_t soulChange)
 {
 	if (soulChange > 0) {
-		soul += std::min<int32_t>(soulChange * g_config.getFloat(ConfigManager::RATE_SOUL_REGEN), vocation->getSoulMax() - soul);
+		soul += static_cast<uint8_t>(std::min<int32_t>(soulChange * g_config.getFloat(ConfigManager::RATE_SOUL_REGEN), vocation->getSoulMax() - soul));
 	} else {
-		soul = std::max<int32_t>(0, soul + soulChange);
+		soul = static_cast<uint8_t>(std::max<int32_t>(0, soul + soulChange));
 	}
 
 	sendStats();
@@ -4762,7 +4763,7 @@ bool Player::canWear(uint32_t lookType, uint8_t addons) const
 		return true;
 	}
 
-	const Outfit* outfit = Outfits::getInstance().getOutfitByLookType(sex, lookType);
+	const Outfit* outfit = Outfits::getInstance().getOutfitByLookType(sex, static_cast<uint16_t>(lookType));
 	if (!outfit) {
 		return false;
 	}
@@ -5165,7 +5166,7 @@ double Player::getLostPercent() const
 	int32_t blessingCount = 0;
 	uint8_t maxBlessing = 8;
 	for (int i = 1; i <= maxBlessing; i++) {
-		if (hasBlessing(i)) {
+		if (hasBlessing(static_cast<uint8_t>(i))) {
 			blessingCount++;
 		}
 	}
@@ -5488,7 +5489,7 @@ uint8_t Player::getCurrentMount() const
 {
 	int32_t value;
 	if (getStorageValue(PSTRG_MOUNTS_CURRENTMOUNT, value)) {
-		return value;
+		return static_cast<uint8_t>(value);
 	}
 	return 0;
 }
@@ -5698,7 +5699,7 @@ uint8_t Player::getCurrentWing() const
 {
 	int32_t value;
 	if (getStorageValue(PSTRG_WINGS_CURRENTWINGS, value)) {
-		return value;
+		return static_cast<uint8_t>(value);
 	}
 	return 0;
 }
@@ -5753,7 +5754,7 @@ uint8_t Player::getCurrentAura() const
 {
 	int32_t value;
 	if (getStorageValue(PSTRG_AURAS_CURRENTAURA, value)) {
-		return value;
+		return static_cast<uint8_t>(value);
 	}
 	return 0;
 }
@@ -6454,7 +6455,7 @@ ReturnValue Player::changePreyDataState(uint8_t preySlotId, PreyState state, uin
 				currentPrey.timeLeft = g_prey.getPreyDuration();
 	
 				if (currentPrey.state == STATE_SELECTION) {
-					currentPrey.bonusGrade = uniform_random(1, 10);
+					currentPrey.bonusGrade = static_cast<uint8_t>(uniform_random(1, 10));
 					const BonusEntry& bonus = g_prey.getAvailableBonuses()[uniform_random(0, static_cast<int32_t>(g_prey.getAvailableBonuses().size()) - 1)];
 					currentPrey.bonusType = bonus.type;
 					currentPrey.bonusValue = bonus.initialValue + bonus.step * (currentPrey.bonusGrade - 1);
@@ -6487,7 +6488,7 @@ ReturnValue Player::changePreyDataState(uint8_t preySlotId, PreyState state, uin
 			currentPrey.preyMonster = monsterName;
 			currentPrey.timeLeft = g_prey.getPreyDuration();
 			if (currentPrey.bonusType == BONUS_NONE) {
-				currentPrey.bonusGrade = uniform_random(1, 10);
+				currentPrey.bonusGrade = static_cast<uint8_t>(uniform_random(1, 10));
 				const BonusEntry& bonus = g_prey.getAvailableBonuses()[uniform_random(0, static_cast<int32_t>(g_prey.getAvailableBonuses().size()) - 1)];
 				currentPrey.bonusType = bonus.type;
 				currentPrey.bonusValue = bonus.initialValue + bonus.step * (currentPrey.bonusGrade - 1);
@@ -6615,7 +6616,7 @@ ReturnValue Player::rerollPreyBonus(uint8_t preySlotId)
 				possibles.erase(it);
 			}
 		} else {
-			currentPrey.bonusGrade = uniform_random(currentPrey.bonusGrade + 1, 10);
+			currentPrey.bonusGrade = static_cast<uint8_t>(uniform_random(currentPrey.bonusGrade + 1, 10));
 		}
 
 		const BonusEntry& randomBonus = possibles[uniform_random(0, possibles.size() - 1)];
@@ -6659,7 +6660,7 @@ void Player::decreasePreyTimeLeft(uint16_t amount)
 	for (uint8_t preySlotId = 0; preySlotId < PREY_SLOTCOUNT; preySlotId++) {
 		PreyData& currentPrey = preyData[preySlotId];
 		if (currentPrey.state == STATE_ACTIVE) {
-			currentPrey.timeLeft = std::max(0, currentPrey.timeLeft - amount * 60);
+			currentPrey.timeLeft = static_cast<uint16_t>(std::max(0, currentPrey.timeLeft - amount * 60));
 			if (currentPrey.timeLeft > 0) {
 				sendPreyTimeLeft(preySlotId);
 			} else {
