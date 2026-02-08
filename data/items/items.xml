@@ -25759,4 +25759,88 @@
 	<item id="31406" article="a" name="supply stash">
 		<attribute key="containerSize" value="20" />
 	</item>
+	<item id="31196" article="a" name="training sword">
+		<attribute key="weaponType" value="sword" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="31197" article="a" name="training axe">
+		<attribute key="weaponType" value="axe" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="31198" article="a" name="training club">
+		<attribute key="weaponType" value="club" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="31199" article="a" name="training bow">
+		<attribute key="weaponType" value="distance" />
+		<attribute key="shootType" value="arrow" />
+		<attribute key="range" value="5" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="31200" article="a" name="training rod">
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="smallice" />
+		<attribute key="range" value="5" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="31201" article="a" name="training wand">
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="fire" />
+		<attribute key="range" value="5" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="38052" article="an" name="exercise sword">
+		<attribute key="weaponType" value="sword" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="38053" article="an" name="exercise axe">
+		<attribute key="weaponType" value="axe" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="38054" article="an" name="exercise club">
+		<attribute key="weaponType" value="club" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="38055" article="an" name="exercise bow">
+		<attribute key="weaponType" value="distance" />
+		<attribute key="shootType" value="arrow" />
+		<attribute key="range" value="5" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="38056" article="an" name="exercise rod">
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="smallice" />
+		<attribute key="range" value="5" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
+	<item id="38057" article="an" name="exercise wand">
+		<attribute key="weaponType" value="wand" />
+		<attribute key="shootType" value="fire" />
+		<attribute key="range" value="5" />
+		<attribute key="charges" value="500" />
+		<attribute key="weight" value="1800" />
+		<attribute key="showcharges" value="true" />
+	</item>
 </items>

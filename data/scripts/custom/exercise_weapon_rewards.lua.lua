@@ -1,374 +1,326 @@
-local configs = {
+
+local config = {
+    opcode = 201,
+    logFile = "data/logs/rewards.txt",
+
     basic = {
+        storage = 642297,
+        cooldown = 24 * 60 * 60,
         items = {
-            {name = "exercise sword", itemId = 33082, charges = 8000, storage = 998000},
-            {name = "exercise axe", itemId = 33083, charges = 8000, storage = 998001},
-            {name = "exercise club", itemId = 33084, charges = 8000, storage = 998002},
-            {name = "exercise bow", itemId = 33085, charges = 8000, storage = 998003},
-            {name = "exercise rod", itemId = 33086, charges = 8000, storage = 998004},
-            {name = "exercise wand", itemId = 33087, charges = 8000, storage = 998005}
+            {id = 38052, name = "exercise sword", charges = 8000},
+            {id = 38053, name = "exercise axe", charges = 8000},
+            {id = 38054, name = "exercise club", charges = 8000},
+            {id = 38055, name = "exercise bow", charges = 8000},
+            {id = 38056, name = "exercise rod", charges = 8000},
+            {id = 38057, name = "exercise wand", charges = 8000}
         }
     },
-    
-    time = {
-        items = {
-            {name = "exercise sword", itemId = 33082, charges = 8000},
-            {name = "exercise axe", itemId = 33083, charges = 8000},
-            {name = "exercise club", itemId = 33084, charges = 8000},
-            {name = "exercise bow", itemId = 33085, charges = 8000},
-            {name = "exercise rod", itemId = 33086, charges = 8000},
-            {name = "exercise wand", itemId = 33087, charges = 8000}
-        },
-        cooldown = 7 * 24 * 60 * 60 -- 7 dias em segundos
-    },
-    
-    prey_wildcard = {
-        items = {
-            {name = "exercise sword", itemId = 33082, charges = 8000, storage = 998010},
-            {name = "exercise axe", itemId = 33083, charges = 8000, storage = 998011},
-            {name = "exercise club", itemId = 33084, charges = 8000, storage = 998012},
-            {name = "exercise bow", itemId = 33085, charges = 8000, storage = 998013},
-            {name = "exercise rod", itemId = 33086, charges = 8000, storage = 998014},
-            {name = "exercise wand", itemId = 33087, charges = 8000, storage = 998015}
-        },
-        prey_wildcard_amount = 10,
-        prey_wildcard_limit = 50
-    },
-    
-    prey_wildcard_time = {
-        items = {
-            {name = "exercise sword", itemId = 33082, charges = 8000, storage = 998020},
-            {name = "exercise axe", itemId = 33083, charges = 8000, storage = 998021},
-            {name = "exercise club", itemId = 33084, charges = 8000, storage = 998022},
-            {name = "exercise bow", itemId = 33085, charges = 8000, storage = 998023},
-            {name = "exercise rod", itemId = 33086, charges = 8000, storage = 998024},
-            {name = "exercise wand", itemId = 33087, charges = 8000, storage = 998025}
-        },
-        prey_wildcard_amount = 10,
-        prey_wildcard_limit = 50
-    },
-    
-    daily = {
-        items = {
-            { id = 33087 },
-            { id = 33082 },
-            { id = 33084 },
-            { id = 33086 },
-            { id = 33085 },
-            { id = 33083 },
-            { id = 44066 },
-        },
-        storage = 998030, -- Storage para daily reward
-        cooldown = 24 * 60 * 60, -- 24 horas em segundos
-        charges = 64400
+
+    autoEvent = {
+        enabled = true,
+        days = {1, 3, 5},
+        hour = 12,
+        minute = 0
     }
 }
 
-local function sendBasicRewardModal(player)
-    local window = ModalWindow {
-        title = "Exercise Reward",
-        message = "Choose an item"
-    }
-    
-    for _, it in pairs(configs.basic.items) do
-        local iType = ItemType(it.itemId)
-        if iType then
-            local choice = window:addChoice(iType:getName())
-            choice.itemId = it.itemId
-            choice.itemName = it.name
-            choice.storage = it.storage
-            choice.charges = it.charges
-        end
+local function logMessage(message)
+    local file = io.open(config.logFile, "a")
+    if file then
+        file:write(os.date("[%Y-%m-%d %H:%M:%S] ") .. message .. "\n")
+        file:close()
     end
-    
-    window:addButton("Select", function(button, choice)
-        if not choice then
-            return
-        end
-        
-        if player:getStorageValue(choice.storage) > 0 then
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "You already received your exercise weapon reward!")
-            return
-        end
-        
-        local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
-        if inbox and inbox:getEmptySlots() > 0 then
-            local item = inbox:addItem(choice.itemId, choice.charges)
-            if item then
-                item:setActionId(IMMOVABLE_ACTION_ID)
-                player:sendTextMessage(MESSAGE_INFO_DESCR, "Congratulations, you just received a [".. choice.itemName .."].")
-                player:setStorageValue(choice.storage, 1)
-            end
-        else
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "You need to have capacity and empty slots to receive.")
-        end
-    end)
-    
-    window:addButton("Close")
-    window:setDefaultEnterButton("Select")
-    window:setDefaultEscapeButton("Close")
-    window:sendToPlayer(player)
 end
 
-local function sendTimeRewardModal(player)
-    local window = ModalWindow {
-        title = "Exercise Reward",
-        message = "Choose an item"
-    }
-    
-    for _, it in pairs(configs.time.items) do
-        local iType = ItemType(it.itemId)
-        if iType then
-            local choice = window:addChoice(iType:getName())
-            choice.itemId = it.itemId
-            choice.itemName = it.name
-            choice.charges = it.charges
+local function buildOpcodeBuffer()
+    local buffer = "Show:"
+    for i, reward in ipairs(config.basic.items) do
+        local itemType = ItemType(reward.id)
+        local clientId = (itemType and itemType:getClientId() and itemType:getClientId() > 0) 
+            and itemType:getClientId() or reward.id
+        local name = reward.name or (itemType and itemType:getName() or "Unknown")
+
+        buffer = buffer .. reward.id .. "," .. clientId .. "," .. name
+        if i < #config.basic.items then
+            buffer = buffer .. ";"
         end
     end
-    
-    window:addButton("Select", function(button, choice)
-        if not choice then
-            return
-        end
-
-        local lastRewardTime = player:getStorageValue("last_exercise_reward") or 0
-        local timeSinceLastReward = os.time() - lastRewardTime
-        if timeSinceLastReward >= configs.time.cooldown then
-            local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
-            if inbox and inbox:getEmptySlots() > 0 then
-                local item = inbox:addItem(choice.itemId, choice.charges)
-                if item then
-                    item:setActionId(IMMOVABLE_ACTION_ID)
-                    player:setStorageValue("last_exercise_reward", os.time())
-                    player:sendTextMessage(MESSAGE_INFO_DESCR, "Congratulations, you just received a [".. choice.itemName .."].")
-                end
-            else
-                player:sendTextMessage(MESSAGE_INFO_DESCR, "You need to have capacity and empty slots to receive.")
-            end
-        else
-            local timeLeft = configs.time.cooldown - timeSinceLastReward
-            local daysLeft = math.floor(timeLeft / (60 * 60 * 24))
-            timeLeft = timeLeft - daysLeft * 60 * 60 * 24
-            local hoursLeft = math.floor(timeLeft / (60 * 60))
-            timeLeft = timeLeft - hoursLeft * 60 * 60
-            local minutesLeft = math.floor(timeLeft / 60)
-            local secondsLeft = timeLeft % 60
-            local message = string.format("You must wait %d days, %d hours, %d minutes and %d seconds before claiming your next reward.", daysLeft, hoursLeft, minutesLeft, secondsLeft)
-            player:sendTextMessage(MESSAGE_INFO_DESCR, message)
-        end
-    end)
-    
-    window:addButton("Close")
-    window:setDefaultEnterButton("Select")
-    window:setDefaultEscapeButton("Close")
-    window:sendToPlayer(player)
+    return buffer
 end
 
-local function sendPreyWildcardRewardModal(player)
-    local window = ModalWindow {
-        title = "Exercise Reward",
-        message = "Choose an item"
-    }
-    
-    for _, it in pairs(configs.prey_wildcard.items) do
-        local iType = ItemType(it.itemId)
-        if iType then
-            local choice = window:addChoice(iType:getName())
-            choice.itemId = it.itemId
-            choice.itemName = it.name
-            choice.storage = it.storage
-            choice.charges = it.charges
+local function canClaimReward(player)
+    local lastClaimTime = player:getStorageValue(config.basic.storage)
+    if lastClaimTime <= 0 then
+        return true, 0
+    end
+
+    local timeSinceLastClaim = os.time() - lastClaimTime
+    if timeSinceLastClaim >= config.basic.cooldown then
+        return true, 0
+    end
+
+    return false, config.basic.cooldown - timeSinceLastClaim
+end
+
+local function formatTimeRemaining(seconds)
+    local hours = math.floor(seconds / 3600)
+    local minutes = math.floor((seconds % 3600) / 60)
+    local secs = seconds % 60
+
+    if hours > 0 then
+        return string.format("%dh %dm %ds", hours, minutes, secs)
+    elseif minutes > 0 then
+        return string.format("%dm %ds", minutes, secs)
+    else
+        return string.format("%ds", secs)
+    end
+end
+
+local function resetAllCooldowns()
+    db.query("DELETE FROM `player_storage` WHERE `key` = " .. config.basic.storage)
+    local players = Game.getPlayers()
+    local count = 0
+    for _, player in ipairs(players) do
+        player:setStorageValue(config.basic.storage, -1)
+        count = count + 1
+    end
+    logMessage("Cooldowns reset: " .. count .. " players")
+    return count
+end
+
+local function notifyPlayers(message)
+    local players = Game.getPlayers()
+    local buffer = buildOpcodeBuffer()
+    local count = 0
+
+    for _, player in ipairs(players) do
+        local canClaim, _ = canClaimReward(player)
+        if canClaim then
+            player:sendExtendedOpcode(config.opcode, buffer)
+            if message then
+                player:sendTextMessage(MESSAGE_EVENT_ADVANCE, message)
+            end
+            count = count + 1
         end
     end
-    
-    window:addButton("Select", function(button, choice)
-        if not choice then
-            return
-        end
-
-        if player:getStorageValue(choice.storage) > 0 then
-            player:sendTextMessage(MESSAGE_LOOK, "You already received your exercise weapon reward!")
-            return
-        end
-        
-        local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
-        if inbox and inbox:getEmptySlots() > 0 then
-            local item = inbox:addItem(choice.itemId, choice.charges)
-            if item then
-                item:setActionId(IMMOVABLE_ACTION_ID)
-                player:sendTextMessage(MESSAGE_LOOK, "Congratulations, you just received a [".. choice.itemName .."].")
-                player:setStorageValue(choice.storage, 1)
-
-                local currentBonusRerolls = player:getBonusRerollCount()
-                local cardsToAdd = math.min(configs.prey_wildcard.prey_wildcard_amount, configs.prey_wildcard.prey_wildcard_limit - currentBonusRerolls)
-
-                if cardsToAdd > 0 then
-                    player:setBonusRerollCount(currentBonusRerolls + cardsToAdd)
-                    player:sendTextMessage(MESSAGE_LOOK, "You also received [" .. cardsToAdd .. "] Prey Wildcards.")
-                else
-                    player:sendTextMessage(MESSAGE_LOOK, "You already have the maximum amount of Prey Wildcards.")
-                end
-            end
-        else
-            player:sendTextMessage(MESSAGE_LOOK, "You need to have capacity and empty slots to receive.")
-        end
-    end)
-    
-    window:addButton("Close")
-    window:setDefaultEnterButton("Select")
-    window:setDefaultEscapeButton("Close")
-    window:sendToPlayer(player)
+    return count
 end
 
-local function sendPreyWildcardTimeRewardModal(player)
-    local window = ModalWindow {
-        title = "Exercise Reward",
-        message = "Choose an item"
-    }
-    
-    for _, it in pairs(configs.prey_wildcard_time.items) do
-        local iType = ItemType(it.itemId)
-        if iType then
-            local choice = window:addChoice(iType:getName())
-            choice.itemId = it.itemId
-            choice.itemName = it.name
-            choice.storage = it.storage
-            choice.charges = it.charges
-        end
+local function giveReward(player, itemId, charges)
+    local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
+    if not inbox then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Error: Store Inbox not found.")
+        return false
     end
-    
-    window:addButton("Select", function(button, choice)
-        if not choice then
-            return
-        end
 
-        if player:getStorageValue(choice.storage) > 0 then
-            player:sendTextMessage(MESSAGE_LOOK, "You already received your exercise weapon reward!")
-            return
-        end
-        
-        local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
-        if inbox and inbox:getEmptySlots() > 0 then
-            local item = inbox:addItem(choice.itemId, choice.charges)
-            if item then
-                item:setActionId(IMMOVABLE_ACTION_ID)
-                player:sendTextMessage(MESSAGE_LOOK, "Congratulations, you just received a [".. choice.itemName .."].")
-                player:setStorageValue(choice.storage, 1)
-
-                local currentBonusRerolls = player:getBonusRerollCount()
-                local cardsToAdd = math.min(configs.prey_wildcard_time.prey_wildcard_amount, configs.prey_wildcard_time.prey_wildcard_limit - currentBonusRerolls)
-
-                if cardsToAdd > 0 then
-                    player:setBonusRerollCount(currentBonusRerolls + cardsToAdd)
-                    player:sendTextMessage(MESSAGE_LOOK, "You also received [" .. cardsToAdd .. "] Prey Wildcards.")
-                else
-                    player:sendTextMessage(MESSAGE_LOOK, "You already have the maximum amount of Prey Wildcards.")
-                end
-            end
-        else
-            player:sendTextMessage(MESSAGE_LOOK, "You need to have capacity and empty slots to receive.")
-        end
-    end)
-    
-    window:addButton("Close")
-    window:setDefaultEnterButton("Select")
-    window:setDefaultEscapeButton("Close")
-    window:sendToPlayer(player)
-end
-
-local function sendDailyRewardModal(player)
-    local window = ModalWindow {
-        title = "Exercise Reward",
-        message = "Choose an item"
-    }
-    
-    for _, it in pairs(configs.daily.items) do
-        local iType = ItemType(it.id)
-        if iType then
-            local choice = window:addChoice(iType:getName())
-            choice.itemId = it.id
-            choice.itemName = iType:getName()
-        end
+    if inbox:getEmptySlots() == 0 then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Error: Store Inbox is full.")
+        return false
     end
-    
-    window:addButton("Select", function(button, choice)
-        if not choice then
-            return
-        end
 
-        local itemType = ItemType(choice.itemId)
-        if not itemType then
-            player:sendTextMessage(MESSAGE_LOOK, "Invalid item type.")
-            return
-        end
-
-        local inbox = player:getSlotItem(CONST_SLOT_STORE_INBOX)
-        if inbox and inbox:getEmptySlots() > 0 then
-            local item = inbox:addItem(choice.itemId, configs.daily.charges)
-            if item then
-                item:setActionId(IMMOVABLE_ACTION_ID)
-                player:sendTextMessage(MESSAGE_LOOK, string.format("Congratulations, you received a %s with %i charges in your store inbox.", choice.itemName, configs.daily.charges))
-                player:setStorageValue(configs.daily.storage, os.time())
-            else
-                player:sendTextMessage(MESSAGE_LOOK, "You need to have capacity and empty slots to receive.")
-            end
-        else
-            player:sendTextMessage(MESSAGE_LOOK, "You need to have capacity and empty slots to receive.")
-        end
-    end)
-    
-    window:addButton("Close")
-    window:setDefaultEnterButton("Select")
-    window:setDefaultEscapeButton("Close")
-    window:sendToPlayer(player)
-end
-
-local basicRewardModal = TalkAction("!reward")
-function basicRewardModal.onSay(player, words, param)
-    sendBasicRewardModal(player)
+    local item = inbox:addItem(itemId, charges or 1)
+    if item then
+        item:setActionId(IMMOVABLE_ACTION_ID)
+        return true
+    end
     return false
 end
-basicRewardModal:separator(" ")
-basicRewardModal:register()
 
-local timeRewardModal = TalkAction("!rewardtime")
-function timeRewardModal.onSay(player, words, param)
-    sendTimeRewardModal(player)
-    return false
+local login = CreatureEvent("RewardSystemLogin")
+function login.onLogin(player)
+    player:registerEvent("RewardSystemOpcode")
+    local canClaim, _ = canClaimReward(player)
+    if canClaim then
+        player:sendExtendedOpcode(config.opcode, buildOpcodeBuffer())
+    end
+    return true
 end
-timeRewardModal:separator(" ")
-timeRewardModal:register()
+login:type("login")
+login:register()
 
-local preyWildcardRewardModal = TalkAction("!rewardprey")
-function preyWildcardRewardModal.onSay(player, words, param)
-    sendPreyWildcardRewardModal(player)
-    return false
-end
-preyWildcardRewardModal:separator(" ")
-preyWildcardRewardModal:register()
+local opcode = CreatureEvent("RewardSystemOpcode")
+function opcode.onExtendedOpcode(player, opcodeReceived, buffer)
+    if opcodeReceived ~= config.opcode then
+        return
+    end
 
-local preyWildcardTimeRewardModal = TalkAction("!rewardpreytime")
-function preyWildcardTimeRewardModal.onSay(player, words, param)
-    sendPreyWildcardTimeRewardModal(player)
-    return false
-end
-preyWildcardTimeRewardModal:separator(" ")
-preyWildcardTimeRewardModal:register()
+    local canClaim, timeRemaining = canClaimReward(player)
+    if not canClaim then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 
+            "You need to wait " .. formatTimeRemaining(timeRemaining) .. " before claiming your next reward.")
+        player:sendExtendedOpcode(config.opcode, "Hide")
+        return
+    end
 
-local dailyRewardModal = TalkAction("!rewarddaily")
-function dailyRewardModal.onSay(player, words, param)
-    local lastRewardTime = player:getStorageValue(configs.daily.storage)
-    if lastRewardTime > 0 then
-        local timeSinceLastReward = os.time() - lastRewardTime
-        if timeSinceLastReward < configs.daily.cooldown then
-            local hoursRemaining = math.ceil((configs.daily.cooldown - timeSinceLastReward) / 3600)
-            player:sendTextMessage(MESSAGE_LOOK, "You need to wait another " .. hoursRemaining .. " hour(s) to use this command again.")
-            return true
+    local itemId = tonumber(buffer)
+    if not itemId then
+        return
+    end
+
+    local validReward = nil
+    for _, reward in ipairs(config.basic.items) do
+        if reward.id == itemId then
+            validReward = reward
+            break
         end
     end
 
-    sendDailyRewardModal(player)
+    if not validReward then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Invalid reward selected.")
+        return
+    end
+
+    if giveReward(player, validReward.id, validReward.charges) then
+        player:setStorageValue(config.basic.storage, os.time())
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 
+            "You received your " .. validReward.name .. " in Store Inbox! You can claim again in 24 hours.")
+        player:sendExtendedOpcode(config.opcode, "Hide")
+        logMessage(player:getName() .. " claimed " .. validReward.name)
+    else
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Error creating item. Contact an administrator.")
+    end
+end
+opcode:type("extendedopcode")
+opcode:register()
+
+local autoEvent = GlobalEvent("RewardSystemAutoEvent")
+function autoEvent.onThink(interval)
+    if not config.autoEvent.enabled then
+        return true
+    end
+
+    local currentDay = tonumber(os.date("%w"))
+    local currentHour = tonumber(os.date("%H"))
+    local currentMinute = tonumber(os.date("%M"))
+
+    local isCorrectDay = false
+    for _, day in ipairs(config.autoEvent.days) do
+        if day == currentDay then
+            isCorrectDay = true
+            break
+        end
+    end
+
+    if isCorrectDay and currentHour == config.autoEvent.hour and currentMinute == config.autoEvent.minute then
+        logMessage("Auto-event triggered")
+        local reset = resetAllCooldowns()
+        local notified = notifyPlayers("A special reward event has started! Check your reward window.")
+        logMessage("Event: " .. reset .. " reset, " .. notified .. " notified")
+        Game.broadcastMessage("A special reward event has started! Claim your free exercise weapon!", MESSAGE_EVENT_ADVANCE)
+    end
+
+    return true
+end
+autoEvent:interval(60000)
+autoEvent:register()
+
+local triggerEvent = TalkAction("/reward_event")
+function triggerEvent.onSay(player, words, param)
+    if player:getGroup():getId() < 3 then
+        player:sendCancelMessage("You don't have permission.")
+        return false
+    end
+
+    logMessage("Manual event by " .. player:getName())
+    local reset = resetAllCooldowns()
+    local notified = notifyPlayers("A GM started a reward event! Check your reward window.")
+
+    player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 
+        "Event triggered: " .. reset .. " reset, " .. notified .. " notified")
+
+    Game.broadcastMessage("A GM started a reward event! Claim your free exercise weapon!", MESSAGE_EVENT_ADVANCE)
     return false
 end
-dailyRewardModal:separator(" ")
-dailyRewardModal:register()
+triggerEvent:separator(" ")
+triggerEvent:register()
+
+local checkStatus = TalkAction("/reward_status")
+function checkStatus.onSay(player, words, param)
+    if player:getGroup():getId() < 3 then
+        player:sendCancelMessage("You don't have permission.")
+        return false
+    end
+
+    local onlinePlayers = Game.getPlayers()
+    local eligibleCount = 0
+    local cooldownCount = 0
+
+    for _, p in ipairs(onlinePlayers) do
+        local canClaim, _ = canClaimReward(p)
+        if canClaim then
+            eligibleCount = eligibleCount + 1
+        else
+            cooldownCount = cooldownCount + 1
+        end
+    end
+
+    player:sendTextMessage(MESSAGE_EVENT_ADVANCE,
+        "Status: " .. #onlinePlayers .. " online | " .. 
+        eligibleCount .. " eligible | " .. 
+        cooldownCount .. " cooldown | " ..
+        "Days: " .. table.concat(config.autoEvent.days, ",") .. " at " .. 
+        config.autoEvent.hour .. ":" .. string.format("%02d", config.autoEvent.minute))
+
+    return false
+end
+checkStatus:separator(" ")
+checkStatus:register()
+
+local resetPlayer = TalkAction("/reward_reset")
+function resetPlayer.onSay(player, words, param)
+    if player:getGroup():getId() < 4 then
+        player:sendCancelMessage("You don't have permission.")
+        return false
+    end
+
+    if param == "" then
+        player:sendCancelMessage("Usage: /reward_reset PlayerName")
+        return false
+    end
+
+    local targetPlayer = Player(param)
+    if not targetPlayer then
+        player:sendCancelMessage("Player not found.")
+        return false
+    end
+
+    targetPlayer:setStorageValue(config.basic.storage, -1)
+    targetPlayer:sendExtendedOpcode(config.opcode, buildOpcodeBuffer())
+    targetPlayer:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Your reward cooldown has been reset by a GM!")
+
+    player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Cooldown reset for: " .. targetPlayer:getName())
+    logMessage(player:getName() .. " reset cooldown for " .. targetPlayer:getName())
+    return false
+end
+resetPlayer:separator(" ")
+resetPlayer:register()
+
+local checkPlayer = TalkAction("/reward_check")
+function checkPlayer.onSay(player, words, param)
+    if player:getGroup():getId() < 3 then
+        player:sendCancelMessage("You don't have permission.")
+        return false
+    end
+
+    if param == "" then
+        player:sendCancelMessage("Usage: /reward_check PlayerName")
+        return false
+    end
+
+    local targetPlayer = Player(param)
+    if not targetPlayer then
+        player:sendCancelMessage("Player not found.")
+        return false
+    end
+
+    local canClaim, timeRemaining = canClaimReward(targetPlayer)
+    if canClaim then
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, targetPlayer:getName() .. " can claim now")
+    else
+        player:sendTextMessage(MESSAGE_EVENT_ADVANCE, 
+            targetPlayer:getName() .. " cooldown: " .. formatTimeRemaining(timeRemaining))
+    end
+    return false
+end
+checkPlayer:separator(" ")
+checkPlayer:register()
