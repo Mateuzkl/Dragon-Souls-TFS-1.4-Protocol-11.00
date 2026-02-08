@@ -34,7 +34,7 @@
 | :--- | :--- | :--- |
 | **Client** | Cliente OTCv8 customizado | [Acessar Repositório](https://github.com/Mateuzkl/Dragon-Souls-Client) |
 | **Sprites** | Repositório de Sprites 11.x | [Acessar Repositório](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) |
-| **Map Editor** | RME customizado para o projeto | [Acessar Repositório](https://github.com/Mateuzkl/RME-dragon-souls) |
+| **Map Editor** | RME customizado para o projeto | [Acessar Repositório](https://github.com/Mateuzkl/OTAcademy_RME) |
 | **Ferramentas** | Utilitários para assets (Item Editor, OBJ Builder) | [Acessar Tools](https://github.com/otg-br/tools) |
 
 ---
