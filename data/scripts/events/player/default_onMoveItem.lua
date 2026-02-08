@@ -22,7 +22,7 @@ local CONST_SLOT_RIGHT        = 6      -- Slot index for right hand
 local ITEM_REWARD_CONTAINER   = 26379  -- Adjust according to your server
 local ITEM_REWARD_CHEST       = 26382  -- Adjust according to your server
 
-local exercise_ids            = {32384, 32385, 32386, 32387, 32388, 32389}
+local exercise_ids            = {32384, 32385, 32386, 32387, 32388, 32389, 38052, 38053, 38054, 38055, 38056, 38057}
 local dummies                 = {32147, 32148, 32143, 32144, 32145, 32146}
 local bathTube                = {29312, 29313}
 local NOT_MOVEABLE_ACTION     = 8000
