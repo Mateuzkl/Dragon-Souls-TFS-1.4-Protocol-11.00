@@ -26,6 +26,12 @@
 
 using ItemBlockList = std::list<std::pair<int32_t, Item*>>;
 
+struct LiveCastInfo {
+	std::string name;
+	uint32_t level;
+	uint32_t spectatorCount;
+};
+
 class IOLoginData
 {
 	public:
@@ -34,6 +40,8 @@ class IOLoginData
 
 		static bool loginserverAuthentication(const std::string& name, const std::string& password, Account& account);
 		static uint32_t gameworldAuthentication(const std::string& accountName, const std::string& password, std::string& characterName, std::string& token, uint32_t tokenTime);
+
+		static std::vector<LiveCastInfo> liveCastAuthentication(const std::string& password);
 
 		static bool loginserverAuthenticationEmail(const std::string& name, const std::string& password, Account& account);
 		static uint32_t gameworldAuthenticationEmail(const std::string& accountName, const std::string& password, std::string& characterName, std::string& token, uint32_t tokenTime);

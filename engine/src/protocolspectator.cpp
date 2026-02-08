@@ -141,12 +141,13 @@ void ProtocolSpectator::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 //	password.erase(password.begin()); //Erase whitespace from the front of the password string
-	std::size_t pos2 = characterName.find("[");
-	if (pos2 != std::string::npos) {
-		pos2 -= 1;
+	std::string realName = characterName;
+	std::size_t lvPos = characterName.find(" (Lv ");
+	if (lvPos != std::string::npos) {
+		realName = characterName.substr(0, lvPos);
 	}
 
-	g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::login, std::static_pointer_cast<ProtocolSpectator>(shared_from_this()), characterName.substr(0, pos2), password)));
+	g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::login, std::static_pointer_cast<ProtocolSpectator>(shared_from_this()), realName, password)));
 }
 
 void ProtocolSpectator::sendEmptyTileOnPlayerPos(const Tile* tile, const Position& playerPos)

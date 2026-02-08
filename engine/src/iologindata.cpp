@@ -20,6 +20,7 @@
 #include "otpch.h"
 
 #include <boost/range/adaptor/reversed.hpp>
+#include "protocolgame.h"
 #include "iologindata.h"
 #include "configmanager.h"
 #include "game.h"
@@ -278,6 +279,28 @@ uint32_t IOLoginData::gameworldAuthenticationEmail(const std::string& accountNam
 	}
 	characterName = result->getString("name");
 	return accountId;
+}
+
+std::vector<LiveCastInfo> IOLoginData::liveCastAuthentication(const std::string& password)
+{
+	std::vector<LiveCastInfo> casts;
+	for (const auto& entry : ProtocolGame::getLiveCasts()) {
+		if (entry.second->isPasswordProtected() && entry.second->getLiveCastPassword() != password) {
+			continue;
+		}
+
+		LiveCastInfo info;
+		info.name = entry.first->getName();
+		info.level = entry.first->getLevel();
+		info.spectatorCount = entry.second->getSpectatorCount();
+		casts.push_back(info);
+	}
+
+	std::sort(casts.begin(), casts.end(), [](const LiveCastInfo& a, const LiveCastInfo& b) {
+		return a.name < b.name;
+	});
+
+	return casts;
 }
 
 AccountType_t IOLoginData::getAccountType(uint32_t accountId)

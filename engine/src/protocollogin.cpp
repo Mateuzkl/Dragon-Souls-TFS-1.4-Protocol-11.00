@@ -88,17 +88,25 @@ void ProtocolLogin::addWorldInfo(OutputMessage_ptr& output, const std::string& a
 
 void ProtocolLogin::getCastingStreamsList(const std::string& password, uint16_t version)
 {
+	std::vector<LiveCastInfo> casts = IOLoginData::liveCastAuthentication(password);
+	if (casts.empty()) {
+		if (!password.empty()) {
+			disconnectClient("There are currently no live casts available.\nPlease check your password and try again.", version);
+		} else {
+			disconnectClient("There are currently no live casts available.", version);
+		}
+		return;
+	}
+
 	//dispatcher thread
 	auto output = OutputMessagePool::getOutputMessage();
 	addWorldInfo(output, "", password, version, true);
 
-	const auto& casts = ProtocolGame::getLiveCasts();
 	output->addByte(casts.size());
 	std::ostringstream entry;
 	for (const auto& cast : casts) {
 		output->addByte(0);
-		int vers = version/10;
-		entry << cast.first->getName() << " [" << cast.second->getSpectatorCount() << " viewers (" << vers <<")]";
+		entry << cast.name << " (Lv " << cast.level << " | " << cast.spectatorCount << " viewers)";
 		output->addString(entry.str());
 		entry.str(std::string());
 	}
