@@ -455,6 +455,7 @@ class ProtocolGame final : public ProtocolGameBase
 
 		friend class Player;
 		friend class ProtocolGameBase;
+		friend class ProtocolSpectator;
 
 		// Helpers so we don't need to bind every time
 		template <typename Callable, typename... Args>

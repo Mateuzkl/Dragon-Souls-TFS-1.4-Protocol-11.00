@@ -320,6 +320,7 @@ void ProtocolSpectator::login(const std::string& liveCastName, const std::string
 		syncChatChannels();
 		syncOpenContainers();
 		liveCasterProtocol->addSpectator(std::static_pointer_cast<ProtocolSpectator>(shared_from_this()));
+		sendWelcomeMessage();
 	} else {
 		disconnectSpectator("Live cast no longer exists. Please relogin to refresh the list.");
 	}
@@ -363,8 +364,14 @@ void ProtocolSpectator::parsePacket(NetworkMessage& msg)
 		case 0x1D: g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::sendPingBack, getThis()))); break;
 		case 0x1E: g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::sendPing, getThis()))); break;
 		//Reset viewed position/direction if the spectator tries to move in any way
-		case 0x64: case 0x65: case 0x66: case 0x67: case 0x68: case 0x6A: case 0x6B: case 0x6C: case 0x6D: case 0x6F: case 0x70: case 0x71:
-		case 0x72: g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::sendCancelWalk, getThis()))); break;
+		case 0x64: case 0x65: case 0x66: case 0x67: case 0x68: case 0x6A: case 0x6B: case 0x6C: case 0x6D: case 0x6F: case 0x71:
+		case 0x70: // Turn East - used for Next Cast (CTRL + RIGHT)
+			g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::parseSwitchCast, getThis(), uint8_t(1))));
+			break;
+		case 0x72: // Turn West - used for Prev Cast (CTRL + LEFT)
+			g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::parseSwitchCast, getThis(), uint8_t(0))));
+			break;
+		case 0x8C: g_dispatcher.addTask(createTask(std::bind(&ProtocolSpectator::parseLookAt, getThis(), msg))); break;
 		case 0x96: parseSpectatorSay(msg); break;
 		default:
 			break;
@@ -442,3 +449,127 @@ void ProtocolSpectator::sendFloorDescription(const Position& pos, int floor)
 	}
 	writeToOutputBuffer(msg);
 }
+
+void ProtocolSpectator::parseLookAt(NetworkMessage& msg)
+{
+	Position pos = msg.getPosition();
+	msg.skipBytes(2);
+	uint8_t stackpos = msg.getByte();
+
+	if (!player) {
+		return;
+	}
+
+	if (pos.x != 0xFFFF && !player->canSee(pos)) {
+		return;
+	}
+
+	// We use the caster's ID to perform the look action, effectively letting the caster "look" at the position.
+	// This might need adjustment if the intention is for the spectator to receive the info directly without the caster knowing.
+	g_game.playerLookAt(player->getID(), pos, stackpos);
+}
+
+void ProtocolSpectator::parseSwitchCast(uint8_t direction)
+{
+	if (!player || !client) {
+		return;
+	}
+
+	const auto& liveCasts = ProtocolGame::getLiveCasts();
+	if (liveCasts.empty()) {
+		sendTextMessage(MESSAGE_STATUS_SMALL, "No live casts available.");
+		return;
+	}
+
+	std::vector<Player*> casters;
+	for (const auto& entry : liveCasts) {
+		casters.push_back(entry.first);
+	}
+
+	auto it = std::find(casters.begin(), casters.end(), player);
+	if (it == casters.end()) {
+		// Current caster not found in list, fallback to first
+		if (!casters.empty()) {
+			Player* newCaster = casters[0];
+			ProtocolGame_ptr newClient = ProtocolGame::getLiveCast(newCaster);
+			if (newCaster && newClient && newCaster != player) {
+				client->removeSpectator(getThis());
+				client->sendChannelMessage("", viewerName + " has left the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+
+				knownCreatureSet.clear();
+				player = newCaster;
+				client = newClient;
+				client->addSpectator(getThis());
+				
+				// Update viewerName count if needed, but keeping it simple for now
+				
+				sendAddCreature(player, player->getPosition(), 0, false);
+				syncKnownCreatureSets(); // Sync known creatures
+				syncOpenContainers();
+				client->sendChannelMessage("", viewerName + " has joined the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+				sendMagicEffect(player->getPosition(), CONST_ME_TELEPORT);
+			}
+		}
+		return;
+	}
+
+	size_t currentIndex = std::distance(casters.begin(), it);
+	size_t newIndex;
+
+	if (direction == 1) {
+		newIndex = (currentIndex + 1) % casters.size();
+	} else {
+		newIndex = (currentIndex == 0) ? casters.size() - 1 : currentIndex - 1;
+	}
+
+	if (newIndex == currentIndex) {
+		sendTextMessage(MESSAGE_STATUS_SMALL, "No other casts available.");
+		return;
+	}
+
+	Player* newCaster = casters[newIndex];
+	ProtocolGame_ptr newClient = ProtocolGame::getLiveCast(newCaster);
+	
+	if (!newCaster || newCaster == player || !newClient) {
+		return;
+	}
+
+	client->removeSpectator(getThis());
+	client->sendChannelMessage("", viewerName + " has left the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+
+	knownCreatureSet.clear();
+	player = newCaster;
+	client = newClient;
+	client->addSpectator(getThis());
+	
+	sendAddCreature(player, player->getPosition(), 0, false);
+	syncKnownCreatureSets(); // Sync known creatures
+	syncOpenContainers();
+	client->sendChannelMessage("", viewerName + " has joined the cast.", TALKTYPE_CHANNEL_O, CHANNEL_CAST);
+	sendMagicEffect(player->getPosition(), CONST_ME_TELEPORT);
+
+	std::stringstream ss;
+	ss << "Switched to cast: " << player->getName();
+	sendTextMessage(MESSAGE_STATUS_CONSOLE_BLUE, ss.str());
+}
+
+void ProtocolSpectator::sendWelcomeMessage()
+{
+	std::string message = 
+		"Welcome to the Live Cast System!\n\n"
+		"Do you know you can use CTRL + ARROWS to switch casts?\n\n"
+		"Voce sabia que pode usar CTRL + SETAS para alternar casts?\n\n"
+		"Type /commands in the cast channel to see available commands.";
+	
+	sendTextMessage(MESSAGE_EVENT_ADVANCE, message);
+}
+
+void ProtocolSpectator::sendTextMessage(MessageClasses mclass, const std::string& message)
+{
+	NetworkMessage msg;
+	msg.addByte(0xB4);
+	msg.addByte(mclass);
+	msg.addString(message);
+	writeToOutputBuffer(msg);
+}
+

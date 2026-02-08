@@ -64,6 +64,13 @@ class ProtocolSpectator final : public ProtocolGameBase
 
 		void parseSpectatorSay(NetworkMessage& msg);
 		void addDummyCreature(NetworkMessage& msg, const uint32_t& creatureID, const Position& playerPos);
+
+		void parseLookAt(NetworkMessage& msg);
+		void parseSwitchCast(uint8_t direction);
+
+		void sendWelcomeMessage();
+		void sendTextMessage(MessageClasses mclass, const std::string& message);
+
 };
 
 #endif
