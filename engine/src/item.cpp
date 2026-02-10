@@ -1487,6 +1487,26 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 					s << "speed " << std::showpos << (it.abilities->speed >> 1) << std::noshowpos;
 				}
+
+				if (it.abilities->healthGain > 0 && it.abilities->healthTicks > 0) {
+					if (begin) {
+						begin = false;
+						s << " (";
+					} else {
+						s << ", ";
+					}
+					s << "Regen.Life " << std::showpos << (it.abilities->healthGain) << std::noshowpos << "/" << (it.abilities->healthTicks / 1000) << "s";
+				}
+
+				if (it.abilities->manaGain > 0 && it.abilities->manaTicks > 0) {
+					if (begin) {
+						begin = false;
+						s << " (";
+					} else {
+						s << ", ";
+					}
+					s << "Regen.Mana " << std::showpos << (it.abilities->manaGain) << std::noshowpos << "/" << (it.abilities->manaTicks / 1000) << "s";
+				}
 			}
 
 			if (!begin) {
@@ -2430,6 +2450,26 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 
 				s << "speed " << std::showpos << (it.abilities->speed >> 1) << std::noshowpos;
 			}
+
+			if (it.abilities->healthGain > 0 && it.abilities->healthTicks > 0) {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+				s << "Regen.Life " << std::showpos << (it.abilities->healthGain) << std::noshowpos << "/" << (it.abilities->healthTicks / 1000) << "s";
+			}
+
+			if (it.abilities->manaGain > 0 && it.abilities->manaTicks > 0) {
+				if (begin) {
+					begin = false;
+					s << " (";
+				} else {
+					s << ", ";
+				}
+				s << "Regen.Mana " << std::showpos << (it.abilities->manaGain) << std::noshowpos << "/" << (it.abilities->manaTicks / 1000) << "s";
+			}
 		}
 
 		if (!begin) {
@@ -2459,7 +2499,27 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance,
 			} else if (it.abilities->invisible) {
 				s << " (invisibility)";
 			} else if (it.abilities->regeneration) {
-				s << " (faster regeneration)";
+				bool regenBegin = true;
+				s << " (";
+				if (it.abilities->healthGain > 0 && it.abilities->healthTicks > 0) {
+					regenBegin = false;
+					s << "Regen.Life " << std::showpos << (it.abilities->healthGain) << std::noshowpos << "/" << (it.abilities->healthTicks / 1000) << "s";
+				}
+
+				if (it.abilities->manaGain > 0 && it.abilities->manaTicks > 0) {
+					if (!regenBegin) {
+						s << ", ";
+					} else {
+						regenBegin = false;
+					}
+					s << "Regen.Mana " << std::showpos << (it.abilities->manaGain) << std::noshowpos << "/" << (it.abilities->manaTicks / 1000) << "s";
+				}
+
+				if (regenBegin) {
+					s << "faster regeneration";
+				}
+
+				s << ")";
 			} else if (it.abilities->manaShield) {
 				s << " (mana shield)";
 			} else {
