@@ -1902,10 +1902,10 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 					item->setDuration(newDuration);
 				}
 			} else {
-				// This is not a decay transformation - preserve current duration
-				uint32_t currentDuration = item->getDuration();
-				if (currentDuration) {
-					item->setDuration(currentDuration);
+				// This is not a decay transformation - preserve remaining duration
+				int32_t remainingDuration = item->getRemainingDuration();
+				if (remainingDuration > 0) {
+					item->setDuration(remainingDuration);
 				}
 			}
 			cylinder->postAddNotification(item, cylinder, itemIndex);
@@ -1933,6 +1933,12 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 
 	cylinder->replaceThing(itemIndex, newItem);
 	cylinder->postAddNotification(newItem, cylinder, itemIndex);
+
+	// Preserve remaining duration from old item to new item
+	int32_t remainingDuration = item->getRemainingDuration();
+	if (remainingDuration > 0) {
+		newItem->setDuration(remainingDuration);
+	}
 
 	item->setParent(nullptr);
 	cylinder->postRemoveNotification(item, cylinder, itemIndex);

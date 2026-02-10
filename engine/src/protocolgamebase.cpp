@@ -157,10 +157,10 @@ void ProtocolGameBase::AddItem(NetworkMessage& msg, const Item* item)
 
 	// duration
 	if (version >= 1100) {
-		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION) && item->getDuration() > 0) {
+		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION) && item->getRemainingDuration() > 0) {
 			if (item->isPickupable() && !item->getContainer()) {
 				msg.addByte(0x01);
-				msg.add<uint32_t>(item->getDuration());
+				msg.add<uint32_t>(item->getRemainingDuration());
 				msg.addByte(it.stopTime ? 1 : 0);
 			} else {
 				msg.addByte(0x00);

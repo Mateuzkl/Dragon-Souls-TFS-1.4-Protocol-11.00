@@ -58,8 +58,9 @@ void Decay::stopDecay(Item* item, int64_t timestamp)
 		if (end == 1) {
 			if (item == decayItems[i]) {
 				if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
-					//Incase we removed duration attribute don't assign new duration
-					item->setDuration(item->getDuration());
+					//Save remaining duration, not original duration
+					int32_t remaining = std::max<int32_t>(0, static_cast<int32_t>(timestamp - OTSYS_TIME()));
+					item->setDuration(remaining);
 				}
 				item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
 				g_game.ReleaseItem(item);
@@ -71,8 +72,9 @@ void Decay::stopDecay(Item* item, int64_t timestamp)
 		while (i < end) {
 			if (item == decayItems[i]) {
 				if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION)) {
-					//Incase we removed duration attribute don't assign new duration
-					item->setDuration(item->getDuration());
+					//Save remaining duration, not original duration
+					int32_t remaining = std::max<int32_t>(0, static_cast<int32_t>(timestamp - OTSYS_TIME()));
+					item->setDuration(remaining);
 				}
 				item->removeAttribute(ITEM_ATTRIBUTE_DECAYSTATE);
 				g_game.ReleaseItem(item);
