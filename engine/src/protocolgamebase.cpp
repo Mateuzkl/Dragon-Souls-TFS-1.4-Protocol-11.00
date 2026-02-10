@@ -75,6 +75,11 @@ void ProtocolGameBase::AddItem(NetworkMessage& msg, uint16_t id, uint16_t count)
 	if (it.isAnimation) {
 		msg.addByte(0xFE); // random phase (0xFF for async)
 	}
+
+	// duration
+	if (version >= 1100) {
+		msg.addByte(0x00);
+	}
 }
 
 void ProtocolGameBase::AddItem(NetworkMessage& msg, const Item* item)
@@ -148,6 +153,21 @@ void ProtocolGameBase::AddItem(NetworkMessage& msg, const Item* item)
 
 	if (it.isAnimation) {
 		msg.addByte(0xFE); // random phase (0xFF for async)
+	}
+
+	// duration
+	if (version >= 1100) {
+		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION) && item->getDuration() > 0) {
+			if (item->isPickupable() && !item->getContainer()) {
+				msg.addByte(0x01);
+				msg.add<uint32_t>(item->getDuration());
+				msg.addByte(it.stopTime ? 1 : 0);
+			} else {
+				msg.addByte(0x00);
+			}
+		} else {
+			msg.addByte(0x00);
+		}
 	}
 }
 

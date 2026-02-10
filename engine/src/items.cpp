@@ -661,7 +661,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file, bool isReload)
 		}
 	}
 
-	if (majorVersion == 0xFFFFFFFF) {
+	/*if (majorVersion == 0xFFFFFFFF) {
 		// (pode adicionar um warning se necessário)
 	} else if (majorVersion != 3) {
 		console::printResult(CONSOLE_LOADING_ERROR);
@@ -671,7 +671,7 @@ FILELOADER_ERRORS Items::loadFromOtb(const std::string& file, bool isReload)
 		console::printResult(CONSOLE_LOADING_ERROR);
 		console::reportError("Items::loadFromOtb", "A newer version of items.otb is required!");
 		return ERROR_INVALID_FORMAT;
-	}
+	}*/
 
 	for (auto & itemNode : root.children) {
 		PropStream stream;

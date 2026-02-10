@@ -54,13 +54,8 @@ class DepotLocker final : public Container
 		void postAddNotification(Thing* thing, const Cylinder* oldParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 
-		bool canRemove() const final {
-			return false;
-		}
-
-		bool isRemoved() const override {
-			return false;
-		}
+		bool canRemove() const override { return false; }
+		bool isRemoved() const override { return false; }
 
 	private:
 		uint16_t depotId;

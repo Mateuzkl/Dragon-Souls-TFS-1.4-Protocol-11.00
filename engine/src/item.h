@@ -243,7 +243,8 @@ class ItemAttributes
 			ItemDecayState_t decayState = getDecaying();
 			if (decayState == DECAYING_TRUE || decayState == DECAYING_STOPPING) {
 				return std::max<int32_t>(0, static_cast<int32_t>(getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP) - OTSYS_TIME()));
-			} else {
+			}
+			else {
 				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 			}
 		}
@@ -833,9 +834,9 @@ class Item : virtual public Thing
 			ItemDecayState_t decayState = getDecaying();
 			if (decayState == DECAYING_TRUE || decayState == DECAYING_STOPPING) {
 				return std::max<int32_t>(0, static_cast<int32_t>(getIntAttr(ITEM_ATTRIBUTE_DURATION_TIMESTAMP) - OTSYS_TIME()));
-			} else {
-				return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 			}
+
+			return getIntAttr(ITEM_ATTRIBUTE_DURATION);
 		}
 
 		void setDecaying(ItemDecayState_t decayState) {

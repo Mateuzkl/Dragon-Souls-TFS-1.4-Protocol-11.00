@@ -39,13 +39,8 @@ class Inbox final : public Container
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER) final;
 
 		//overrides
-		bool canRemove() const final {
-			return false;
-		}
-		
-		bool isRemoved() const override {
-			return false;
-		}
+		bool canRemove() const override { return false; }
+		bool isRemoved() const override { return false; }
 
 		Cylinder* getParent() const final;
 		Cylinder* getRealParent() const final {

@@ -40,13 +40,8 @@ class DepotChest final : public Container
 		void postRemoveNotification(Thing* thing, const Cylinder* newParent, int32_t index, cylinderlink_t link = LINK_OWNER);
 
 		//overrides
-		bool canRemove() const {
-			return false;
-		}
-
-		bool isRemoved() const override {
-			return false;
-		}
+		bool canRemove() const override { return false; }
+		bool isRemoved() const override { return false; }
 
 		Cylinder* getParent() const;
 		Cylinder* getRealParent() const {

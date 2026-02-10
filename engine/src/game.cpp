@@ -1389,7 +1389,14 @@ ReturnValue Game::internalMoveItem(Cylinder* fromCylinder, Cylinder* toCylinder,
   
 	//we could not move all, inform the player
 	if (item->isStackable() && maxQueryCount < count) {
+		if (moveItem && moveItem->getDuration() > 0) {
+			startDecay(moveItem);
+		}
 		return retMaxCount;
+	}
+
+	if (moveItem && moveItem->getDuration() > 0) {
+		startDecay(moveItem);
 	}
 
 	return ret;
@@ -1460,6 +1467,7 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
 		} else {
 			//fully merged with toItem, item will be destroyed
 			item->onRemoved();
+			item->stopDecaying();
 			ReleaseItem(item);
 
 			int32_t itemIndex = toCylinder->getThingIndex(toItem);
@@ -1494,6 +1502,10 @@ ReturnValue Game::internalAddItem(Cylinder* toCylinder, Item* item, int32_t inde
     if (quiver && quiver->getWeaponType() == WEAPON_QUIVER && quiver->getHoldingPlayer() && quiver->getHoldingPlayer()->getThing(CONST_SLOT_RIGHT) == quiver) {
       quiver->getHoldingPlayer()->sendInventoryItem(CONST_SLOT_RIGHT, quiver);
     }
+
+	if (item->getDuration() > 0) {
+		startDecay(item);
+	}
 
 	return RETURNVALUE_NOERROR;
 }
@@ -1854,7 +1866,9 @@ Item* Game::transformItem(Item* item, uint16_t newId, int32_t newCount /*= -1*/)
 					cylinder->postRemoveNotification(item, cylinder, itemIndex);
 					item->stopDecaying();
 					ReleaseItem(item);
-					newItem->startDecaying();
+					if (newItem->getDuration() > 0) {
+						startDecay(newItem);
+					}
 					return newItem;
 				} else {
 					return transformItem(item, newItemId);
@@ -6832,7 +6846,8 @@ void Game::startDecay(Item* item)
 
 	if (duration > 0) {
 		g_decay.startDecay(item, duration);
-	} else {
+	} 
+	else {
 		internalDecayItem(item);
 	}
 }

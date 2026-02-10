@@ -862,18 +862,44 @@ enum GameFeature : uint8_t {
 	GameBotProtection = 99,
 
 	// Custom features for customer
+	GameCreatureDirectionPassable = 100,
 	GameFasterAnimations = 101,
 	GameCenteredOutfits = 102,
 	GameSendIdentifiers = 103,
 	GameWingsAndAura = 104,
 	GamePlayerStateU32 = 105,
 	GameOutfitShaders = 106,
+	GameForceAllowItemHotkeys = 107,
+	GameCountU16 = 108,
+	GameDrawAuraOnTop = 109,
 
 	// advanced features
 	GamePacketSizeU32 = 110,
 	GamePacketCompression = 111,
 
-	LastGameFeature = 120
+	// OTCv8-dev features
+	GameOldInformationBar = 112,
+	GameHealthInfoBackground = 113, 
+	GameWingOffset = 114,
+	GameAuraFrontAndBack = 115,
+
+	GameMapDrawGroundFirst = 116,
+	GameMapIgnoreCorpseCorrection = 117,
+	GameDontCacheFiles = 118,
+	GameBigAurasCenter = 119,
+	GameNewUpdateWalk = 120,
+	GameNewCreatureStacking = 121,
+	GameCreaturesMana = 122,
+	GameQuickLootFlags = 123,
+	GameDontMergeAnimatedText = 124,
+	GameMissionId = 125,
+	GameItemCustomAttributes = 126,
+	GameAnimatedTextCustomFont = 127,
+	GameDrawFloorShadow = 128,
+	GameDisplayItemDuration = 129,
+	GameNegativeOffset = 130,
+
+	LastGameFeature = 131
 };
 
 static constexpr int32_t CHANNEL_GUILD = 0x00;

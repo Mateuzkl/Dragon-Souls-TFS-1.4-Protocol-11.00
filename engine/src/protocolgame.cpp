@@ -235,6 +235,7 @@ void ProtocolGame::connect(uint32_t playerId, OperatingSystem_t operatingSystem)
 	player->isConnecting = false;
 
 	player->client = getThis();
+	sendFeatures();
 	sendAddCreature(player, player->getPosition(), 0, false);
 	player->lastIP = player->getIP();
 	player->lastLoginSaved = std::max<time_t>(OS_TIME(nullptr), player->lastLoginSaved + 1);
@@ -3689,6 +3690,11 @@ void ProtocolGame::AddItem(NetworkMessage& msg, uint16_t id, uint16_t count)
 	if (it.isAnimation) {
 		msg.addByte(0xFE); // random phase (0xFF for async)
 	}
+
+	// duration
+	if (version >= 1100) {
+		msg.addByte(0x00);
+	}
 }
 
 void ProtocolGame::AddItem(NetworkMessage& msg, const Item* item)
@@ -3764,6 +3770,21 @@ void ProtocolGame::AddItem(NetworkMessage& msg, const Item* item)
 
 	if (it.isAnimation) {
 		msg.addByte(0xFE); // random phase (0xFF for async)
+	}
+
+	// duration
+	if (version >= 1100) {
+		if (item->hasAttribute(ITEM_ATTRIBUTE_DURATION) && item->getDuration() > 0) {
+			if (item->isPickupable() && !item->getContainer()) {
+				msg.addByte(0x01);
+				msg.add<uint32_t>(item->getDuration());
+				msg.addByte(it.stopTime ? 1 : 0);
+			} else {
+				msg.addByte(0x00);
+			}
+		} else {
+			msg.addByte(0x00);
+		}
 	}
 }
 
@@ -3910,6 +3931,7 @@ void ProtocolGame::sendFeatures()
 	// place for non-standard OTCv8 features
 	features[GameExtendedOpcode] = true;
 	features[GameChangeMapAwareRange] = true;
+	features[GameDisplayItemDuration] = true;
 	
 	// Wings/Auras/Shaders - only enable if config allows
 	bool enableWingsOrAuras = g_config.getBoolean(ConfigManager::ENABLE_WINGS) || g_config.getBoolean(ConfigManager::ENABLE_AURAS);

@@ -140,7 +140,8 @@ if g_game.getProtocolVersion() >= 1100 then
     g_game.enableFeature(GameMagicEffectU16)
     g_game.enableFeature(GameDistanceEffectU16)
     g_game.enableFeature(GameCountU16)
-    g_game.enableFeature(GameChangeMapAwareRange) -- Importante para viewport estendido
+    g_game.enableFeature(GameChangeMapAwareRange)
+    g_game.enableFeature(GameDisplayItemDuration)
 end
 ```
 

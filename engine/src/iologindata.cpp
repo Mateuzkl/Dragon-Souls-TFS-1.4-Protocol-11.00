@@ -833,6 +833,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 
 			if (pid >= 0 && pid < 100) {
 				player->getInbox()->internalAddThing(item);
+				item->startDecaying();
 			} else {
 				ItemMap::const_iterator it2 = itemMap.find(pid);
 
