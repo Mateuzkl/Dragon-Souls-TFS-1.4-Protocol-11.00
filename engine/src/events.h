@@ -24,6 +24,7 @@
 #include "luascript.h"
 #include "spells.h"
 #include "const.h"
+#include "creature.h"
 
 class Party;
 class ItemType;
@@ -73,6 +74,7 @@ class Events
 		int32_t playerClearImbuement = -1;
 		int32_t playerOnCombat = -1;
 		int32_t onWrapItem = -1;
+		int32_t playerOnInventoryUpdate = -1;
 
 		// Monster
 		int32_t monsterOnSpawn = -1;
@@ -124,6 +126,7 @@ class Events
 		void eventPlayerClearImbuement(Player* player, Item* item, uint8_t slot);
 		void eventPlayerOnCombat(Player* player, Creature* target, Item* item, CombatDamage& damage);
 		bool eventPlayerOnWrapItem(Player* player, Item* item);
+		void eventPlayerOnInventoryUpdate(Player* player, Item* item, slots_t slot, bool equip);
 
 		// Monster
 		bool eventMonsterOnSpawn(Monster* monster, const Position& position, bool startup, bool artificial);

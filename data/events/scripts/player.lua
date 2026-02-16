@@ -183,3 +183,10 @@ function Player:onWrapItem(item)
     end
     return true
 end
+
+
+function Player:onInventoryUpdate(item, slot, equip)
+    if hasEvent.onInventoryUpdate then
+        Event.onInventoryUpdate(self, item, slot, equip)
+    end
+end
