@@ -3430,6 +3430,12 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 		return RETURNVALUE_NOTENOUGHCAPACITY;
 	}
 
+	// Check reset requirement for weapons
+	const ItemType& it = Item::items[item->getID()];
+	if (it.minReqReset > 0 && getReset() < it.minReqReset) {
+		return RETURNVALUE_NOTENOUGHRESET;
+	}
+
 	ret = g_moveEvents->onPlayerEquip(const_cast<Player*>(this), const_cast<Item*>(item), static_cast<slots_t>(index), true);
 	if (ret != RETURNVALUE_NOERROR) {
 		return ret;

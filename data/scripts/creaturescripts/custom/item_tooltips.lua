@@ -138,6 +138,11 @@ function Item:buildTooltip()
     --end
   end
 
+  local reqReset = tonumber(itemType:getMinReqReset()) or 0
+  if reqReset >= 1 then
+    item_data.reqReset = reqReset
+  end
+
 
   local implicit = {}
 
@@ -313,6 +318,27 @@ function Item:buildTooltip()
 
   item_data.stackable = itemType:isStackable()
   item_data.itemType = formatItemType(itemType)
+
+  -- Weapon Class and Reset (from critical_system.lua and weapons.xml)
+  local itemAttack = tonumber(itemType:getAttack()) or 0
+  if itemAttack > 0 then
+    dofile('data/critical_system.lua')
+    local weaponClass = getWeaponClassification(itemAttack)
+    if weaponClass then
+      item_data.weaponClass = {
+        class = weaponClass.class,
+        description = weaponClass.description,
+        suitability = weaponClass.suitability,
+        powerAnalysis = weaponClass.powerAnalysis
+      }
+    end
+    
+    -- Get reset requirement from ItemType
+    local resetReq = itemType:getMinReqReset()
+    if resetReq and tonumber(resetReq) and tonumber(resetReq) > 0 then
+      item_data.reqReset = tonumber(resetReq)
+    end
+  end
 
   local itemArmor = tonumber(itemType:getArmor()) or 0
   if itemArmor > 0 then
@@ -517,6 +543,11 @@ function ItemType:buildTooltip(count)
   local reqLevel = tonumber(self:getRequiredLevel()) or 0
   if reqLevel >= 1 then
     item_data.reqLvl = reqLevel
+  end
+
+  local reqReset = tonumber(self:getMinReqReset()) or 0
+  if reqReset >= 1 then
+    item_data.reqReset = reqReset
   end
 
 

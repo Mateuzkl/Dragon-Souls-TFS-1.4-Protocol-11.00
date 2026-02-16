@@ -1082,6 +1082,10 @@ void Items::parseItemNode(const pugi::xml_node &itemNode, uint16_t id) {
       it.classification = pugi::cast<uint32_t>(valueAttribute.value());
     } else if (tmpStrValue == "tier") {
       it.tier = pugi::cast<uint32_t>(valueAttribute.value());
+    } else if (tmpStrValue == "level") {
+      it.minReqLevel = pugi::cast<uint32_t>(valueAttribute.value());
+    } else if (tmpStrValue == "reset") {
+      it.minReqReset = pugi::cast<uint32_t>(valueAttribute.value());
     } else if (tmpStrValue == "wrapableto" || tmpStrValue == "unwrapableto") {
       it.wrapableTo = pugi::cast<int32_t>(valueAttribute.value());
       it.wrapable = true;
@@ -1445,6 +1449,18 @@ void Items::parseItemNode(const pugi::xml_node &itemNode, uint16_t id) {
       std::cout << "[Warning - Items::parseItemNode] Unknown key value: "
                 << keyAttribute.as_string() << std::endl;
     }
+  }
+
+  // Setup wieldInfo for items with level or reset requirements
+  uint32_t wieldInfo = 0;
+  if (it.minReqLevel > 0) {
+    wieldInfo |= WIELDINFO_LEVEL;
+  }
+  if (it.minReqReset > 0) {
+    wieldInfo |= WIELDINFO_RESET;
+  }
+  if (wieldInfo != 0) {
+    it.wieldInfo = wieldInfo;
   }
 
   // check bed items

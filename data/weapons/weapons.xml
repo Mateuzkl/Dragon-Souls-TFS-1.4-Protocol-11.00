@@ -651,6 +651,10 @@
 		<vocation name="Knight" />
 
 	</melee>
+	<melee id="38798" level="250" reset="2" unproperly="1">
+		<vocation name="Knight" />
+
+	</melee>
 	<melee id="23590" level="70" unproperly="1" />
 	<melee id="23549" level="75" action="removecharge" unproperly="1">
 		<vocation name="Knight" />

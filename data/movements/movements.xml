@@ -1438,7 +1438,7 @@ movevent event="Equip" itemid="2358" slot="feet" function="onEquipItem"/>
   <movevent event="DeEquip" itemid="38882" slot="legs" function="onDeEquipItem"/>
   <movevent event="Equip" itemid="38881" slot="legs" function="onEquipItem"/>
   <movevent event="DeEquip" itemid="38881" slot="legs" function="onDeEquipItem"/>
-  <movevent event="Equip" itemid="38903" slot="feet" function="onEquipItem"/>
+  <movevent event="Equip" itemid="38903" slot="feet" level="100" reset="2" function="onEquipItem"/>
   <movevent event="DeEquip" itemid="38903" slot="feet" function="onDeEquipItem"/>
   <movevent event="Equip" itemid="38771" slot="feet" function="onEquipItem"/>
   <movevent event="DeEquip" itemid="38771" slot="feet" function="onDeEquipItem"/>
