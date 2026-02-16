@@ -762,6 +762,10 @@ class LuaScriptInterface
 		static int luaItemGetActionId(lua_State* L);
 		static int luaItemSetActionId(lua_State* L);
 
+		//TOOLTIPS
+		static int luaItemGetRealUID(lua_State* L);
+		//TOOLTIPSEND
+
 		static int luaItemGetCount(lua_State* L);
 		static int luaItemGetMaxCount(lua_State* L);
 		static int luaItemGetCharges(lua_State* L);
@@ -998,6 +1002,10 @@ class LuaScriptInterface
 
 		static int luaPlayerGetItemCount(lua_State* L);
 		static int luaPlayerGetItemById(lua_State* L);
+
+		//TOOLTIPS
+		static int luaPlayerGetItem(lua_State* L);
+		//TOOLTIPSEND
 
 		static int luaPlayerGetVocation(lua_State* L);
 		static int luaPlayerSetVocation(lua_State* L);
@@ -1413,6 +1421,18 @@ class LuaScriptInterface
 		static int luaItemTypeGetVocationString(lua_State* L);
 		static int luaItemTypeGetProtectionString(lua_State* L);
 		static int luaItemTypeGetSkillString(lua_State* L);
+
+		//TOOLTIPS
+		static int luaItemTypeGetSpecialSkill(lua_State* L);
+		static int luaItemTypeGetSkill(lua_State* L);
+		static int luaItemTypeGetStat(lua_State* L);
+		static int luaItemTypeGetStatPercent(lua_State* L);
+		static int luaItemTypeGetHealthGain(lua_State* L);
+		static int luaItemTypeGetHealthTicks(lua_State* L);
+		static int luaItemTypeGetManaGain(lua_State* L);
+		static int luaItemTypeGetManaTicks(lua_State* L);
+		static int luaItemTypeGetBoostPercent(lua_State* L);
+		//TOOLTIPSEND
 
 		// Combat
 		static int luaCombatCreate(lua_State* L);

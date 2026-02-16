@@ -687,6 +687,10 @@ class Player final : public Creature, public Cylinder
 
 		Item* getInventoryItem(slots_t slot) const;
 
+		//TOOLTIPS
+		Item* getItemByUID(uint32_t uid) const;
+		//TOOLTIPS END
+
 		bool isItemAbilityEnabled(slots_t slot) const {
 			return inventoryAbilities[slot];
 		}

@@ -153,4 +153,9 @@ void fastVectorRemoveOne(std::vector<T>& vec, T obj)
 #define GET_io_context(s) ((s).get_io_context())
 #endif
 
+std::string getMonsterClassName(uint16_t monsterClass);
+std::string getRarityName(uint16_t rarityId);
+
+std::string timeFromSeconds(uint64_t seconds);
+
 #endif
