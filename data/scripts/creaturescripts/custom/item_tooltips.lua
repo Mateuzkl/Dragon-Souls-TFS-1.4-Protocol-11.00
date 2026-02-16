@@ -1,5 +1,6 @@
 local CODE_TOOLTIP = 105
 
+
 local specialSkills = {
   [SKILL_CRITICAL_HIT_CHANCE] = "cc",
   [SKILL_CRITICAL_HIT_DAMAGE] = "ca",
@@ -8,6 +9,7 @@ local specialSkills = {
   [SKILL_MANA_LEECH_CHANCE] = "mc",
   [SKILL_MANA_LEECH_AMOUNT] = "ma"
 }
+
 
 local skills = {
   [SKILL_FIST] = "fist",
@@ -19,16 +21,19 @@ local skills = {
   [SKILL_FISHING] = "fish"
 }
 
+
 local stats = {
   [STAT_MAGICPOINTS] = "mag",
   [STAT_MAXHITPOINTS] = "maxhp",
   [STAT_MAXMANAPOINTS] = "maxmp"
 }
 
+
 local statsPercent = {
   [STAT_MAXHITPOINTS] = "maxhp_p",
   [STAT_MAXMANAPOINTS] = "maxmp_p"
 }
+
 
 local combatTypeNames = {
   [COMBAT_PHYSICALDAMAGE] = "Physical",
@@ -44,6 +49,7 @@ local combatTypeNames = {
   [COMBAT_DEATHDAMAGE] = "Death"
 }
 
+
 local combatShortNames = {
   [COMBAT_PHYSICALDAMAGE] = "Inc_Phys",
   [COMBAT_ENERGYDAMAGE] = "a_ene",
@@ -58,7 +64,9 @@ local combatShortNames = {
   [COMBAT_DEATHDAMAGE] = "Inc_Magic"
 }
 
+
 local LoginEvent = CreatureEvent("TooltipsLogin")
+
 
 function LoginEvent.onLogin(player)
   player:registerEvent("TooltipsExtended")
@@ -66,6 +74,7 @@ function LoginEvent.onLogin(player)
 end
 
 local ExtendedEvent = CreatureEvent("TooltipsExtended")
+
 
 function ExtendedEvent.onExtendedOpcode(player, opcode, buffer)
   if opcode == CODE_TOOLTIP then
@@ -78,6 +87,7 @@ function ExtendedEvent.onExtendedOpcode(player, opcode, buffer)
     if not status or not data then
       return
     end
+
 
     if #data == 4 then
       local pos = Position(data[1], data[2], data[3], data[4])
@@ -110,26 +120,33 @@ function Item:buildTooltip()
     clientId = itemType:getClientId()
   }
 
+
   if itemType:getDescription():len() > 0 then
     item_data.desc = itemType:getDescription()
   end
+
 
   --[[if self:getType():isUpgradable() or self:getType():canHaveItemLevel() then
     item_data.itemLevel = self:getItemLevel()
   end]]
 
-  if itemType:getRequiredLevel() >= 1 then
+
+  local reqLevel = tonumber(itemType:getRequiredLevel()) or 0
+  if reqLevel >= 1 then
     --if not self:isLimitless() then
-    item_data.reqLvl = itemType:getRequiredLevel()
+    item_data.reqLvl = reqLevel
     --end
   end
 
+
   local implicit = {}
+
 
   if itemType:getElementType() ~= COMBAT_NONE and combatTypeNames[itemType:getElementType()] then
     implicit.eleDmg = "+" ..
         itemType:getElementDamage() .. " " .. combatTypeNames[itemType:getElementType()] .. " Damage"
   end
+
 
   local allprot = self:getAbsorbPercent(bit.lshift(1, 0))
   if allprot ~= 0 then
@@ -140,6 +157,7 @@ function Item:buildTooltip()
       end
     end
   end
+
 
   if allprot == 0 then
     for i = 0, COMBAT_COUNT - 1 do
@@ -153,12 +171,14 @@ function Item:buildTooltip()
     implicit.a_all = allprot
   end
 
+
   for key, value in pairs(specialSkills) do
     local s = itemType:getSpecialSkill(key)
     if s and s >= 1 then
       implicit[value] = s
     end
   end
+
 
   for key, value in pairs(skills) do
     local s = itemType:getSkill(key)
@@ -167,12 +187,14 @@ function Item:buildTooltip()
     end
   end
 
+
   for key, value in pairs(stats) do
     local s = itemType:getStat(key)
     if s and s >= 1 then
       implicit[value] = s
     end
   end
+
 
   for key, value in pairs(statsPercent) do
     local s = itemType:getStatPercent(key)
@@ -181,8 +203,10 @@ function Item:buildTooltip()
     end
   end
 
+
   --------------------------
   local BoostPercent = itemType:getBoostPercent(0)
+
 
   if BoostPercent ~= 0 then
     for i = 0, COMBAT_COUNT - 1 do
@@ -192,6 +216,7 @@ function Item:buildTooltip()
       end
     end
   end
+
 
   if BoostPercent == 0 then
     for i = 0, COMBAT_COUNT - 1 do
@@ -212,38 +237,52 @@ function Item:buildTooltip()
   end
 
 
+
   local healthGain = itemType:getHealthGain()
   if healthGain and healthGain > 0 then
     implicit.hpgain = healthGain
   end
+
 
   --local healthTicks = itemType:getHealthTicks()
   --if healthTicks and healthTicks > 0 then
   --implicit.hpticks = healthTicks
   --end
 
+
   local manaGain = itemType:getManaGain()
   if manaGain and manaGain > 0 then
     implicit.mpgain = manaGain
   end
+
 
   --local manaTicks = itemType:getManaTicks()
   --if manaTicks and manaTicks > 0 then
   --implicit.mpticks = manaTicks
   --end
 
+
   local speed = itemType:getSpeed()
   if speed and speed > 0 then
     implicit.speed = speed
   end
 
+  -- Dodge from items.xml (ItemType abilities + item attributes)
+  local itemDodge = self:getDodge()
+  if itemDodge and itemDodge > 0 then
+    implicit.dodge_base = itemDodge
+  end
+
+
   if self:isContainer() then
     implicit.cap = self:getCapacity()
   end
 
+
   if next(implicit) ~= nil then
     item_data.imp = implicit
   end
+
 
   -- if self:getType():isUpgradable() then
   -- if self:isUnidentified() then
@@ -271,54 +310,187 @@ function Item:buildTooltip()
   -- end
   -- end
 
+
   item_data.stackable = itemType:isStackable()
   item_data.itemType = formatItemType(itemType)
-  if itemType:getArmor() > 0 then
-    if self:getAttribute(ITEM_ATTRIBUTE_ARMOR) > 0 then
-      item_data.armor = self:getAttribute(ITEM_ATTRIBUTE_ARMOR)
+
+  local itemArmor = tonumber(itemType:getArmor()) or 0
+  if itemArmor > 0 then
+    local attrArmor = tonumber(self:getAttribute(ITEM_ATTRIBUTE_ARMOR)) or 0
+    if attrArmor > 0 then
+      item_data.armor = attrArmor
     else
-      item_data.armor = itemType:getArmor()
+      item_data.armor = itemArmor
     end
-  elseif itemType:getShootRange() > 1 then
-    if self:getAttribute(ITEM_ATTRIBUTE_ATTACK) > 0 then
-      item_data.attack = self:getAttribute(ITEM_ATTRIBUTE_ATTACK)
+  elseif (tonumber(itemType:getShootRange()) or 0) > 1 then
+    local attrAttack = tonumber(self:getAttribute(ITEM_ATTRIBUTE_ATTACK)) or 0
+    if attrAttack > 0 then
+      item_data.attack = attrAttack
     else
-      item_data.attack = itemType:getAttack()
+      item_data.attack = tonumber(itemType:getAttack()) or 0
     end
-    if self:getAttribute(ITEM_ATTRIBUTE_HITCHANCE) > 0 then
-      item_data.hitChance = self:getAttribute(ITEM_ATTRIBUTE_HITCHANCE)
+    local attrHitChance = tonumber(self:getAttribute(ITEM_ATTRIBUTE_HITCHANCE)) or 0
+    if attrHitChance > 0 then
+      item_data.hitChance = attrHitChance
     else
-      item_data.hitChance = itemType:getHitChance()
+      item_data.hitChance = tonumber(itemType:getHitChance()) or 0
     end
-    item_data.shootRange = itemType:getShootRange()
-  elseif itemType:getAttack() > 0 then
-    if self:getAttribute(ITEM_ATTRIBUTE_ATTACK) > 0 then
-      item_data.attack = self:getAttribute(ITEM_ATTRIBUTE_ATTACK)
+    item_data.shootRange = tonumber(itemType:getShootRange()) or 0
+  elseif (tonumber(itemType:getAttack()) or 0) > 0 then
+    local attrAttack = tonumber(self:getAttribute(ITEM_ATTRIBUTE_ATTACK)) or 0
+    if attrAttack > 0 then
+      item_data.attack = attrAttack
     else
-      item_data.attack = itemType:getAttack()
+      item_data.attack = tonumber(itemType:getAttack()) or 0
     end
-    if self:getAttribute(ITEM_ATTRIBUTE_DEFENSE) > 0 then
-      item_data.defense = self:getAttribute(ITEM_ATTRIBUTE_DEFENSE)
+    local attrDefense = tonumber(self:getAttribute(ITEM_ATTRIBUTE_DEFENSE)) or 0
+    if attrDefense > 0 then
+      item_data.defense = attrDefense
     else
-      item_data.defense = itemType:getDefense()
+      item_data.defense = tonumber(itemType:getDefense()) or 0
     end
-    if self:getAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE) > 0 then
-      item_data.extraDefense = self:getAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE)
+    local attrExtraDefense = tonumber(self:getAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE)) or 0
+    if attrExtraDefense > 0 then
+      item_data.extraDefense = attrExtraDefense
     else
-      item_data.extraDefense = itemType:getExtraDefense()
+      item_data.extraDefense = tonumber(itemType:getExtraDefense()) or 0
     end
-  elseif itemType:getDefense() > 0 then
-    if self:getAttribute(ITEM_ATTRIBUTE_DEFENSE) > 0 then
-      item_data.defense = self:getAttribute(ITEM_ATTRIBUTE_DEFENSE)
+  elseif (tonumber(itemType:getDefense()) or 0) > 0 then
+    local attrDefense = tonumber(self:getAttribute(ITEM_ATTRIBUTE_DEFENSE)) or 0
+    if attrDefense > 0 then
+      item_data.defense = attrDefense
     else
-      item_data.defense = itemType:getDefense()
+      item_data.defense = tonumber(itemType:getDefense()) or 0
     end
-    if self:getAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE) > 0 then
-      item_data.extraDefense = self:getAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE)
+    local attrExtraDefense = tonumber(self:getAttribute(ITEM_ATTRIBUTE_EXTRADEFENSE)) or 0
+    if attrExtraDefense > 0 then
+      item_data.extraDefense = attrExtraDefense
     else
-      item_data.extraDefense = itemType:getExtraDefense()
+      item_data.extraDefense = tonumber(itemType:getExtraDefense()) or 0
     end
   end
+
+
+  local duration = tonumber(self:getRemainingDuration()) or 0
+  if duration > 0 then
+    item_data.duration = duration
+  end
+
+
+  local charges = tonumber(self:getCharges()) or 0
+  if charges > 0 then
+    item_data.charges = charges
+  end
+
+
+  -- Tier & Classification
+  local itemType = self:getType()
+  
+  if self:hasAttribute(ITEM_ATTRIBUTE_TIER) then
+    item_data.tier = tonumber(self:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
+  elseif itemType:getTier() and itemType:getTier() > 0 then
+    item_data.tier = itemType:getTier()
+  end
+  
+  if self:hasAttribute(ITEM_ATTRIBUTE_CLASSIFICATION) then
+    item_data.classification = tonumber(self:getAttribute(ITEM_ATTRIBUTE_CLASSIFICATION)) or 0
+  elseif itemType:getClassification() and itemType:getClassification() > 0 then
+    item_data.classification = itemType:getClassification()
+  end
+
+
+  -- Imbuements
+  local slots = itemType:getImbuingSlots()
+  if slots and slots > 0 then
+    item_data.imbuingSlots = slots
+    item_data.imbuements = {}
+    for i = 1, slots do
+      local imbuement = self:getImbuement(i - 1)
+      if imbuement then
+        local base = imbuement:getBase()
+        local tierName = ""
+        if base then
+          if base.id == 1 then
+            tierName = " (Basic)"
+          elseif base.id == 2 then
+            tierName = " (Intricate)"
+          elseif base.id == 3 then
+            tierName = " (Powerful)"
+          end
+        end
+        table.insert(item_data.imbuements, imbuement:getName() .. tierName)
+      else
+        table.insert(item_data.imbuements, 0) -- Empty
+      end
+    end
+  end
+
+
+  -- Reflect
+  local hasReflect = false
+  local reflectData = {}
+  local combatTypes = {
+    { type = COMBAT_PHYSICALDAMAGE, name = "Physical" },
+    { type = COMBAT_FIREDAMAGE,     name = "Fire" },
+    { type = COMBAT_EARTHDAMAGE,    name = "Earth" },
+    { type = COMBAT_ENERGYDAMAGE,   name = "Energy" },
+    { type = COMBAT_ICEDAMAGE,      name = "Ice" },
+    { type = COMBAT_HOLYDAMAGE,     name = "Holy" },
+    { type = COMBAT_DEATHDAMAGE,    name = "Death" }
+  }
+
+
+  for _, combat in ipairs(combatTypes) do
+    local reflect = self:getReflect(combat.type)
+    if reflect and tonumber(reflect.percent) and tonumber(reflect.percent) > 0 then
+      table.insert(reflectData, { name = combat.name, percent = reflect.percent, chance = reflect.chance })
+      hasReflect = true
+    end
+  end
+  if hasReflect then
+    item_data.reflect = reflectData
+  end
+
+
+  -- Tier System Abilities
+  local itemTier = tonumber(item_data.tier) or 0
+  if itemTier > 0 then
+    dofile('data/lib/core/tier_ability_config.lua')
+    local itemType = ItemType(self:getId())
+    local slotPosition = itemType:getSlotPosition()
+    
+    local slotName = nil
+    if bit.band(slotPosition, 1) ~= 0 or bit.band(slotPosition, 2) ~= 0 then -- HAND (LEFT or RIGHT)
+      local attack = itemType:getAttack()
+      if attack > 0 then
+        slotName = "hand"
+      end
+    elseif bit.band(slotPosition, 4) ~= 0 then -- NECKLACE
+      slotName = "necklace"
+    elseif bit.band(slotPosition, 8) ~= 0 then -- ARMOR
+      slotName = "armor"
+    elseif bit.band(slotPosition, 16) ~= 0 then -- HEAD
+      slotName = "head"
+    elseif bit.band(slotPosition, 32) ~= 0 then -- LEGS
+      slotName = "legs"
+    elseif bit.band(slotPosition, 64) ~= 0 then -- FEET
+      slotName = "feet"
+    end
+    
+    if slotName and TierSystem and TierSystem.abilityConfig and TierSystem.abilityConfig[slotName] then
+      local ability = TierSystem.abilityConfig[slotName]
+      local chance = ability.activationChances and ability.activationChances[itemTier]
+      local dropBoost = ability.dropBoost and ability.dropBoost[itemTier]
+      
+      item_data.tierAbility = {
+        name = ability.name,
+        description = ability.description,
+        chance = chance,
+        dropBoost = dropBoost
+      }
+    end
+  end
+
 
   item_data.weight = self:getWeight()
   return item_data
@@ -329,27 +501,35 @@ function ItemType:buildTooltip(count)
     count = 1
   end
 
+
   local item_data = {
     clientId = self:getClientId(),
     count = count,
     itemName = self:getName()
   }
 
+
   if self:getDescription():len() > 0 then
     item_data.desc = self:getDescription()
   end
 
-  if self:getRequiredLevel() >= 1 then
-    item_data.reqLvl = self:getRequiredLevel()
+
+  local reqLevel = tonumber(self:getRequiredLevel()) or 0
+  if reqLevel >= 1 then
+    item_data.reqLvl = reqLevel
   end
 
+
   local implicit = {}
+
 
   if self:getElementType() ~= COMBAT_NONE and combatTypeNames[self:getElementType()] then
     implicit.eleDmg = "Attack +" .. self:getElementDamage() .. " " .. combatTypeNames[self:getElementType()]
   end
 
+
   local allprot = self:getAbsorbPercent(0)
+
 
   if allprot ~= 0 then
     for i = 0, COMBAT_COUNT - 1 do
@@ -359,6 +539,7 @@ function ItemType:buildTooltip(count)
       end
     end
   end
+
 
   if allprot == 0 then
     for i = 0, COMBAT_COUNT - 1 do
@@ -373,12 +554,14 @@ function ItemType:buildTooltip(count)
     implicit.a_all = allprot
   end
 
+
   for key, value in pairs(specialSkills) do
     local s = self:getSpecialSkill(key)
     if s and s >= 1 then
       implicit[value] = s
     end
   end
+
 
   for key, value in pairs(skills) do
     local s = self:getSkill(key)
@@ -387,12 +570,14 @@ function ItemType:buildTooltip(count)
     end
   end
 
+
   for key, value in pairs(stats) do
     local s = self:getStat(key)
     if s and s >= 1 then
       implicit[value] = s
     end
   end
+
 
   for key, value in pairs(statsPercent) do
     local s = self:getStatPercent(key)
@@ -401,54 +586,71 @@ function ItemType:buildTooltip(count)
     end
   end
 
+
   local healthGain = self:getHealthGain()
   if healthGain and healthGain > 0 then
     implicit.hpgain = healthGain
   end
+
 
   --local healthTicks = self:getHealthTicks()
   --if healthTicks and healthTicks > 0 then
   --implicit.hpticks = healthTicks
   --end
 
+
   local manaGain = self:getManaGain()
   if manaGain and manaGain > 0 then
     implicit.mpgain = manaGain
   end
+
 
   --local manaTicks = self:getManaTicks()
   --if manaTicks and manaTicks > 0 then
   --implicit.mpticks = manaTicks
   --end
 
+
   local speed = self:getSpeed()
   if speed and speed > 0 then
     implicit.speed = speed
   end
 
+
   if self:isContainer() then
     implicit.cap = "Capacity " .. self:getCapacity()
   end
+
 
   if next(implicit) ~= nil then
     item_data.imp = implicit
   end
 
+
   item_data.itemType = formatItemType(self)
-  if self:getArmor() > 0 then
-    item_data.armor = self:getArmor()
-  elseif self:getShootRange() > 1 then
-    item_data.attack = self:getAttack()
-    item_data.hitChance = self:getHitChance()
-    item_data.shootRange = self:getShootRange()
-  elseif self:getAttack() > 0 then
-    item_data.attack = self:getAttack()
-    item_data.defense = self:getDefense()
-    item_data.extraDefense = self:getExtraDefense()
-  elseif self:getDefense() > 0 then
-    item_data.defense = self:getDefense()
-    item_data.extraDefense = self:getExtraDefense()
+
+  local itemArmor = tonumber(self:getArmor()) or 0
+  if itemArmor > 0 then
+    item_data.armor = itemArmor
+  elseif (tonumber(self:getShootRange()) or 0) > 1 then
+    item_data.attack = tonumber(self:getAttack()) or 0
+    item_data.hitChance = tonumber(self:getHitChance()) or 0
+    item_data.shootRange = tonumber(self:getShootRange()) or 0
+  elseif (tonumber(self:getAttack()) or 0) > 0 then
+    item_data.attack = tonumber(self:getAttack()) or 0
+    item_data.defense = tonumber(self:getDefense()) or 0
+    item_data.extraDefense = tonumber(self:getExtraDefense()) or 0
+  elseif (tonumber(self:getDefense()) or 0) > 0 then
+    item_data.defense = tonumber(self:getDefense()) or 0
+    item_data.extraDefense = tonumber(self:getExtraDefense()) or 0
   end
+
+
+  local charges = tonumber(self:getCharges()) or 0
+  if charges > 0 then
+    item_data.charges = charges
+  end
+
 
   item_data.weight = self:getWeight() * item_data.count
   return item_data
@@ -457,8 +659,10 @@ end
 function formatItemType(itemType)
   local weaponType = itemType:getWeaponType()
 
+
   if weaponType ~= WEAPON_SHIELD then
     local slotPosition = itemType:getSlotPosition() - SLOTP_LEFT - SLOTP_RIGHT
+
 
     if slotPosition == SLOTP_TWO_HAND and weaponType == WEAPON_SWORD then
       return "Two-Handed Sword"
@@ -502,6 +706,7 @@ function formatItemType(itemType)
   else
     return "Shield"
   end
+
 
   return "Common"
 end

@@ -18,7 +18,7 @@ event.onLook = function(self, thing, position, distance, description)
 			end
 
 			local uniqueId = thing:getAttribute(ITEM_ATTRIBUTE_UNIQUEID)
-			if uniqueId > 0 and uniqueId < 65536 then
+			if uniqueId and uniqueId > 0 and uniqueId < 65536 then
 				description = string.format("%s, Unique ID: %d", description, uniqueId)
 			end
 

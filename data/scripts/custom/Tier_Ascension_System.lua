@@ -1,6 +1,6 @@
-
 dofile('data/lib/core/tier_ability_config.lua')
 print(">> Tier Ascension System Loaded")
+
 
 --[[
     ========================================
@@ -8,15 +8,18 @@ print(">> Tier Ascension System Loaded")
     ========================================
 ]]
 
+
 --[[
     Developed by: Mateus Roberto (mateuskl)
     Date: 30/07/2025
     Version: v1.2
-    
+
+
     ========================================
     HOW IT WORKS:
     ========================================
-    
+
+
     FORGE STYLE SYSTEM:
     - Uses specific items for upgrade (8302, 8303, 8304)
     - Tier system (1-10) with success chances
@@ -28,22 +31,26 @@ print(">> Tier Ascension System Loaded")
       * HEAD: Momentum (cooldown reduction)
       * FEET: Amplification (amplifies other abilities)
       * NECKLACE: Lucky Drop (increases drop rate)
-    
+
+
     UPGRADE ITEMS:
     - 8302: Reset (removes tier and classification)
     - 8303: Tier Upgrade (increases tier 1-10)
     - 8304: Classification Upgrade (Base → Improved → Exalted)
     - 8305: Dodge Boost (+50 dodge)
     - 8306: Speed Boost (+10 speed)
-    
+
+
     REFACTORED SYSTEM:
     - Unified onHealthChange and onManaChange functions
     - Configuration moved to lib/core/tier_ability_config.lua
     - Reduced code duplication
     - Better maintainability
-    
+
+
     ========================================
 ]]
+
 
 local function isWeapon(item)
     if not item then
@@ -53,14 +60,16 @@ local function isWeapon(item)
     return attack > 0
 end
 
+
 local function calculateTotalChance(player, baseChance, abilityType)
     if abilityType == "amplification" then
         return baseChance
     end
-    
+
+
     local boots = player:getSlotItem(CONST_SLOT_FEET)
     if boots then
-        local bootsTier = boots:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+        local bootsTier = tonumber(boots:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
         if bootsTier > 0 then
             local amplificationChance = TierSystem.getActivationChance("amplification", bootsTier)
             -- Amplification aumenta a chance em 50% do seu valor
@@ -68,36 +77,43 @@ local function calculateTotalChance(player, baseChance, abilityType)
             baseChance = baseChance * (1 + amplificationBonus)
         end
     end
-    
+
+
     return baseChance
 end
+
 
 local function updateDodgeStorage(playerId)
     local player = Player(playerId)
     if not player then
         return
     end
-    
+
+
     local storageValue = 0
     local slotItem = player:getSlotItem(CONST_SLOT_ARMOR)
-    
+
+
     if slotItem then
-        local tier = slotItem:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+        local tier = tonumber(slotItem:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
         if tier > 0 then
             local activationChance = TierSystem.abilityConfig["armor"].activationChances[tier] or 0
             storageValue = math.floor(activationChance * 100)
         end
     end
-    
+
+
     player:setStorageValue(TierSystem.storageIds.dodgeStorage, storageValue)
 end
+
 
 local function updateStatBonus(playerId)
     local player = Player(playerId)
     if not player then
         return
     end
-    
+
+
     if player:getCondition(CONDITION_ATTRIBUTES, TierSystem.storageIds.conditionSubId) then
         player:removeCondition(CONDITION_ATTRIBUTES, TierSystem.storageIds.conditionSubId)
     end
@@ -106,7 +122,10 @@ local function updateStatBonus(playerId)
     end
 end
 
+
 local function applyAbilityEffect(player, slot, abilityEffect, tier)
+    tier = tonumber(tier) or 0
+
     if abilityEffect == "onslaught" then
         return true
     elseif abilityEffect == "ruse" then
@@ -117,10 +136,12 @@ local function applyAbilityEffect(player, slot, abilityEffect, tier)
             return false
         end
 
-        local tier = helmet:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+
+        local tier = tonumber(helmet:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
         if tier == 0 then
             return false
         end
+
 
         if getTilePzInfo(player:getPosition()) then
             local currentReduction = player:getHelmetCooldownReduction()
@@ -130,34 +151,40 @@ local function applyAbilityEffect(player, slot, abilityEffect, tier)
             return false
         end
 
+
         local currentReduction = player:getHelmetCooldownReduction()
         if currentReduction > 0 then
             return false
         end
 
+
         local cooldownReduction = 2000
         player:setHelmetCooldownReduction(cooldownReduction)
-        
+
+
         player:getPosition():sendMagicEffect(232) -- Efeito momentum
         return true
-        
     elseif abilityEffect == "transcendence" then
         -- Transcendence effect
         local legs = player:getSlotItem(CONST_SLOT_LEGS)
         if not legs then
             return false
         end
-        
-        local tier = legs:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
-        
+
+
+        local tier = tonumber(legs:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
+
+
         if tier < 3 then
             return false
         end
-        
+
+
         if player:getCondition(CONDITION_OUTFIT) then
             return false
         end
-        
+
+
         local chance = 0
         if tier == 3 then
             chance = 5.0
@@ -176,32 +203,37 @@ local function applyAbilityEffect(player, slot, abilityEffect, tier)
         elseif tier == 10 then
             chance = 35.0
         end
-        
+
+
         if math.random(100) <= chance then
             local vocation = player:getVocation():getName():lower()
             local outfit = TierSystem.avatarOutfits[vocation] or TierSystem.avatarOutfits["knight"]
             local duration = TierSystem.avatarDuration
-            
+
+
             local conditionOutfit = Condition(CONDITION_OUTFIT)
             conditionOutfit:setOutfit(outfit)
             conditionOutfit:setParameter(CONDITION_PARAM_TICKS, duration)
             player:addCondition(conditionOutfit)
-            
+
+
             local conditionBuffs = Condition(CONDITION_ATTRIBUTES, CONDITIONID_COMBAT)
             conditionBuffs:setParameter(CONDITION_PARAM_TICKS, duration)
             conditionBuffs:setParameter(CONDITION_PARAM_STAT_PERCENTDAMAGE, 85)
             conditionBuffs:setParameter(CONDITION_PARAM_SPECIALSKILL_CRITICALHITPERCENT, 100)
             conditionBuffs:setParameter(CONDITION_PARAM_SPECIALSKILL_CRITICALHITAMOUNT, 1500)
             player:addCondition(conditionBuffs)
-            
+
+
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_GREEN)
             player:say("Transcendence!", TALKTYPE_MONSTER_SAY)
-            
+
+
             return true
         end
-        
+
+
         return false
-        
     elseif abilityEffect == "amplification" then
         -- Amplification effect
         local boots = player:getSlotItem(CONST_SLOT_FEET)
@@ -209,10 +241,12 @@ local function applyAbilityEffect(player, slot, abilityEffect, tier)
             return false
         end
 
-        local tier = boots:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+
+        local tier = tonumber(boots:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
         if tier == 0 then
             return false
         end
+
 
         local activationChance = TierSystem.abilityConfig["feet"].activationChances[tier] or 0
         if math.random(100) <= (activationChance * 100) then
@@ -226,22 +260,26 @@ local function applyAbilityEffect(player, slot, abilityEffect, tier)
             return true
         end
 
+
         return false
     end
-    
+
+
     return false
 end
 
+
 local function processAbilities(player, isAttacker)
-    local slots = {"hand", "head", "legs", "feet"}
-    
+    local slots = { "hand", "head", "legs", "feet" }
+
+
     for _, slotName in pairs(slots) do
         local slotConstants = TierSystem.slotToConstant[slotName]
         if slotConstants then
             for _, slotConst in ipairs(slotConstants) do
                 local item = player:getSlotItem(slotConst)
                 if item then
-                    local tier = item:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+                    local tier = tonumber(item:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
                     if tier > 0 then
                         local ability = TierSystem.abilityConfig[slotName]
                         if ability then
@@ -257,9 +295,12 @@ local function processAbilities(player, isAttacker)
     end
 end
 
-local function onHealthOrManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, isMana)
+
+local function onHealthOrManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType,
+                                    origin, isMana)
     local player = isMana and attacker or creature
-    
+
+
     if not isMana and creature:isPlayer() then
         local storageValue = creature:getStorageValue(TierSystem.storageIds.dodgeStorage) or 0
         local rand = math.random(10000)
@@ -270,14 +311,16 @@ local function onHealthOrManaChange(creature, attacker, primaryDamage, primaryTy
             return primaryDamage, primaryType, secondaryDamage, secondaryType
         end
     end
-    
+
+
     if attacker and attacker:isPlayer() then
         local leftWeapon = attacker:getSlotItem(CONST_SLOT_LEFT)
         local rightWeapon = attacker:getSlotItem(CONST_SLOT_RIGHT)
-        
+
+
         local weapon = leftWeapon or rightWeapon
         if weapon and isWeapon(weapon) then
-            local tier = weapon:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+            local tier = tonumber(weapon:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
             if tier > 0 then
                 local activationChance = TierSystem.abilityConfig["hand"].activationChances[tier] or 0
                 if activationChance > 0 and math.random(100) <= (activationChance * 100) then
@@ -289,30 +332,41 @@ local function onHealthOrManaChange(creature, attacker, primaryDamage, primaryTy
             end
         end
     end
-    
+
+
     if player and player:isPlayer() then
         processAbilities(player, isMana)
     end
-    
+
+
     return primaryDamage, primaryType, secondaryDamage, secondaryType
 end
 
+
 local healthChangeEvent = CreatureEvent("onHealthChange_unified")
-function healthChangeEvent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
-    return onHealthOrManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, false)
+function healthChangeEvent.onHealthChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType,
+                                          origin)
+    return onHealthOrManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin,
+        false)
 end
+
 healthChangeEvent:register()
 
+
 local manaChangeEvent = CreatureEvent("onManaChange_unified")
-function manaChangeEvent.onManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin)
-    return onHealthOrManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin, true)
+function manaChangeEvent.onManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType,
+                                      origin)
+    return onHealthOrManaChange(creature, attacker, primaryDamage, primaryType, secondaryDamage, secondaryType, origin,
+        true)
 end
+
 manaChangeEvent:register()
+
 
 local equipEvent = MoveEvent()
 function equipEvent.onEquip(player, item, slot, isCheck)
     if not isCheck then
-        local tier = item:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+        local tier = tonumber(item:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
         if tier > 0 then
             local slotName = TierSystem.getItemSlot(item:getId())
             if slotName == "armor" then
@@ -326,14 +380,16 @@ function equipEvent.onEquip(player, item, slot, isCheck)
     end
     return true
 end
+
 equipEvent:register()
+
 
 local deEquipEvent = MoveEvent()
 function deEquipEvent.onDeEquip(player, item, slot, isCheck)
     if not isCheck then
         local slotName = TierSystem.getItemSlot(item:getId())
         if slotName == "armor" then
-            local tier = item:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+            local tier = tonumber(item:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
             local activationChance = TierSystem.abilityConfig["armor"].activationChances[tier] or 0
             local currentValue = player:getStorageValue(TierSystem.storageIds.dodgeStorage) or 0
             local newValue = currentValue - math.floor(activationChance * 100)
@@ -343,7 +399,9 @@ function deEquipEvent.onDeEquip(player, item, slot, isCheck)
     end
     return true
 end
+
 deEquipEvent:register()
+
 
 local NecklaceDropBoost = Event()
 NecklaceDropBoost.onDropLoot = function(self, corpse)
@@ -351,29 +409,34 @@ NecklaceDropBoost.onDropLoot = function(self, corpse)
     if configManager.getNumber(configKeys.RATE_LOOT) == 0 then
         return
     end
-    
+
+
     local player = Player(corpse:getCorpseOwner())
     if not player then
         return false
     end
-    
+
+
     if player:getStamina() > 840 then
         local necklace = player:getSlotItem(CONST_SLOT_NECKLACE)
         if necklace then
-            local tier = necklace:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+            local tier = tonumber(necklace:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
             if tier > 0 then
                 local dropBoost = TierSystem.getDropBoost(tier)
                 if dropBoost > 0 then
-                    player:sendTextMessage(MESSAGE_STATUS_DEFAULT, 
-                        string.format("[Lucky Necklace] You have a tier %d necklace with +%d%% Drop Boost!", 
-                        tier, dropBoost))
-                    
+                    player:sendTextMessage(MESSAGE_STATUS_DEFAULT,
+                        string.format("[Lucky Necklace] You have a tier %d necklace with +%d%% Drop Boost!",
+                            tier, dropBoost))
+
+
                     corpse:getPosition():sendMagicEffect(CONST_ME_TUTORIALARROW)
                     corpse:getPosition():sendMagicEffect(CONST_ME_TUTORIALSQUARE)
-                    
+
+
                     local rate = dropBoost / 10 * configManager.getNumber(configKeys.RATE_LOOT)
                     local monsterLoot = mType:getLoot()
-                    
+
+
                     for i = 1, #monsterLoot do
                         local item = monsterLoot[i]
                         if math.random(100) <= rate then
@@ -385,55 +448,67 @@ NecklaceDropBoost.onDropLoot = function(self, corpse)
             end
         end
     end
-    
+
+
     return true
 end
 NecklaceDropBoost:register(-1)
+
 
 local action = Action()
 function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
     if item:getActionId() == TierSystem.avalancheFusion.actionId then
         local item1 = Tile(TierSystem.avalancheFusion.positions.item1):getTopDownItem()
         local item2 = Tile(TierSystem.avalancheFusion.positions.item2):getTopDownItem()
-        
+
+
         if not item1 or not item2 then
             player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Place two items in the fusion positions.")
             Position(94, 112, 7):sendMagicEffect(285)
             return true
         end
-        
-        local tier1 = item1:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
-        local tier2 = item2:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
-        
+
+
+        local tier1 = tonumber(item1:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
+        local tier2 = tonumber(item2:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
+
+
         if tier1 ~= tier2 then
             player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Both items must be of the same tier for fusion.")
             player:getPosition():sendMagicEffect(285)
             return true
         end
-        
+
+
         if item1:getId() ~= item2:getId() then
             player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Both items must be of the same type.")
             player:getPosition():sendMagicEffect(285)
             return true
         end
-        
+
+
         local maxTier = TierSystem.getMaxTierForItem(item1:getId())
         if tier1 >= maxTier then
-            player:sendTextMessage(MESSAGE_EVENT_ORANGE, "This item has already reached the maximum tier (" .. maxTier .. ").")
+            player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+                "This item has already reached the maximum tier (" .. maxTier .. ").")
             player:getPosition():sendMagicEffect(285)
             return true
         end
-        
+
+
         local successChance = TierSystem.calculateUpgradeChance(tier1)
         local rand = math.random(100)
-        
+
+
         if rand <= successChance then
             local newItem = Game.createItem(item1:getId(), 1, TierSystem.avalancheFusion.positions.result)
             if newItem then
                 newItem:setAttribute(ITEM_ATTRIBUTE_TIER, tier1 + 1)
                 newItem:getPosition():sendMagicEffect(252) -- Success effect
-                player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Fusion successful! Created tier " .. (tier1 + 1) .. " item with " .. successChance .. "% chance!")
-                
+                player:sendTextMessage(MESSAGE_EVENT_ORANGE,
+                    "Fusion successful! Created tier " .. (tier1 + 1) .. " item with " .. successChance .. "% chance!")
+
+
                 item1:remove(1)
                 item2:remove(1)
             end
@@ -441,55 +516,65 @@ function action.onUse(player, item, fromPosition, target, toPosition, isHotkey)
             -- Failure
             Position(94, 112, 7):sendMagicEffect(285) -- Failure effect at Avalanche position
             player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Fusion failed! Chance was " .. successChance .. "%")
-            
+
+
             item2:remove(1)
         end
-        
+
+
         return true
     end
-    
+
+
     if not target then
         player:sendTextMessage(MESSAGE_EVENT_ORANGE, "No target item selected.")
         player:getPosition():sendMagicEffect(285)
         return true
     end
-    
+
+
     if not TierSystem.isItemTierable(target) then
         player:sendTextMessage(MESSAGE_EVENT_ORANGE, "This item cannot receive tier upgrades.")
         player:getPosition():sendMagicEffect(285)
         return true
     end
-    
+
+
     local upgradeItem = TierSystem.upgradeItems[item:getId()]
     if not upgradeItem then
         player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Invalid upgrade item.")
         player:getPosition():sendMagicEffect(285)
         return true
     end
-    
-    local currentTier = target:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
-    local currentClassification = target:getAttribute(ITEM_ATTRIBUTE_CLASSIFICATION) or 0
-    
+
+
+    local currentTier = tonumber(target:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
+    local currentClassification = tonumber(target:getAttribute(ITEM_ATTRIBUTE_CLASSIFICATION)) or 0
+
+
     if upgradeItem.type == "reset" then
         if currentTier == 0 and currentClassification == 0 then
             player:sendTextMessage(MESSAGE_EVENT_ORANGE, "This item does not have a tier or classification to reset.")
             target:getPosition():sendMagicEffect(285)
             return true
         end
-        
+
+
         for statName, _ in pairs(TierSystem.conditions) do
             target:removeCustomAttribute(statName)
         end
         target:removeAttribute(ITEM_ATTRIBUTE_TIER)
         target:removeAttribute(ITEM_ATTRIBUTE_CLASSIFICATION)
         target:removeCustomAttribute("dodge_bonus")
-        
+
+
         target:getPosition():sendMagicEffect(252)
         player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Tier and classification reset successfully!")
         item:remove(1)
         return true
     end
-    
+
+
     player:sendTextMessage(MESSAGE_EVENT_ORANGE, "Invalid upgrade type.")
     player:getPosition():sendMagicEffect(285)
     return true
@@ -503,21 +588,25 @@ else
     print(">> ERROR: TierSystem.upgradeItems is nil!")
 end
 
+
 if TierSystem.avalancheFusion then
     action:aid(TierSystem.avalancheFusion.actionId)
 end
 
+
 action:register()
+
 
 local loginEvent = CreatureEvent("onLogin_updateTierSystem")
 function loginEvent.onLogin(player)
     player:registerEvent("onHealthChange_unified")
     player:registerEvent("onManaChange_unified")
-    
+
+
     for slot = 1, 10 do
         local slotItem = player:getSlotItem(slot)
         if slotItem then
-            local tier = slotItem:getAttribute(ITEM_ATTRIBUTE_TIER) or 0
+            local tier = tonumber(slotItem:getAttribute(ITEM_ATTRIBUTE_TIER)) or 0
             if tier > 0 then
                 local slotName = TierSystem.getItemSlot(slotItem:getId())
                 if slotName == "armor" then
@@ -526,12 +615,15 @@ function loginEvent.onLogin(player)
             end
         end
     end
-    
+
+
     addEvent(updateDodgeStorage, 100, player:getId())
     addEvent(updateStatBonus, 100, player:getId())
     return true
 end
+
 loginEvent:register()
+
 
 local ec = Event()
 ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylinder, toCylinder)
@@ -544,6 +636,7 @@ ec.onMoveItem = function(self, item, count, fromPosition, toPosition, fromCylind
 end
 ec:register()
 
+
 local onSpawn = Event()
 function onSpawn.onSpawn(creature, position, startup, artificial)
     if creature:isMonster() then
@@ -551,4 +644,5 @@ function onSpawn.onSpawn(creature, position, startup, artificial)
     end
     return true
 end
+
 onSpawn:register(-666)

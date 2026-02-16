@@ -814,6 +814,9 @@ class LuaScriptInterface
 		static int luaItemSetReflect(lua_State* L);
 		static int luaItemGetReflect(lua_State* L);
 
+		static int luaItemSetDodge(lua_State* L);
+		static int luaItemGetDodge(lua_State* L);
+
 		static int luaItemSetIncreasePercent(lua_State* L);
 		static int luaItemGetIncreasePercent(lua_State* L);
 

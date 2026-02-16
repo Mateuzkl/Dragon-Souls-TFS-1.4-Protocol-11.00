@@ -2532,6 +2532,9 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("Item", "setReflect", LuaScriptInterface::luaItemSetReflect);
 	registerMethod("Item", "getReflect", LuaScriptInterface::luaItemGetReflect);
 
+	registerMethod("Item", "setDodge", LuaScriptInterface::luaItemSetDodge);
+	registerMethod("Item", "getDodge", LuaScriptInterface::luaItemGetDodge);
+
 	registerMethod("Item", "setIncreasePercent", LuaScriptInterface::luaItemSetIncreasePercent);
 	registerMethod("Item", "getIncreasePercent", LuaScriptInterface::luaItemGetIncreasePercent);
 
@@ -7977,6 +7980,32 @@ int LuaScriptInterface::luaItemGetReflect(lua_State* L)
 	Item* item = getUserdata<Item>(L, 1);
 	if (item) {
 		pushReflect(L, item->getReflect(getNumber<CombatType_t>(L, 2), getBoolean(L, 3, true)));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemSetDodge(lua_State* L)
+{
+	// item:setDodge(value)
+	Item* item = getUserdata<Item>(L, 1);
+	if (!item) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	item->setDodge(getNumber<uint16_t>(L, 2));
+	pushBoolean(L, true);
+	return 1;
+}
+
+int LuaScriptInterface::luaItemGetDodge(lua_State* L)
+{
+	// item:getDodge()
+	Item* item = getUserdata<Item>(L, 1);
+	if (item) {
+		lua_pushnumber(L, item->getDodge());
 	} else {
 		lua_pushnil(L);
 	}
