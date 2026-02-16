@@ -51,6 +51,9 @@ enum SlotPositionBits : uint32_t {
 	SLOTP_AMMO = 1 << 9,
 	SLOTP_DEPOT = 1 << 10,
 	SLOTP_TWO_HAND = 1 << 11,
+	SLOTP_ANKH = 1 << 12,
+	SLOTP_WING = 1 << 13,
+	SLOTP_AURA = 1 << 14,
 	SLOTP_HAND = (SLOTP_LEFT | SLOTP_RIGHT)
 };
 

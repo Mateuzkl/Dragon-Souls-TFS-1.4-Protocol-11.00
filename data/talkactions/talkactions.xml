@@ -94,5 +94,4 @@
 	<!-- test talkactions -->
 	<talkaction words="!z" separator=" " script="god/magiceffect.lua" />
 	<talkaction words="!x" separator=" " script="god/animationeffect.lua" />
-
 </talkactions>

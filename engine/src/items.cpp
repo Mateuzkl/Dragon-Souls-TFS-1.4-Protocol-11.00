@@ -274,6 +274,12 @@ void Items::applySlotType(ItemType &it, const std::string &value) {
     it.type = ITEM_TYPE_AMMO;
   } else if (v == "hand") {
     it.slotPosition |= SLOTP_HAND;
+  } else if (v == "ankh") {
+    it.slotPosition |= SLOTP_ANKH;
+  } else if (v == "wing") {
+    it.slotPosition |= SLOTP_WING;
+  } else if (v == "aura") {
+    it.slotPosition |= SLOTP_AURA;
   } else {
     std::cout << "[Warning - Items::parseItemNode] Unknown slotType: " << value
               << std::endl;

@@ -2877,7 +2877,7 @@
 	<attribute key="description" value="item utilizado reviver o personagem morto instantaneamente. Item colocado no slot ring, apos o item utilizado deve aguardar 5 minutos" />
 	<attribute key="weight" value="200" />
 	<attribute key="decayTo" value="0" />
-	<attribute key="slotType" value="ring" />
+	<attribute key="slotType" value="ankh" />
 	</item>
 	<item id="2355" article="a" name="stuffed rabbit">
 		<attribute key="weight" value="200" />
@@ -3707,6 +3707,7 @@
 		<attribute key="slotType" value="body" />
 		<attribute key="imbuingSlots" value="2" />
 			<attribute key="classification" value="2" />
+			<attribute key="dodge" value="15" />
 	</item>
 	<item id="2495" name="demon legs">
 		<attribute key="weight" value="5400" />
@@ -19532,9 +19533,12 @@
 	<attribute key="speed" value="100"/> 	
 	<attribute key="slotType" value="feet"/>
 	<attribute key="armor" value="14"/>
+	<attribute key="level" value="100"/>
+	<attribute key="reset" value="2"/>
 	<attribute key="manaGain" value="200"/>
 	<attribute key="manaTicks" value="1000"/>
     <attribute key="increasepercentmagic" value="5"/>
+    <attribute key="dodge" value="15"/>
     <attribute key="description" value="This boots is very rare and general."/>
 </item>
 <item id="38914" name="dead naz gul">

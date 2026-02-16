@@ -723,7 +723,7 @@ bool IOLoginData::loadPlayer(Player* player, DBResult_ptr result)
 			const std::pair<Item*, int32_t>& pair = it->second;
 			Item* item = pair.first;
 			int32_t pid = pair.second;
-			if (pid >= 1 && pid <= 11) {
+			if (pid >= 1 && pid <= 14) {
 				player->internalAddThing(pid, item);
 			} else {
 				ItemMap::const_iterator it2 = itemMap.find(pid);
@@ -1428,7 +1428,7 @@ bool IOLoginData::savePlayer(Player* player)
 	DBInsert itemsQuery("INSERT INTO `player_items` (`player_id`, `pid`, `sid`, `itemtype`, `count`, `attributes`) VALUES ");
 
 	ItemBlockList itemList;
-	for (int32_t slotId = 1; slotId <= 11; ++slotId) {
+	for (int32_t slotId = 1; slotId <= 14; ++slotId) {
 		Item* item = player->inventory[slotId];
 		if (item) {
 			itemList.emplace_back(slotId, item);

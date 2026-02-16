@@ -375,7 +375,7 @@ int32_t Player::getArmor() const
 {
 	int32_t armor = 0;
 
-	static const slots_t armorSlots[] = {CONST_SLOT_HEAD, CONST_SLOT_NECKLACE, CONST_SLOT_ARMOR, CONST_SLOT_LEGS, CONST_SLOT_FEET, CONST_SLOT_RING};
+	static const slots_t armorSlots[] = {CONST_SLOT_HEAD, CONST_SLOT_NECKLACE, CONST_SLOT_ARMOR, CONST_SLOT_LEGS, CONST_SLOT_FEET, CONST_SLOT_RING, CONST_SLOT_ANKH, CONST_SLOT_WING, CONST_SLOT_AURA};
 	for (slots_t slot : armorSlots) {
 		Item* inventoryItem = inventory[slot];
 		if (inventoryItem) {
@@ -2745,7 +2745,7 @@ uint32_t Player::getIP() const
 
 void Player::death(Creature* lastHitCreature)
 {
-	if (getInventoryItem(CONST_SLOT_RING) && getInventoryItem(CONST_SLOT_RING)->getID() == 2354) {
+	if (getInventoryItem(CONST_SLOT_ANKH) && getInventoryItem(CONST_SLOT_ANKH)->getID() == 2354) {
 		if (tryStartRingRevive()) {
 			return;
 		}
@@ -3406,6 +3406,27 @@ ReturnValue Player::queryAdd(int32_t index, const Thing& thing, uint32_t count, 
 
 		case CONST_SLOT_AMMO: {
 			if ((slotPosition & SLOTP_AMMO) || g_config.getBoolean(ConfigManager::CLASSIC_EQUIPMENT_SLOTS)) {
+				ret = RETURNVALUE_NOERROR;
+			}
+			break;
+		}
+
+		case CONST_SLOT_ANKH: {
+			if (slotPosition & SLOTP_ANKH) {
+				ret = RETURNVALUE_NOERROR;
+			}
+			break;
+		}
+
+		case CONST_SLOT_WING: {
+			if (slotPosition & SLOTP_WING) {
+				ret = RETURNVALUE_NOERROR;
+			}
+			break;
+		}
+
+		case CONST_SLOT_AURA: {
+			if (slotPosition & SLOTP_AURA) {
 				ret = RETURNVALUE_NOERROR;
 			}
 			break;
@@ -4162,7 +4183,7 @@ void Player::internalAddThing(uint32_t index, Thing* thing)
 	}
 
 	//index == 0 means we should equip this item at the most appropiate slot (no action required here)
-	if (index > 0 && index < 12) {
+	if (index > 0 && index < 15) {
 		if (inventory[index]) {
 			return;
 		}
@@ -7023,7 +7044,7 @@ bool Player::tryStartRingRevive() {
         return false;
     }
 
-    Item* ringItem = getInventoryItem(CONST_SLOT_RING);
+    Item* ringItem = getInventoryItem(CONST_SLOT_ANKH);
     if (!ringItem || ringItem->getID() != REVIVE_RING_ITEMID) {
         return false;
     }
