@@ -2709,6 +2709,7 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 
 	const ItemType& it = Item::items[item->getID()];
 	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
+	// Dragon Souls: walk-exhaust gate intentionally not applied to runes/potions
 	if (ret != RETURNVALUE_NOERROR) {
 		if (ret == RETURNVALUE_TOOFARAWAY) {
 			Position itemPos = fromPos;
@@ -2786,6 +2787,7 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 
 	const ItemType& it = Item::items[item->getID()];
 	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
+	// Dragon Souls: walk-exhaust gate intentionally not applied to runes/potions
 	ReturnValue ret = g_actions->canUse(player, pos);
 	if (ret != RETURNVALUE_NOERROR) {
 		if (ret == RETURNVALUE_TOOFARAWAY) {
@@ -2859,6 +2861,7 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 
 	const ItemType& it = Item::items[item->getID()];
 	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
+	// Dragon Souls: walk-exhaust gate intentionally not applied to runes/potions
 	Position toPos = creature->getPosition();
 	Position walkToPos = fromPos;
 	ReturnValue ret = g_actions->canUse(player, fromPos);
