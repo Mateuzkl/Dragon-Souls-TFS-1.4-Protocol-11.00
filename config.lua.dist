@@ -160,6 +160,16 @@ timeBetweenActions = 500
 timeBetweenExActions = 800
 maxStack = 1000
 
+-- Separated action cooldowns
+exhaustPotionInterval = 1000
+exhaustRuneInterval = 1000
+exhaustUseItemInterval = 200
+exhaustMacheteInterval = 1000
+exhaustPushInterval = 200
+
+potionCanExhaustUseItem = false
+runeCanExhaustUseItem = false
+
 -- Controle do cancelamento de push durante spells/poções
 -- true: não cancelar push ao usar spells/runes/poções
 -- false: comportamento padrão (cancela push)

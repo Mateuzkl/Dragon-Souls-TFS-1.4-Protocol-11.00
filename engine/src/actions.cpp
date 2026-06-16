@@ -33,6 +33,154 @@ extern Spells* g_spells;
 extern Actions* g_actions;
 extern ConfigManager g_config;
 
+namespace {
+
+enum class ActionExhaustCategory : uint8_t {
+	UseItem,
+	Potion,
+	Rune,
+	Machete,
+};
+
+bool isPotionActionItem(const ItemType& it, uint16_t)
+{
+	return it.type == ITEM_TYPE_POTION;
+}
+
+bool isRuneActionItem(const ItemType& it, uint16_t)
+{
+	return it.isRune();
+}
+
+bool isMacheteActionItem(uint16_t itemId)
+{
+	switch (itemId) {
+		case 2420:
+		case 2442:
+			return true;
+		default:
+			return false;
+	}
+}
+
+ActionExhaustCategory getActionExhaustCategory(const ItemType& it, uint16_t itemId)
+{
+	if (isPotionActionItem(it, itemId)) {
+		return ActionExhaustCategory::Potion;
+	}
+
+	if (isRuneActionItem(it, itemId)) {
+		return ActionExhaustCategory::Rune;
+	}
+
+	if (isMacheteActionItem(itemId)) {
+		return ActionExhaustCategory::Machete;
+	}
+
+	return ActionExhaustCategory::UseItem;
+}
+
+uint32_t getActionExhaustSubId(ActionExhaustCategory category)
+{
+	switch (category) {
+		case ActionExhaustCategory::Potion:
+			return EXHAUST_POTION;
+		case ActionExhaustCategory::Rune:
+			return EXHAUST_RUNE;
+		case ActionExhaustCategory::Machete:
+			return EXHAUST_MACHETE;
+		case ActionExhaustCategory::UseItem:
+		default:
+			return EXHAUST_USEITEM;
+	}
+}
+
+int32_t getActionExhaustTicks(ActionExhaustCategory category)
+{
+	switch (category) {
+		case ActionExhaustCategory::Potion:
+			return g_config.getNumber(ConfigManager::EXHAUST_POTION_INTERVAL);
+		case ActionExhaustCategory::Rune:
+			return g_config.getNumber(ConfigManager::EXHAUST_RUNE_INTERVAL);
+		case ActionExhaustCategory::Machete:
+			return g_config.getNumber(ConfigManager::EXHAUST_MACHETE_INTERVAL);
+		case ActionExhaustCategory::UseItem:
+		default:
+			return g_config.getNumber(ConfigManager::EXHAUST_USEITEM_INTERVAL);
+	}
+}
+
+bool hasActionExhaust(const Player* player, uint32_t subId)
+{
+	return !player->hasFlag(PlayerFlag_HasNoExhaustion) && player->hasCondition(CONDITION_EXHAUST, subId);
+}
+
+void addActionExhaust(Player* player, uint32_t subId, int32_t ticks)
+{
+	if (ticks <= 0 || player->hasFlag(PlayerFlag_HasNoExhaustion)) {
+		return;
+	}
+
+	std::unique_ptr<Condition> condition(Condition::createCondition(
+		CONDITIONID_DEFAULT,
+		CONDITION_EXHAUST,
+		ticks,
+		0,
+		false,
+		subId
+	));
+
+	if (condition) {
+		player->addCondition(condition.release());
+	}
+}
+
+bool checkAndApplyActionExhaust(Player* player, uint32_t subId, int32_t ticks, bool sendMessage = true)
+{
+	if (hasActionExhaust(player, subId)) {
+		if (sendMessage) {
+			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
+		}
+		return false;
+	}
+
+	addActionExhaust(player, subId, ticks);
+	return true;
+}
+
+void addSecondaryUseItemExhaust(Player* player, ActionExhaustCategory category)
+{
+	if (category == ActionExhaustCategory::Potion && g_config.getBoolean(ConfigManager::POTION_CAN_EXHAUST_USEITEM)) {
+		addActionExhaust(player, EXHAUST_USEITEM, g_config.getNumber(ConfigManager::EXHAUST_USEITEM_INTERVAL));
+	} else if (category == ActionExhaustCategory::Rune && g_config.getBoolean(ConfigManager::RUNE_CAN_EXHAUST_USEITEM)) {
+		addActionExhaust(player, EXHAUST_USEITEM, g_config.getNumber(ConfigManager::EXHAUST_USEITEM_INTERVAL));
+	}
+}
+
+void setNextActionByCategory(Player* player, ActionExhaustCategory category, int32_t ticks)
+{
+	if (ticks <= 0 || player->hasFlag(PlayerFlag_HasNoExhaustion)) {
+		return;
+	}
+
+	const int64_t nextActionTime = OTSYS_TIME() + ticks;
+	switch (category) {
+		case ActionExhaustCategory::Potion:
+			player->setNextPotionAction(nextActionTime);
+			break;
+		case ActionExhaustCategory::Rune:
+			player->setNextRuneAction(nextActionTime);
+			break;
+		case ActionExhaustCategory::UseItem:
+			player->setNextAction(nextActionTime);
+			break;
+		case ActionExhaustCategory::Machete:
+			break;
+	}
+}
+
+}
+
 Actions::Actions() :
 	scriptInterface("Action Interface")
 {
@@ -637,16 +785,15 @@ ReturnValue Actions::internalUseItem(Player* player, const Position& pos, uint8_
 bool Actions::useItem(Player* player, const Position& pos, uint8_t index, Item* item, bool isHotkey)
 {
 	const ItemType& it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return false;
-		}
+	const ActionExhaustCategory exhaustCategory = getActionExhaustCategory(it, item->getID());
+	const int32_t exhaustTicks = getActionExhaustTicks(exhaustCategory);
 
-		player->setNextPotionAction(OTSYS_TIME() + g_config.getNumber(ConfigManager::ACTIONS_DELAY_INTERVAL));
-	} else {
-		player->setNextAction(OTSYS_TIME() + g_config.getNumber(ConfigManager::ACTIONS_DELAY_INTERVAL));
+	if (!checkAndApplyActionExhaust(player, getActionExhaustSubId(exhaustCategory), exhaustTicks)) {
+		return false;
 	}
+
+	addSecondaryUseItemExhaust(player, exhaustCategory);
+	setNextActionByCategory(player, exhaustCategory, exhaustTicks);
 
 	if (isHotkey) {
 		uint16_t subType = item->getSubType();
@@ -665,15 +812,15 @@ bool Actions::useItemEx(Player* player, const Position& fromPos, const Position&
                         uint8_t toStackPos, Item* item, bool isHotkey, Creature* creature/* = nullptr*/)
 {
 	const ItemType& it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return false;
-		}
-		player->setNextPotionAction(OTSYS_TIME() + g_config.getNumber(ConfigManager::EX_ACTIONS_DELAY_INTERVAL));
-	} else {
-		player->setNextAction(OTSYS_TIME() + g_config.getNumber(ConfigManager::EX_ACTIONS_DELAY_INTERVAL));
+	const ActionExhaustCategory exhaustCategory = getActionExhaustCategory(it, item->getID());
+	const int32_t exhaustTicks = getActionExhaustTicks(exhaustCategory);
+
+	if (!checkAndApplyActionExhaust(player, getActionExhaustSubId(exhaustCategory), exhaustTicks)) {
+		return false;
 	}
+
+	addSecondaryUseItemExhaust(player, exhaustCategory);
+	setNextActionByCategory(player, exhaustCategory, exhaustTicks);
 
 	Action* action = getAction(item);
 	if (!action) {

@@ -418,6 +418,8 @@ bool ConfigManager::load()
 	boolean[BLOCK_SAME_IP_PVP] = getGlobalBoolean(L, "blockSameIpPvp", true);
 	boolean[DISABLE_PUSH_CANCEL_ON_SPELLS] = getGlobalBoolean(L, "disablePushCancelOnSpells", false);
 	boolean[PUSH_WHEN_ATTACKING] = getGlobalBoolean(L, "pushWhenAttacking", true);
+	boolean[POTION_CAN_EXHAUST_USEITEM] = getGlobalBoolean(L, "potionCanExhaustUseItem", false);
+	boolean[RUNE_CAN_EXHAUST_USEITEM] = getGlobalBoolean(L, "runeCanExhaustUseItem", false);
 	boolean[ENABLE_WINGS] = getGlobalBoolean(L, "enableWings", false);
 	boolean[ENABLE_AURAS] = getGlobalBoolean(L, "enableAuras", false);
 	boolean[ENABLE_SHADERS] = getGlobalBoolean(L, "enableShaders", false);
@@ -489,6 +491,11 @@ bool ConfigManager::load()
 	// Push mechanics
 	integer[PUSH_DELAY] = getGlobalNumber(L, "pushDelay", 1);
 	integer[PUSH_DISTANCE_DELAY] = getGlobalNumber(L, "pushDistanceDelay", 1);
+	integer[EXHAUST_POTION_INTERVAL] = getGlobalNumber(L, "exhaustPotionInterval", integer[EX_ACTIONS_DELAY_INTERVAL]);
+	integer[EXHAUST_RUNE_INTERVAL] = getGlobalNumber(L, "exhaustRuneInterval", integer[EX_ACTIONS_DELAY_INTERVAL]);
+	integer[EXHAUST_USEITEM_INTERVAL] = getGlobalNumber(L, "exhaustUseItemInterval", integer[ACTIONS_DELAY_INTERVAL]);
+	integer[EXHAUST_MACHETE_INTERVAL] = getGlobalNumber(L, "exhaustMacheteInterval", integer[EX_ACTIONS_DELAY_INTERVAL]);
+	integer[EXHAUST_PUSH_INTERVAL] = getGlobalNumber(L, "exhaustPushInterval", integer[PUSH_DELAY]);
 	integer[ITEM_STACKING_LIMIT] = getGlobalNumber(L, "maxStack", 100);
 	integer[RESET_LEVEL] = getGlobalNumber(L, "resetLevel", 100); // reset system
 	integer[RESET_STATBONUS] = getGlobalNumber(L, "resetStatBonus", 5); // reset system

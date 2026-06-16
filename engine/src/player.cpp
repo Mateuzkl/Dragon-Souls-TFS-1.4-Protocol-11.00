@@ -2126,10 +2126,21 @@ void Player::setNextPotionActionTask(SchedulerTask* task)
 		actionPotionTaskEvent = 0;
 	}
 
-	cancelPush();
-
 	if (task) {
 		actionPotionTaskEvent = g_scheduler.addEvent(task);
+		//resetIdleTime();
+	}
+}
+
+void Player::setNextRuneActionTask(SchedulerTask* task)
+{
+	if (actionRuneTaskEvent != 0) {
+		g_scheduler.stopEvent(actionRuneTaskEvent);
+		actionRuneTaskEvent = 0;
+	}
+
+	if (task) {
+		actionRuneTaskEvent = g_scheduler.addEvent(task);
 		//resetIdleTime();
 	}
 }
@@ -2142,6 +2153,11 @@ uint32_t Player::getNextActionTime() const
 uint32_t Player::getNextPotionActionTime() const
 {
     return std::max<int64_t>(SCHEDULER_MINTICKS, nextPotionAction - OTSYS_TIME());
+}
+
+uint32_t Player::getNextRuneActionTime() const
+{
+	return std::max<int64_t>(SCHEDULER_MINTICKS, nextRuneAction - OTSYS_TIME());
 }
 
 uint32_t Player::getNextPushTime() const
