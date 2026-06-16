@@ -502,19 +502,7 @@ bool ConfigManager::load()
 	integer[RESET_DMGBONUS] = getGlobalNumber(L, "resetDmgBonus", 10); // reset system
 	integer[RESET_DMGBONUS_NEW] = getGlobalNumber(L, "resetDmgBonus", 5); // reset system
 	integer[RESET_NEW_LEVEL] = getGlobalNumber(L, "resetNewLevel", 8); // reset new level
-	integer[RESET_STAT_BONUS] = getGlobalNumber(L, "resetStatBonus", 2);
-	
-	integer[RESET_SORCERER_MAGLEVEL] = getGlobalNumber(L, "resetSorcererMagLevel", 10);
-	integer[RESET_DRUID_MAGLEVEL] = getGlobalNumber(L, "resetDruidMagLevel", 10);
-	integer[RESET_PALADIN_MAGLEVEL] = getGlobalNumber(L, "resetPaladinMagLevel", 3);
-	integer[RESET_PALADIN_DISTANCE] = getGlobalNumber(L, "resetPaladinDistance", 10);
-	integer[RESET_PALADIN_SHIELD] = getGlobalNumber(L, "resetPaladinShield", 20);
-	integer[RESET_KNIGHT_MAGLEVEL] = getGlobalNumber(L, "resetKnightMagLevel", 2);
-	integer[RESET_KNIGHT_FIST] = getGlobalNumber(L, "resetKnightFist", 10);
-	integer[RESET_KNIGHT_CLUB] = getGlobalNumber(L, "resetKnightClub", 10);
-	integer[RESET_KNIGHT_SWORD] = getGlobalNumber(L, "resetKnightSword", 10);
-	integer[RESET_KNIGHT_AXE] = getGlobalNumber(L, "resetKnightAxe", 10);
-	integer[RESET_KNIGHT_SHIELD] = getGlobalNumber(L, "resetKnightShield", 20); 
+	integer[RESET_STAT_BONUS] = getGlobalNumber(L, "resetStatBonus", 2); 
 
 	integer[MAX_CRITICAL_CHANCE] = getGlobalNumber(L, "maxCriticalChance", 50);
 	integer[CRITICAL_SKILL_DIVISOR] = getGlobalNumber(L, "criticalSkillDivisor", 5);

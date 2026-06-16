@@ -96,6 +96,20 @@ local function doIsoldaReset(player, cid, resetCost, requiredLevel)
         return false
     end
 
+    -- Reset skill/maglevel bonuses (same as old C++ config)
+    local vocationId = player:getVocation():getId()
+    if vocationId == 13 or vocationId == 14 then
+        player:setMagicLevel(player:getMagicLevel() + 10)
+    elseif vocationId == 15 then
+        player:setSkillLevel(SKILL_DISTANCE, player:getSkillLevel(SKILL_DISTANCE) + 10)
+        player:setMagicLevel(player:getMagicLevel() + 3)
+    elseif vocationId == 16 then
+        player:setSkillLevel(SKILL_AXE, player:getSkillLevel(SKILL_AXE) + 10)
+        player:setSkillLevel(SKILL_SWORD, player:getSkillLevel(SKILL_SWORD) + 10)
+        player:setSkillLevel(SKILL_FIST, player:getSkillLevel(SKILL_FIST) + 10)
+        player:setSkillLevel(SKILL_CLUB, player:getSkillLevel(SKILL_CLUB) + 10)
+    end
+
     local newResets = player:getReset()
     Game.broadcastMessage("Parabéns! O jogador " .. player:getName() .. " resetou com sucesso e agora tem " .. newResets .. " resets!", MESSAGE_STATUS_WARNING)
     npcHandler:say('Seu poder agora é ainda maior, parabéns ' .. player:getName() .. '.', cid)

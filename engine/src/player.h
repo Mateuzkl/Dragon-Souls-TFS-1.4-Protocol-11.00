@@ -1869,11 +1869,14 @@ class Player final : public Creature, public Cylinder
 
 		void updateInventoryWeight();
 
-		void setNextWalkActionTask(SchedulerTask* task);
-		void setNextWalkTask(SchedulerTask* task);
+	public:
 		void setNextActionTask(SchedulerTask* task);
 		void setNextPotionActionTask(SchedulerTask* task);
 		void setNextRuneActionTask(SchedulerTask* task);
+
+	private:
+		void setNextWalkActionTask(SchedulerTask* task);
+		void setNextWalkTask(SchedulerTask* task);
 		void setNextActionPushTask(SchedulerTask* task);
 
 		void death(Creature* lastHitCreature) final;
