@@ -244,42 +244,18 @@ local function applyResetBonuses(player, vocConfig, newResets)
 end
 
 local function fillPlayerVitals(player)
-    local maxHealth = player:getMaxHealth()
-    local healthOk = pcall(function()
-        player:setHealth(maxHealth)
-    end)
-
-    if not healthOk then
-        local currentHealth = 0
+    local healthNeeded = math.max(0, player:getMaxHealth() - player:getHealth())
+    if healthNeeded > 0 then
         pcall(function()
-            currentHealth = player:getHealth()
+            player:addHealth(healthNeeded)
         end)
-
-        local healthToAdd = math.max(0, maxHealth - currentHealth)
-        if healthToAdd > 0 then
-            pcall(function()
-                player:addHealth(healthToAdd)
-            end)
-        end
     end
 
-    local maxMana = player:getMaxMana()
-    local manaOk = pcall(function()
-        player:setMana(maxMana)
-    end)
-
-    if not manaOk then
-        local currentMana = 0
+    local manaNeeded = math.max(0, player:getMaxMana() - player:getMana())
+    if manaNeeded > 0 then
         pcall(function()
-            currentMana = player:getMana()
+            player:addMana(manaNeeded)
         end)
-
-        local manaToAdd = math.max(0, maxMana - currentMana)
-        if manaToAdd > 0 then
-            pcall(function()
-                player:addMana(manaToAdd)
-            end)
-        end
     end
 end
 
@@ -332,18 +308,12 @@ local function sendResetInfo(player, cid)
     npcHandler:say('Status atual: Level ' .. player:getLevel() .. ', Resets: ' .. currentResets .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. '. Próximo reset: ' .. preview.newResets .. '. Próximo reset custará ' .. preview.resetCost .. ' ruby coins. Após reset você ficará com HP ' .. preview.newHp .. ' e MP ' .. preview.newMp .. '. Modo de crescimento: ' .. resetConfig.growthMode .. '.', cid)
 end
 
-local function canApplyResetStats(player, snapshot)
-    local hpOk, hpResult = pcall(function()
-        return player:setMaxHealth(snapshot.maxHp)
-    end)
-    if not hpOk or hpResult == false then
+local function canApplyResetStats(player)
+    if type(player.setMaxHealth) ~= "function" then
         return false, 'setMaxHealth indisponível'
     end
 
-    local mpOk, mpResult = pcall(function()
-        return player:setMaxMana(snapshot.maxMp)
-    end)
-    if not mpOk or mpResult == false then
+    if type(player.setMaxMana) ~= "function" then
         return false, 'setMaxMana indisponível'
     end
 
@@ -387,7 +357,7 @@ local function doIsoldaReset(player, cid)
         maxMp = player:getMaxMana()
     }
 
-    local statsPrecheckOk, statsPrecheckReason = canApplyResetStats(player, resetSnapshot)
+    local statsPrecheckOk, statsPrecheckReason = canApplyResetStats(player)
     if not statsPrecheckOk then
         npcHandler:say('Desculpe, não foi possível validar o sistema de MaxHP/MaxMP agora.', cid)
         logResetFailure(player, statsPrecheckReason, resetSnapshot, 0)
@@ -448,9 +418,6 @@ local function doIsoldaReset(player, cid)
     end)
 
     if not mpOk or mpResult == false then
-        pcall(function()
-            player:setMaxHealth(resetSnapshot.maxHp)
-        end)
         if paymentRemoved then
             refundResetCost(player, preview.resetCost)
         end
