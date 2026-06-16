@@ -142,9 +142,24 @@ local function getResetCost(player, currentResets)
     local resetMultiplier = tonumber(rubyCost.resetMultiplier) or 60
     local divisor = math.max(1, tonumber(rubyCost.divisor) or 1000000)
     local minimum = math.max(0, tonumber(rubyCost.minimum) or 1)
+    local chargedReset = currentResets
+    if chargedReset <= 0 then
+        chargedReset = 1
+    end
 
-    local cost = math.floor((player:getLevel() * levelMultiplier) * (currentResets * resetMultiplier) / divisor)
+    local cost = math.floor((player:getLevel() * levelMultiplier) * (chargedReset * resetMultiplier) / divisor)
     return math.max(minimum, cost)
+end
+
+local function refundResetCost(player, cost)
+    cost = math.max(0, tonumber(cost) or 0)
+    if cost <= 0 then
+        return
+    end
+
+    pcall(function()
+        player:addItem(resetConfig.rubyCoinId, cost)
+    end)
 end
 
 local function buildResetPreview(player)
@@ -200,7 +215,17 @@ local function fillPlayerVitals(player)
     end)
 
     if not healthOk then
-        player:addHealth(maxHealth)
+        local currentHealth = 0
+        pcall(function()
+            currentHealth = player:getHealth()
+        end)
+
+        local healthToAdd = math.max(0, maxHealth - currentHealth)
+        if healthToAdd > 0 then
+            pcall(function()
+                player:addHealth(healthToAdd)
+            end)
+        end
     end
 
     local maxMana = player:getMaxMana()
@@ -289,26 +314,46 @@ local function doIsoldaReset(player, cid)
         return false
     end
 
+    local newHp, newMp = calculateResetStats(preview.vocationConfig, preview.newResets)
+    if not newHp or not newMp then
+        npcHandler:say('Desculpe, não foi possível calcular seu HP e MP de reset.', cid)
+        return false
+    end
+
+    local paymentRemoved = false
+    if preview.resetCost > 0 then
+        if not player:removeItem(resetConfig.rubyCoinId, preview.resetCost) then
+            npcHandler:say('Não foi possível remover os ruby coins.', cid)
+            return false
+        end
+        paymentRemoved = true
+    end
+
     local oldResets = preview.currentResets
+    local oldMaxHealth = player:getMaxHealth()
     local resetOk, resetResult = pcall(function()
         return player:doReset()
     end)
 
     if not resetOk or resetResult == false then
+        if paymentRemoved then
+            refundResetCost(player, preview.resetCost)
+        end
         npcHandler:say('Desculpe, não foi possível resetar agora.', cid)
         return false
     end
 
     local newResets = getCurrentReset(player)
     if newResets <= oldResets then
+        if paymentRemoved then
+            refundResetCost(player, preview.resetCost)
+        end
         npcHandler:say('Desculpe, o reset não foi aplicado corretamente.', cid)
         return false
     end
 
-    local newHp, newMp = calculateResetStats(preview.vocationConfig, newResets)
-    if not newHp or not newMp then
-        npcHandler:say('Desculpe, não foi possível calcular seu HP e MP de reset.', cid)
-        return false
+    if newResets ~= preview.newResets then
+        newHp, newMp = calculateResetStats(preview.vocationConfig, newResets)
     end
 
     local hpOk, hpResult = pcall(function()
@@ -316,6 +361,9 @@ local function doIsoldaReset(player, cid)
     end)
 
     if not hpOk or hpResult == false then
+        if paymentRemoved then
+            refundResetCost(player, preview.resetCost)
+        end
         npcHandler:say('Desculpe, não foi possível aplicar seu MaxHP de reset.', cid)
         return false
     end
@@ -325,12 +373,13 @@ local function doIsoldaReset(player, cid)
     end)
 
     if not mpOk or mpResult == false then
+        pcall(function()
+            player:setMaxHealth(oldMaxHealth)
+        end)
+        if paymentRemoved then
+            refundResetCost(player, preview.resetCost)
+        end
         npcHandler:say('Desculpe, não foi possível aplicar seu MaxMP de reset.', cid)
-        return false
-    end
-
-    if preview.resetCost > 0 and not player:removeItem(resetConfig.rubyCoinId, preview.resetCost) then
-        npcHandler:say('O reset foi aplicado, mas não foi possível remover os ruby coins. Avise a staff.', cid)
         return false
     end
 
