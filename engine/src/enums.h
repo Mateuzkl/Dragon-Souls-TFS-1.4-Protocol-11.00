@@ -525,6 +525,7 @@ enum ConditionId_t : int8_t {
 };
 
 enum Exhaust_t {
+	// Values below 20 are used by legacy engine exhaust conditions.
 	EXHAUST_USEITEM = 20,
 	EXHAUST_POTION = 30,
 	EXHAUST_RUNE = 31,

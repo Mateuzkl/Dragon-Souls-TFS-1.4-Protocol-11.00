@@ -65,6 +65,11 @@ Player::Player(ProtocolGame_ptr p) :
 
 Player::~Player()
 {
+	if (actionRuneTaskEvent != 0) {
+		g_scheduler.stopEvent(actionRuneTaskEvent);
+		actionRuneTaskEvent = 0;
+	}
+
 	for (Item* item : inventory) {
 		if (item) {
 			item->setParent(nullptr);

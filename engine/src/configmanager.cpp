@@ -495,7 +495,7 @@ bool ConfigManager::load()
 	integer[EXHAUST_RUNE_INTERVAL] = getGlobalNumber(L, "exhaustRuneInterval", integer[EX_ACTIONS_DELAY_INTERVAL]);
 	integer[EXHAUST_USEITEM_INTERVAL] = getGlobalNumber(L, "exhaustUseItemInterval", integer[ACTIONS_DELAY_INTERVAL]);
 	integer[EXHAUST_MACHETE_INTERVAL] = getGlobalNumber(L, "exhaustMacheteInterval", integer[EX_ACTIONS_DELAY_INTERVAL]);
-	integer[EXHAUST_PUSH_INTERVAL] = getGlobalNumber(L, "exhaustPushInterval", integer[PUSH_DELAY]);
+	integer[EXHAUST_PUSH_INTERVAL] = getGlobalNumber(L, "exhaustPushInterval", 50);
 	integer[ITEM_STACKING_LIMIT] = getGlobalNumber(L, "maxStack", 100);
 	integer[RESET_LEVEL] = getGlobalNumber(L, "resetLevel", 100); // reset system
 	integer[RESET_STATBONUS] = getGlobalNumber(L, "resetStatBonus", 5); // reset system

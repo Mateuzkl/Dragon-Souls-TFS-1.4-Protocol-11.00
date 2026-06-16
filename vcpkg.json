@@ -17,5 +17,11 @@
     "cryptopp",
     "luajit"
   ],
-  "builtin-baseline": "0d9d4684352ba8de70bdf251c6fc9a3c464fa12b"
+  "overrides": [
+    {
+      "name": "cryptopp",
+      "version": "2026-03-02"
+    }
+  ],
+  "builtin-baseline": "f36d2c22b92c43a7dc6ca41a380434d15570e7a4"
 }

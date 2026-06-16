@@ -19,6 +19,7 @@
 
 #include "otpch.h"
 
+#include "actionexhaust.h"
 #include "pugicast.h"
 #include "decay.h"
 
@@ -71,98 +72,68 @@ extern LuaEnvironment g_luaEnvironment;
 
 namespace {
 
-enum class ActionCooldownCategory : uint8_t {
-	UseItem,
-	Potion,
-	Rune,
-	Machete,
-};
-
-bool isMacheteCooldownItem(uint16_t itemId)
-{
-	switch (itemId) {
-		case 2420:
-		case 2442:
-			return true;
-		default:
-			return false;
-	}
-}
-
-ActionCooldownCategory getActionCooldownCategory(const ItemType& it, uint16_t itemId)
-{
-	if (it.type == ITEM_TYPE_POTION) {
-		return ActionCooldownCategory::Potion;
-	}
-
-	if (it.isRune()) {
-		return ActionCooldownCategory::Rune;
-	}
-
-	if (isMacheteCooldownItem(itemId)) {
-		return ActionCooldownCategory::Machete;
-	}
-
-	return ActionCooldownCategory::UseItem;
-}
-
-bool canDoActionByCategory(const Player* player, ActionCooldownCategory category)
+bool canDoActionByCategory(const Player* player, ActionExhaustCategory category)
 {
 	if (player->hasFlag(PlayerFlag_HasNoExhaustion)) {
 		return true;
 	}
 
 	switch (category) {
-		case ActionCooldownCategory::Potion:
+		case ActionExhaustCategory::Potion:
 			return player->canDoPotionAction();
-		case ActionCooldownCategory::Rune:
+		case ActionExhaustCategory::Rune:
 			return player->canDoRuneAction();
-		case ActionCooldownCategory::UseItem:
+		case ActionExhaustCategory::UseItem:
 			return player->canDoAction();
-		case ActionCooldownCategory::Machete:
+		case ActionExhaustCategory::Machete:
 			return true;
 	}
 
 	return true;
 }
 
-uint32_t getNextActionTimeByCategory(const Player* player, ActionCooldownCategory category)
+uint32_t getNextActionTimeByCategory(const Player* player, ActionExhaustCategory category)
 {
 	switch (category) {
-		case ActionCooldownCategory::Potion:
+		case ActionExhaustCategory::Potion:
 			return player->getNextPotionActionTime();
-		case ActionCooldownCategory::Rune:
+		case ActionExhaustCategory::Rune:
 			return player->getNextRuneActionTime();
-		case ActionCooldownCategory::UseItem:
+		case ActionExhaustCategory::UseItem:
 			return player->getNextActionTime();
-		case ActionCooldownCategory::Machete:
+		case ActionExhaustCategory::Machete:
 			return SCHEDULER_MINTICKS;
 	}
 
 	return SCHEDULER_MINTICKS;
 }
 
-void setNextActionTaskByCategory(Player* player, ActionCooldownCategory category, SchedulerTask* task)
+void setNextActionTaskByCategory(Player* player, ActionExhaustCategory category, SchedulerTask* task)
 {
 	switch (category) {
-		case ActionCooldownCategory::Potion:
+		case ActionExhaustCategory::Potion:
 			player->setNextPotionActionTask(task);
 			break;
-		case ActionCooldownCategory::Rune:
+		case ActionExhaustCategory::Rune:
 			player->setNextRuneActionTask(task);
 			break;
-		case ActionCooldownCategory::UseItem:
+		case ActionExhaustCategory::UseItem:
 			player->setNextActionTask(task);
 			break;
-		case ActionCooldownCategory::Machete:
+		case ActionExhaustCategory::Machete:
 			delete task;
 			break;
 	}
 }
 
-void clearNextActionTaskByCategory(Player* player, ActionCooldownCategory category)
+void clearNextActionTaskByCategory(Player* player, ActionExhaustCategory category)
 {
 	setNextActionTaskByCategory(player, category, nullptr);
+}
+
+bool isPushBlockedByAttack(Player* player)
+{
+	return !g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING) && player->getAttackedCreature();
 }
 
 void addPushExhaust(Player* player, int32_t ticks)
@@ -907,6 +878,11 @@ void Game::playerMoveCreatureByID(uint32_t playerId, uint32_t movingCreatureId, 
 
 void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Position& movingCreatureOrigPos, Tile* toTile)
 {
+	if (isPushBlockedByAttack(player)) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
     bool canPerformPush = player->hasFlag(PlayerFlag_HasNoExhaustion) || player->canPush();
     if (!canPerformPush) {
         uint32_t delay = player->getNextPushTime();
@@ -1119,6 +1095,11 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
                           uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint16_t count, Item* item, Cylinder* toCylinder)
 {
     {
+        if (isPushBlockedByAttack(player)) {
+            player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+            return;
+        }
+
         bool canPerformPush = player->hasFlag(PlayerFlag_HasNoExhaustion) || player->canPush();
         if (!canPerformPush) {
             uint32_t delay = player->getNextPushTime();
@@ -2727,7 +2708,7 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 	}
 
 	const ItemType& it = Item::items[item->getID()];
-	const ActionCooldownCategory actionCooldownCategory = getActionCooldownCategory(it, item->getID());
+	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
 	if (ret != RETURNVALUE_NOERROR) {
 		if (ret == RETURNVALUE_TOOFARAWAY) {
 			Position itemPos = fromPos;
@@ -2804,7 +2785,7 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 	}
 
 	const ItemType& it = Item::items[item->getID()];
-	const ActionCooldownCategory actionCooldownCategory = getActionCooldownCategory(it, item->getID());
+	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
 	ReturnValue ret = g_actions->canUse(player, pos);
 	if (ret != RETURNVALUE_NOERROR) {
 		if (ret == RETURNVALUE_TOOFARAWAY) {
@@ -2877,7 +2858,7 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 	}
 
 	const ItemType& it = Item::items[item->getID()];
-	const ActionCooldownCategory actionCooldownCategory = getActionCooldownCategory(it, item->getID());
+	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
 	Position toPos = creature->getPosition();
 	Position walkToPos = fromPos;
 	ReturnValue ret = g_actions->canUse(player, fromPos);

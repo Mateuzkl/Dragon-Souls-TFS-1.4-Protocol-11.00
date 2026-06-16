@@ -19,6 +19,7 @@
 
 #include "otpch.h"
 
+#include "actionexhaust.h"
 #include "actions.h"
 #include "bed.h"
 #include "configmanager.h"
@@ -34,66 +35,6 @@ extern Actions* g_actions;
 extern ConfigManager g_config;
 
 namespace {
-
-enum class ActionExhaustCategory : uint8_t {
-	UseItem,
-	Potion,
-	Rune,
-	Machete,
-};
-
-bool isPotionActionItem(const ItemType& it, uint16_t)
-{
-	return it.type == ITEM_TYPE_POTION;
-}
-
-bool isRuneActionItem(const ItemType& it, uint16_t)
-{
-	return it.isRune();
-}
-
-bool isMacheteActionItem(uint16_t itemId)
-{
-	switch (itemId) {
-		case 2420:
-		case 2442:
-			return true;
-		default:
-			return false;
-	}
-}
-
-ActionExhaustCategory getActionExhaustCategory(const ItemType& it, uint16_t itemId)
-{
-	if (isPotionActionItem(it, itemId)) {
-		return ActionExhaustCategory::Potion;
-	}
-
-	if (isRuneActionItem(it, itemId)) {
-		return ActionExhaustCategory::Rune;
-	}
-
-	if (isMacheteActionItem(itemId)) {
-		return ActionExhaustCategory::Machete;
-	}
-
-	return ActionExhaustCategory::UseItem;
-}
-
-uint32_t getActionExhaustSubId(ActionExhaustCategory category)
-{
-	switch (category) {
-		case ActionExhaustCategory::Potion:
-			return EXHAUST_POTION;
-		case ActionExhaustCategory::Rune:
-			return EXHAUST_RUNE;
-		case ActionExhaustCategory::Machete:
-			return EXHAUST_MACHETE;
-		case ActionExhaustCategory::UseItem:
-		default:
-			return EXHAUST_USEITEM;
-	}
-}
 
 int32_t getActionExhaustTicks(ActionExhaustCategory category)
 {
@@ -150,9 +91,11 @@ bool checkAndApplyActionExhaust(Player* player, uint32_t subId, int32_t ticks, b
 
 void addSecondaryUseItemExhaust(Player* player, ActionExhaustCategory category)
 {
-	if (category == ActionExhaustCategory::Potion && g_config.getBoolean(ConfigManager::POTION_CAN_EXHAUST_USEITEM)) {
-		addActionExhaust(player, EXHAUST_USEITEM, g_config.getNumber(ConfigManager::EXHAUST_USEITEM_INTERVAL));
-	} else if (category == ActionExhaustCategory::Rune && g_config.getBoolean(ConfigManager::RUNE_CAN_EXHAUST_USEITEM)) {
+	const bool applyUseItemExhaust =
+		(category == ActionExhaustCategory::Potion && g_config.getBoolean(ConfigManager::POTION_CAN_EXHAUST_USEITEM)) ||
+		(category == ActionExhaustCategory::Rune && g_config.getBoolean(ConfigManager::RUNE_CAN_EXHAUST_USEITEM));
+
+	if (applyUseItemExhaust) {
 		addActionExhaust(player, EXHAUST_USEITEM, g_config.getNumber(ConfigManager::EXHAUST_USEITEM_INTERVAL));
 	}
 }
