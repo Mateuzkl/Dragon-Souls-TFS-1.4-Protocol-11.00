@@ -7,15 +7,104 @@ function onCreatureDisappear(cid)           npcHandler:onCreatureDisappear(cid) 
 function onCreatureSay(cid, type, msg)      npcHandler:onCreatureSay(cid, type, msg)    end
 function onThink()                          npcHandler:onThink()                        end
 
-local voices = { {text = "Olá mortal! Posso te ajudar com itens elementais e bênçãos!"} }
+local voices = { {text = "OlÃ¡ mortal! Posso te ajudar com itens elementais e bÃªnÃ§Ã£os!"} }
 npcHandler:addModule(VoiceModule:new(voices))
 
 keywordHandler:addKeyword({'job'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu sou uma serva de Merlian!'})
-keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu posso criar itens elementais, energizar seus itens, dar {bless} para mortais e fazer {reset} de deuses! Diga {info} para informações de reset.'})
-keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu não sou mercadora!'})
-keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu não sou mercadora!'})
-keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! Você é apenas um novato!'})
-keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! Você é apenas um novato!'})
+keywordHandler:addKeyword({'offer'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu posso criar itens elementais, energizar seus itens, dar {bless} para mortais e fazer {reset} de deuses! Diga {info} para informaÃ§Ãµes de reset.'})
+keywordHandler:addKeyword({'sell'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu nÃ£o sou mercadora!'})
+keywordHandler:addKeyword({'buy'}, StdModule.say, {npcHandler = npcHandler, text = 'Eu nÃ£o sou mercadora!'})
+keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! VocÃª Ã© apenas um novato!'})
+keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! VocÃª Ã© apenas um novato!'})
+
+local resetConfig = {
+    defaultLevel = 510,
+    rubyCoinId = 38915,
+    logoutDelay = 5000
+}
+
+local function getNumberConfig(key, fallback)
+    if type(getConfigInfo) == "function" then
+        local value = tonumber(getConfigInfo(key))
+        if value then
+            return value
+        end
+    end
+
+    local value = tonumber(_G[key])
+    if value then
+        return value
+    end
+
+    return fallback
+end
+
+local function getRequiredResetLevel()
+    return getNumberConfig("resetLevel", resetConfig.defaultLevel)
+end
+
+local function getResetCost(player, currentResets)
+    if currentResets <= 0 then
+        return 0
+    end
+
+    return math.max(1, math.floor((player:getLevel() * 4000) * (currentResets * 60) / 1000000))
+end
+
+local function isGodVocation(player)
+    local vocationId = player:getVocation():getId()
+    return vocationId >= 13 and vocationId <= 16
+end
+
+local function scheduleResetLogout(player)
+    addEvent(function(playerId)
+        local resetPlayer = Player(playerId)
+        if resetPlayer then
+            resetPlayer:remove()
+        end
+    end, resetConfig.logoutDelay, player:getId())
+end
+
+local function doIsoldaReset(player, cid, resetCost, requiredLevel)
+    if not player:isPremium() then
+        npcHandler:say('Desculpe, eu sÃ³ posso resetar deuses Premium.', cid)
+        return false
+    end
+
+    if player:getLevel() < requiredLevel then
+        npcHandler:say('VocÃª precisa ser level ' .. requiredLevel .. ' ou superior para resetar.', cid)
+        return false
+    end
+
+    if not isGodVocation(player) then
+        npcHandler:say('Desculpe, apenas deuses podem resetar comigo.', cid)
+        return false
+    end
+
+    if resetCost > 0 and player:getItemCount(resetConfig.rubyCoinId) < resetCost then
+        npcHandler:say('VocÃª precisa de ' .. resetCost .. ' ruby coins para resetar.', cid)
+        return false
+    end
+
+    if resetCost > 0 and not player:removeItem(resetConfig.rubyCoinId, resetCost) then
+        npcHandler:say('NÃ£o foi possÃ­vel remover os ruby coins.', cid)
+        return false
+    end
+
+    if not player:doReset() then
+        npcHandler:say('Desculpe, nÃ£o foi possÃ­vel resetar agora.', cid)
+        return false
+    end
+
+    local newResets = player:getReset()
+    Game.broadcastMessage("ParabÃ©ns! O jogador " .. player:getName() .. " resetou com sucesso e agora tem " .. newResets .. " resets!", MESSAGE_STATUS_WARNING)
+    npcHandler:say('Seu poder agora Ã© ainda maior, parabÃ©ns ' .. player:getName() .. '.', cid)
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª resetou seu personagem.")
+    player:sendTextMessage(MESSAGE_STATUS_WARNING, "VocÃª serÃ¡ desconectado em 5 segundos para finalizar o reset.")
+    player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
+    scheduleResetLogout(player)
+    return true
+end
 
 function creatureSayCallback(cid, type, msg)
     if not npcHandler:isFocused(cid) then
@@ -30,10 +119,11 @@ function creatureSayCallback(cid, type, msg)
     local preco = player:getLevel() * 2 -- Original script uses level * 2000, so level * 2 for "k" format
     local bless = player:hasBlessing(1)
     local currentResets = player:getReset()
-    local rubys = math.floor((player:getLevel() * 4000) * (currentResets * 30 * 2) / 1000000)
+    local resetLevel = getRequiredResetLevel()
+    local rubys = getResetCost(player, currentResets)
     
     if msgcontains(msg, 'energyze') or msgcontains(msg, 'energize') then
-        npcHandler:say('Eu posso energyzar seu elemental necklace por 50k, spirit elemental amulet por 100k ou o seu magic elemental amulet por 150k, você deseja que eu energyze?', cid)
+        npcHandler:say('Eu posso energyzar seu elemental necklace por 50k, spirit elemental amulet por 100k ou o seu magic elemental amulet por 150k, vocÃª deseja que eu energyze?', cid)
         npcHandler.topic[cid] = 1
         
     elseif npcHandler.topic[cid] == 1 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
@@ -41,34 +131,34 @@ function creatureSayCallback(cid, type, msg)
         if player:getItemCount(2197) >= 1 and player:removeMoney(50000) then
             player:removeItem(2197, 1)
             player:addItem(38906, 1)
-            npcHandler:say('Ele é todo seu! Você está protegido.', cid)
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "Você energizou seu Elemental necklace.")
+            npcHandler:say('Ele Ã© todo seu! VocÃª estÃ¡ protegido.', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª energizou seu Elemental necklace.")
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         -- Check for Spirit Elemental Amulet (2173)  
         elseif player:getItemCount(2173) >= 1 and player:removeMoney(100000) then
             player:removeItem(2173, 1)
             player:addItem(38901, 1)
-            npcHandler:say('Ele é todo seu! Você está protegido.', cid)
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "Você energizou seu Spirit Elemental amulet.")
+            npcHandler:say('Ele Ã© todo seu! VocÃª estÃ¡ protegido.', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª energizou seu Spirit Elemental amulet.")
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         -- Check for Magic Elemental Amulet (2125)
         elseif player:getItemCount(2125) >= 1 and player:removeMoney(150000) then
             player:removeItem(2125, 1)
             player:addItem(38900, 1)
-            npcHandler:say('Ele é todo seu! Você está protegido.', cid)
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "Você energizou seu Magic Elemental amulet.")
+            npcHandler:say('Ele Ã© todo seu! VocÃª estÃ¡ protegido.', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª energizou seu Magic Elemental amulet.")
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         else
             if player:getItemCount(2125) == 0 and player:getItemCount(2173) == 0 and player:getItemCount(2197) == 0 then
-                npcHandler:say('Você não tem nenhum amulet para ser energyzado.', cid)
+                npcHandler:say('VocÃª nÃ£o tem nenhum amulet para ser energyzado.', cid)
             else
-                npcHandler:say('Desculpe, você não tem a quantia necessária.', cid)
+                npcHandler:say('Desculpe, vocÃª nÃ£o tem a quantia necessÃ¡ria.', cid)
             end
         end
         npcHandler.topic[cid] = 0
         
     elseif msgcontains(msg, 'elemental necklace') or msgcontains(msg, 'elemental') then
-        npcHandler:say('Você deseja trocar o mysterious, dragon breath, scorpion, platinum e o vampire tooth necklace por um Elemental necklace?', cid)
+        npcHandler:say('VocÃª deseja trocar o mysterious, dragon breath, scorpion, platinum e o vampire tooth necklace por um Elemental necklace?', cid)
         npcHandler.topic[cid] = 4
         
     elseif npcHandler.topic[cid] == 4 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
@@ -82,16 +172,16 @@ function creatureSayCallback(cid, type, msg)
             player:removeItem(2161, 1) -- platinum
             player:removeItem(2198, 1) -- vampire tooth
             player:addItem(2197, 1) -- elemental necklace
-            npcHandler:say('Pronto! O seu elemental necklace está pronto, obrigada.', cid)
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "Você recebeu um Elemental necklace.")
+            npcHandler:say('Pronto! O seu elemental necklace estÃ¡ pronto, obrigada.', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª recebeu um Elemental necklace.")
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         else
-            npcHandler:say('Desculpe, você não tem todos amulets necessários.', cid)
+            npcHandler:say('Desculpe, vocÃª nÃ£o tem todos amulets necessÃ¡rios.', cid)
         end
         npcHandler.topic[cid] = 0
         
     elseif msgcontains(msg, 'spirit elemental amulet') or msgcontains(msg, 'spirit') then
-        npcHandler:say('Você deseja trocar o Ialamar, frozzen, sickness, Samantha, Mastafar, priest e o eletric amulet por um Spirit Elemental Amulet?', cid)
+        npcHandler:say('VocÃª deseja trocar o Ialamar, frozzen, sickness, Samantha, Mastafar, priest e o eletric amulet por um Spirit Elemental Amulet?', cid)
         npcHandler.topic[cid] = 5
         
     elseif npcHandler.topic[cid] == 5 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
@@ -108,16 +198,16 @@ function creatureSayCallback(cid, type, msg)
             player:removeItem(2131, 1) -- priest
             player:removeItem(2129, 1) -- electric
             player:addItem(2173, 1) -- spirit elemental amulet
-            npcHandler:say('Pronto! O seu spirit elemental necklace está pronto, obrigada.', cid)
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "Você recebeu um Spirit Elemental amulet.")
+            npcHandler:say('Pronto! O seu spirit elemental necklace estÃ¡ pronto, obrigada.', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª recebeu um Spirit Elemental amulet.")
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         else
-            npcHandler:say('Desculpe, você não tem todos amulets necessários.', cid)
+            npcHandler:say('Desculpe, vocÃª nÃ£o tem todos amulets necessÃ¡rios.', cid)
         end
         npcHandler.topic[cid] = 0
         
     elseif msgcontains(msg, 'magic elemental amulet') or msgcontains(msg, 'magic') then
-        npcHandler:say('Você deseja trocar o Merlian, relic of the hell, Broonier, Thordain, dark wyzard, angel e o gaya amulet por um Elemental Magic Amulet?', cid)
+        npcHandler:say('VocÃª deseja trocar o Merlian, relic of the hell, Broonier, Thordain, dark wyzard, angel e o gaya amulet por um Elemental Magic Amulet?', cid)
         npcHandler.topic[cid] = 6
         
     elseif npcHandler.topic[cid] == 6 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
@@ -134,41 +224,41 @@ function creatureSayCallback(cid, type, msg)
             player:removeItem(2196, 1) -- angel
             player:removeItem(2138, 1) -- gaya
             player:addItem(2125, 1) -- magic elemental amulet
-            npcHandler:say('Pronto! O seu magic elemental necklace está pronto, obrigada.', cid)
-            player:sendTextMessage(MESSAGE_INFO_DESCR, "Você recebeu um Magic Elemental amulet.")
+            npcHandler:say('Pronto! O seu magic elemental necklace estÃ¡ pronto, obrigada.', cid)
+            player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª recebeu um Magic Elemental amulet.")
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         else
-            npcHandler:say('Desculpe, você não tem todos amulets necessários.', cid)
+            npcHandler:say('Desculpe, vocÃª nÃ£o tem todos amulets necessÃ¡rios.', cid)
         end
         npcHandler.topic[cid] = 0
         
     elseif msgcontains(msg, 'bless') or msgcontains(msg, 'blessing') then
-        npcHandler:say('Você deseja ser abençoado por ' .. (preco * 1000) .. ' gold coins?', cid)
+        npcHandler:say('VocÃª deseja ser abenÃ§oado por ' .. (preco * 1000) .. ' gold coins?', cid)
         npcHandler.topic[cid] = 7
         
     elseif npcHandler.topic[cid] == 7 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
         if bless then
-            npcHandler:say('Você já está abençoado, meu pequeno mortal.', cid)
+            npcHandler:say('VocÃª jÃ¡ estÃ¡ abenÃ§oado, meu pequeno mortal.', cid)
         else
             if player:isPremium() then
                 if player:removeMoney(preco * 1000) then
                     for i = 1, 5 do
                         player:addBlessing(i)
                     end
-                    player:sendTextMessage(MESSAGE_INFO_DESCR, "Você recebeu a benção de Isolda.")
-                    npcHandler:say('Receba essa benção, agora todos os deuses estão olhando por tí.', cid)
+                    player:sendTextMessage(MESSAGE_INFO_DESCR, "VocÃª recebeu a benÃ§Ã£o de Isolda.")
+                    npcHandler:say('Receba essa benÃ§Ã£o, agora todos os deuses estÃ£o olhando por tÃ­.', cid)
                     player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
                 else
-                    npcHandler:say('Desculpe, você não tem a quantia necessária.', cid)
+                    npcHandler:say('Desculpe, vocÃª nÃ£o tem a quantia necessÃ¡ria.', cid)
                 end
             else
-                npcHandler:say('Desculpe, eu só posso abençoar Premiums.', cid)
+                npcHandler:say('Desculpe, eu sÃ³ posso abenÃ§oar Premiums.', cid)
             end
         end
         npcHandler.topic[cid] = 0
         
     elseif msgcontains(msg, 'the great dark wyzard') or msgcontains(msg, 'poem') then
-        npcHandler:say('Você possui o poema de Merlian?', cid)
+        npcHandler:say('VocÃª possui o poema de Merlian?', cid)
         npcHandler.topic[cid] = 8
         
     elseif npcHandler.topic[cid] == 8 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
@@ -178,7 +268,7 @@ function creatureSayCallback(cid, type, msg)
             npcHandler:say('Eu posso sentir o poder de Merlian, o grande dark wyzard.', cid)
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         else
-            npcHandler:say('Desculpe, você não está com o poema.', cid)
+            npcHandler:say('Desculpe, vocÃª nÃ£o estÃ¡ com o poema.', cid)
         end
         npcHandler.topic[cid] = 0
         
@@ -187,33 +277,32 @@ function creatureSayCallback(cid, type, msg)
         local level = player:getLevel()
         
         if vocation < 9 then
-            npcHandler:say('Hahaha, você me faz rir caro mortal, apenas valans podem ser tornar Deuses.', cid)
+            npcHandler:say('Hahaha, vocÃª me faz rir caro mortal, apenas valans podem ser tornar Deuses.', cid)
             return true
         end
         
-        if level < 500 then
+        if level < resetLevel then
             if vocation < 13 then
-                npcHandler:say('Hahaha, você não tem level suficiente para isso humilde semi-deus.', cid)
+                npcHandler:say('Hahaha, vocÃª nÃ£o tem level suficiente para isso humilde semi-deus.', cid)
             else
-                npcHandler:say('Essa é uma escolha de extrema sabedoria, você ainda não está preparado.', cid)
+                npcHandler:say('Essa Ã© uma escolha de extrema sabedoria, vocÃª ainda nÃ£o estÃ¡ preparado.', cid)
             end
             return true
         end
         
         if vocation > 12 then
-            local valor = (currentResets * 55 + 5)
             if currentResets == 0 then
-                npcHandler:say('Ual, você realmente conseguiu chegar até aqui! Se auto-resetar é uma decisão de extrema sabedoria, e se mal usada pode-ra trazer altos riscos!...', cid)
-                npcHandler:say('Como é a sua 1° vez, eu não irei lhe cobrar nada, porém você ainda tem a escolha, você realmente deseja ser resetado?', cid)
+                npcHandler:say('Ual, vocÃª realmente conseguiu chegar atÃ© aqui! Se auto-resetar Ã© uma decisÃ£o de extrema sabedoria, e se mal usada pode-ra trazer altos riscos!...', cid)
+                npcHandler:say('Como Ã© a sua 1Â° vez, eu nÃ£o irei lhe cobrar nada, porÃ©m vocÃª ainda tem a escolha, vocÃª realmente deseja ser resetado?', cid)
             else
-                npcHandler:say('Você anda sempre me surpreendendo, você se tornou um uma pessoa de extrema força e sabedoria, com dons de extrema nobreza!...', cid)
-                npcHandler:say('Porém dessa vez meus serviços serão cobrados, como esse é o seu '..(currentResets+1)..'° reset, o preço é '..valor..'.000.000 gold coins, deseja proseguir?', cid)
+                npcHandler:say('VocÃª anda sempre me surpreendendo, vocÃª se tornou um uma pessoa de extrema forÃ§a e sabedoria, com dons de extrema nobreza!...', cid)
+                npcHandler:say('PorÃ©m dessa vez meus serviÃ§os serÃ£o cobrados, como esse Ã© o seu '..(currentResets+1)..'Â° reset, o preÃ§o Ã© '..rubys..' ruby coins, deseja proseguir?', cid)
             end
-            npcHandler.topic[cid] = 10
+            npcHandler.topic[cid] = 11
             return true
         end
         
-        npcHandler:say('Hmm, fico impressionada que você tenha chegado até aqui! Então realmente você deseja se tornar um Deus? Cuidado mortal, essa decisão é irreversivel.', cid)
+        npcHandler:say('Hmm, fico impressionada que vocÃª tenha chegado atÃ© aqui! EntÃ£o realmente vocÃª deseja se tornar um Deus? Cuidado mortal, essa decisÃ£o Ã© irreversivel.', cid)
         npcHandler.topic[cid] = 9
         
     elseif msgcontains(msg, 'reset') then
@@ -226,169 +315,48 @@ function creatureSayCallback(cid, type, msg)
         end
         
     elseif msgcontains(msg, 'info') or msgcontains(msg, 'information') then
-        npcHandler:say('Current status: Level ' .. player:getLevel() .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. ', Resets: ' .. currentResets .. '. Custo próximo reset: ' .. rubys .. ' ruby coins.', cid)
+        npcHandler:say('Current status: Level ' .. player:getLevel() .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. ', Resets: ' .. currentResets .. '. Custo prÃ³ximo reset: ' .. rubys .. ' ruby coins.', cid)
         npcHandler.topic[cid] = 0
         
     elseif npcHandler.topic[cid] == 9 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
         local vocation = player:getVocation():getId()
         
         if vocation < 9 then
-            npcHandler:say('Hahaha, você me faz rir caro mortal, apenas valans podem ser tornar Deuses.', cid)
+            npcHandler:say('Hahaha, vocÃª me faz rir caro mortal, apenas valans podem ser tornar Deuses.', cid)
             return true
         end
         
-        if player:getLevel() < 500 then
-            npcHandler:say('Hahaha, você não tem level suficiente para isso humilde semi-deus.', cid)
+        if player:getLevel() < resetLevel then
+            npcHandler:say('Hahaha, vocÃª nÃ£o tem level suficiente para isso humilde semi-deus.', cid)
             return true
         end
         
         if vocation > 12 then
-            npcHandler:say('Você já é um deus, guerreiro.', cid)
+            npcHandler:say('VocÃª jÃ¡ Ã© um deus, guerreiro.', cid)
             return true
         end
         
         if vocation > 8 and vocation < 13 then
             -- Promote to god vocation (add 4 to vocation ID)
             player:setVocation(Vocation(vocation + 4))
-            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "Você evoluiu seu espírito a Deus.")
+            player:sendTextMessage(MESSAGE_EVENT_ADVANCE, "VocÃª evoluiu seu espÃ­rito a Deus.")
             npcHandler:say('Oh, um novo Deus! Boa sorte em sua jornada meu caro.', cid)
             player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
         else
-            npcHandler:say('Você já é um deus, guerreiro.', cid)
+            npcHandler:say('VocÃª jÃ¡ Ã© um deus, guerreiro.', cid)
         end
         npcHandler.topic[cid] = 0
         
     elseif npcHandler.topic[cid] == 10 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
-        local vocation = player:getVocation():getId()
-        local level = player:getLevel()
-        
-        if vocation < 9 then
-            npcHandler:say('Hahaha, você me faz rir caro mortal, apenas valans podem ser tornar Deuses.', cid)
-            return true
-        end
-        
-        if level < 500 then
-            if vocation < 13 then
-                npcHandler:say('Hahaha, você não tem level suficiente para isso humilde semi-deus.', cid)
-            else
-                npcHandler:say('Essa é uma escolha de extrema sabedoria, você ainda não está preparado.', cid)
-            end
-            return true
-        end
-        
-        if vocation < 13 then
-            npcHandler:say('Você não está preparado para isso humilde semi-deus.', cid)
-            return true
-        end
-        
-        if currentResets == 0 then
-            if player:doReset() then
-                local newResets = player:getReset()
-                Game.broadcastMessage("Parabéns! O jogador " .. player:getName() .. " resetou com sucesso e agora tem " .. newResets .. " resets!", MESSAGE_STATUS_WARNING)
-                npcHandler:say('Agora sim, sinta esse extremo poder em suas veias! Seja bem vindo, novo Deus resetado.', cid)
-                player:sendTextMessage(MESSAGE_INFO_DESCR, "Você resetou seu personagem.")
-                player:sendTextMessage(MESSAGE_STATUS_WARNING, "Você será desconectado em 5 segundos para finalizar o reset.")
-                player:addHealth(player:getMaxHealth())
-                player:addMana(player:getMaxMana())
-                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
-                
-                addEvent(function(playerId)
-                    local player = Player(playerId)
-                    if player then
-                        player:remove()
-                    end
-                end, 5000, player:getId())
-            else
-                npcHandler:say('Sorry, reset failed. Check requirements!', cid)
-            end
-        else
-            local cost = (currentResets * 55000000 + 5000000)
-            if player:removeMoney(cost) then
-                if player:doReset() then
-                    local newResets = player:getReset()
-                    Game.broadcastMessage("Parabéns! O jogador " .. player:getName() .. " resetou com sucesso e agora tem " .. newResets .. " resets!", MESSAGE_STATUS_WARNING)
-                    npcHandler:say('Seu poder agora é ainda maior, parábens '.. player:getName() ..'.', cid)
-                    player:sendTextMessage(MESSAGE_INFO_DESCR, "Você resetou seu personagem.")
-                    player:sendTextMessage(MESSAGE_STATUS_WARNING, "Você será desconectado em segundos para finalizar o reset.")
-                    player:addHealth(player:getMaxHealth())
-                    player:addMana(player:getMaxMana())
-                    player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
-                    
-                    addEvent(function(playerId)
-                        local player = Player(playerId)
-                        if player then
-                            player:remove()
-                        end
-                    end, 0, player:getId())
-                else
-                    npcHandler:say('Sorry, reset failed. Check requirements!', cid)
-                end
-            else
-                npcHandler:say('Você não tem '..(currentResets * 55 + 5)..'.000.000 gold coins.', cid)
-            end
-        end
+        doIsoldaReset(player, cid, rubys, resetLevel)
         npcHandler.topic[cid] = 0
         
     elseif npcHandler.topic[cid] == 11 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
-        if player:isPremium() then
-            if player:getLevel() >= 500 then
-                local vocation = player:getVocation():getId()
-                if vocation >= 9 then
-                    if vocation >= 13 then -- deuses
-                        if currentResets == 0 or player:getItemCount(38915) >= rubys then
-                            if player:doReset() then
-                                local newResets = player:getReset()
-                                
-                                Game.broadcastMessage("Parabéns! O jogador " .. player:getName() .. " resetou com sucesso e agora tem " .. newResets .. " resets!", MESSAGE_STATUS_WARNING)
-                                
-                                npcHandler:say('Welcome new god! HP: ' .. player:getMaxHealth() .. ', MP: ' .. player:getMaxMana() .. ', Resets: ' .. newResets, cid)
-                                player:sendTextMessage(MESSAGE_INFO_DESCR, "Voce resetou seu personagem.")
-                                player:sendTextMessage(MESSAGE_STATUS_WARNING, "Você será desconectado em 5 segundos para finalizar o reset.")
-                                
-                                player:addHealth(player:getMaxHealth())
-                                player:addMana(player:getMaxMana())
-                                
-                                player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
-                                
-                                if currentResets > 0 then
-                                    player:removeItem(38915, rubys)
-                                end
-                                
-                                addEvent(function(playerId)
-                                    local player = Player(playerId)
-                                    if player then
-                                        player:remove()
-                                    end
-                                end, 5000, player:getId())
-                                
-                                npcHandler.topic[cid] = 0
-                            else
-                                npcHandler:say('Sorry, reset failed. Check requirements!', cid)
-                                npcHandler.topic[cid] = 0
-                            end
-                        else
-                            npcHandler:say('Sorry mortal, but you dont have this money!', cid)
-                            npcHandler.topic[cid] = 0
-                        end
-                    else
-                        npcHandler:say('Sorry, but only gods i can do that!', cid)
-                        npcHandler.topic[cid] = 0
-                    end
-                else
-                    npcHandler:say('Sorry, but only gods i can do that!', cid)
-                    npcHandler.topic[cid] = 0
-                end
-            else
-                npcHandler:say('Sorry, but only gods level 500 or above can do that!', cid)
-                npcHandler.topic[cid] = 0
-            end
-        else
-            npcHandler:say('Sorry but only can reset a premium god.', cid)
-            npcHandler.topic[cid] = 0
-        end
+        doIsoldaReset(player, cid, rubys, resetLevel)
+        npcHandler.topic[cid] = 0
         
     elseif msgcontains(msg, 'no') and npcHandler.topic[cid] > 0 then
-        npcHandler:say('Ok então.', cid)
+        npcHandler:say('Ok entÃ£o.', cid)
         npcHandler.topic[cid] = 0
     end
     
@@ -396,8 +364,8 @@ function creatureSayCallback(cid, type, msg)
 end
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
-npcHandler:setMessage(MESSAGE_GREET, 'Olá |PLAYERNAME|! Em que posso lhe ajudar, mortal?')
-npcHandler:setMessage(MESSAGE_FAREWELL, 'Até logo, |PLAYERNAME|!')
-npcHandler:setMessage(MESSAGE_WALKAWAY, 'Então tá, tchau.')
-npcHandler:setMessage(MESSAGE_DECLINE, 'Proxímo porfavor...')
+npcHandler:setMessage(MESSAGE_GREET, 'OlÃ¡ |PLAYERNAME|! Em que posso lhe ajudar, mortal?')
+npcHandler:setMessage(MESSAGE_FAREWELL, 'AtÃ© logo, |PLAYERNAME|!')
+npcHandler:setMessage(MESSAGE_WALKAWAY, 'EntÃ£o tÃ¡, tchau.')
+npcHandler:setMessage(MESSAGE_DECLINE, 'ProxÃ­mo porfavor...')
 npcHandler:addModule(FocusModule:new())
