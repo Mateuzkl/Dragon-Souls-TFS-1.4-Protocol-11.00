@@ -524,6 +524,15 @@ enum ConditionId_t : int8_t {
 	CONDITIONID_AMMO,
 };
 
+enum Exhaust_t {
+	// Values below 20 are used by legacy engine exhaust conditions.
+	EXHAUST_USEITEM = 20,
+	EXHAUST_POTION = 30,
+	EXHAUST_RUNE = 31,
+	EXHAUST_MACHETE = 32,
+	EXHAUST_PUSH = 33,
+};
+
 enum PlayerSex_t : uint8_t {
 	PLAYERSEX_FEMALE = 0,
 	PLAYERSEX_MALE = 1,

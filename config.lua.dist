@@ -36,16 +36,6 @@ resetStatBonus = 20 -- % bonus for HP and MP calculation (example: level 8 with 
 resetDmgBonus = 0 -- damage bonus per reset for the new system
 resetNewLevel = 8 -- level after reset
 
--- Reset Skill Bonus Configuration
-resetSorcererMagLevel = 10 -- magic level bonus for Sorcerer after reset
-resetDruidMagLevel = 10 -- magic level bonus for Druid after reset
-resetPaladinDistance = 10 -- distance skill bonus for Paladin after reset
-resetPaladinMagLevel = 3 -- magic level bonus for Paladin after reset
-resetKnightSword = 10 -- sword skill bonus for Knight after reset
-resetKnightAxe = 10 -- axe skill bonus for Knight after reset
-resetKnightClub = 10 -- club skill bonus for Knight after reset
-resetKnightFist = 10 -- fist skill bonus for Knight after reset
-
 -- PvP Protection Level
 -- NOTE: Players with level 50 or below are protected from unjustified PvP
 pvpProtectionLevel = 50
@@ -159,6 +149,16 @@ houseRentPeriod = "never"
 timeBetweenActions = 500
 timeBetweenExActions = 800
 maxStack = 1000
+
+-- Separated action cooldowns
+exhaustPotionInterval = 1000
+exhaustRuneInterval = 1000
+exhaustUseItemInterval = 200
+exhaustMacheteInterval = 1000
+exhaustPushInterval = 200
+
+potionCanExhaustUseItem = false
+runeCanExhaustUseItem = false
 
 -- Controle do cancelamento de push durante spells/poções
 -- true: não cancelar push ao usar spells/runes/poções

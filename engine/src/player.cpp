@@ -65,6 +65,11 @@ Player::Player(ProtocolGame_ptr p) :
 
 Player::~Player()
 {
+	if (actionRuneTaskEvent != 0) {
+		g_scheduler.stopEvent(actionRuneTaskEvent);
+		actionRuneTaskEvent = 0;
+	}
+
 	for (Item* item : inventory) {
 		if (item) {
 			item->setParent(nullptr);
@@ -2126,10 +2131,21 @@ void Player::setNextPotionActionTask(SchedulerTask* task)
 		actionPotionTaskEvent = 0;
 	}
 
-	cancelPush();
-
 	if (task) {
 		actionPotionTaskEvent = g_scheduler.addEvent(task);
+		//resetIdleTime();
+	}
+}
+
+void Player::setNextRuneActionTask(SchedulerTask* task)
+{
+	if (actionRuneTaskEvent != 0) {
+		g_scheduler.stopEvent(actionRuneTaskEvent);
+		actionRuneTaskEvent = 0;
+	}
+
+	if (task) {
+		actionRuneTaskEvent = g_scheduler.addEvent(task);
 		//resetIdleTime();
 	}
 }
@@ -2142,6 +2158,11 @@ uint32_t Player::getNextActionTime() const
 uint32_t Player::getNextPotionActionTime() const
 {
     return std::max<int64_t>(SCHEDULER_MINTICKS, nextPotionAction - OTSYS_TIME());
+}
+
+uint32_t Player::getNextRuneActionTime() const
+{
+	return std::max<int64_t>(SCHEDULER_MINTICKS, nextRuneAction - OTSYS_TIME());
 }
 
 uint32_t Player::getNextPushTime() const
@@ -4962,59 +4983,30 @@ void Player::setStamina(uint16_t stamina)
 	}
 }
 
-std::pair<uint32_t, uint32_t> Player::calculateResetBonus(uint32_t /*currentResets*/) const
+std::pair<uint32_t, uint32_t> Player::calculateResetBonus(uint32_t currentResets) const
 {
-	uint32_t resetStatBonus = g_config.getNumber(ConfigManager::RESET_STATBONUS);
-	
-	uint32_t currentHealthMax = getMaxHealth();
-	uint32_t currentManaMax = getMaxMana();
-	
-	uint32_t newHp = static_cast<uint32_t>(currentHealthMax * (resetStatBonus / 100.0));
-	uint32_t newMp = static_cast<uint32_t>(currentManaMax * (resetStatBonus / 100.0));
-	
-	return std::make_pair(newHp, newMp);
+	const uint32_t statBonus = std::max<int32_t>(0, g_config.getNumber(ConfigManager::RESET_STATBONUS));
+	const uint32_t damageBonus = std::max<int32_t>(0, g_config.getNumber(ConfigManager::RESET_DMGBONUS));
+
+	return std::make_pair(currentResets * statBonus, currentResets * damageBonus);
 }
 
 void Player::doReset()
 {
 	++reset;
-	
-	auto bonusValues = calculateResetBonus(reset);
-	uint32_t newHealthMax = bonusValues.first;
-	uint32_t newManaMax = bonusValues.second;
-	
-	uint32_t bonusReset = reset * g_config.getNumber(ConfigManager::RESET_STATBONUS);
-	capacity += bonusReset;
-	
-	healthMax = newHealthMax;
-	manaMax = newManaMax;
-	
-	experience = 0;
-	level = g_config.getNumber(ConfigManager::RESET_NEW_LEVEL);
+
+	const uint32_t newLevel = std::max<int32_t>(1, g_config.getNumber(ConfigManager::RESET_NEW_LEVEL));
+	experience = Player::getExpForLevel(newLevel);
+	level = newLevel;
 	levelPercent = 0;
-	magLevel = 0;
-	magLevelPercent = 0;
-	
-	for (int i = SKILL_FIRST; i <= SKILL_LAST; ++i) {
-		skills[i].level = 10;
-		skills[i].percent = 0;
-	}
-	
-	uint16_t vocationId = getVocation()->getId();
-	if (vocationId == 13 || vocationId == 14) {
-		magLevel += g_config.getNumber(ConfigManager::RESET_SORCERER_MAGLEVEL) * reset;
-	} else if (vocationId == 15) { 
-		skills[SKILL_DISTANCE].level += g_config.getNumber(ConfigManager::RESET_PALADIN_DISTANCE) * reset;
-		magLevel += g_config.getNumber(ConfigManager::RESET_PALADIN_MAGLEVEL) * reset;
-	} else if (vocationId == 16) {
-		skills[SKILL_AXE].level += g_config.getNumber(ConfigManager::RESET_KNIGHT_AXE) * reset;
-		skills[SKILL_SWORD].level += g_config.getNumber(ConfigManager::RESET_KNIGHT_SWORD) * reset;
-		skills[SKILL_FIST].level += g_config.getNumber(ConfigManager::RESET_KNIGHT_FIST) * reset;
-		skills[SKILL_CLUB].level += g_config.getNumber(ConfigManager::RESET_KNIGHT_CLUB) * reset;
-	}
-	
+
 	health = getMaxHealth();
 	mana = getMaxMana();
+
+	updateBaseSpeed();
+	setBaseSpeed(getBaseSpeed());
+	g_game.changeSpeed(this, 0);
+	g_game.addCreatureHealth(this);
 
 	sendStats();
 	sendSkills();

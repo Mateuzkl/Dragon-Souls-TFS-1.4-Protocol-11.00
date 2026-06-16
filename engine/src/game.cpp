@@ -19,6 +19,7 @@
 
 #include "otpch.h"
 
+#include "actionexhaust.h"
 #include "pugicast.h"
 #include "decay.h"
 
@@ -68,6 +69,94 @@ extern Imbuements g_imbuements;
 extern Bestiaries g_bestiaries;
 extern Store g_store;
 extern LuaEnvironment g_luaEnvironment;
+
+namespace {
+
+bool canDoActionByCategory(const Player* player, ActionExhaustCategory category)
+{
+	if (player->hasFlag(PlayerFlag_HasNoExhaustion)) {
+		return true;
+	}
+
+	switch (category) {
+		case ActionExhaustCategory::Potion:
+			return player->canDoPotionAction();
+		case ActionExhaustCategory::Rune:
+			return player->canDoRuneAction();
+		case ActionExhaustCategory::UseItem:
+			return player->canDoAction();
+		case ActionExhaustCategory::Machete:
+			return true;
+	}
+
+	return true;
+}
+
+uint32_t getNextActionTimeByCategory(const Player* player, ActionExhaustCategory category)
+{
+	switch (category) {
+		case ActionExhaustCategory::Potion:
+			return player->getNextPotionActionTime();
+		case ActionExhaustCategory::Rune:
+			return player->getNextRuneActionTime();
+		case ActionExhaustCategory::UseItem:
+			return player->getNextActionTime();
+		case ActionExhaustCategory::Machete:
+			return SCHEDULER_MINTICKS;
+	}
+
+	return SCHEDULER_MINTICKS;
+}
+
+void setNextActionTaskByCategory(Player* player, ActionExhaustCategory category, SchedulerTask* task)
+{
+	switch (category) {
+		case ActionExhaustCategory::Potion:
+			player->setNextPotionActionTask(task);
+			break;
+		case ActionExhaustCategory::Rune:
+			player->setNextRuneActionTask(task);
+			break;
+		case ActionExhaustCategory::UseItem:
+			player->setNextActionTask(task);
+			break;
+		case ActionExhaustCategory::Machete:
+			delete task;
+			break;
+	}
+}
+
+void clearNextActionTaskByCategory(Player* player, ActionExhaustCategory category)
+{
+	setNextActionTaskByCategory(player, category, nullptr);
+}
+
+bool isPushBlockedByAttack(Player* player)
+{
+	return !g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING) && player->getAttackedCreature();
+}
+
+void addPushExhaust(Player* player, int32_t ticks)
+{
+	if (ticks <= 0 || player->hasFlag(PlayerFlag_HasNoExhaustion)) {
+		return;
+	}
+
+	std::unique_ptr<Condition> condition(Condition::createCondition(
+		CONDITIONID_DEFAULT,
+		CONDITION_EXHAUST,
+		ticks,
+		0,
+		false,
+		EXHAUST_PUSH
+	));
+
+	if (condition) {
+		player->addCondition(condition.release());
+	}
+}
+
+}
 
 Game::Game()
 {
@@ -717,7 +806,7 @@ void Game::playerMoveThing(uint32_t playerId, const Position& fromPos,
 		return;
 	}
 
-	if (player->hasCondition(CONDITION_EXHAUST, 1)) {
+	if (!player->hasFlag(PlayerFlag_HasNoExhaustion) && player->hasCondition(CONDITION_EXHAUST, EXHAUST_PUSH)) {
 		player->sendTextMessage(MESSAGE_STATUS_SMALL, "You can't move item very fast.");
 		return;
 	}
@@ -763,9 +852,7 @@ void Game::playerMoveThing(uint32_t playerId, const Position& fromPos,
 
 		playerMoveItem(player, fromPos, spriteId, fromStackPos, toPos, count, thing->getItem(), toCylinder);
 	}
-	if (Condition* moveItem = Condition::createCondition(CONDITIONID_DEFAULT, CONDITION_EXHAUST, 50, 0, false, 1)) {
-		player->addCondition(moveItem);
-	}
+	addPushExhaust(player, g_config.getNumber(ConfigManager::EXHAUST_PUSH_INTERVAL));
 }
 
 void Game::playerMoveCreatureByID(uint32_t playerId, uint32_t movingCreatureId, const Position& movingCreatureOrigPos, const Position& toPos)
@@ -791,10 +878,14 @@ void Game::playerMoveCreatureByID(uint32_t playerId, uint32_t movingCreatureId, 
 
 void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Position& movingCreatureOrigPos, Tile* toTile)
 {
-    bool pushWhenAttacking = g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING);
-    bool canPerformPush = pushWhenAttacking ? player->canPush() : player->canDoAction();
+	if (isPushBlockedByAttack(player)) {
+		player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+		return;
+	}
+
+    bool canPerformPush = player->hasFlag(PlayerFlag_HasNoExhaustion) || player->canPush();
     if (!canPerformPush) {
-        uint32_t delay = pushWhenAttacking ? player->getNextPushTime() : player->getNextActionTime();
+        uint32_t delay = player->getNextPushTime();
         SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveCreatureByID,
             this, player->getID(), movingCreature->getID(), movingCreatureOrigPos, toTile->getPosition()));
 
@@ -807,7 +898,7 @@ void Game::playerMoveCreature(Player* player, Creature* movingCreature, const Po
 		return;
 	}
 
-	player->setNextActionTask(nullptr);
+	player->setNextActionPushTask(nullptr);
 
 	if (!Position::areInRange<1, 1, 0>(movingCreatureOrigPos, player->getPosition())) {
 		//need to walk to the creature first before moving it
@@ -1004,18 +1095,22 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
                           uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint16_t count, Item* item, Cylinder* toCylinder)
 {
     {
-        bool pushWhenAttacking = g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING);
-        bool canPerformPush = pushWhenAttacking ? player->canPush() : player->canDoAction();
+        if (isPushBlockedByAttack(player)) {
+            player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
+            return;
+        }
+
+        bool canPerformPush = player->hasFlag(PlayerFlag_HasNoExhaustion) || player->canPush();
         if (!canPerformPush) {
-            uint32_t delay = pushWhenAttacking ? player->getNextPushTime() : player->getNextActionTime();
+            uint32_t delay = player->getNextPushTime();
             SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveItemByPlayerID, this,
                                   player->getID(), fromPos, spriteId, fromStackPos, toPos, count));
-            player->setNextActionTask(task);
+            player->setNextActionPushTask(task);
             return;
         }
     }
 
-	player->setNextActionTask(nullptr);
+	player->setNextActionPushTask(nullptr);
 
 	if (item == nullptr) {
 		uint8_t fromIndex = 0;
@@ -1069,19 +1164,13 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
         return;
     }
 
-    // apply push delay window when enabled
-    {
-        bool pushWhenAttacking = g_config.getBoolean(ConfigManager::PUSH_WHEN_ATTACKING);
-        if (pushWhenAttacking) {
-            bool isAdjacent = Position::areInRange<1, 1>(playerPos, mapFromPos) && playerPos.z == mapFromPos.z;
-            int32_t pushDelay = isAdjacent ?
-                g_config.getNumber(ConfigManager::PUSH_DELAY) :
-                g_config.getNumber(ConfigManager::PUSH_DISTANCE_DELAY);
+    const bool isAdjacent = Position::areInRange<1, 1>(playerPos, mapFromPos) && playerPos.z == mapFromPos.z;
+    const int32_t pushDelay = isAdjacent ?
+        g_config.getNumber(ConfigManager::PUSH_DELAY) :
+        g_config.getNumber(ConfigManager::PUSH_DISTANCE_DELAY);
 
-            if (pushDelay > 0) {
-                player->setNextPushAction(OTSYS_TIME() + pushDelay);
-            }
-        }
+    if (pushDelay > 0 && !player->hasFlag(PlayerFlag_HasNoExhaustion)) {
+        player->setNextPushAction(OTSYS_TIME() + pushDelay);
     }
 
 	if (!Position::areInRange<1, 1>(playerPos, mapFromPos)) {
@@ -2619,12 +2708,8 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 	}
 
 	const ItemType& it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return;
-		}
-	}
+	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
+	// Dragon Souls: walk-exhaust gate intentionally not applied to runes/potions
 	if (ret != RETURNVALUE_NOERROR) {
 		if (ret == RETURNVALUE_TOOFARAWAY) {
 			Position itemPos = fromPos;
@@ -2650,11 +2735,7 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 
 				SchedulerTask* task = createSchedulerTask(RANGE_USE_ITEM_EX_INTERVAL, std::bind(&Game::playerUseItemEx, this,
 									  playerId, itemPos, itemStackPos, fromSpriteId, toPos, toStackPos, toSpriteId));
-				if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-					player->setNextPotionActionTask(task);
-				} else {
-					player->setNextWalkActionTask(task);
-				}
+				player->setNextWalkActionTask(task);
 			} else {
 				player->sendCancelMessage(RETURNVALUE_THEREISNOWAY);
 			}
@@ -2665,32 +2746,16 @@ void Game::playerUseItemEx(uint32_t playerId, const Position& fromPos, uint8_t f
 		return;
 	}
 
-	bool canDoAction = player->canDoAction();
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		canDoAction = player->canDoPotionAction();
-	}
-
-	if (!canDoAction) {
-		uint32_t delay = player->getNextActionTime();
-		if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-			delay = player->getNextPotionActionTime();
-		}
+	if (!canDoActionByCategory(player, actionCooldownCategory)) {
+		uint32_t delay = getNextActionTimeByCategory(player, actionCooldownCategory);
 		SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerUseItemEx, this,
 							  playerId, fromPos, fromStackPos, fromSpriteId, toPos, toStackPos, toSpriteId));
-		if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-			player->setNextPotionActionTask(task);
-		} else {
-			player->setNextActionTask(task);
-		}
+		setNextActionTaskByCategory(player, actionCooldownCategory, task);
 		return;
 	}
 
 	player->resetIdleTime();
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		player->setNextPotionActionTask(nullptr);
-	} else {
-		player->setNextActionTask(nullptr);
-	}
+	clearNextActionTaskByCategory(player, actionCooldownCategory);
 
 	g_actions->useItemEx(player, fromPos, toPos, toStackPos, item, isHotkey);
 }
@@ -2721,12 +2786,8 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 	}
 
 	const ItemType& it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return;
-		}
-	}
+	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
+	// Dragon Souls: walk-exhaust gate intentionally not applied to runes/potions
 	ReturnValue ret = g_actions->canUse(player, pos);
 	if (ret != RETURNVALUE_NOERROR) {
 		if (ret == RETURNVALUE_TOOFARAWAY) {
@@ -2737,11 +2798,7 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 
 				SchedulerTask* task = createSchedulerTask(RANGE_USE_ITEM_INTERVAL, std::bind(&Game::playerUseItem, this,
 									  playerId, pos, stackPos, index, spriteId));
-				if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-					player->setNextPotionActionTask(task);
-				} else {
-					player->setNextWalkActionTask(task);
-				}
+				player->setNextWalkActionTask(task);
 				return;
 			}
 
@@ -2752,28 +2809,16 @@ void Game::playerUseItem(uint32_t playerId, const Position& pos, uint8_t stackPo
 		return;
 	}
 
-	bool canDoAction = player->canDoAction();
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		canDoAction = player->canDoPotionAction();
-	}
-
-	if (!canDoAction) {
-		uint32_t delay = player->getNextActionTime();
-		if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-			delay = player->getNextPotionActionTime();
-		}
+	if (!canDoActionByCategory(player, actionCooldownCategory)) {
+		uint32_t delay = getNextActionTimeByCategory(player, actionCooldownCategory);
 		SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerUseItem, this,
 							  playerId, pos, stackPos, index, spriteId));
-		if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-			player->setNextPotionActionTask(task);
-		} else {
-			player->setNextActionTask(task);
-		}
+		setNextActionTaskByCategory(player, actionCooldownCategory, task);
 		return;
 	}
 
 	player->resetIdleTime();
-	player->setNextActionTask(nullptr);
+	clearNextActionTaskByCategory(player, actionCooldownCategory);
 
 	g_actions->useItem(player, pos, index, item, isHotkey);
 }
@@ -2815,12 +2860,8 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 	}
 
 	const ItemType& it = Item::items[item->getID()];
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		if (player->walkExhausted()) {
-			player->sendCancelMessage(RETURNVALUE_YOUAREEXHAUSTED);
-			return;
-		}
-	}
+	const ActionExhaustCategory actionCooldownCategory = getActionExhaustCategory(it, item->getID());
+	// Dragon Souls: walk-exhaust gate intentionally not applied to runes/potions
 	Position toPos = creature->getPosition();
 	Position walkToPos = fromPos;
 	ReturnValue ret = g_actions->canUse(player, fromPos);
@@ -2855,11 +2896,7 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 
 				SchedulerTask* task = createSchedulerTask(RANGE_USE_WITH_CREATURE_INTERVAL, std::bind(&Game::playerUseWithCreature, this,
 									  playerId, itemPos, itemStackPos, creatureId, spriteId));
-				if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-					player->setNextPotionActionTask(task);
-				} else {
-					player->setNextWalkActionTask(task);
-				}
+				player->setNextWalkActionTask(task);
 			} else {
 				player->sendCancelMessage(RETURNVALUE_THEREISNOWAY);
 			}
@@ -2870,33 +2907,17 @@ void Game::playerUseWithCreature(uint32_t playerId, const Position& fromPos, uin
 		return;
 	}
 
-	bool canDoAction = player->canDoAction();
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		canDoAction = player->canDoPotionAction();
-	}
-
-	if (!canDoAction) {
-		uint32_t delay = player->getNextActionTime();
-		if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-			delay = player->getNextPotionActionTime();
-		}
+	if (!canDoActionByCategory(player, actionCooldownCategory)) {
+		uint32_t delay = getNextActionTimeByCategory(player, actionCooldownCategory);
 		SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerUseWithCreature, this,
 							  playerId, fromPos, fromStackPos, creatureId, spriteId));
 
-		if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-			player->setNextPotionActionTask(task);
-		} else {
-			player->setNextActionTask(task);
-		}
+		setNextActionTaskByCategory(player, actionCooldownCategory, task);
 		return;
 	}
 
 	player->resetIdleTime();
-	if (it.isRune() || it.type == ITEM_TYPE_POTION) {
-		player->setNextPotionActionTask(nullptr);
-	} else {
-		player->setNextActionTask(nullptr);
-	}
+	clearNextActionTaskByCategory(player, actionCooldownCategory);
 
 	g_actions->useItemEx(player, fromPos, creature->getPosition(), creature->getParent()->getThingIndex(creature), item, isHotkey, creature);
 }

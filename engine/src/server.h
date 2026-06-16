@@ -119,7 +119,7 @@ class ServiceManager
 
 		boost::asio::io_context io_context;
 		Signals signals{io_context};
-		boost::asio::deadline_timer death_timer { io_context };
+		boost::asio::steady_timer death_timer { io_context };
 		bool running = false;
 };
 
