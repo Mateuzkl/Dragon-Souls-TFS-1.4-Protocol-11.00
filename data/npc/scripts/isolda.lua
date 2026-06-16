@@ -18,42 +18,203 @@ keywordHandler:addKeyword({'quest'}, StdModule.say, {npcHandler = npcHandler, te
 keywordHandler:addKeyword({'mission'}, StdModule.say, {npcHandler = npcHandler, text = 'Ha! Você é apenas um novato!'})
 
 local resetConfig = {
-    defaultLevel = 510,
+    requiredLevel = 510,
+    newLevel = 8,
+
     rubyCoinId = 38915,
-    logoutDelay = 5000
+    logoutDelay = 5000,
+
+    -- growthMode:
+    -- "percent" = base + porcentagem por reset
+    -- "linear" = base * resets
+    growthMode = "percent",
+
+    -- usado no modo percent
+    bonusPercentPerReset = 15,
+
+    -- custo ruby:
+    -- primeiro reset grátis
+    -- fórmula editável abaixo
+    rubyCost = {
+        freeFirstReset = true,
+        levelMultiplier = 4000,
+        resetMultiplier = 60,
+        divisor = 1000000,
+        minimum = 1
+    },
+
+    vocations = {
+        -- God Sorcerer
+        [13] = {
+            name = "God Sorcerer",
+            baseHp = 3000,
+            baseMp = 1900,
+            magicLevelBonus = 10
+        },
+
+        -- God Druid
+        [14] = {
+            name = "God Druid",
+            baseHp = 3000,
+            baseMp = 1900,
+            magicLevelBonus = 10
+        },
+
+        -- God Paladin
+        [15] = {
+            name = "God Paladin",
+            baseHp = 4200,
+            baseMp = 1500,
+            distanceBonus = 10,
+            magicLevelBonus = 3
+        },
+
+        -- God Knight
+        [16] = {
+            name = "God Knight",
+            baseHp = 6000,
+            baseMp = 800,
+            swordBonus = 10,
+            axeBonus = 10,
+            clubBonus = 10,
+            fistBonus = 10
+        }
+    }
 }
 
-local function getNumberConfig(key, fallback)
-    if type(getConfigInfo) == "function" then
-        local value = tonumber(getConfigInfo(key))
-        if value then
-            return value
-        end
-    end
-
-    local value = tonumber(_G[key])
-    if value then
-        return value
-    end
-
-    return fallback
+local function getCurrentReset(player)
+    return math.max(0, tonumber(player:getReset()) or 0)
 end
 
-local function getRequiredResetLevel()
-    return getNumberConfig("resetLevel", resetConfig.defaultLevel)
+local function getResetLevel()
+    return math.max(1, tonumber(resetConfig.requiredLevel) or 510)
+end
+
+local function getNewLevel()
+    return math.max(1, tonumber(resetConfig.newLevel) or 8)
+end
+
+local function getVocationConfig(player)
+    local vocation = player:getVocation()
+    if not vocation then
+        return nil, 0
+    end
+
+    local vocationId = vocation:getId()
+    return resetConfig.vocations[vocationId], vocationId
+end
+
+local function calculateResetStats(vocationConfig, newResets)
+    if type(vocationConfig) ~= "table" then
+        return nil, nil
+    end
+
+    newResets = math.max(1, tonumber(newResets) or 1)
+
+    local baseHp = math.max(1, tonumber(vocationConfig.baseHp) or 1)
+    local baseMp = math.max(1, tonumber(vocationConfig.baseMp) or 1)
+
+    local hp
+    local mp
+    if resetConfig.growthMode == "linear" then
+        hp = baseHp * newResets
+        mp = baseMp * newResets
+    else
+        local bonusPercent = tonumber(resetConfig.bonusPercentPerReset) or 0
+        local multiplier = 1 + ((newResets - 1) * bonusPercent / 100)
+
+        hp = baseHp * multiplier
+        mp = baseMp * multiplier
+    end
+
+    return math.max(1, math.floor(hp)), math.max(1, math.floor(mp))
 end
 
 local function getResetCost(player, currentResets)
-    if currentResets <= 0 then
+    currentResets = math.max(0, tonumber(currentResets) or 0)
+
+    local rubyCost = resetConfig.rubyCost or {}
+    if rubyCost.freeFirstReset and currentResets <= 0 then
         return 0
     end
 
-    return math.max(1, math.floor((player:getLevel() * 4000) * (currentResets * 60) / 1000000))
+    local levelMultiplier = tonumber(rubyCost.levelMultiplier) or 4000
+    local resetMultiplier = tonumber(rubyCost.resetMultiplier) or 60
+    local divisor = math.max(1, tonumber(rubyCost.divisor) or 1000000)
+    local minimum = math.max(0, tonumber(rubyCost.minimum) or 1)
+
+    local cost = math.floor((player:getLevel() * levelMultiplier) * (currentResets * resetMultiplier) / divisor)
+    return math.max(minimum, cost)
 end
 
-local function isGodVocation(player)
-    local vocationId = player:getVocation():getId()
-    return vocationId >= 13 and vocationId <= 16
+local function buildResetPreview(player)
+    local vocConfig, vocationId = getVocationConfig(player)
+    if not vocConfig then
+        return nil, vocationId
+    end
+
+    local currentResets = getCurrentReset(player)
+    local newResets = currentResets + 1
+    local newHp, newMp = calculateResetStats(vocConfig, newResets)
+    if not newHp or not newMp then
+        return nil, vocationId
+    end
+
+    return {
+        vocationConfig = vocConfig,
+        vocationId = vocationId,
+        currentResets = currentResets,
+        newResets = newResets,
+        resetCost = getResetCost(player, currentResets),
+        newHp = newHp,
+        newMp = newMp
+    }, vocationId
+end
+
+local function applyResetBonuses(player, vocConfig)
+    local skillBonuses = {
+        fistBonus = SKILL_FIST,
+        clubBonus = SKILL_CLUB,
+        swordBonus = SKILL_SWORD,
+        axeBonus = SKILL_AXE,
+        distanceBonus = SKILL_DISTANCE
+    }
+
+    for bonusKey, skillId in pairs(skillBonuses) do
+        local bonus = tonumber(vocConfig[bonusKey]) or 0
+        if bonus > 0 then
+            player:setSkillLevel(skillId, player:getSkillLevel(skillId) + bonus)
+        end
+    end
+
+    local magicLevelBonus = tonumber(vocConfig.magicLevelBonus) or 0
+    if magicLevelBonus > 0 then
+        player:setMagicLevel(player:getMagicLevel() + magicLevelBonus)
+    end
+end
+
+local function fillPlayerVitals(player)
+    local maxHealth = player:getMaxHealth()
+    local healthOk = pcall(function()
+        player:setHealth(maxHealth)
+    end)
+
+    if not healthOk then
+        player:addHealth(maxHealth)
+    end
+
+    local maxMana = player:getMaxMana()
+    local currentMana = 0
+    pcall(function()
+        currentMana = player:getMana()
+    end)
+
+    local manaToAdd = math.max(0, maxMana - currentMana)
+    if manaToAdd > 0 then
+        pcall(function()
+            player:addMana(manaToAdd)
+        end)
+    end
 end
 
 local function scheduleResetLogout(player)
@@ -65,55 +226,124 @@ local function scheduleResetLogout(player)
     end, resetConfig.logoutDelay, player:getId())
 end
 
-local function doIsoldaReset(player, cid, resetCost, requiredLevel)
+local function sendResetOffer(player, cid)
     if not player:isPremium() then
         npcHandler:say('Desculpe, eu só posso resetar deuses Premium.', cid)
         return false
     end
 
+    local requiredLevel = getResetLevel()
     if player:getLevel() < requiredLevel then
         npcHandler:say('Você precisa ser level ' .. requiredLevel .. ' ou superior para resetar.', cid)
         return false
     end
 
-    if not isGodVocation(player) then
+    local preview = buildResetPreview(player)
+    if not preview then
         npcHandler:say('Desculpe, apenas deuses podem resetar comigo.', cid)
         return false
     end
 
-    if resetCost > 0 and player:getItemCount(resetConfig.rubyCoinId) < resetCost then
-        npcHandler:say('Você precisa de ' .. resetCost .. ' ruby coins para resetar.', cid)
+    if preview.resetCost <= 0 then
+        npcHandler:say('Como é sua primeira vez, o reset será grátis. Você voltará para level ' .. getNewLevel() .. ' com ' .. preview.newHp .. ' HP e ' .. preview.newMp .. ' MP. Deseja continuar?', cid)
+    else
+        npcHandler:say('Este será seu reset número ' .. preview.newResets .. '. O custo é ' .. preview.resetCost .. ' ruby coins. Você voltará para level ' .. getNewLevel() .. ' com ' .. preview.newHp .. ' HP e ' .. preview.newMp .. ' MP. Deseja continuar?', cid)
+    end
+
+    npcHandler.topic[cid] = 11
+    return true
+end
+
+local function sendResetInfo(player, cid)
+    local currentResets = getCurrentReset(player)
+    local preview = buildResetPreview(player)
+
+    if not preview then
+        npcHandler:say('Status atual: Level ' .. player:getLevel() .. ', Resets: ' .. currentResets .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. '. Sua vocação atual não está liberada para reset.', cid)
+        return
+    end
+
+    npcHandler:say('Status atual: Level ' .. player:getLevel() .. ', Resets: ' .. currentResets .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. '. Próximo reset: ' .. preview.newResets .. '. Próximo reset custará ' .. preview.resetCost .. ' ruby coins. Após reset você ficará com HP ' .. preview.newHp .. ' e MP ' .. preview.newMp .. '. Modo de crescimento: ' .. resetConfig.growthMode .. '.', cid)
+end
+
+local function doIsoldaReset(player, cid)
+    if not player:isPremium() then
+        npcHandler:say('Desculpe, eu só posso resetar deuses Premium.', cid)
         return false
     end
 
-    if resetCost > 0 and not player:removeItem(resetConfig.rubyCoinId, resetCost) then
-        npcHandler:say('Não foi possível remover os ruby coins.', cid)
+    local requiredLevel = getResetLevel()
+    if player:getLevel() < requiredLevel then
+        npcHandler:say('Você precisa ser level ' .. requiredLevel .. ' ou superior para resetar.', cid)
         return false
     end
 
-    if not player:doReset() then
+    local preview = buildResetPreview(player)
+    if not preview then
+        npcHandler:say('Desculpe, apenas deuses podem resetar comigo.', cid)
+        return false
+    end
+
+    if preview.resetCost > 0 and player:getItemCount(resetConfig.rubyCoinId) < preview.resetCost then
+        npcHandler:say('Você precisa de ' .. preview.resetCost .. ' ruby coins para resetar.', cid)
+        return false
+    end
+
+    local oldResets = preview.currentResets
+    local resetOk, resetResult = pcall(function()
+        return player:doReset()
+    end)
+
+    if not resetOk or resetResult == false then
         npcHandler:say('Desculpe, não foi possível resetar agora.', cid)
         return false
     end
 
-    -- Reset skill/maglevel bonuses (same as old C++ config)
-    local vocationId = player:getVocation():getId()
-    if vocationId == 13 or vocationId == 14 then
-        player:setMagicLevel(player:getMagicLevel() + 10)
-    elseif vocationId == 15 then
-        player:setSkillLevel(SKILL_DISTANCE, player:getSkillLevel(SKILL_DISTANCE) + 10)
-        player:setMagicLevel(player:getMagicLevel() + 3)
-    elseif vocationId == 16 then
-        player:setSkillLevel(SKILL_AXE, player:getSkillLevel(SKILL_AXE) + 10)
-        player:setSkillLevel(SKILL_SWORD, player:getSkillLevel(SKILL_SWORD) + 10)
-        player:setSkillLevel(SKILL_FIST, player:getSkillLevel(SKILL_FIST) + 10)
-        player:setSkillLevel(SKILL_CLUB, player:getSkillLevel(SKILL_CLUB) + 10)
+    local newResets = getCurrentReset(player)
+    if newResets <= oldResets then
+        npcHandler:say('Desculpe, o reset não foi aplicado corretamente.', cid)
+        return false
     end
 
-    local newResets = player:getReset()
+    local newHp, newMp = calculateResetStats(preview.vocationConfig, newResets)
+    if not newHp or not newMp then
+        npcHandler:say('Desculpe, não foi possível calcular seu HP e MP de reset.', cid)
+        return false
+    end
+
+    local hpOk, hpResult = pcall(function()
+        return player:setMaxHealth(newHp)
+    end)
+
+    if not hpOk or hpResult == false then
+        npcHandler:say('Desculpe, não foi possível aplicar seu MaxHP de reset.', cid)
+        return false
+    end
+
+    local mpOk, mpResult = pcall(function()
+        return player:setMaxMana(newMp)
+    end)
+
+    if not mpOk or mpResult == false then
+        npcHandler:say('Desculpe, não foi possível aplicar seu MaxMP de reset.', cid)
+        return false
+    end
+
+    if preview.resetCost > 0 and not player:removeItem(resetConfig.rubyCoinId, preview.resetCost) then
+        npcHandler:say('O reset foi aplicado, mas não foi possível remover os ruby coins. Avise a staff.', cid)
+        return false
+    end
+
+    applyResetBonuses(player, preview.vocationConfig)
+    fillPlayerVitals(player)
+
+    pcall(function()
+        player:save()
+    end)
+
     Game.broadcastMessage("Parabéns! O jogador " .. player:getName() .. " resetou com sucesso e agora tem " .. newResets .. " resets!", MESSAGE_STATUS_WARNING)
     npcHandler:say('Seu poder agora é ainda maior, parabéns ' .. player:getName() .. '.', cid)
-    player:sendTextMessage(MESSAGE_INFO_DESCR, "Você resetou seu personagem.")
+    player:sendTextMessage(MESSAGE_INFO_DESCR, "Você resetou seu personagem. Novo MaxHP: " .. newHp .. ", novo MaxMP: " .. newMp .. ".")
     player:sendTextMessage(MESSAGE_STATUS_WARNING, "Você será desconectado em 5 segundos para finalizar o reset.")
     player:getPosition():sendMagicEffect(CONST_ME_MAGIC_BLUE)
     scheduleResetLogout(player)
@@ -132,8 +362,8 @@ function creatureSayCallback(cid, type, msg)
     
     local preco = player:getLevel() * 2 -- Original script uses level * 2000, so level * 2 for "k" format
     local bless = player:hasBlessing(1)
-    local currentResets = player:getReset()
-    local resetLevel = getRequiredResetLevel()
+    local currentResets = getCurrentReset(player)
+    local resetLevel = getResetLevel()
     local rubys = getResetCost(player, currentResets)
     
     if msgcontains(msg, 'energyze') or msgcontains(msg, 'energize') then
@@ -305,14 +535,7 @@ function creatureSayCallback(cid, type, msg)
         end
         
         if vocation > 12 then
-            if currentResets == 0 then
-                npcHandler:say('Ual, você realmente conseguiu chegar até aqui! Se auto-resetar é uma decisão de extrema sabedoria, e se mal usada pode-ra trazer altos riscos!...', cid)
-                npcHandler:say('Como é a sua 1° vez, eu não irei lhe cobrar nada, porém você ainda tem a escolha, você realmente deseja ser resetado?', cid)
-            else
-                npcHandler:say('Você anda sempre me surpreendendo, você se tornou um uma pessoa de extrema força e sabedoria, com dons de extrema nobreza!...', cid)
-                npcHandler:say('Porém dessa vez meus serviços serão cobrados, como esse é o seu '..(currentResets+1)..'° reset, o preço é '..rubys..' ruby coins, deseja proseguir?', cid)
-            end
-            npcHandler.topic[cid] = 11
+            sendResetOffer(player, cid)
             return true
         end
         
@@ -320,16 +543,10 @@ function creatureSayCallback(cid, type, msg)
         npcHandler.topic[cid] = 9
         
     elseif msgcontains(msg, 'reset') then
-        if currentResets == 0 then
-            npcHandler:say('Reset a god? Hmm... First time? Ok, i will do it free this time!', cid)
-            npcHandler.topic[cid] = 11
-        else
-            npcHandler:say('Reset a god? Hmm... Sure I can, but it will not be cheap, what do you say about ' .. rubys .. ' ruby coins?', cid)
-            npcHandler.topic[cid] = 11
-        end
+        sendResetOffer(player, cid)
         
     elseif msgcontains(msg, 'info') or msgcontains(msg, 'information') then
-        npcHandler:say('Current status: Level ' .. player:getLevel() .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. ', Resets: ' .. currentResets .. '. Custo próximo reset: ' .. rubys .. ' ruby coins.', cid)
+        sendResetInfo(player, cid)
         npcHandler.topic[cid] = 0
         
     elseif npcHandler.topic[cid] == 9 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
@@ -361,12 +578,8 @@ function creatureSayCallback(cid, type, msg)
         end
         npcHandler.topic[cid] = 0
         
-    elseif npcHandler.topic[cid] == 10 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
-        doIsoldaReset(player, cid, rubys, resetLevel)
-        npcHandler.topic[cid] = 0
-        
-    elseif npcHandler.topic[cid] == 11 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
-        doIsoldaReset(player, cid, rubys, resetLevel)
+    elseif (npcHandler.topic[cid] == 10 or npcHandler.topic[cid] == 11) and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
+        doIsoldaReset(player, cid)
         npcHandler.topic[cid] = 0
         
     elseif msgcontains(msg, 'no') and npcHandler.topic[cid] > 0 then
