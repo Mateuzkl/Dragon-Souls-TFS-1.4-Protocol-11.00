@@ -32,6 +32,10 @@ local resetConfig = {
     -- usado no modo percent
     bonusPercentPerReset = 15,
 
+    -- false = aplica bônus de skill/ML apenas no primeiro reset
+    -- true = aplica bônus de skill/ML em todo reset
+    applyBonusesEachReset = false,
+
     -- custo ruby:
     -- primeiro reset grátis
     -- fórmula editável abaixo
@@ -151,15 +155,34 @@ local function getResetCost(player, currentResets)
     return math.max(minimum, cost)
 end
 
+local function logResetFailure(player, reason, snapshot, refundCost)
+    local snapshotInfo = ""
+    if snapshot then
+        snapshotInfo = " | before: level=" .. tostring(snapshot.level) ..
+            ", resets=" .. tostring(snapshot.resets) ..
+            ", maxHp=" .. tostring(snapshot.maxHp) ..
+            ", maxMp=" .. tostring(snapshot.maxMp)
+    end
+
+    print("[Isolda] Reset failure for " .. player:getName() .. ": " .. tostring(reason) .. snapshotInfo .. ", refundCost=" .. tostring(refundCost or 0))
+end
+
 local function refundResetCost(player, cost)
     cost = math.max(0, tonumber(cost) or 0)
     if cost <= 0 then
-        return
+        return true
     end
 
-    pcall(function()
-        player:addItem(resetConfig.rubyCoinId, cost)
+    local refundOk, refundResult = pcall(function()
+        return player:addItem(resetConfig.rubyCoinId, cost)
     end)
+
+    if not refundOk or refundResult == false then
+        print("[Isolda] AVISO: Falha ao reembolsar " .. cost .. " ruby coins para " .. player:getName())
+        return false
+    end
+
+    return true
 end
 
 local function buildResetPreview(player)
@@ -186,7 +209,19 @@ local function buildResetPreview(player)
     }, vocationId
 end
 
-local function applyResetBonuses(player, vocConfig)
+local function shouldApplyResetBonuses(newResets)
+    if resetConfig.applyBonusesEachReset then
+        return true
+    end
+
+    return math.max(1, tonumber(newResets) or 1) <= 1
+end
+
+local function applyResetBonuses(player, vocConfig, newResets)
+    if not shouldApplyResetBonuses(newResets) then
+        return
+    end
+
     local skillBonuses = {
         fistBonus = SKILL_FIST,
         clubBonus = SKILL_CLUB,
@@ -229,16 +264,22 @@ local function fillPlayerVitals(player)
     end
 
     local maxMana = player:getMaxMana()
-    local currentMana = 0
-    pcall(function()
-        currentMana = player:getMana()
+    local manaOk = pcall(function()
+        player:setMana(maxMana)
     end)
 
-    local manaToAdd = math.max(0, maxMana - currentMana)
-    if manaToAdd > 0 then
+    if not manaOk then
+        local currentMana = 0
         pcall(function()
-            player:addMana(manaToAdd)
+            currentMana = player:getMana()
         end)
+
+        local manaToAdd = math.max(0, maxMana - currentMana)
+        if manaToAdd > 0 then
+            pcall(function()
+                player:addMana(manaToAdd)
+            end)
+        end
     end
 end
 
@@ -291,6 +332,24 @@ local function sendResetInfo(player, cid)
     npcHandler:say('Status atual: Level ' .. player:getLevel() .. ', Resets: ' .. currentResets .. ', HP atual: ' .. player:getMaxHealth() .. ', MP atual: ' .. player:getMaxMana() .. '. Próximo reset: ' .. preview.newResets .. '. Próximo reset custará ' .. preview.resetCost .. ' ruby coins. Após reset você ficará com HP ' .. preview.newHp .. ' e MP ' .. preview.newMp .. '. Modo de crescimento: ' .. resetConfig.growthMode .. '.', cid)
 end
 
+local function canApplyResetStats(player, snapshot)
+    local hpOk, hpResult = pcall(function()
+        return player:setMaxHealth(snapshot.maxHp)
+    end)
+    if not hpOk or hpResult == false then
+        return false, 'setMaxHealth indisponível'
+    end
+
+    local mpOk, mpResult = pcall(function()
+        return player:setMaxMana(snapshot.maxMp)
+    end)
+    if not mpOk or mpResult == false then
+        return false, 'setMaxMana indisponível'
+    end
+
+    return true
+end
+
 local function doIsoldaReset(player, cid)
     if not player:isPremium() then
         npcHandler:say('Desculpe, eu só posso resetar deuses Premium.', cid)
@@ -314,9 +373,24 @@ local function doIsoldaReset(player, cid)
         return false
     end
 
-    local newHp, newMp = calculateResetStats(preview.vocationConfig, preview.newResets)
+    local newHp = preview.newHp
+    local newMp = preview.newMp
     if not newHp or not newMp then
         npcHandler:say('Desculpe, não foi possível calcular seu HP e MP de reset.', cid)
+        return false
+    end
+
+    local resetSnapshot = {
+        resets = preview.currentResets,
+        level = player:getLevel(),
+        maxHp = player:getMaxHealth(),
+        maxMp = player:getMaxMana()
+    }
+
+    local statsPrecheckOk, statsPrecheckReason = canApplyResetStats(player, resetSnapshot)
+    if not statsPrecheckOk then
+        npcHandler:say('Desculpe, não foi possível validar o sistema de MaxHP/MaxMP agora.', cid)
+        logResetFailure(player, statsPrecheckReason, resetSnapshot, 0)
         return false
     end
 
@@ -329,8 +403,6 @@ local function doIsoldaReset(player, cid)
         paymentRemoved = true
     end
 
-    local oldResets = preview.currentResets
-    local oldMaxHealth = player:getMaxHealth()
     local resetOk, resetResult = pcall(function()
         return player:doReset()
     end)
@@ -339,15 +411,17 @@ local function doIsoldaReset(player, cid)
         if paymentRemoved then
             refundResetCost(player, preview.resetCost)
         end
+        logResetFailure(player, 'player:doReset falhou', resetSnapshot, preview.resetCost)
         npcHandler:say('Desculpe, não foi possível resetar agora.', cid)
         return false
     end
 
     local newResets = getCurrentReset(player)
-    if newResets <= oldResets then
+    if newResets <= resetSnapshot.resets then
         if paymentRemoved then
             refundResetCost(player, preview.resetCost)
         end
+        logResetFailure(player, 'reset counter não aumentou após player:doReset', resetSnapshot, preview.resetCost)
         npcHandler:say('Desculpe, o reset não foi aplicado corretamente.', cid)
         return false
     end
@@ -364,7 +438,8 @@ local function doIsoldaReset(player, cid)
         if paymentRemoved then
             refundResetCost(player, preview.resetCost)
         end
-        npcHandler:say('Desculpe, não foi possível aplicar seu MaxHP de reset.', cid)
+        logResetFailure(player, 'setMaxHealth falhou após player:doReset', resetSnapshot, preview.resetCost)
+        npcHandler:say('Desculpe, não foi possível aplicar seu MaxHP de reset. A staff foi avisada pelo console.', cid)
         return false
     end
 
@@ -374,16 +449,17 @@ local function doIsoldaReset(player, cid)
 
     if not mpOk or mpResult == false then
         pcall(function()
-            player:setMaxHealth(oldMaxHealth)
+            player:setMaxHealth(resetSnapshot.maxHp)
         end)
         if paymentRemoved then
             refundResetCost(player, preview.resetCost)
         end
-        npcHandler:say('Desculpe, não foi possível aplicar seu MaxMP de reset.', cid)
+        logResetFailure(player, 'setMaxMana falhou após player:doReset', resetSnapshot, preview.resetCost)
+        npcHandler:say('Desculpe, não foi possível aplicar seu MaxMP de reset. A staff foi avisada pelo console.', cid)
         return false
     end
 
-    applyResetBonuses(player, preview.vocationConfig)
+    applyResetBonuses(player, preview.vocationConfig, newResets)
     fillPlayerVitals(player)
 
     pcall(function()
@@ -413,7 +489,6 @@ function creatureSayCallback(cid, type, msg)
     local bless = player:hasBlessing(1)
     local currentResets = getCurrentReset(player)
     local resetLevel = getResetLevel()
-    local rubys = getResetCost(player, currentResets)
     
     if msgcontains(msg, 'energyze') or msgcontains(msg, 'energize') then
         npcHandler:say('Eu posso energyzar seu elemental necklace por 50k, spirit elemental amulet por 100k ou o seu magic elemental amulet por 150k, você deseja que eu energyze?', cid)
@@ -584,7 +659,9 @@ function creatureSayCallback(cid, type, msg)
         end
         
         if vocation > 12 then
-            sendResetOffer(player, cid)
+            if not sendResetOffer(player, cid) then
+                npcHandler.topic[cid] = 0
+            end
             return true
         end
         
@@ -592,7 +669,9 @@ function creatureSayCallback(cid, type, msg)
         npcHandler.topic[cid] = 9
         
     elseif msgcontains(msg, 'reset') then
-        sendResetOffer(player, cid)
+        if not sendResetOffer(player, cid) then
+            npcHandler.topic[cid] = 0
+        end
         
     elseif msgcontains(msg, 'info') or msgcontains(msg, 'information') then
         sendResetInfo(player, cid)
@@ -627,7 +706,7 @@ function creatureSayCallback(cid, type, msg)
         end
         npcHandler.topic[cid] = 0
         
-    elseif (npcHandler.topic[cid] == 10 or npcHandler.topic[cid] == 11) and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
+    elseif npcHandler.topic[cid] == 11 and (msgcontains(msg, 'yes') or msgcontains(msg, 'sim')) then
         doIsoldaReset(player, cid)
         npcHandler.topic[cid] = 0
         
