@@ -39,6 +39,7 @@ bool canApplyWeaponClassMultiplier(WeaponType_t weaponType)
 		case WEAPON_SWORD:
 		case WEAPON_CLUB:
 		case WEAPON_AXE:
+		case WEAPON_FIST:
 		case WEAPON_DISTANCE:
 		case WEAPON_AMMO:
 			return true;

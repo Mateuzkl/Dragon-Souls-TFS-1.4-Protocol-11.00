@@ -1399,6 +1399,9 @@ class LuaScriptInterface
 		static int luaItemTypeGetArmor(lua_State* L);
 		static int luaItemTypeGetWeaponType(lua_State* L);
 		static int luaItemTypeGetWeaponClass(lua_State* L);
+		static int luaItemTypeGetWeaponClassDescription(lua_State* L);
+		static int luaItemTypeGetWeaponClassSuitability(lua_State* L);
+		static int luaItemTypeGetWeaponClassPowerAnalysis(lua_State* L);
 
 		static int luaItemTypeGetAbsorbPercent(lua_State* L);
 	static int luaItemTypeGetElementType(lua_State* L);

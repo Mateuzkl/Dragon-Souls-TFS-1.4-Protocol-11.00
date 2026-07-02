@@ -1341,6 +1341,10 @@ std::string Item::getDescription(const ItemType &it, int32_t lookDistance,
           << std::noshowpos;
       }
 
+      if (it.weaponClass != WeaponClass::Default) {
+        s << ", Class: " << getWeaponClassName(it.weaponClass);
+      }
+
       // Show Classification and Tier on item
       uint32_t classification =
           item ? item->getClassification() : it.classification;
@@ -1648,6 +1652,23 @@ std::string Item::getDescription(const ItemType &it, int32_t lookDistance,
       if (!begin) {
         s << ')';
       }
+
+      if (it.weaponClass != WeaponClass::Default) {
+        const char *classDescription = getWeaponClassDescription(it.weaponClass);
+        const char *suitability = getWeaponClassSuitability(it.weaponClass);
+        const char *powerAnalysis = getWeaponClassPowerAnalysis(it.weaponClass);
+
+        if (classDescription[0] != '\0') {
+          s << std::endl << marcador << "Class "
+            << getWeaponClassName(it.weaponClass) << ": " << classDescription;
+        }
+        if (suitability[0] != '\0') {
+          s << std::endl << marcador << suitability;
+        }
+        if (powerAnalysis[0] != '\0') {
+          s << std::endl << marcador << powerAnalysis;
+        }
+      }
     } else if (it.weaponType != WEAPON_NONE) {
       bool begin = true;
 
@@ -1758,6 +1779,17 @@ std::string Item::getDescription(const ItemType &it, int32_t lookDistance,
           s << " physical + " << it.abilities->elementDamage << ' '
             << elementName;
         }
+      }
+
+      if (attack == 0 && it.weaponClass != WeaponClass::Default) {
+        if (begin) {
+          begin = false;
+          s << " (";
+        } else {
+          s << ", ";
+        }
+
+        s << "Class: " << getWeaponClassName(it.weaponClass);
       }
 
       if (defense != 0 || extraDefense != 0) {
@@ -1946,7 +1978,7 @@ std::string Item::getDescription(const ItemType &it, int32_t lookDistance,
         s << ')';
       }
 
-      if (attack > 0 && it.weaponClass != WeaponClass::Default) {
+      if (it.weaponClass != WeaponClass::Default) {
         const char *classDescription = getWeaponClassDescription(it.weaponClass);
         const char *suitability = getWeaponClassSuitability(it.weaponClass);
         const char *powerAnalysis = getWeaponClassPowerAnalysis(it.weaponClass);

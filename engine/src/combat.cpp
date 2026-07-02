@@ -1264,11 +1264,11 @@ bool Combat::checkCriticalHeal(Player* caster, int32_t& healValue)
 	}
 
 	uint16_t vocationId = caster->getVocationId();
-	int32_t criticalHealPercent = static_cast<int32_t>(getCriticalHealPercentByVocation(vocationId));
+	double criticalHealPercent = getCriticalHealPercentByVocation(vocationId);
 	
 	if (criticalHealPercent > 0) {
-		int32_t roll = normal_random(1, 100);
-		if (roll <= criticalHealPercent) {
+		int32_t roll = normal_random(1, 10000);
+		if (roll <= static_cast<int32_t>(criticalHealPercent * 100)) {
 			double criticalMultiplier = getCriticalMultiplierByVocation(caster->getVocation()->getId());
 			healValue = static_cast<int32_t>(healValue * criticalMultiplier);
 			return true;

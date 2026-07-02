@@ -1931,6 +1931,7 @@
 	</item>
 	<item id="2136" name="Thordain magic amulet">
 
+		<attribute key="description" value="[Inc.Phy 30%]"/>
 		<attribute key="weight" value="700"/>
 		<attribute key="slotType" value="necklace"/>
 	</item>
@@ -2232,6 +2233,7 @@
 	</item>
 	<item id="2196" name="gaya magic amulet">
 
+		<attribute key="description" value="[Inc.Energy 30%]"/>
 		<attribute key="weight" value="420"/>
 		<attribute key="slotType" value="necklace"/>
 	</item>
