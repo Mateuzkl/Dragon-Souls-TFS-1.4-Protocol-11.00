@@ -20,8 +20,8 @@ only_commits:
     - /engine/cmake/
 
 install:
-   - cmd: cd /d C:\Tools\vcpkg && git fetch --all --tags
-   - cmd: vcpkg install
+   - cmd: git -C C:\Tools\vcpkg fetch --all --tags
+   - cmd: vcpkg install --x-manifest-root=%APPVEYOR_BUILD_FOLDER%
 
 build:
   parallel: true
