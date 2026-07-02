@@ -8,8 +8,6 @@
     "boost-variant",
     "boost-asio",
     "boost-filesystem",
-    "boost-variant",
-    "boost-lockfree",
     "libmariadb",
     "fmt",
     "mpir",

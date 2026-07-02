@@ -32,6 +32,44 @@ extern ConfigManager g_config;
 extern Weapons* g_weapons;
 extern Events* g_events;
 
+namespace {
+bool canApplyWeaponClassMultiplier(WeaponType_t weaponType)
+{
+	switch (weaponType) {
+		case WEAPON_SWORD:
+		case WEAPON_CLUB:
+		case WEAPON_AXE:
+		case WEAPON_DISTANCE:
+		case WEAPON_AMMO:
+			return true;
+		default:
+			return false;
+	}
+}
+
+WeaponClass getItemWeaponClass(const Item* item)
+{
+	if (!item || !canApplyWeaponClassMultiplier(item->getWeaponType())) {
+		return WeaponClass::Default;
+	}
+	return item->getWeaponClass();
+}
+
+double getMeleeWeaponClassMultiplier(const Item* item)
+{
+	return getWeaponClassMultiplier(getItemWeaponClass(item));
+}
+
+double getDistanceWeaponClassMultiplier(const Player* player, const Item* item)
+{
+	WeaponClass weaponClass = getItemWeaponClass(item);
+	if (weaponClass == WeaponClass::Default && player && item && item->getWeaponType() == WEAPON_AMMO) {
+		weaponClass = getItemWeaponClass(player->getWeapon(true));
+	}
+	return getWeaponClassMultiplier(weaponClass);
+}
+}
+
 Weapons::Weapons()
 {
 	scriptInterface.initState();
@@ -52,7 +90,7 @@ const Weapon* Weapons::getWeapon(const Item* item) const
 	if (it == weapons.end()) {
 		return nullptr;
 	}
-	return it->second;
+	return it->second.get();
 }
 
 void Weapons::clear(bool fromLua)
@@ -91,9 +129,9 @@ void Weapons::loadDefaults()
 			case WEAPON_SWORD:
 			case WEAPON_CLUB:
 			case WEAPON_FIST: {
-				WeaponMelee* weapon = new WeaponMelee(&scriptInterface);
+				auto weapon = std::make_unique<WeaponMelee>(&scriptInterface);
 				weapon->configureWeapon(it);
-				weapons[i] = weapon;
+				weapons[i] = std::move(weapon);
 				break;
 			}
 
@@ -103,9 +141,9 @@ void Weapons::loadDefaults()
 					continue;
 				}
 
-				WeaponDistance* weapon = new WeaponDistance(&scriptInterface);
+				auto weapon = std::make_unique<WeaponDistance>(&scriptInterface);
 				weapon->configureWeapon(it);
-				weapons[i] = weapon;
+				weapons[i] = std::move(weapon);
 				break;
 			}
 
@@ -118,22 +156,23 @@ void Weapons::loadDefaults()
 Event_ptr Weapons::getEvent(const std::string& nodeName)
 {
 	if (strcasecmp(nodeName.c_str(), "melee") == 0) {
-		return Event_ptr(new WeaponMelee(&scriptInterface));
+		return std::make_unique<WeaponMelee>(&scriptInterface);
 	} else if (strcasecmp(nodeName.c_str(), "distance") == 0) {
-		return Event_ptr(new WeaponDistance(&scriptInterface));
+		return std::make_unique<WeaponDistance>(&scriptInterface);
 	} else if (strcasecmp(nodeName.c_str(), "wand") == 0) {
-		return Event_ptr(new WeaponWand(&scriptInterface));
+		return std::make_unique<WeaponWand>(&scriptInterface);
 	}
 	return nullptr;
 }
 
 bool Weapons::registerEvent(Event_ptr event, const pugi::xml_node&)
 {
-	Weapon* weapon = static_cast<Weapon*>(event.release()); //event is guaranteed to be a Weapon
+	std::unique_ptr<Weapon> weapon(static_cast<Weapon*>(event.release())); //event is guaranteed to be a Weapon
 
-	auto result = weapons.emplace(weapon->getID(), weapon);
+	const uint16_t id = weapon->getID();
+	auto result = weapons.emplace(id, std::move(weapon));
 	if (!result.second) {
-		std::cout << "[Warning - Weapons::registerEvent] Duplicate registered item with id: " << weapon->getID() << std::endl;
+		std::cout << "[Warning - Weapons::registerEvent] Duplicate registered item with id: " << id << std::endl;
 	}
 	return result.second;
 }
@@ -141,7 +180,7 @@ bool Weapons::registerEvent(Event_ptr event, const pugi::xml_node&)
 bool Weapons::registerLuaEvent(Weapon* event)
 {
 	Weapon_ptr weapon{ event };
-	weapons[weapon->getID()] = weapon.release();
+	weapons[weapon->getID()] = std::move(weapon);
 
 	return true;
 }
@@ -668,7 +707,8 @@ int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, cons
 	int32_t attackValue = std::max<int32_t>(0, item->getAttack());
 	float attackFactor = player->getAttackFactor();
 
-	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->meleeDamageMultiplier);
+	const double classMultiplier = getMeleeWeaponClassMultiplier(item);
+	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->meleeDamageMultiplier * classMultiplier);
 	if (maxDamage) {
 		return -maxValue;
 	}
@@ -960,7 +1000,8 @@ int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature* ta
 	int32_t attackSkill = player->getSkillLevel(SKILL_DISTANCE);
 	float attackFactor = player->getAttackFactor();
 
-	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->distDamageMultiplier);
+	const double classMultiplier = getDistanceWeaponClassMultiplier(player, item);
+	int32_t maxValue = static_cast<int32_t>(Weapons::getMaxWeaponDamage(player->getLevel(), attackSkill, attackValue, attackFactor) * player->getVocation()->distDamageMultiplier * classMultiplier);
 	if (maxDamage) {
 		return -maxValue;
 	}

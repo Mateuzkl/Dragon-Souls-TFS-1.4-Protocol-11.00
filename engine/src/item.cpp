@@ -38,9 +38,6 @@ extern Game g_game;
 extern Spells *g_spells;
 extern Vocations g_vocations;
 extern Imbuements g_imbuements;
-extern LuaEnvironment g_luaEnvironment;
-extern bool criticalSystemLoaded;
-extern void loadCriticalSystem();
 
 Items Item::items;
 
@@ -1669,31 +1666,9 @@ std::string Item::getDescription(const ItemType &it, int32_t lookDistance,
         begin = false;
         s << " (Atk:" << attack;
 
-        // Sistema de classificação de armas
-        std::string weaponClass = "";
-        std::string classDescription = "";
-
-        if (attack >= 250) {
-          weaponClass = "GOD";
-          classDescription = "Arma lendária de poder divino";
-        } else if (attack >= 180) {
-          weaponClass = "A";
-          classDescription = "Arma épica de grande poder";
-        } else if (attack >= 150) {
-          weaponClass = "B";
-          classDescription = "Arma rara de poder moderado";
-        } else if (attack >= 130) {
-          weaponClass = "C";
-          classDescription = "Arma comum de poder básico";
-        } else if (attack >= 100) {
-          weaponClass = "D";
-          classDescription = "Arma básica de poder limitado";
-        } else {
-          weaponClass = "E";
-          classDescription = "Arma fraca de poder mínimo";
+        if (it.weaponClass != WeaponClass::Default) {
+          s << ", Class: " << getWeaponClassName(it.weaponClass);
         }
-
-        s << ", Class: " << weaponClass;
 
         // Show dynamic elements (priority over static)
         std::vector<std::pair<CombatType_t, uint16_t>> dynamicElements;
@@ -1971,43 +1946,20 @@ std::string Item::getDescription(const ItemType &it, int32_t lookDistance,
         s << ')';
       }
 
-      if (attack > 0) {
-        if (!criticalSystemLoaded) {
-          loadCriticalSystem();
+      if (attack > 0 && it.weaponClass != WeaponClass::Default) {
+        const char *classDescription = getWeaponClassDescription(it.weaponClass);
+        const char *suitability = getWeaponClassSuitability(it.weaponClass);
+        const char *powerAnalysis = getWeaponClassPowerAnalysis(it.weaponClass);
+
+        if (classDescription[0] != '\0') {
+          s << std::endl << marcador << "Class "
+            << getWeaponClassName(it.weaponClass) << ": " << classDescription;
         }
-
-        if (criticalSystemLoaded) {
-          lua_State *L = g_luaEnvironment.getLuaState();
-
-          lua_getglobal(L, "getWeaponClassDescription");
-          lua_pushnumber(L, attack);
-          if (lua_pcall(L, 1, 1, 0) == 0) {
-            const char *classDesc = lua_tostring(L, -1);
-            lua_pop(L, 1);
-            if (classDesc) {
-              s << std::endl << marcador << classDesc;
-            }
-          }
-
-          lua_getglobal(L, "getWeaponSuitability");
-          lua_pushnumber(L, attack);
-          if (lua_pcall(L, 1, 1, 0) == 0) {
-            const char *suitability = lua_tostring(L, -1);
-            lua_pop(L, 1);
-            if (suitability) {
-              s << std::endl << marcador << suitability;
-            }
-          }
-
-          lua_getglobal(L, "getWeaponPowerAnalysis");
-          lua_pushnumber(L, attack);
-          if (lua_pcall(L, 1, 1, 0) == 0) {
-            const char *powerAnalysis = lua_tostring(L, -1);
-            lua_pop(L, 1);
-            if (powerAnalysis) {
-              s << std::endl << marcador << powerAnalysis;
-            }
-          }
+        if (suitability[0] != '\0') {
+          s << std::endl << marcador << suitability;
+        }
+        if (powerAnalysis[0] != '\0') {
+          s << std::endl << marcador << powerAnalysis;
         }
       }
     }

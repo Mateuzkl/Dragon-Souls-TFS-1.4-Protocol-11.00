@@ -37,12 +37,17 @@ class Item;
 struct Position;
 
 struct CriticalConfig {
-	double multiplier;
-	double healPercent;
+	double chance = 10.0;
+	double multiplier = 2.0;
+	double healPercent = 1.0;
 	std::vector<std::string> phrases;
 };
 
-extern std::map<Vocation_t, CriticalConfig> criticalConfigs;
+const CriticalConfig& getCriticalConfig(uint16_t vocationId);
+double getCriticalChanceByVocation(uint16_t vocationId);
+double getCriticalMultiplierByVocation(uint16_t vocationId);
+double getCriticalHealPercentByVocation(uint16_t vocationId);
+const std::vector<std::string>& getCriticalPhrases(uint16_t vocationId);
 
 //for luascript callback
 class ValueCallback final : public CallBack

@@ -81,6 +81,164 @@ ItemTypes_t Items::getLootType(const std::string &strValue) {
   return ITEM_TYPE_NONE;
 }
 
+WeaponClass getWeaponClassFromString(const std::string &value) {
+  const std::string v = asLowerCaseString(value);
+  if (v == "god") {
+    return WeaponClass::God;
+  }
+  if (v == "a") {
+    return WeaponClass::A;
+  }
+  if (v == "b") {
+    return WeaponClass::B;
+  }
+  if (v == "c") {
+    return WeaponClass::C;
+  }
+  if (v == "d") {
+    return WeaponClass::D;
+  }
+  if (v == "e") {
+    return WeaponClass::E;
+  }
+  if (v == "f") {
+    return WeaponClass::F;
+  }
+  if (v == "j") {
+    return WeaponClass::J;
+  }
+  if (v == "s") {
+    return WeaponClass::S;
+  }
+  if (v.empty() || v == "default") {
+    return WeaponClass::Default;
+  }
+
+  std::cout << "[Warning - Items::parseItemNode] Unknown weaponClass: "
+            << value << ". Using default." << std::endl;
+  return WeaponClass::Default;
+}
+
+const char *getWeaponClassName(WeaponClass weaponClass) {
+  switch (weaponClass) {
+    case WeaponClass::God:
+      return "God";
+    case WeaponClass::A:
+      return "A";
+    case WeaponClass::B:
+      return "B";
+    case WeaponClass::C:
+      return "C";
+    case WeaponClass::D:
+      return "D";
+    case WeaponClass::E:
+      return "E";
+    case WeaponClass::F:
+      return "F";
+    case WeaponClass::J:
+      return "J";
+    case WeaponClass::S:
+      return "S";
+    default:
+      return "Default";
+  }
+}
+
+const char *getWeaponClassDescription(WeaponClass weaponClass) {
+  switch (weaponClass) {
+    case WeaponClass::God:
+      return "Legendary weapon of divine power";
+    case WeaponClass::A:
+      return "Epic weapon of great power";
+    case WeaponClass::B:
+      return "Rare weapon of moderate power";
+    case WeaponClass::C:
+      return "Common weapon of basic power";
+    case WeaponClass::D:
+      return "Basic weapon of limited power";
+    case WeaponClass::E:
+      return "Entry weapon of minimal power";
+    case WeaponClass::F:
+      return "Starter weapon of low power";
+    case WeaponClass::J:
+      return "Special weapon of exceptional power";
+    case WeaponClass::S:
+      return "Superior weapon of elite power";
+    default:
+      return "";
+  }
+}
+
+const char *getWeaponClassSuitability(WeaponClass weaponClass) {
+  switch (weaponClass) {
+    case WeaponClass::God:
+      return "Recommended for high-level players (200+)";
+    case WeaponClass::A:
+      return "Recommended for experienced players (150+)";
+    case WeaponClass::B:
+      return "Recommended for intermediate players (100+)";
+    case WeaponClass::C:
+      return "Suitable for beginner players (50+)";
+    case WeaponClass::D:
+      return "Suitable for early players (40+)";
+    case WeaponClass::E:
+      return "Suitable for early players (30+)";
+    case WeaponClass::F:
+      return "Suitable for starter players (20+)";
+    case WeaponClass::J:
+      return "Recommended for advanced players (180+)";
+    case WeaponClass::S:
+      return "Recommended for elite players (180+)";
+    default:
+      return "";
+  }
+}
+
+const char *getWeaponClassPowerAnalysis(WeaponClass weaponClass) {
+  switch (weaponClass) {
+    case WeaponClass::God:
+      return "This weapon has devastating power!";
+    case WeaponClass::A:
+      return "This weapon is very powerful!";
+    case WeaponClass::B:
+      return "This weapon has moderate power.";
+    case WeaponClass::C:
+      return "This weapon has basic power.";
+    case WeaponClass::D:
+      return "This weapon has limited power.";
+    case WeaponClass::E:
+      return "This weapon has minimal power.";
+    case WeaponClass::F:
+      return "This weapon has low power.";
+    case WeaponClass::J:
+      return "This weapon has exceptional power.";
+    case WeaponClass::S:
+      return "This weapon has elite power.";
+    default:
+      return "";
+  }
+}
+
+double getWeaponClassMultiplier(WeaponClass weaponClass) {
+  switch (weaponClass) {
+    case WeaponClass::God:
+      return 2.0;
+    case WeaponClass::A:
+      return 1.5;
+    case WeaponClass::B:
+      return 1.3;
+    case WeaponClass::C:
+      return 1.15;
+    case WeaponClass::D:
+    case WeaponClass::E:
+    case WeaponClass::F:
+    case WeaponClass::J:
+    case WeaponClass::S:
+    default:
+      return 1.0;
+  }
+}
+
 void Items::applyTypeByString(ItemType &it, const std::string &value) {
   const std::string v = asLowerCaseString(value);
   if (v == "key") {
@@ -1130,6 +1288,8 @@ bool Items::parseItemAttribute_Basic(ItemType &it,
     it.imbuingSlots = pugi::cast<int32_t>(valueAttribute.value());
   } else if (tmpStrValue == "classification") {
     it.classification = pugi::cast<uint32_t>(valueAttribute.value());
+  } else if (tmpStrValue == "weaponclass") {
+    it.weaponClass = getWeaponClassFromString(valueAttribute.as_string());
   } else if (tmpStrValue == "tier") {
     it.tier = pugi::cast<uint32_t>(valueAttribute.value());
   } else if (tmpStrValue == "level") {

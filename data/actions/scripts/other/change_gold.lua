@@ -41,7 +41,9 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
     
     if coin.changeTo and item:getCount() == 100 then
         -- Upgrade: 100 para 1
-        item:remove()
+        if not item:remove(100) then
+            return false
+        end
         player:addItem(coin.changeTo, 1)
         
         Game.sendAnimatedText(coin.upgradeText, player:getPosition(), coin.upgradeColor)
@@ -49,7 +51,9 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
         
     elseif coin.changeBack and item:getCount() < 100 then
         -- Downgrade: 1 para 100
-        item:remove()
+        if not item:remove(1) then
+            return false
+        end
         player:addItem(coin.changeBack, 100)
         
         Game.sendAnimatedText(coin.downgradeText, player:getPosition(), coin.downgradeColor)

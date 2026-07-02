@@ -64,6 +64,76 @@ local combatShortNames = {
   [COMBAT_DEATHDAMAGE] = "Inc_Magic"
 }
 
+local weaponClassInfo = {
+  god = {
+    class = "God",
+    description = "Legendary weapon of divine power",
+    suitability = "Recommended for high-level players (200+)",
+    powerAnalysis = "This weapon has devastating power!"
+  },
+  a = {
+    class = "A",
+    description = "Epic weapon of great power",
+    suitability = "Recommended for experienced players (150+)",
+    powerAnalysis = "This weapon is very powerful!"
+  },
+  b = {
+    class = "B",
+    description = "Rare weapon of moderate power",
+    suitability = "Recommended for intermediate players (100+)",
+    powerAnalysis = "This weapon has moderate power."
+  },
+  c = {
+    class = "C",
+    description = "Common weapon of basic power",
+    suitability = "Suitable for beginner players (50+)",
+    powerAnalysis = "This weapon has basic power."
+  },
+  d = {
+    class = "D",
+    description = "Basic weapon of limited power",
+    suitability = "Suitable for early players (40+)",
+    powerAnalysis = "This weapon has limited power."
+  },
+  e = {
+    class = "E",
+    description = "Entry weapon of minimal power",
+    suitability = "Suitable for early players (30+)",
+    powerAnalysis = "This weapon has minimal power."
+  },
+  f = {
+    class = "F",
+    description = "Starter weapon of low power",
+    suitability = "Suitable for starter players (20+)",
+    powerAnalysis = "This weapon has low power."
+  },
+  j = {
+    class = "J",
+    description = "Special weapon of exceptional power",
+    suitability = "Recommended for advanced players (180+)",
+    powerAnalysis = "This weapon has exceptional power."
+  },
+  s = {
+    class = "S",
+    description = "Superior weapon of elite power",
+    suitability = "Recommended for elite players (180+)",
+    powerAnalysis = "This weapon has elite power."
+  }
+}
+
+local function getWeaponClassTooltip(itemType)
+  if not itemType.getWeaponClass then
+    return nil
+  end
+
+  local weaponClass = itemType:getWeaponClass()
+  if not weaponClass then
+    return nil
+  end
+
+  return weaponClassInfo[string.lower(tostring(weaponClass))]
+end
+
 
 local LoginEvent = CreatureEvent("TooltipsLogin")
 
@@ -319,11 +389,10 @@ function Item:buildTooltip()
   item_data.stackable = itemType:isStackable()
   item_data.itemType = formatItemType(itemType)
 
-  -- Weapon Class and Reset (from critical_system.lua and weapons.xml)
+  -- Weapon Class and Reset
   local itemAttack = tonumber(itemType:getAttack()) or 0
   if itemAttack > 0 then
-    dofile('data/critical_system.lua')
-    local weaponClass = getWeaponClassification(itemAttack)
+    local weaponClass = getWeaponClassTooltip(itemType)
     if weaponClass then
       item_data.weaponClass = {
         class = weaponClass.class,
@@ -659,6 +728,16 @@ function ItemType:buildTooltip(count)
 
 
   item_data.itemType = formatItemType(self)
+
+  local weaponClass = getWeaponClassTooltip(self)
+  if weaponClass then
+    item_data.weaponClass = {
+      class = weaponClass.class,
+      description = weaponClass.description,
+      suitability = weaponClass.suitability,
+      powerAnalysis = weaponClass.powerAnalysis
+    }
+  end
 
   local itemArmor = tonumber(self:getArmor()) or 0
   if itemArmor > 0 then

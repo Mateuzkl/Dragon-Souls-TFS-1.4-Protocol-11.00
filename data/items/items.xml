@@ -1930,7 +1930,7 @@
 		<attribute key="containerSize" value="20" />
 	</item>
 	<item id="2136" name="Thordain magic amulet">
-		<attribute key="description" value="[Inc.Phy 30%]"/>
+
 		<attribute key="weight" value="700"/>
 		<attribute key="slotType" value="necklace"/>
 	</item>
@@ -2231,7 +2231,7 @@
 	<attribute key="speed" value="600"/>
 	</item>
 	<item id="2196" name="gaya magic amulet">
-		<attribute key="description" value="[Inc.Energy 30%]"/>
+
 		<attribute key="weight" value="420"/>
 		<attribute key="slotType" value="necklace"/>
 	</item>
@@ -3045,12 +3045,13 @@
 <attribute key="range" value="5" />
 </item>
 	<item id="2390" article="a" name="magic longsword">
-		<attribute key="description" value="It is the magic Cyclopmania Sword." />
+		<attribute key="description" value="It is the magic Cyclopmania Sword."/>
 		<attribute key="weight" value="4300" />
-		<attribute key="defense" value="40" />
-		<attribute key="attack" value="55" />
+		<attribute key="defense" value="67"/>
+		<attribute key="attack" value="111"/>
 		<attribute key="weaponType" value="sword" />
 		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponClass" value="e"/>
 	</item>
 	<item id="2391" article="a" name="war hammer">
 		<attribute key="weight" value="8500" />
@@ -3117,11 +3118,11 @@
 <attribute key="range" value="5" />
 </item>
 	<item id="2400" article="a" name="magic sword">
-  <attribute key="description" value="It is the Sword of Valor."/>
     <attribute key="weight" value="4200" />
-    <attribute key="defense" value="35" />
-    <attribute key="attack" value="48" />
+    <attribute key="defense" value="75"/>
+    <attribute key="attack" value="137"/>
     <attribute key="weaponType" value="sword" />
+    <attribute key="weaponClass" value="e"/>
     <attribute key="extradef" value="3" />
 	<attribute key="increasepercentphysical" value="10"/>
 </item>
@@ -3172,12 +3173,12 @@
 		<attribute key="extradef" value="1" />
 	</item>
 	<item id="2408" article="a" name="warlord sword">
-		<attribute key="description" value="Strong powers flow in this magic sword." />
+		<attribute key="description" value="Strong powers flow in this magic sword."/>
 		<attribute key="weight" value="6400" />
 		<attribute key="defense" value="38" />
 		<attribute key="attack" value="53" />
 		<attribute key="weaponType" value="sword" />
-		<attribute key="slotType" value="two-handed" />
+<attribute key="slotType" value="two-handed" />
 	</item>
 	<item id="2409" article="a" name="serpent sword">
 		<attribute key="weight" value="4100" />
@@ -3224,12 +3225,13 @@
 		<attribute key="slotType" value="two-handed" />
 	</item>
 	<item id="2415" article="a" name="great axe">
-		<attribute key="description" value="A masterpiece of a dwarven smith." />
+		<attribute key="description" value="A masterpiece of a dwarven smith."/>
 		<attribute key="weight" value="9000" />
-		<attribute key="defense" value="22" />
-		<attribute key="attack" value="52" />
+		<attribute key="defense" value="102"/>
+		<attribute key="attack" value="110"/>
 		<attribute key="weaponType" value="axe" />
 		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponClass" value="e"/>
 	</item>
 	<item id="2416" article="a" name="crowbar">
 		<attribute key="weight" value="2100" />
@@ -3263,12 +3265,13 @@
 		<attribute key="weaponType" value="sword" />
 	</item>
 	<item id="2421" article="a" name="thunder hammer">
-	<attribute key="description" value="[Inc.Phys 10%, Class.D]"/>
+
 		<attribute key="weight" value="12500" />
-		<attribute key="defense" value="35" />
-		<attribute key="attack" value="49" />
+		<attribute key="defense" value="75"/>
+		<attribute key="attack" value="85"/>
 		<attribute key="weaponType" value="club" />
 		<attribute key="extradef" value="1" />
+	<attribute key="weaponClass" value="f"/>
 	</item>
 	<item id="2422" article="an" name="iron hammer">
 		<attribute key="weight" value="6600" />
@@ -3331,12 +3334,13 @@
 		<attribute key="extradef" value="1" />
 	</item>
 	<item id="2431" article="a" name="stonecutter axe">
-		<attribute key="description" value="You feel the power of this mighty axe." />
+		<attribute key="description" value="You feel the power of this mighty axe."/>
 		<attribute key="weight" value="9900" />
-		<attribute key="defense" value="30" />
-		<attribute key="attack" value="50" />
+		<attribute key="defense" value="59"/>
+		<attribute key="attack" value="89"/>
 		<attribute key="weaponType" value="axe" />
 		<attribute key="extradef" value="3" />
+		<attribute key="weaponClass" value="f"/>
 	</item>
 	<item id="2432" article="a" name="fire axe">
 		<attribute key="description" value="The blade is a magic flame." />
@@ -3426,7 +3430,7 @@
 		<attribute key="weight" value="7000" />
 		<attribute key="defense" value="12" />
 		<attribute key="attack" value="48" />
-		<attribute key="description" value="[Inc.Phys 5%, Class.E]"/>
+
 		<attribute key="weaponType" value="club" />
 	</item>
 	<item id="2445" article="a" name="crystal mace">
@@ -3476,7 +3480,7 @@
 	</item>
 	<item id="2452" article="a" name="heavy mace">
 		<attribute key="weight" value="1100" />
-		<attribute key="description" value="[Inc.Phys 10%, Class.D]"/>
+
 		<attribute key="defense" value="15" />
 		<attribute key="attack" value="49" />
 		<attribute key="weaponType" value="club" />
@@ -13130,11 +13134,12 @@
 	</item>
 	<item id="7392" article="an" name="orcish maul">
 		<attribute key="weight" value="5400" />
-		<attribute key="description" value="A masterpiece of a dwarven smith. [Inc.Phys 15%, Class.D]"/>
-		<attribute key="defense" value="18" />
-		<attribute key="attack" value="42" />
+		<attribute key="description" value="A masterpiece of a dwarven smith."/>
+		<attribute key="defense" value="118"/>
+		<attribute key="attack" value="106"/>
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
+		<attribute key="weaponClass" value="e"/>
 	</item>
 	<item id="7393" article="a" name="demon trophy">
 		<attribute key="weight" value="500" />
@@ -14297,14 +14302,15 @@
 	</item>
 	<item id="7776" article="an" name="orcish maul">
 		<attribute key="weight" value="5400" />
-		<attribute key="defense" value="18" />
-		<attribute key="attack" value="42" />
+		<attribute key="defense" value="118"/>
+		<attribute key="attack" value="106"/>
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="elementIce" value="6" />
 		<attribute key="charges" value="1000" />
 		<attribute key="decayTo" value="7392" />
 		<attribute key="showcharges" value="1" />
+		<attribute key="weaponClass" value="e"/>
 	</item>
 	<item id="7777" article="a" name="war hammer">
 		<attribute key="weight" value="8500" />
@@ -14851,14 +14857,15 @@
 	</item>
 	<item id="7867" article="an" name="orcish maul">
 		<attribute key="weight" value="5400" />
-		<attribute key="defense" value="18" />
-		<attribute key="attack" value="42" />
+		<attribute key="defense" value="118"/>
+		<attribute key="attack" value="106"/>
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="elementEarth" value="6" />
 		<attribute key="charges" value="1000" />
 		<attribute key="decayTo" value="7392" />
 		<attribute key="showcharges" value="1" />
+		<attribute key="weaponClass" value="e"/>
 	</item>
 	<item id="7868" article="a" name="war hammer">
 		<attribute key="weight" value="8500" />
@@ -15014,14 +15021,15 @@
 	</item>
 	<item id="7882" article="an" name="orcish maul">
 		<attribute key="weight" value="5400" />
-		<attribute key="defense" value="18" />
-		<attribute key="attack" value="42" />
+		<attribute key="defense" value="118"/>
+		<attribute key="attack" value="106"/>
 		<attribute key="weaponType" value="club" />
 		<attribute key="slotType" value="two-handed" />
 		<attribute key="elementEnergy" value="6" />
 		<attribute key="charges" value="1000" />
 		<attribute key="decayTo" value="7392" />
 		<attribute key="showcharges" value="1" />
+		<attribute key="weaponClass" value="e"/>
 	</item>
 	<item id="7883" article="a" name="war hammer">
 		<attribute key="weight" value="8500" />
@@ -18727,10 +18735,11 @@
 </item>
 <item id="38746" name="spyked grinder">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="15"/>
-	<attribute key="attack" value="57"/>
+	<attribute key="defense" value="78"/>
+	<attribute key="attack" value="137"/>
       	<attribute key="slotType" value="two-handed"/>
 	<attribute key="weaponType" value="fist" />
+	<attribute key="weaponClass" value="d"/>
 </item>
 <item id="38745" name="">
 </item>
@@ -18742,10 +18751,11 @@
 </item>
 <item id="38796" name="adamantiun axe">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="55"/>
-	<attribute key="attack" value="70"/>
+	<attribute key="defense" value="196"/>
+	<attribute key="attack" value="230"/>
 	<attribute key="weaponType" value="axe"/>
       <attribute key="slotType" value="two-handed"/>
+	<attribute key="weaponClass" value="a"/>
 </item>
 <item id="38813" name="">
 </item>
@@ -18773,17 +18783,19 @@
 </item>
 <item id="38808" name="magma axe">
 	<attribute key="weight" value="12500"/>
-	<attribute key="defense" value="42"/>
-	<attribute key="attack" value="70"/>
+	<attribute key="defense" value="71"/>
+	<attribute key="attack" value="82"/>
 	<attribute key="weaponType" value="axe"/>
 	<attribute key="elementFire" value="15" />
+	<attribute key="weaponClass" value="f"/>
 </item>
 <item id="38807" name="greatsmith hammer">
 	<attribute key="weight" value="4600"/>
-	<attribute key="defense" value="24"/>
-	<attribute key="attack" value="61"/>
+	<attribute key="defense" value="131"/>
+	<attribute key="attack" value="162"/>
 	<attribute key="weaponType" value="club"/>
 	<attribute key="slotType" value="two-handed" />
+	<attribute key="weaponClass" value="c"/>
 </item>
 <item id="38806" name="">
 </item>
@@ -18793,11 +18805,12 @@
 </item>
 <item id="38803" name="hammer of hercules">
 	<attribute key="weight" value="12500"/>
-	<attribute key="defense" value="35"/>
-	<attribute key="attack" value="85"/>
+	<attribute key="defense" value="199"/>
+	<attribute key="attack" value="258"/>
 	<attribute key="weaponType" value="club"/>
         <attribute key="slotType" value="two-handed"/>
 
+	<attribute key="weaponClass" value="s"/>
 </item>
 <item id="38802" name="mace of fury">
 <attribute key="weight" value="2500"/>
@@ -18815,10 +18828,11 @@
 </item>
 <item id="38800" name="caribian sword">
 	<attribute key="weight" value="12500"/>
-	<attribute key="defense" value="75"/>
-	<attribute key="attack" value="81"/>
+	<attribute key="defense" value="15"/>
+	<attribute key="attack" value="481"/>
 	<attribute key="weaponType" value="sword"/>
       <attribute key="description" value="It is a bit heavy due to the iron mountain, but very precise."/>
+	<attribute key="weaponClass" value="j"/>
 </item>
 <item id="38799" name="jelical sword">
 	<attribute key="weight" value="2500"/>
@@ -18832,10 +18846,11 @@
 </item>
 <item id="38798" name="spirit of belkor">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="Escolhe aew"/>
-	<attribute key="attack" value="300"/>
+	<attribute key="defense" value="196"/>
+	<attribute key="attack" value="260"/>
 	<attribute key="weaponType" value="sword"/>
       <attribute key="slotType" value="two-handed"/>
+	<attribute key="weaponClass" value="s"/>
 </item>
 <item id="38797" name="enigman sword">
 	<attribute key="weight" value="2500"/>
@@ -18845,9 +18860,10 @@
 </item>
 <item id="38814" name="cold steel sword">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="Escolhe aew"/>
-	<attribute key="attack" value="Escolhe aew"/>
+	<attribute key="defense" value="81"/>
+	<attribute key="attack" value="167"/>
 	<attribute key="weaponType" value="sword"/>
+	<attribute key="weaponClass" value="c"/>
 </item>
 <item id="38794" name="swamplair sword">
 	<attribute key="weight" value="9500"/>
@@ -18857,15 +18873,17 @@
 </item>
 <item id="38793" name="alabarda of fire">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="33"/>
-	<attribute key="attack" value="61"/>
+	<attribute key="defense" value="120"/>
+	<attribute key="attack" value="160"/>
 	<attribute key="weaponType" value="sword"/>
+	<attribute key="weaponClass" value="c"/>
 </item>
 <item id="38792" name="sword of teseu">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="47"/>
-	<attribute key="attack" value="60"/>
+	<attribute key="defense" value="136"/>
+	<attribute key="attack" value="170"/>
 	<attribute key="weaponType" value="sword"/>
+	<attribute key="weaponClass" value="c"/>
 </item>
 <item id="38791" name="thurdillion sword">
 	<attribute key="attack" value="83"/>
@@ -21605,9 +21623,10 @@
 </item>
 <item id="38717" name="iron gloves">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="32"/>
-	<attribute key="attack" value="73"/>
+	<attribute key="defense" value="176"/>
+	<attribute key="attack" value="300"/>
 	<attribute key="weaponType" value="fist"/>
+	<attribute key="weaponClass" value="a"/>
 </item>
 <item id="12418" name="">
 </item>
@@ -22457,11 +22476,12 @@
 </item>
 <item id="39033" name="helical sword">
 	<attribute key="weight" value="2500"/>
-	<attribute key="defense" value="35"/>
-	<attribute key="attack" value="62"/>
+	<attribute key="defense" value="90"/>
+	<attribute key="attack" value="139"/>
 	<attribute key="weaponType" value="sword"/>
 	<attribute key="extradef" value="3" />
 	<attribute key="slotType" value="two-handed"/>
+	<attribute key="weaponClass" value="d"/>
 </item>
 <item id="12647" name="">
 </item>
@@ -22526,10 +22546,11 @@
 </item>
 <item id="39056" name="venom magic sword">
 	<attribute key="weight" value="9500"/>
-	<attribute key="defense" value="36"/>
-	<attribute key="attack" value="67"/>
+	<attribute key="defense" value="75"/>
+	<attribute key="attack" value="137"/>
 	<attribute key="weaponType" value="sword"/>
 	<attribute key="slotType" value="two-handed"/>
+	<attribute key="weaponClass" value="e"/>
 </item>
 <item id="12664" name="">
 </item>
@@ -22587,9 +22608,10 @@
 </item>
 <item id="39096" name="magic fire axe">
 	<attribute key="weight" value="12500"/>
-	<attribute key="defense" value="47"/>
-	<attribute key="attack" value="68"/>
+	<attribute key="defense" value="15"/>
+	<attribute key="attack" value="434"/>
 	<attribute key="weaponType" value="axe"/>
+	<attribute key="weaponClass" value="j"/>
 </item>
 <item id="12742" name="">
 </item>
