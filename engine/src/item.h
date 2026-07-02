@@ -814,6 +814,7 @@ public:
   Player *getHoldingPlayer() const;
 
   WeaponType_t getWeaponType() const { return items[id].weaponType; }
+  WeaponClass getWeaponClass() const { return items[id].weaponClass; }
   Ammo_t getAmmoType() const { return items[id].ammoType; }
   uint8_t getShootRange() const {
     if (hasAttribute(ITEM_ATTRIBUTE_SHOOTRANGE)) {

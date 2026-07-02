@@ -8,8 +8,6 @@
     "boost-variant",
     "boost-asio",
     "boost-filesystem",
-    "boost-variant",
-    "boost-lockfree",
     "libmariadb",
     "fmt",
     "mpir",
@@ -23,5 +21,5 @@
       "version": "2026-03-02"
     }
   ],
-  "builtin-baseline": "f36d2c22b92c43a7dc6ca41a380434d15570e7a4"
+  "builtin-baseline": "cd61e1e26a038e82d6550a3ebbe0fbbfe7da78e3"
 }

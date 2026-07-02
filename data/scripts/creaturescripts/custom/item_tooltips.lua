@@ -64,6 +64,24 @@ local combatShortNames = {
   [COMBAT_DEATHDAMAGE] = "Inc_Magic"
 }
 
+local function getWeaponClassTooltip(itemType)
+  if not itemType.getWeaponClass or not itemType.getWeaponClassDescription then
+    return nil
+  end
+
+  local weaponClass = itemType:getWeaponClass()
+  if not weaponClass then
+    return nil
+  end
+
+  return {
+    class = tostring(weaponClass),
+    description = itemType:getWeaponClassDescription() or "",
+    suitability = itemType:getWeaponClassSuitability() or "",
+    powerAnalysis = itemType:getWeaponClassPowerAnalysis() or ""
+  }
+end
+
 
 local LoginEvent = CreatureEvent("TooltipsLogin")
 
@@ -319,25 +337,14 @@ function Item:buildTooltip()
   item_data.stackable = itemType:isStackable()
   item_data.itemType = formatItemType(itemType)
 
-  -- Weapon Class and Reset (from critical_system.lua and weapons.xml)
-  local itemAttack = tonumber(itemType:getAttack()) or 0
-  if itemAttack > 0 then
-    dofile('data/critical_system.lua')
-    local weaponClass = getWeaponClassification(itemAttack)
-    if weaponClass then
-      item_data.weaponClass = {
-        class = weaponClass.class,
-        description = weaponClass.description,
-        suitability = weaponClass.suitability,
-        powerAnalysis = weaponClass.powerAnalysis
-      }
-    end
-    
-    -- Get reset requirement from ItemType
-    local resetReq = itemType:getMinReqReset()
-    if resetReq and tonumber(resetReq) and tonumber(resetReq) > 0 then
-      item_data.reqReset = tonumber(resetReq)
-    end
+  local weaponClass = getWeaponClassTooltip(itemType)
+  if weaponClass then
+    item_data.weaponClass = {
+      class = weaponClass.class,
+      description = weaponClass.description,
+      suitability = weaponClass.suitability,
+      powerAnalysis = weaponClass.powerAnalysis
+    }
   end
 
   local itemArmor = tonumber(itemType:getArmor()) or 0
@@ -659,6 +666,16 @@ function ItemType:buildTooltip(count)
 
 
   item_data.itemType = formatItemType(self)
+
+  local weaponClass = getWeaponClassTooltip(self)
+  if weaponClass then
+    item_data.weaponClass = {
+      class = weaponClass.class,
+      description = weaponClass.description,
+      suitability = weaponClass.suitability,
+      powerAnalysis = weaponClass.powerAnalysis
+    }
+  end
 
   local itemArmor = tonumber(self:getArmor()) or 0
   if itemArmor > 0 then

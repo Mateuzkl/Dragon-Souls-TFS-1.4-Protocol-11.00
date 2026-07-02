@@ -40,17 +40,33 @@ function onUse(player, item, fromPosition, target, toPosition, isHotkey)
     end
     
     if coin.changeTo and item:getCount() == 100 then
-        -- Upgrade: 100 para 1
-        item:remove()
-        player:addItem(coin.changeTo, 1)
+        -- Upgrade: 100 to 1
+        local removedId = item:getId()
+        if not item:remove(100) then
+            player:sendCancelMessage("Failed to process the transaction.")
+            return false
+        end
+        if not player:addItem(coin.changeTo, 1) then
+            player:addItem(removedId, 100)
+            player:sendCancelMessage("Failed to process the transaction.")
+            return false
+        end
         
         Game.sendAnimatedText(coin.upgradeText, player:getPosition(), coin.upgradeColor)
         player:getPosition():sendMagicEffect(coin.upgradeEffect)
         
     elseif coin.changeBack and item:getCount() < 100 then
-        -- Downgrade: 1 para 100
-        item:remove()
-        player:addItem(coin.changeBack, 100)
+        -- Downgrade: 1 to 100
+        local removedId = item:getId()
+        if not item:remove(1) then
+            player:sendCancelMessage("Failed to process the transaction.")
+            return false
+        end
+        if not player:addItem(coin.changeBack, 100) then
+            player:addItem(removedId, 1)
+            player:sendCancelMessage("Failed to process the transaction.")
+            return false
+        end
         
         Game.sendAnimatedText(coin.downgradeText, player:getPosition(), coin.downgradeColor)
         player:getPosition():sendMagicEffect(coin.downgradeEffect)

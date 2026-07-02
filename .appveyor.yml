@@ -16,10 +16,12 @@ only_commits:
     - /engine/src/
     - /engine/vc17/
     - .appveyor.yml
+    - vcpkg.json
     - /engine/cmake/
 
 install:
-   - cmd: vcpkg install
+   - cmd: git -C C:\Tools\vcpkg fetch --all --tags
+   - cmd: vcpkg install --x-manifest-root=%APPVEYOR_BUILD_FOLDER%
 
 build:
   parallel: true
@@ -34,4 +36,3 @@ artifacts:
   - path: \engine\vc17\**\theforgottenserver*.exe
   - path: \engine\vc17\**\*.dll
   - path: Otg.zip
-

@@ -33,99 +33,51 @@ extern Game g_game;
 extern Weapons* g_weapons;
 extern ConfigManager g_config;
 extern Events* g_events;
-extern LuaEnvironment g_luaEnvironment;
 
-bool criticalSystemLoaded = false;
+namespace {
+const CriticalConfig defaultCriticalConfig = {
+	0.0,
+	1.0,
+	0.0,
+	{}
+};
 
-void loadCriticalSystem() {
-	if (g_luaEnvironment.loadFile("data/critical_system.lua") == 0) {
-		criticalSystemLoaded = true;
-	} else {
-		criticalSystemLoaded = false;
-	}
+const std::map<uint16_t, CriticalConfig> criticalConfigs = {
+	{0, {0.0, 1.2, 0.0, {}}},
+	{4, {10.0, 2.0, 5.0, {"Strength and steel!", "No mercy!", "Feel my blade!"}}},
+	{8, {10.0, 2.0, 5.0, {"Elite strength!", "Knight's honor!", "Elite blade!"}}},
+	{12, {11.0, 2.1, 5.5, {"Slayer's edge!", "Death's embrace!", "Hunter's fury!"}}},
+	{16, {12.0, 2.3, 6.0, {"Dragon's fury!", "Slayer's might!", "Feel the dragon's wrath!"}}},
+};
 }
 
-double getCriticalChanceByVocation(uint16_t vocationId) {
-	if (!criticalSystemLoaded) {
-		loadCriticalSystem();
+const CriticalConfig& getCriticalConfig(uint16_t vocationId)
+{
+	const auto it = criticalConfigs.find(vocationId);
+	if (it != criticalConfigs.end()) {
+		return it->second;
 	}
-	
-	if (criticalSystemLoaded) {
-		lua_State* L = g_luaEnvironment.getLuaState();
-		lua_getglobal(L, "getCriticalChance");
-		lua_pushnumber(L, vocationId);
-		
-		if (lua_pcall(L, 1, 1, 0) == 0) {
-			double chance = lua_tonumber(L, -1);
-			lua_pop(L, 1);
-			return chance;
-		}
-	}
-	
-	int32_t maxCriticalChance = g_config.getNumber(ConfigManager::MAX_CRITICAL_CHANCE);
-	return std::min(static_cast<double>(maxCriticalChance), 50.0) / 100.0;
+	return defaultCriticalConfig;
 }
 
-double getCriticalMultiplierByVocation(uint16_t vocationId) {
-	if (!criticalSystemLoaded) {
-		loadCriticalSystem();
-	}
-	
-	if (criticalSystemLoaded) {
-		lua_State* L = g_luaEnvironment.getLuaState();
-		lua_getglobal(L, "getCriticalMultiplier");
-		lua_pushnumber(L, vocationId);
-		
-		if (lua_pcall(L, 1, 1, 0) == 0) {
-			double multiplier = lua_tonumber(L, -1);
-			lua_pop(L, 1);
-			return multiplier;
-		}
-	}
-	
-	switch (vocationId) {
-		case 4: case 8:
-			return g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_KNIGHT);
-		case 3: case 7:
-			return g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_PALADIN);
-		case 1: case 5:
-			return g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_MAGE);
-		case 2: case 6:
-			return g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_DRUID);
-		default:
-			return 1.5;
-	}
+double getCriticalChanceByVocation(uint16_t vocationId)
+{
+	return getCriticalConfig(vocationId).chance;
 }
 
-double getCriticalHealPercentByVocation(uint16_t vocationId) {
-	if (!criticalSystemLoaded) {
-		loadCriticalSystem();
-	}
-	
-	if (criticalSystemLoaded) {
-		lua_State* L = g_luaEnvironment.getLuaState();
-		lua_getglobal(L, "getCriticalHealPercent");
-		lua_pushnumber(L, vocationId);
-		
-		if (lua_pcall(L, 1, 1, 0) == 0) {
-			double healPercent = lua_tonumber(L, -1);
-			lua_pop(L, 1);
-			return healPercent;
-		}
-	}
-	
-	switch (vocationId) {
-		case 4: case 8:
-			return g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_KNIGHT);
-		case 3: case 7:
-			return g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_PALADIN);
-		case 1: case 5:
-			return g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_MAGE);
-		case 2: case 6:
-			return g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_DRUID);
-		default:
-			return g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_GOD);
-	}
+double getCriticalMultiplierByVocation(uint16_t vocationId)
+{
+	return getCriticalConfig(vocationId).multiplier;
+}
+
+double getCriticalHealPercentByVocation(uint16_t vocationId)
+{
+	return getCriticalConfig(vocationId).healPercent;
+}
+
+const std::vector<std::string>& getCriticalPhrases(uint16_t vocationId)
+{
+	return getCriticalConfig(vocationId).phrases;
 }
 
 CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
@@ -1260,19 +1212,11 @@ void Combat::checkCriticalHit(Player* caster, CombatDamage& damage)
 		
 		g_game.addMagicEffect(caster->getPosition(), CONST_ME_CRITICAL_DAMAGE);
 		g_game.addAnimatedText("CRITICAL!", caster->getPosition(), TEXTCOLOR_RED);
-		if (criticalSystemLoaded) {
-			lua_State* L = g_luaEnvironment.getLuaState();
-			lua_getglobal(L, "getRandomCriticalPhrase");
-			lua_pushnumber(L, vocationId);
-			
-			if (lua_pcall(L, 1, 1, 0) == 0) {
-				const char* phrase = lua_tostring(L, -1);
-				lua_pop(L, 1);
-				
-				if (phrase && normal_random(1, 100) <= 15) {
-					caster->sendCreatureSay(caster, TALKTYPE_MONSTER_YELL, phrase);
-				}
-			}
+
+		const std::vector<std::string>& phrases = getCriticalPhrases(vocationId);
+		if (!phrases.empty() && normal_random(1, 100) <= 15) {
+			const size_t phraseIndex = static_cast<size_t>(uniform_random(0, static_cast<int32_t>(phrases.size() - 1)));
+			caster->sendCreatureSay(caster, TALKTYPE_MONSTER_YELL, phrases[phraseIndex]);
 		}
 	}
 }
@@ -1320,53 +1264,12 @@ bool Combat::checkCriticalHeal(Player* caster, int32_t& healValue)
 	}
 
 	uint16_t vocationId = caster->getVocationId();
-	int32_t criticalHealPercent = 0;
-	
-	switch (vocationId) {
-		case 4:
-		case 8:
-			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_KNIGHT));
-			break;
-		case 3:
-		case 7:
-			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_PALADIN));
-			break;
-		case 1:
-		case 5:
-			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_MAGE));
-			break;
-		case 2:
-		case 6:
-			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_DRUID));
-			break;
-		default:
-			criticalHealPercent = static_cast<int32_t>(g_config.getFloat(ConfigManager::CRITICAL_HEAL_PERCENT_GOD));
-			break;
-	}
+	double criticalHealPercent = getCriticalHealPercentByVocation(vocationId);
 	
 	if (criticalHealPercent > 0) {
-		int32_t roll = normal_random(1, 100);
-		if (roll <= criticalHealPercent) {
-			double criticalMultiplier = 1.5;
-			switch (caster->getVocation()->getId()) {
-				case 4:
-				case 8:
-					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_KNIGHT);
-					break;
-				case 3:
-				case 7:
-					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_PALADIN);
-					break;
-				case 1:
-				case 5:
-					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_MAGE);
-					break;
-				case 2:
-				case 6:
-					criticalMultiplier = g_config.getFloat(ConfigManager::CRITICAL_MULTIPLIER_DRUID);
-					break;
-			}
-			
+		int32_t roll = normal_random(1, 10000);
+		if (roll <= static_cast<int32_t>(criticalHealPercent * 100)) {
+			double criticalMultiplier = getCriticalMultiplierByVocation(caster->getVocation()->getId());
 			healValue = static_cast<int32_t>(healValue * criticalMultiplier);
 			return true;
 		}

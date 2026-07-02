@@ -100,6 +100,26 @@ enum ItemTypes_t {
   ITEM_TYPE_LAST,
 };
 
+enum class WeaponClass : uint8_t {
+  Default = 0,
+  F,
+  E,
+  D,
+  C,
+  B,
+  A,
+  God,
+  J,
+  S
+};
+
+WeaponClass getWeaponClassFromString(const std::string &value);
+const char *getWeaponClassName(WeaponClass weaponClass);
+const char *getWeaponClassDescription(WeaponClass weaponClass);
+const char *getWeaponClassSuitability(WeaponClass weaponClass);
+const char *getWeaponClassPowerAnalysis(WeaponClass weaponClass);
+double getWeaponClassMultiplier(WeaponClass weaponClass);
+
 struct Abilities {
   uint32_t healthGain = 0;
   uint32_t healthTicks = 0;
@@ -262,6 +282,7 @@ public:
   MagicEffectClasses magicEffect = CONST_ME_NONE;
   Direction bedPartnerDir = DIRECTION_NONE;
   WeaponType_t weaponType = WEAPON_NONE;
+  WeaponClass weaponClass = WeaponClass::Default;
   Ammo_t ammoType = AMMO_NONE;
   ShootType_t shootType = CONST_ANI_NONE;
   RaceType_t corpseType = RACE_NONE;

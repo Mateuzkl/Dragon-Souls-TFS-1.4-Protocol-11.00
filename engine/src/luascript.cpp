@@ -3158,6 +3158,10 @@ void LuaScriptInterface::registerFunctions()
 	registerMethod("ItemType", "getImbuingSlots", LuaScriptInterface::luaItemTypeGetImbuingSlots);
 	registerMethod("ItemType", "getArmor", LuaScriptInterface::luaItemTypeGetArmor);
 	registerMethod("ItemType", "getWeaponType", LuaScriptInterface::luaItemTypeGetWeaponType);
+	registerMethod("ItemType", "getWeaponClass", LuaScriptInterface::luaItemTypeGetWeaponClass);
+	registerMethod("ItemType", "getWeaponClassDescription", LuaScriptInterface::luaItemTypeGetWeaponClassDescription);
+	registerMethod("ItemType", "getWeaponClassSuitability", LuaScriptInterface::luaItemTypeGetWeaponClassSuitability);
+	registerMethod("ItemType", "getWeaponClassPowerAnalysis", LuaScriptInterface::luaItemTypeGetWeaponClassPowerAnalysis);
 
 	registerMethod("ItemType", "getAbsorbPercent", LuaScriptInterface::luaItemTypeGetAbsorbPercent);
 	registerMethod("ItemType", "getElementType", LuaScriptInterface::luaItemTypeGetElementType);
@@ -15028,6 +15032,54 @@ int LuaScriptInterface::luaItemTypeGetWeaponType(lua_State* L)
 	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
 	if (itemType) {
 		lua_pushnumber(L, itemType->weaponType);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemTypeGetWeaponClass(lua_State* L)
+{
+	// itemType:getWeaponClass()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType && itemType->weaponClass != WeaponClass::Default) {
+		pushString(L, getWeaponClassName(itemType->weaponClass));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemTypeGetWeaponClassDescription(lua_State* L)
+{
+	// itemType:getWeaponClassDescription()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType && itemType->weaponClass != WeaponClass::Default) {
+		pushString(L, getWeaponClassDescription(itemType->weaponClass));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemTypeGetWeaponClassSuitability(lua_State* L)
+{
+	// itemType:getWeaponClassSuitability()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType && itemType->weaponClass != WeaponClass::Default) {
+		pushString(L, getWeaponClassSuitability(itemType->weaponClass));
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaScriptInterface::luaItemTypeGetWeaponClassPowerAnalysis(lua_State* L)
+{
+	// itemType:getWeaponClassPowerAnalysis()
+	const ItemType* itemType = getUserdata<const ItemType>(L, 1);
+	if (itemType && itemType->weaponClass != WeaponClass::Default) {
+		pushString(L, getWeaponClassPowerAnalysis(itemType->weaponClass));
 	} else {
 		lua_pushnil(L);
 	}
