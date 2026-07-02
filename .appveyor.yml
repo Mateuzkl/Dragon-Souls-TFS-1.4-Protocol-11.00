@@ -16,9 +16,11 @@ only_commits:
     - /engine/src/
     - /engine/vc17/
     - .appveyor.yml
+    - vcpkg.json
     - /engine/cmake/
 
 install:
+   - cmd: cd /d C:\Tools\vcpkg && git fetch --all --tags
    - cmd: vcpkg install
 
 build:
@@ -34,4 +36,3 @@ artifacts:
   - path: \engine\vc17\**\theforgottenserver*.exe
   - path: \engine\vc17\**\*.dll
   - path: Otg.zip
-
