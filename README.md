@@ -1,6 +1,12 @@
+<p align="center">
+  <a href="https://postimg.cc/fJ54gFjY">
+    <img src="https://i.postimg.cc/QdZXVZFY/Chat-GPT-Image-17-de-ago-de-2026-09-38-48.png" alt="Dragon Souls RPG" width="100%" />
+  </a>
+</p>
+
 <div align="center">
 
-# 🐉 Dragon Souls RPG
+# Dragon Souls RPG
 
 ### The Middle-earth MMORPG Experience
 
@@ -8,131 +14,344 @@
 [![Version](https://img.shields.io/badge/version-1.4.0-blue?style=flat-square)](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/releases)
 [![Protocol](https://img.shields.io/badge/protocol-11.00-orange?style=flat-square)](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00)
 [![License](https://img.shields.io/badge/license-GPL--2.0-red?style=flat-square)](LICENSE)
+![Repository size](https://img.shields.io/github/repo-size/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00?style=flat-square)
+[![Issues](https://img.shields.io/github/issues/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00?style=flat-square)](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/issues)
 
-*Um servidor de Tibia baseado no universo de **O Senhor dos Anéis**, desenvolvido sobre a engine **TFS 1.4**.*
+<br />
 
-[Recursos](#-recursos) • [Instalação](#-instalação-e-compilação) • [Sistemas](#-documentação-de-sistemas) • [Contribuição](#-como-contribuir) • [Suporte](#-suporte)
+![Engine](https://img.shields.io/badge/ENGINE-TFS%201.4-7c3aed?style=for-the-badge)
+![Protocol](https://img.shields.io/badge/PROTOCOL-11.00-f97316?style=for-the-badge)
+![C++](https://img.shields.io/badge/C++-17-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
+![Database](https://img.shields.io/badge/DATABASE-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Client](https://img.shields.io/badge/CLIENT-OTCv8-2563eb?style=for-the-badge)
+![RME](https://img.shields.io/badge/RME-DS%20CUSTOM-dc2626?style=for-the-badge)
+
+<br />
+<br />
+
+**Dragon Souls RPG** is a custom OpenTibia project built on **The Forgotten Server 1.4**, using **protocol 11.00** and a gameplay/world direction inspired by Middle-earth fantasy.
+
+[Features](#highlights) ·
+[Official Links](#official-links) ·
+[Installation](#installation--compilation) ·
+[Systems](#systems-documentation) ·
+[Contributing](#contributing) ·
+[Support](#support--community)
 
 </div>
 
 ---
 
-## 📖 Sobre o Projeto
+# ⚠️ ATTENTION — REQUIRED RME FOR THIS PROJECT
 
-**Dragon Souls RPG** é uma fusão ambiciosa entre a nostalgia clássica do Tibia 7.92 e a estabilidade das engines modernas. Este projeto visa recriar a atmosfera épica da Terra Média, permitindo que os jogadores explorem locais icônicos e enfrentem criaturas lendárias, tudo suportado por uma infraestrutura técnica robusta.
+> [!CAUTION]
+> # USE ONLY THE DRAGON SOULS RME LINKED BELOW
+>
+> **Do not use another Remere's Map Editor build with this server base.**
+>
+> Dragon Souls uses a customized RME with support for the project's **Stack/Count values up to 10000**, related to the implemented `uint16` changes.
+>
+> Using another RME can produce incompatible map/item data and may cause the server to fail when interpreting or loading the map correctly.
+>
+> **For Dragon Souls TFS 1.4, use only this specific RME:**
+>
+> **[DOWNLOAD / OPEN DRAGON SOULS RME](https://github.com/Mateuzkl/OTAcademy_RME)**
 
-### 🌟 Destaques
-- **Performance de Ponta:** Baseado no TFS 1.4, garantindo estabilidade e otimização.
-- **Protocolo Moderno:** Compatibilidade nativa com protocolo 11.00 e suporte total ao **OTClient**.
-- **Imersão Total:** Ambientação fiel, incluindo raças (Elfos, Anões, Humanos) e geografia de Tolkien.
+### Simple setup rule
 
----
+1. Read this README before compiling.
+2. Install/configure the required `vcpkg`.
+3. Recompile the **server**.
+4. Recompile the **client**.
+5. Download the **Dragon Souls RME** from the link above.
+6. Open and use that RME normally.
+7. **Do not replace it with another RME.**
 
-## 🔗 Links Oficiais
+The RME is already prepared for this project. No additional RME compilation is required for normal use.
 
-| Recurso | Descrição | Link |
-| :--- | :--- | :--- |
-| **Client** | Cliente OTCv8 customizado | [Acessar Repositório](https://github.com/Mateuzkl/Dragon-Souls-Client) |
-| **Sprites** | Repositório de Sprites 11.x | [Acessar Repositório](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) |
-| **Map Editor** | RME customizado para o projeto | [Acessar Repositório](https://github.com/Mateuzkl/OTAcademy_RME) |
-| **Ferramentas** | Utilitários para assets (Item Editor, OBJ Builder) | [Acessar Tools](https://github.com/otg-br/tools) |
-
----
-
-## �️ Recursos Técnicos
-
-### Engine & Compatibilidade
-*   **Core:** The Forgotten Server 1.4 (C++17)
-*   **Protocolo:** 11.00
-*   **Database:** MySQL (Alta performance e integridade de dados)
-*   **Integração:** API REST nativa para web services
-*   **Logs:** Sistema detalhado para debugging e auditoria
-
-### Gameplay & Sistemas
-*   **Combate:** Sistema balanceado 7.92 com mecânicas modernas (Stun, Hastega).
-*   **Cooldown Avançado:** Feedback visual e mensagens automáticas precisas.
-*   **Proteção de Itens:** Sistema AOL Inteligente com estados energizados.
-*   **Geral:** Party System reformulado, Guilds completas, Sistema de Casas e Ciclo Dia/Noite.
+A more detailed beginner-friendly tutorial can be added later, but these requirements must be followed first.
 
 ---
 
-## 🚀 Instalação e Compilação
+## About the Project
 
-Para garantir a melhor performance e compatibilidade, siga rigorosamente os passos abaixo para preparar o ambiente de desenvolvimento.
+**Dragon Souls RPG** combines classic Tibia-inspired gameplay with a modern TFS 1.4 server base and protocol 11.00.
 
-### 1. Preparação do Ambiente (vcpkg)
+Project goals:
+
+- Preserve a classic RPG feel.
+- Provide a stable modern server core.
+- Build a custom fantasy world inspired by Middle-earth.
+- Support custom races, creatures, maps and systems.
+- Keep server, client, sprites and map editor aligned.
+- Provide a maintainable base for future development.
+
+The project uses a custom toolchain and asset workflow. Server, client and map editor compatibility should always be treated as one complete environment.
+
+---
+
+## Highlights
+
+| Area | Description |
+|---|---|
+| Core | The Forgotten Server 1.4 |
+| Language | C++17 |
+| Protocol | 11.00 |
+| Client | Custom OTCv8 client |
+| Database | MySQL |
+| Map Editor | Custom Dragon Souls / OTAcademy RME |
+| Stack / Count | Project-specific support up to 10000 through `uint16` changes |
+| World | Middle-earth-inspired RPG setting |
+| Gameplay | Classic-oriented combat with custom modern systems |
+| Tooling | Custom sprites, item tools and RME workflow |
+
+---
+
+## Official Links
+
+| Resource | Description | Link |
+|---|---|---|
+| **Server** | Dragon Souls TFS 1.4 / Protocol 11.00 | [Repository](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00) |
+| **Client** | Custom OTCv8 client | [Dragon Souls Client](https://github.com/Mateuzkl/Dragon-Souls-Client) |
+| **Sprites** | Dragon Souls 11.x sprite repository | [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) |
+| **Map Editor** | **Required custom RME for this project** | **[OTAcademy_RME](https://github.com/Mateuzkl/OTAcademy_RME)** |
+| **Tools** | Asset utilities, Item Editor and Object Builder | [OTG Tools](https://github.com/otg-br/tools) |
+
+> [!IMPORTANT]
+> The **Map Editor** link above is not optional for this project workflow.
+> Use that RME for Dragon Souls maps.
+
+---
+
+## Technical Features
+
+### Engine & Compatibility
+
+- **Core:** The Forgotten Server 1.4
+- **Language:** C++17
+- **Protocol:** 11.00
+- **Database:** MySQL
+- **Client integration:** OTClient / OTCv8
+- **Web integration:** native REST API support
+- **Logging:** detailed debugging and audit-oriented logs
+
+### Gameplay & Systems
+
+- Classic-oriented **7.92-style combat direction** with project-specific modern mechanics.
+- Advanced spell cooldown handling.
+- Custom AOL system with energized and non-energized states.
+- Party system changes.
+- Guild systems.
+- House system.
+- Day/night cycle.
+- Custom race/world direction including Elves, Dwarves and Humans.
+
+---
+
+## Required Project Stack
+
+For best compatibility, use the project components together:
+
+```text
+Dragon Souls TFS 1.4
+        |
+        +-- Protocol 11.00
+        |
+        +-- Dragon Souls Client
+        |
+        +-- Dragon Souls 11.x Sprites
+        |
+        +-- Dragon Souls / OTAcademy RME
+        |      └── Stack / Count up to 10000
+        |          through project uint16 changes
+        |
+        +-- OTG asset tools
+```
+
+Replacing one component with an incompatible version may cause asset, packet, item or map-format problems.
+
+---
+
+# Installation & Compilation
+
+## 1. Read README First
+
+Before changing source code or compiling:
+
+- Confirm server repository.
+- Confirm matching Dragon Souls client.
+- Confirm required RME.
+- Confirm sprite/assets repositories.
+- Configure `vcpkg` correctly.
+
+---
+
+## 2. Required vcpkg Environment
 
 > [!WARNING]
-> **Atenção:** Versões recentes do vcpkg podem causar incompatibilidade. Utilize a versão homologada abaixo.
+> Recent `vcpkg` revisions may cause compatibility problems with this project.
+> Use the project-approved package below when reproducing the documented Windows build environment.
 
-1.  **Download do vcpkg homologado (aprox. 5GB):**
-    [Baixar vcpkg.rar](https://www.mediafire.com/file/ipd4qzohe9jwji3/vcpkg.rar/file)
+### Download approved vcpkg package
 
-2.  **Instalação:**
-    Extraia o conteúdo diretamente em `C:\vcpkg`.
+**[Download vcpkg.rar](https://www.mediafire.com/file/ipd4qzohe9jwji3/vcpkg.rar/file)**
 
-3.  **Bootstrap e Integração:**
-    Abra o PowerShell como Administrador e execute:
-    ```powershell
-    cd C:\vcpkg
-    .\bootstrap-vcpkg.bat
-    .\vcpkg.exe integrate install
-    ```
+Approximate extracted/download environment size: **5 GB**.
 
-### 2. Atualização da Baseline (Opcional)
-Caso necessário, atualize a baseline do projeto para sincronizar as dependências:
+Extract directly to:
+
+```text
+C:\vcpkg
+```
+
+Then open PowerShell as Administrator:
+
+```powershell
+cd C:\vcpkg
+.\bootstrap-vcpkg.bat
+.\vcpkg.exe integrate install
+```
+
+---
+
+## 3. Update Baseline — Optional
+
+If required for your local dependency state:
+
 ```powershell
 cd "C:\Caminho\Para\Dragon-Souls-TFS-1.4-Protocol-11.00"
 C:\vcpkg\vcpkg.exe x-update-baseline
 ```
 
-### 3. Compilação (Visual Studio 2022)
-1.  Abra o arquivo de solução `engine\vc17\theforgottenserver.sln`.
-2.  Selecione a configuração **Release** e plataforma **x64**.
-3.  Compile a solução (`Ctrl` + `Shift` + `B`). O Visual Studio baixará as dependências automaticamente.
+Do this only when needed for your environment.
 
 ---
 
-## 📘 Documentação de Sistemas
+## 4. Compile Server — Visual Studio 2022
 
-### � Sistema de Cooldown Avançado
+Open:
 
-Implementação robusta para gerenciamento de exaustão de magias com feedback preciso ao jogador.
+```text
+engine\vc17\theforgottenserver.sln
+```
 
-**Exemplo de Configuração (`spells.xml`):**
+Select:
+
+```text
+Configuration: Release
+Platform: x64
+```
+
+Build:
+
+```text
+Ctrl + Shift + B
+```
+
+Visual Studio will resolve project dependencies according to the configured environment.
+
+---
+
+## 5. Compile Client
+
+Use the official Dragon Souls client repository:
+
+**[Dragon Souls Client](https://github.com/Mateuzkl/Dragon-Souls-Client)**
+
+Configure the same required toolchain/dependencies and compile the client after the server environment is prepared.
+
+Server and client must remain compatible with protocol **11.00** and the feature configuration used by this project.
+
+---
+
+# REQUIRED MAP EDITOR
+
+> [!CAUTION]
+> # DO NOT USE ANOTHER RME
+>
+> Use only:
+>
+> **[Dragon Souls / OTAcademy RME](https://github.com/Mateuzkl/OTAcademy_RME)**
+>
+> Reason: this version contains project-specific compatibility for **Stack/Count up to 10000** and the corresponding `uint16` changes.
+>
+> Another RME may save map/item data differently and can cause loading or interpretation problems in Dragon Souls TFS 1.4.
+
+### RME setup
+
+No compilation is required for normal use if you use the prepared build supplied through the project link.
+
+Workflow:
+
+```text
+Download required RME
+        ↓
+Extract / open
+        ↓
+Load Dragon Souls map
+        ↓
+Edit using project-compatible data
+        ↓
+Save
+        ↓
+Test map on Dragon Souls TFS 1.4
+```
+
+---
+
+# Systems Documentation
+
+## Advanced Cooldown System
+
+The project includes spell exhaustion/cooldown handling with player feedback.
+
+Example:
+
 ```xml
 <instant name="Glaciate" words="adori frigo" spellid="201" exhaustion="7" cooldownmsg="1" script="adori frigo.lua">
-    <vocation id="1"/><vocation id="5"/>
+    <vocation id="1"/>
+    <vocation id="5"/>
 </instant>
 ```
 
-| Atributo | Descrição | Regra de Valor |
-| :--- | :--- | :--- |
-| `exhaustion` | Tempo de recarga | `< 50`: Segundos (ex: 7 = 7s)<br>`≥ 50`: Milissegundos (ex: 7000 = 7s) |
-| `cooldownmsg` | Mensagem de feedback | `1`: Ativa |
+| Attribute | Description | Value rule |
+|---|---|---|
+| `exhaustion` | Spell cooldown | `< 50`: seconds, e.g. `7 = 7s` |
+| `exhaustion` | Spell cooldown | `>= 50`: milliseconds, e.g. `7000 = 7s` |
+| `cooldownmsg` | Feedback message | `1`: enabled |
 
 ---
 
-### 🛡️ Sistema AOL Customizado (Energized Amulet of Loss)
+## Custom AOL — Energized Amulet of Loss
 
-Sistema inteligente de proteção de inventário baseado no estado do amuleto e penalidades do jogador.
+Custom item protection is based on amulet state and player penalties.
 
-#### Estados do Amuleto
-*   🟢 **Energizado:** Proteção TOTAL (exceto Red/Black Skull). Efeito visual ativo.
-*   ⚪ **Desenergizado:** Sem proteção. Funciona como colar decorativo.
+### Amulet States
 
-#### Regras de Penalidade (Skulls)
-| Estado do Jogador | Proteção do AOL | Comportamento na Morte |
-| :--- | :---: | :--- |
-| **Normal** | ✅ Ativa | Protege todos os itens se energizado. |
-| **Red Skull** 🔴 | ❌ Inativa | Perda total de itens, ignorando o amuleto. |
-| **Black Skull** ⚫ | ❌ Inativa | Perda total + Dano extra recebido. |
+| State | Protection |
+|---|---|
+| **Energized** | Full protection except applicable Red/Black Skull penalties |
+| **Non-energized** | No item-loss protection |
+
+### Skull Rules
+
+| Player State | AOL Protection | Death Behavior |
+|---|---:|---|
+| **Normal** | Active | Protects items when energized |
+| **Red Skull** | Disabled | Item-loss protection ignored |
+| **Black Skull** | Disabled | Item-loss protection ignored + project penalty behavior |
 
 ---
 
-### ⚙️ Configuração do Cliente (OTCV8)
+## Client Configuration — OTCv8
 
-Para garantir o funcionamento correto de todos os recursos visuais no protocolo 11.00, adicione o seguinte trecho ao seu `modules/game_features/features.lua`:
+For the documented protocol 11.00 visual/features configuration, add the required flags to:
+
+```text
+modules/game_features/features.lua
+```
+
+Example:
 
 ```lua
 if g_game.getProtocolVersion() >= 1100 then
@@ -145,57 +364,134 @@ if g_game.getProtocolVersion() >= 1100 then
 end
 ```
 
----
-
-## 🗺️ Roadmap e Status
-
-### Em Desenvolvimento
-- [ ] **Montarias:** Sistema completo de montarias.
-- [ ] **Expansão de Mapa:** Novas áreas de Rohan.
-- [ ] **Sistema de Clãs:** Hierarquia e benefícios por raça.
-- [ ] **Eventos:** Rotação automática de eventos diários/semanais.
-
-### 🐛 Problemas Conhecidos
-*   **Conversão de Mapas:** Mapas antigos (7.92) necessitam de conversão para estrutura 10.98+.
-*   **Compatibilidade de Itens:** Alguns IDs de versões antigas podem exigir remapeamento.
-*   **Otimização:** Refatoração contínua de scripts legacy para LuaJIT.
+> [!WARNING]
+> Client and server protocol structures must match.
+>
+> Do not enable/disable protocol features blindly. A mismatch can produce packet parsing errors or protocol desynchronization.
 
 ---
 
-## 🤝 Como Contribuir
+## Map / Item Compatibility
 
-Contribuições são bem-vindas! Se você deseja ajudar a moldar o futuro do Dragon Souls:
+Dragon Souls contains custom item/count behavior beyond a stock editor workflow.
 
-1.  Faça um **Fork** do projeto.
-2.  Crie uma Branch para sua feature (`git checkout -b feature/MinhaFeature`).
-3.  Commit suas mudanças (`git commit -m 'Adiciona: MinhaFeature'`).
-4.  Push para a Branch (`git push origin feature/MinhaFeature`).
-5.  Abra um **Pull Request**.
+The project-specific `uint16` changes affect how larger Stack/Count values are handled.
+
+Therefore:
+
+- Server must use matching source.
+- Client must support matching feature behavior.
+- RME must use the Dragon Souls-compatible implementation.
+- Item/sprite data must remain aligned.
+- Maps should be tested after editing.
+
+### Maximum documented Stack / Count
+
+```text
+10000
+```
+
+This is the primary reason the project requires its custom RME.
 
 ---
 
-## � Suporte e Comunidade
+## Roadmap
 
-*   **Discord:** `g.joker`
-*   **Issues:** Utilize a aba [Issues](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/issues) para reportar bugs.
+### In Development
+
+- [ ] Mount system
+- [ ] Additional Rohan areas
+- [ ] Race/clan hierarchy and benefits
+- [ ] Automatic daily/weekly events
+
+### Known Project Work
+
+- Older 7.92 maps require conversion to the newer map structure used by the project.
+- Some legacy item IDs may require remapping.
+- Legacy scripts continue to be reviewed/refactored as development progresses.
 
 ---
 
-## 📜 Licença e Créditos
+## Contributing
 
-Este projeto é licenciado sob a **GNU General Public License v2.0**.
+Contributions are welcome.
 
-**Desenvolvimento:**
-*   **[@Mateuzkl](https://github.com/Mateuzkl)** - Lead Developer
+Recommended workflow:
 
-**Agradecimentos:**
-*   TFS Team, OTLand Community, Xiadozu (Evolution), e Tolkien Estate.
+```bash
+git checkout -b feature/my-feature
+git add .
+git commit -m "feat: add my feature"
+git push origin feature/my-feature
+```
+
+Then open a Pull Request.
+
+### Pull Request Guidelines
+
+- Keep changes focused.
+- Avoid unrelated modifications.
+- Explain behavior changes.
+- Include reproduction steps for bug fixes.
+- Include logs when relevant.
+- Test server/client compatibility.
+- Test map changes with the required Dragon Souls RME.
+
+---
+
+## Issue Reporting
+
+Use GitHub Issues:
+
+**[Dragon Souls Issues](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/issues)**
+
+Include:
+
+- Clear description.
+- Steps to reproduce.
+- Expected behavior.
+- Actual behavior.
+- Server log.
+- Client log when applicable.
+- Map/RME information when applicable.
+- Screenshot/video when useful.
+
+---
+
+## Support & Community
+
+- **Developer:** [@Mateuzkl](https://github.com/Mateuzkl)
+- **Discord:** `g.joker`
+- **Issues:** [GitHub Issues](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/issues)
+
+For installation questions, read this README first—especially the **vcpkg**, **client**, and **required RME** sections.
+
+---
+
+## License & Credits
+
+Licensed under the **GNU General Public License v2.0**.
+
+### Development
+
+- **[@Mateuzkl](https://github.com/Mateuzkl)** — Lead Developer
+
+### Acknowledgements
+
+- The Forgotten Server team
+- OTLand community
+- Xiadozu / Evolution-related project work
+- Tolkien Estate
+
+---
 
 <div align="center">
-<br>
 
-*"Nem todos os que vagam estão perdidos."*
-<br>
+## Dragon Souls RPG
+
+**TFS 1.4 · Protocol 11.00 · Custom Client · Required DS RME**
+
+*"Nem todos os que vagam estão perdidos."*  
 — **J.R.R. Tolkien**
 
 </div>
