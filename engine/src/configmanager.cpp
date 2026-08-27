@@ -531,7 +531,7 @@ bool ConfigManager::load()
 	
 
 
-	doubling[RATE_MONSTER_SPEED] = getGlobalDouble(L, "rateMonsterSpeed", 1.95);
+	doubling[RATE_MONSTER_SPEED] = getGlobalDouble(L, "rateMonsterSpeed", 1.0);
 
 	expStages = loadXMLStages();
 	if (expStages.empty()) {
