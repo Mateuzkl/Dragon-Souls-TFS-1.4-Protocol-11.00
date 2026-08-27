@@ -2396,6 +2396,7 @@
 	</item>
 	<item id="2216" article="a" name="ring of healing">
 		<attribute key="weight" value="100" />
+		<attribute key="slotType" value="ring" />
 		<attribute key="decayTo" value="0" />
 		<attribute key="transformDeEquipTo" value="2214" />
 		<attribute key="duration" value="450" />
