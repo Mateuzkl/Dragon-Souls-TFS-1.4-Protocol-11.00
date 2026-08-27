@@ -1384,6 +1384,13 @@ bool ConditionDamage::doDamage(Creature* creature, int32_t healthChange)
 		return false;
 	}
 
+	if (attacker && damage.primary.value <= 0) {
+		if (Player* attackerPlayer = attacker->getPlayer()) {
+			// Condition ticks previously received equipment boosts only, via blockHit.
+			attackerPlayer->applyBonusDamageBoost(damage, creature, false);
+		}
+	}
+
 	if (g_game.combatBlockHit(damage, attacker, creature, false, false, field)) {
 		return false;
 	}

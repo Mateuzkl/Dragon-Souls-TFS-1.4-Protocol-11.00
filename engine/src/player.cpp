@@ -6758,7 +6758,7 @@ bool Player::applyBonusExperience(uint64_t& gainExp, Creature* source)
 	return false;
 }
 
-bool Player::applyBonusDamageBoost(CombatDamage& damage, Creature* opponent)
+bool Player::applyBonusDamageBoost(CombatDamage& damage, Creature* opponent, bool applyPrey /* = true */)
 {
 	if (!opponent) {
 		return false;
@@ -6766,17 +6766,21 @@ bool Player::applyBonusDamageBoost(CombatDamage& damage, Creature* opponent)
 
 	bool hasBoost = false;
 
-	// Apply prey damage boost
-	for (uint8_t preySlotId = 0; preySlotId < PREY_SLOTCOUNT; preySlotId++) {
-		PreyData& currentPrey = preyData[preySlotId];
-		if (currentPrey.state == STATE_ACTIVE && currentPrey.bonusType == BONUS_DAMAGE_BOOST && currentPrey.preyMonster == opponent->getName()) {
-			damage.primary.value += (damage.primary.value * currentPrey.bonusValue / 100.);
-			damage.secondary.value += (damage.secondary.value * currentPrey.bonusValue / 100.);
-			hasBoost = true;
+	// Preserve the existing Prey order and its target-combat scope.
+	if (applyPrey) {
+		for (uint8_t preySlotId = 0; preySlotId < PREY_SLOTCOUNT; preySlotId++) {
+			PreyData& currentPrey = preyData[preySlotId];
+			if (currentPrey.state == STATE_ACTIVE && currentPrey.bonusType == BONUS_DAMAGE_BOOST && currentPrey.preyMonster == opponent->getName()) {
+				damage.primary.value += (damage.primary.value * currentPrey.bonusValue / 100.);
+				damage.secondary.value += (damage.secondary.value * currentPrey.bonusValue / 100.);
+				hasBoost = true;
+			}
 		}
 	}
 
-	// Apply increasePercent from equipped items
+	// Sum enabled equipment bonuses before scaling either damage component.
+	int32_t totalPrimaryIncreasePercent = 0;
+	int32_t totalSecondaryIncreasePercent = 0;
 	for (int32_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
 		if (!isItemAbilityEnabled(static_cast<slots_t>(slot))) {
 			continue;
@@ -6787,21 +6791,19 @@ bool Player::applyBonusDamageBoost(CombatDamage& damage, Creature* opponent)
 			continue;
 		}
 		
-		// Apply increasePercent for primary damage type
-		const uint16_t primaryIncreasePercent = item->getIncreasePercent(damage.primary.type);
-		if (primaryIncreasePercent != 0) {
-			damage.primary.value += std::round(damage.primary.value * (primaryIncreasePercent / 100.));
-			hasBoost = true;
-		}
-		
-		// Apply increasePercent for secondary damage type
+		totalPrimaryIncreasePercent += item->getIncreasePercent(damage.primary.type);
 		if (damage.secondary.type != COMBAT_NONE) {
-			const uint16_t secondaryIncreasePercent = item->getIncreasePercent(damage.secondary.type);
-			if (secondaryIncreasePercent != 0) {
-				damage.secondary.value += std::round(damage.secondary.value * (secondaryIncreasePercent / 100.));
-				hasBoost = true;
-			}
+			totalSecondaryIncreasePercent += item->getIncreasePercent(damage.secondary.type);
 		}
+	}
+
+	if (totalPrimaryIncreasePercent != 0) {
+		damage.primary.value += std::round(damage.primary.value * (totalPrimaryIncreasePercent / 100.0));
+		hasBoost = true;
+	}
+	if (damage.secondary.type != COMBAT_NONE && totalSecondaryIncreasePercent != 0) {
+		damage.secondary.value += std::round(damage.secondary.value * (totalSecondaryIncreasePercent / 100.0));
+		hasBoost = true;
 	}
 
 	return hasBoost;

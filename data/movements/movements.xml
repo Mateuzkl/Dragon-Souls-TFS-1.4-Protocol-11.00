@@ -8,6 +8,8 @@
 	<movevent event="DeEquip" itemid="38859" slot="armor" function="onDeEquipItem" />
 	<movevent event="Equip" itemid="38859" slot="armor" level="19" function="onEquipItem">
 	</movevent>
+	<movevent event="Equip" itemid="38831" slot="head" function="onEquipItem" />
+	<movevent event="DeEquip" itemid="38831" slot="head" function="onDeEquipItem" />
 	<movevent event="StepIn" actionid="9892" script="Outhers/sala.lua"/>
 	<!-- First items for new character tile -->
 	<movevent event="StepIn" actionid="30001" script="Outhers/firstitems.lua"/>

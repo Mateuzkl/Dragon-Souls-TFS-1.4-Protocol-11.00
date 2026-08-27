@@ -120,27 +120,6 @@ CombatDamage Combat::getCombatDamage(Creature* creature, Creature* target) const
 						static_cast<int32_t>(maxb)
 					);
 				}
-	}
-	
-	if (damage.primary.value < 0) { 
-				for (slots_t slot = CONST_SLOT_FIRST; slot <= CONST_SLOT_LAST; ++slot) {
-					Item* item = player->getInventoryItem(slot);
-					if (!item) {
-						continue;
-					}
-					
-					uint16_t primaryIncreasePercent = item->getIncreasePercent(damage.primary.type);
-					if (primaryIncreasePercent > 0) {
-						damage.primary.value -= std::round(std::abs(damage.primary.value) * (primaryIncreasePercent / 100.0));
-					}
-					
-					if (damage.secondary.value < 0) {
-						uint16_t secondaryIncreasePercent = item->getIncreasePercent(damage.secondary.type);
-						if (secondaryIncreasePercent > 0) {
-							damage.secondary.value -= std::round(std::abs(damage.secondary.value) * (secondaryIncreasePercent / 100.0));
-						}
-					}
-				}
 			}
 		}
 	}
@@ -977,6 +956,12 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 	}
 
 	if (casterPlayer) {
+		Item* tool = casterPlayer->getWeapon();
+		// Resolve imbuement damage types before applying equipment percentages.
+		g_events->eventPlayerOnCombat(casterPlayer, target, tool, damage);
+	}
+
+	if (casterPlayer) {
 		casterPlayer->applyBonusDamageBoost(damage, target);
 	}
 
@@ -987,11 +972,6 @@ void Combat::doTargetCombat(Creature* caster, Creature* target, CombatDamage& da
 	}
 
 	bool success = false;
-	if (caster && caster->getPlayer()) {
-		Item* tool = caster->getPlayer()->getWeapon();
-		g_events->eventPlayerOnCombat(caster->getPlayer(), target, tool, damage);
-	}
-
 	if (damage.primary.type != COMBAT_MANADRAIN) {
 		if (g_game.combatBlockHit(damage, caster, target, params.blockedByShield, params.blockedByArmor, params.itemId != 0)) {
 			return;
@@ -1122,6 +1102,11 @@ void Combat::doAreaCombat(Creature* caster, const Position& position, const Area
 					if (caster && caster->getPlayer()) {
 						Item* tool = caster->getPlayer()->getWeapon();
 						g_events->eventPlayerOnCombat(caster->getPlayer(), creature, tool, damageCopy);
+					}
+
+					if (casterPlayer && damageCopy.primary.value <= 0) {
+						// Keep area hits equipment-only, after imbuement type conversion.
+						casterPlayer->applyBonusDamageBoost(damageCopy, creature, false);
 					}
 
 					if (damageCopy.critical) {
