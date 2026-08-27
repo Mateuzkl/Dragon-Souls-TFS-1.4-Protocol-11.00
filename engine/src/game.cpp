@@ -1095,22 +1095,17 @@ void Game::playerMoveItem(Player* player, const Position& fromPos,
                           uint16_t spriteId, uint8_t fromStackPos, const Position& toPos, uint16_t count, Item* item, Cylinder* toCylinder)
 {
     {
-        if (isPushBlockedByAttack(player)) {
-            player->sendCancelMessage(RETURNVALUE_NOTPOSSIBLE);
-            return;
-        }
-
         bool canPerformPush = player->hasFlag(PlayerFlag_HasNoExhaustion) || player->canPush();
         if (!canPerformPush) {
             uint32_t delay = player->getNextPushTime();
             SchedulerTask* task = createSchedulerTask(delay, std::bind(&Game::playerMoveItemByPlayerID, this,
                                   player->getID(), fromPos, spriteId, fromStackPos, toPos, count));
-            player->setNextActionPushTask(task);
+            player->setNextItemMoveTask(task);
             return;
         }
     }
 
-	player->setNextActionPushTask(nullptr);
+	player->setNextItemMoveTask(nullptr);
 
 	if (item == nullptr) {
 		uint8_t fromIndex = 0;

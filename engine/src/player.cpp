@@ -65,6 +65,8 @@ Player::Player(ProtocolGame_ptr p) :
 
 Player::~Player()
 {
+	setNextItemMoveTask(nullptr);
+
 	if (actionRuneTaskEvent != 0) {
 		g_scheduler.stopEvent(actionRuneTaskEvent);
 		actionRuneTaskEvent = 0;
@@ -1809,6 +1811,8 @@ void Player::onRemoveCreature(Creature* creature, bool isLogout)
 	Creature::onRemoveCreature(creature, isLogout);
 
 	if (creature == this) {
+		setNextItemMoveTask(nullptr);
+
 		if (isLogout) {
 			loginPosition = getPosition();
 		}
@@ -2112,6 +2116,18 @@ void Player::setNextActionPushTask(SchedulerTask* task)
 
 	if (task) {
 		actionTaskEventPush = g_scheduler.addEvent(task);
+	}
+}
+
+void Player::setNextItemMoveTask(SchedulerTask* task)
+{
+	if (itemMoveTaskEvent != 0) {
+		g_scheduler.stopEvent(itemMoveTaskEvent);
+		itemMoveTaskEvent = 0;
+	}
+
+	if (task) {
+		itemMoveTaskEvent = g_scheduler.addEvent(task);
 	}
 }
 
