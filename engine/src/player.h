@@ -1878,6 +1878,7 @@ class Player final : public Creature, public Cylinder
 		void setNextWalkActionTask(SchedulerTask* task);
 		void setNextWalkTask(SchedulerTask* task);
 		void setNextActionPushTask(SchedulerTask* task);
+		void setNextItemMoveTask(SchedulerTask* task);
 
 		void death(Creature* lastHitCreature) final;
 		bool dropCorpse(Creature* lastHitCreature, Creature* mostDamageCreature, bool lastHitUnjustified, bool mostDamageUnjustified) final;
@@ -2024,6 +2025,8 @@ class Player final : public Creature, public Cylinder
 		uint32_t magLevel = 0;
 		uint32_t actionTaskEvent = 0;
 		uint32_t actionTaskEventPush = 0;
+		// Item retries must survive cancellation of creature pushes and combat actions.
+		uint32_t itemMoveTaskEvent = 0;
 		uint32_t actionPotionTaskEvent = 0;
 		uint32_t actionRuneTaskEvent = 0;
 		uint32_t nextStepEvent = 0;
