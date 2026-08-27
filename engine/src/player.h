@@ -1541,7 +1541,7 @@ class Player final : public Creature, public Cylinder
 
 		uint16_t getPreyBonusLoot(MonsterType* mType);
 		bool applyBonusExperience(uint64_t& gainExp, Creature* source);
-		bool applyBonusDamageBoost(CombatDamage&, Creature* opponent);
+		bool applyBonusDamageBoost(CombatDamage&, Creature* opponent, bool applyPrey = true);
 		bool applyBonusDamageReduction(CombatDamage&, Creature* opponent);
 		bool hasActivePreyBonus(BonusType type, Creature* source);
 
