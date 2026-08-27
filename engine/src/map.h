@@ -244,7 +244,8 @@ class QTreeNodeHashMap {
 
 		struct Node {
 			QTreeLeafNode* nodes = nullptr;
-			int count = 0;
+			// 16-bit coordinates and FLOOR_BITS = 3 allow at most 64 leaves per bucket.
+			uint16_t count = 0;
 		} nodes[1024][1024];
 };
 

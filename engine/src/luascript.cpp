@@ -5391,7 +5391,7 @@ int LuaScriptInterface::luaGameGetBestiary(lua_State* L)
 	// Game.getBestiary(name)
 	std::string name = getString(L, 1);
 	Bestiary* bestiary = nullptr;
-	for (auto best : g_bestiaries.bestiary) {
+	for (auto& best : g_bestiaries.bestiary) {
 		if (asLowerCaseString(best.second.getName()) == asLowerCaseString(name)) {
 			bestiary = &best.second;
 			break;

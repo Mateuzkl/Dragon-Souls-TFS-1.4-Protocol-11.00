@@ -1,0 +1,2 @@
+/build.sh text eol=lf
+/engine/proto/generate.sh text eol=lf
