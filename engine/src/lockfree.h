@@ -50,9 +50,14 @@ class LockfreePoolingAllocator : public std::allocator<T>
 	public:
 		LockfreePoolingAllocator() = default;
 
-		template <typename U, class = typename std::enable_if<!std::is_same<U, T>::value>::type>
-		explicit constexpr LockfreePoolingAllocator(const U&) {}
+		template <typename U>
+		constexpr LockfreePoolingAllocator(const LockfreePoolingAllocator<U, CAPACITY>&) noexcept {}
 		using value_type = T;
+
+		template <typename U>
+		struct rebind {
+			using other = LockfreePoolingAllocator<U, CAPACITY>;
+		};
 
 		T* allocate(size_t) const {
 			auto& inst = LockfreeFreeList<sizeof(T), CAPACITY>::get();

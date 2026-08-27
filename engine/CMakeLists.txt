@@ -40,8 +40,14 @@ find_package(fmt REQUIRED)
 
 set (protoc_cmd "${PROJECT_SOURCE_DIR}/proto/generate.sh")
  
-execute_process(COMMAND ${protoc_cmd}
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/proto)
+if(UNIX)
+    execute_process(COMMAND bash "${protoc_cmd}"
+            WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}/proto"
+            RESULT_VARIABLE protoc_result)
+    if(NOT "${protoc_result}" STREQUAL "0")
+        message(FATAL_ERROR "Protobuf generation failed. Install protobuf-compiler and check engine/proto/generate.sh.")
+    endif()
+endif()
 
 # Selects LuaJIT if user defines or auto-detected
 if(DEFINED USE_LUAJIT AND NOT USE_LUAJIT)
