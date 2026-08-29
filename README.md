@@ -24,7 +24,7 @@
 ![C++](https://img.shields.io/badge/C++-17-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
 ![Database](https://img.shields.io/badge/DATABASE-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Client](https://img.shields.io/badge/CLIENT-OTCv8-2563eb?style=for-the-badge)
-![RME](https://img.shields.io/badge/RME-DS%20CUSTOM-dc2626?style=for-the-badge)
+![NexaMap](https://img.shields.io/badge/MAP%20EDITOR-NexaMap-00B8C8?style=for-the-badge)
 
 <br />
 <br />
@@ -42,20 +42,47 @@
 
 ---
 
-# ⚠️ ATTENTION — REQUIRED RME FOR THIS PROJECT
+# 🐉 REQUIRED MAP EDITOR — NexaMap Editor
 
 > [!CAUTION]
-> # USE ONLY THE DRAGON SOULS RME LINKED BELOW
+> ## DO NOT USE STANDARD RME / OTAcademy RME
 >
-> **Do not use another Remere's Map Editor build with this server base.**
+> Dragon Souls uses a modified OTBM format where **item count and subtype fields are stored as `uint16` (16-bit)** instead of the standard `uint8` (8-bit).
 >
-> Dragon Souls uses a customized RME with support for the project's **Stack/Count values up to 10000**, related to the implemented `uint16` changes.
+> Standard RME **cannot correctly open or save** Dragon Souls maps — it reads/writes the wrong byte format, producing **corrupted map data**.
 >
-> Using another RME can produce incompatible map/item data and may cause the server to fail when interpreting or loading the map correctly.
+> **Use only NexaMap Editor:**
 >
-> **For Dragon Souls TFS 1.4, use only this specific RME:**
+> ## **[⬇ DOWNLOAD NexaMap Editor](https://github.com/Mateuzkl/NexaMap-Editor)**
 >
-> **[DOWNLOAD / OPEN DRAGON SOULS RME](https://github.com/Mateuzkl/OTAcademy_RME)**
+> NexaMap is the **only map editor** with native Dragon Souls TFS 1.4 compatibility.
+
+### How to configure NexaMap for Dragon Souls
+
+1. Open **NexaMap Editor**.
+2. Go to **Edit → Preferences → Editor** tab.
+3. ✅ **Check** the option: `Dragon Souls map compatibility (16-bit item count/subtype)`.
+4. Open your Dragon Souls `.otbm` map.
+5. Edit and save normally.
+
+NexaMap will read and write the `uint16` format that Dragon Souls expects. Your server will load the map without issues.
+
+> [!IMPORTANT]
+> **Always enable** this option **before** opening a Dragon Souls map.
+> If you open a Dragon Souls map without this option enabled, the item data will be read incorrectly and you may lose data.
+
+> [!WARNING]
+> **For standard OTBM maps** (vanilla TFS, Canary, Crystal, etc.), leave this option **unchecked**.
+> Enabling it on normal maps will produce incompatible files.
+
+### Quick reference
+
+| Map type | `Dragon Souls map compatibility` option |
+|---|---|
+| **Dragon Souls TFS 1.4** | ✅ **Enabled** |
+| Standard TFS / OTServ | ❌ Disabled |
+| Canary | ❌ Disabled |
+| Crystal | ❌ Disabled |
 
 ### Simple setup rule
 
@@ -63,13 +90,10 @@
 2. Install/configure the required `vcpkg`.
 3. Recompile the **server**.
 4. Recompile the **client**.
-5. Download the **Dragon Souls RME** from the link above.
-6. Open and use that RME normally.
-7. **Do not replace it with another RME.**
-
-The RME is already prepared for this project. No additional RME compilation is required for normal use.
-
-A more detailed beginner-friendly tutorial can be added later, but these requirements must be followed first.
+5. Download **[NexaMap Editor](https://github.com/Mateuzkl/NexaMap-Editor)**.
+6. Enable `Dragon Souls map compatibility (16-bit item count/subtype)` in Preferences → Editor.
+7. Open and edit Dragon Souls maps normally.
+8. **Do not use another RME.**
 
 ---
 
@@ -99,11 +123,11 @@ The project uses a custom toolchain and asset workflow. Server, client and map e
 | Protocol | 11.00 |
 | Client | Custom OTCv8 client |
 | Database | MySQL |
-| Map Editor | Custom Dragon Souls / OTAcademy RME |
+| Map Editor | **[NexaMap Editor](https://github.com/Mateuzkl/NexaMap-Editor)** with Dragon Souls uint16 compatibility |
 | Stack / Count | Project-specific support up to 10000 through `uint16` changes |
 | World | Middle-earth-inspired RPG setting |
 | Gameplay | Classic-oriented combat with custom modern systems |
-| Tooling | Custom sprites, item tools and RME workflow |
+| Tooling | Custom sprites, item tools and NexaMap workflow |
 
 ---
 
@@ -114,12 +138,12 @@ The project uses a custom toolchain and asset workflow. Server, client and map e
 | **Server** | Dragon Souls TFS 1.4 / Protocol 11.00 | [Repository](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00) |
 | **Client** | Custom OTCv8 client | [Dragon Souls Client](https://github.com/Mateuzkl/Dragon-Souls-Client) |
 | **Sprites** | Dragon Souls 11.x sprite repository | [SPR-11x-Dragon-Souls](https://github.com/Mateuzkl/SPR-11x-Dragon-Souls) |
-| **Map Editor** | **Required custom RME for this project** | **[OTAcademy_RME](https://github.com/Mateuzkl/OTAcademy_RME)** |
+| **Map Editor** | **Required editor with Dragon Souls uint16 support** | **[NexaMap Editor](https://github.com/Mateuzkl/NexaMap-Editor)** |
 | **Tools** | Asset utilities, Item Editor and Object Builder | [OTG Tools](https://github.com/otg-br/tools) |
 
 > [!IMPORTANT]
-> The **Map Editor** link above is not optional for this project workflow.
-> Use that RME for Dragon Souls maps.
+> The **Map Editor** link above is **mandatory** for this project workflow.
+> NexaMap Editor is the only editor that supports the Dragon Souls uint16 map format.
 
 ---
 
@@ -161,9 +185,9 @@ Dragon Souls TFS 1.4
         |
         +-- Dragon Souls 11.x Sprites
         |
-        +-- Dragon Souls / OTAcademy RME
-        |      └── Stack / Count up to 10000
-        |          through project uint16 changes
+        +-- NexaMap Editor
+        |      └── Dragon Souls map compatibility (uint16)
+        |          Stack / Count up to 10000
         |
         +-- OTG asset tools
 ```
@@ -180,7 +204,7 @@ Before changing source code or compiling:
 
 - Confirm server repository.
 - Confirm matching Dragon Souls client.
-- Confirm required RME.
+- Confirm required map editor: **[NexaMap Editor](https://github.com/Mateuzkl/NexaMap-Editor)**.
 - Confirm sprite/assets repositories.
 - Configure `vcpkg` correctly.
 
@@ -267,26 +291,28 @@ Server and client must remain compatible with protocol **11.00** and the feature
 # REQUIRED MAP EDITOR
 
 > [!CAUTION]
-> # DO NOT USE ANOTHER RME
+> ## DO NOT USE STANDARD RME
 >
 > Use only:
 >
-> **[Dragon Souls / OTAcademy RME](https://github.com/Mateuzkl/OTAcademy_RME)**
+> **[NexaMap Editor](https://github.com/Mateuzkl/NexaMap-Editor)**
 >
-> Reason: this version contains project-specific compatibility for **Stack/Count up to 10000** and the corresponding `uint16` changes.
+> Reason: NexaMap Editor contains native support for **Dragon Souls map compatibility (16-bit item count/subtype)** — enabling Stack/Count up to 10000 through the project's `uint16` changes.
 >
-> Another RME may save map/item data differently and can cause loading or interpretation problems in Dragon Souls TFS 1.4.
+> Standard RME or other map editors will save map/item data in the wrong byte format and **will cause loading or data corruption problems** in Dragon Souls TFS 1.4.
 
-### RME setup
+### NexaMap Editor setup for Dragon Souls
 
-No compilation is required for normal use if you use the prepared build supplied through the project link.
+No compilation is required — download the release build from the NexaMap repository.
 
 Workflow:
 
 ```text
-Download required RME
+Download NexaMap Editor
         ↓
-Extract / open
+Open NexaMap Editor
+        ↓
+Preferences → Editor → ✅ Enable "Dragon Souls map compatibility"
         ↓
 Load Dragon Souls map
         ↓
@@ -381,7 +407,7 @@ Therefore:
 
 - Server must use matching source.
 - Client must support matching feature behavior.
-- RME must use the Dragon Souls-compatible implementation.
+- **Map editor must be NexaMap Editor with Dragon Souls compatibility enabled.**
 - Item/sprite data must remain aligned.
 - Maps should be tested after editing.
 
@@ -391,7 +417,7 @@ Therefore:
 10000
 ```
 
-This is the primary reason the project requires its custom RME.
+This is the primary reason the project requires NexaMap Editor with the `Dragon Souls map compatibility (16-bit item count/subtype)` option enabled.
 
 ---
 
@@ -435,7 +461,7 @@ Then open a Pull Request.
 - Include reproduction steps for bug fixes.
 - Include logs when relevant.
 - Test server/client compatibility.
-- Test map changes with the required Dragon Souls RME.
+- Test map changes with **NexaMap Editor** (Dragon Souls compatibility enabled).
 
 ---
 
@@ -453,7 +479,7 @@ Include:
 - Actual behavior.
 - Server log.
 - Client log when applicable.
-- Map/RME information when applicable.
+- Map/NexaMap Editor information when applicable.
 - Screenshot/video when useful.
 
 ---
@@ -464,7 +490,7 @@ Include:
 - **Discord:** `g.joker`
 - **Issues:** [GitHub Issues](https://github.com/Mateuzkl/Dragon-Souls-TFS-1.4-Protocol-11.00/issues)
 
-For installation questions, read this README first—especially the **vcpkg**, **client**, and **required RME** sections.
+For installation questions, read this README first — especially the **vcpkg**, **client**, and **required map editor** sections.
 
 ---
 
@@ -489,9 +515,9 @@ Licensed under the **GNU General Public License v2.0**.
 
 ## Dragon Souls RPG
 
-**TFS 1.4 · Protocol 11.00 · Custom Client · Required DS RME**
+**TFS 1.4 · Protocol 11.00 · Custom Client · [NexaMap Editor](https://github.com/Mateuzkl/NexaMap-Editor)**
 
-*"Nem todos os que vagam estão perdidos."*  
+*"Nem todos os que vagam estão perdidos."*
 — **J.R.R. Tolkien**
 
 </div>
