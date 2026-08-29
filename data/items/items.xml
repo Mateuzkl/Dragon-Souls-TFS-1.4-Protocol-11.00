@@ -18751,6 +18751,7 @@
 	<attribute key="defense" value="30"/>
 	<attribute key="attack" value="77"/>
 	<attribute key="weaponType" value="axe"/>
+	<attribute key="weaponClass" value="god"/>
 </item>
 <item id="38796" name="adamantiun axe">
 	<attribute key="weight" value="2500"/>
