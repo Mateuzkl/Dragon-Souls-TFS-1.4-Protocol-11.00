@@ -71,10 +71,10 @@ double getDistanceWeaponClassMultiplier(const Player* player, const Item* item)
 	return getWeaponClassMultiplier(weaponClass);
 }
 
-int32_t getScaledEvoDamage(const Player* player, int32_t maximum, double vocationMultiplier,
+int32_t getScaledEvoDamage(const Player* player, int32_t minimum, int32_t maximum, double vocationMultiplier,
 		double weaponClassMultiplier = 1.0, bool maximumOnly = false)
 {
-	const int32_t rolledDamage = maximumOnly ? maximum : uniform_random(0, maximum);
+	const int32_t rolledDamage = maximumOnly ? maximum : uniform_random(minimum, maximum);
 	return EvoWeaponDamage::scale(rolledDamage, player->getAttackStrength(), vocationMultiplier, weaponClassMultiplier);
 }
 }
@@ -426,7 +426,7 @@ bool Weapon::useFist(Player* player, Creature* target)
 	int32_t attackValue = 7;
 
 	int32_t maxDamage = Weapons::getMaxWeaponDamage(attackSkill, attackValue);
-	int32_t hitDamage = getScaledEvoDamage(player, maxDamage, player->getVocation()->meleeDamageMultiplier);
+	int32_t hitDamage = getScaledEvoDamage(player, 0, maxDamage, player->getVocation()->meleeDamageMultiplier);
 
 	CombatParams params;
 	params.combatType = COMBAT_PHYSICALDAMAGE;
@@ -685,7 +685,7 @@ int32_t WeaponMelee::getElementDamage(const Player* player, const Creature*, con
 		if (dynamicDamage > 0) {
 			// Found dynamic element! Use it.
 			int32_t maxValue = Weapons::getMaxWeaponDamage(attackSkill, dynamicDamage);
-			return -getScaledEvoDamage(player, maxValue, player->getVocation()->meleeDamageMultiplier);
+			return -getScaledEvoDamage(player, 0, maxValue, player->getVocation()->meleeDamageMultiplier);
 		}
 	}
 	
@@ -697,7 +697,7 @@ int32_t WeaponMelee::getElementDamage(const Player* player, const Creature*, con
 	// Use static element from XML
 	int32_t attackValue = elementDamage;
 	int32_t maxValue = Weapons::getMaxWeaponDamage(attackSkill, attackValue);
-	return -getScaledEvoDamage(player, maxValue, player->getVocation()->meleeDamageMultiplier);
+	return -getScaledEvoDamage(player, 0, maxValue, player->getVocation()->meleeDamageMultiplier);
 }
 
 CombatType_t WeaponMelee::getDynamicElementType(const Item* item) const
@@ -728,7 +728,8 @@ int32_t WeaponMelee::getWeaponDamage(const Player* player, const Creature*, cons
 
 	const double classMultiplier = getMeleeWeaponClassMultiplier(item);
 	int32_t maxValue = Weapons::getMaxWeaponDamage(attackSkill, attackValue);
-	return -getScaledEvoDamage(player, maxValue, player->getVocation()->meleeDamageMultiplier, classMultiplier, maxDamage);
+	int32_t minValue = EvoWeaponDamage::getBaseMinimum(attackValue, maxValue);
+	return -getScaledEvoDamage(player, minValue, maxValue, player->getVocation()->meleeDamageMultiplier, classMultiplier, maxDamage);
 }
 
 WeaponDistance::WeaponDistance(LuaScriptInterface* interface) :
@@ -930,7 +931,7 @@ int32_t WeaponDistance::getElementDamage(const Player* player, const Creature*, 
 		if (dynamicDamage > 0) {
 			// Found dynamic element! Use it.
 			int32_t maxValue = Weapons::getMaxWeaponDamage(attackSkill, dynamicDamage);
-			return -getScaledEvoDamage(player, maxValue, player->getVocation()->distDamageMultiplier);
+			return -getScaledEvoDamage(player, 0, maxValue, player->getVocation()->distDamageMultiplier);
 		}
 	}
 	
@@ -941,7 +942,7 @@ int32_t WeaponDistance::getElementDamage(const Player* player, const Creature*, 
 
 	// Use static element from XML
 	int32_t maxValue = Weapons::getMaxWeaponDamage(attackSkill, elementDamage);
-	return -getScaledEvoDamage(player, maxValue, player->getVocation()->distDamageMultiplier);
+	return -getScaledEvoDamage(player, 0, maxValue, player->getVocation()->distDamageMultiplier);
 }
 
 CombatType_t WeaponDistance::getDynamicElementType(const Item* item) const
@@ -973,7 +974,8 @@ int32_t WeaponDistance::getWeaponDamage(const Player* player, const Creature*, c
 
 	const double classMultiplier = getDistanceWeaponClassMultiplier(player, item);
 	int32_t maxValue = Weapons::getMaxWeaponDamage(attackSkill, attackValue);
-	return -getScaledEvoDamage(player, maxValue, player->getVocation()->distDamageMultiplier, classMultiplier, maxDamage);
+	int32_t minValue = EvoWeaponDamage::getBaseMinimum(attackValue, maxValue);
+	return -getScaledEvoDamage(player, minValue, maxValue, player->getVocation()->distDamageMultiplier, classMultiplier, maxDamage);
 }
 
 bool WeaponDistance::getSkillType(const Player* player, const Item*, skills_t& skill, uint32_t& skillpoint) const

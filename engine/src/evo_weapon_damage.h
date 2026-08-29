@@ -11,6 +11,18 @@ inline int32_t getBaseMaximum(int32_t attackSkill, int32_t attackValue)
 	return static_cast<int32_t>(skillDamage + attackValue);
 }
 
+inline int32_t getBaseMinimum(int32_t attackValue, int32_t maximum)
+{
+	if (attackValue <= 0 || maximum <= 0) {
+		return 0;
+	}
+
+	// Pex rolls from attackValue * 30 with a /2 maximum. This port keeps the
+	// approved /20 maximum, so the equivalent lower-bound scale is 10x lower.
+	const int64_t minimum = static_cast<int64_t>(attackValue) * 3;
+	return static_cast<int32_t>(minimum < maximum ? minimum : maximum);
+}
+
 inline int32_t applyAttackStrength(int32_t damage, uint32_t attackStrength)
 {
 	return static_cast<int32_t>((static_cast<int64_t>(damage) * attackStrength) / 100);
