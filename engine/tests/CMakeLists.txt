@@ -1,0 +1,3 @@
+add_executable(evo_weapon_damage_test evo_weapon_damage_test.cpp)
+target_include_directories(evo_weapon_damage_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../src)
+add_test(NAME evo_weapon_damage_regression COMMAND evo_weapon_damage_test)

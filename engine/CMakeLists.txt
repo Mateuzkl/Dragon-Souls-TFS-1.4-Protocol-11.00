@@ -5,6 +5,8 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 
 project(tfs)
 
+include(CTest)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(cotire)
@@ -69,6 +71,9 @@ endif()
 find_package(Boost 1.53.0 COMPONENTS system filesystem iostreams REQUIRED)
 
 add_subdirectory(src)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
 add_executable(tfs ${tfs_SRC})
 
 include_directories(${MYSQL_INCLUDE_DIR} ${LUA_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${PUGIXML_INCLUDE_DIR} ${Crypto++_INCLUDE_DIR} ${fmt_INCLUDE_DIRS})
