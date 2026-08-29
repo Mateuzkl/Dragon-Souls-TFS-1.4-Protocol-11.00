@@ -104,7 +104,8 @@ colunas armas com skill/Attack maiores causam mais dano.
 WeaponClass continua sendo uma extensão do Dragon Souls. No Pex ela aparece na
 descrição dos itens (a Adamantiun Axe é `Class.A`), mas não existe parser nem
 multiplicador `weaponClass` naquela source. O port mantém os multiplicadores já
-aprovados: Default 1.0, C 1.15, B 1.30, A 1.50 e God 2.00.
+aprovados: Default 1.00, F 1.00, E 1.03, D 1.05, C 1.08, B 1.10,
+S 1.18, J 1.20, God 1.25 e A 3.15.
 
 ## Critical, mitigação e sistemas preservados
 
