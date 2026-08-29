@@ -222,18 +222,23 @@ const char *getWeaponClassPowerAnalysis(WeaponClass weaponClass) {
 double getWeaponClassMultiplier(WeaponClass weaponClass) {
   switch (weaponClass) {
     case WeaponClass::God:
-      return 2.0;
-    case WeaponClass::A:
-      return 1.5;
-    case WeaponClass::B:
-      return 1.3;
-    case WeaponClass::C:
-      return 1.15;
-    case WeaponClass::D:
-    case WeaponClass::E:
-    case WeaponClass::F:
+      return 1.25;
     case WeaponClass::J:
+      return 1.20;
     case WeaponClass::S:
+      return 1.18;
+    case WeaponClass::A:
+      return 3.15;
+    case WeaponClass::B:
+      return 1.10;
+    case WeaponClass::C:
+      return 1.08;
+    case WeaponClass::D:
+      return 1.05;
+    case WeaponClass::E:
+      return 1.03;
+    case WeaponClass::F:
+      return 1.00;
     default:
       return 1.0;
   }
