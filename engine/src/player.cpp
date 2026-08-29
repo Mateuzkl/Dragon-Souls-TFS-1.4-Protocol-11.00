@@ -459,6 +459,16 @@ int32_t Player::getDefense() const
 	return (defenseSkill / 4. + 2.23) * defenseValue * 0.15 * getDefenseFactor() * vocation->defenseMultiplier;
 }
 
+uint32_t Player::getAttackStrength() const
+{
+	switch (fightMode) {
+		case FIGHTMODE_ATTACK: return 100;
+		case FIGHTMODE_BALANCED: return 50;
+		case FIGHTMODE_DEFENSE: return 30;
+		default: return 100;
+	}
+}
+
 float Player::getAttackFactor() const
 {
 	switch (fightMode) {

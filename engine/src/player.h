@@ -867,6 +867,7 @@ class Player final : public Creature, public Cylinder
 
 		int32_t getArmor() const final;
 		int32_t getDefense() const final;
+		uint32_t getAttackStrength() const;
 		float getAttackFactor() const final;
 		float getDefenseFactor() const final;
 

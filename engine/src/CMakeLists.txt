@@ -26,6 +26,7 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/depotchest.cpp
 	${CMAKE_CURRENT_LIST_DIR}/depotlocker.cpp
 	${CMAKE_CURRENT_LIST_DIR}/events.cpp
+	${CMAKE_CURRENT_LIST_DIR}/evo_weapon_damage.h
 	${CMAKE_CURRENT_LIST_DIR}/fileloader.cpp
 	${CMAKE_CURRENT_LIST_DIR}/game.cpp
 	${CMAKE_CURRENT_LIST_DIR}/globalevent.cpp
@@ -95,4 +96,3 @@ set(tfs_SRC
 	${CMAKE_CURRENT_LIST_DIR}/wildcardtree.cpp
 	${CMAKE_CURRENT_LIST_DIR}/wings.cpp
 	PARENT_SCOPE)
-
